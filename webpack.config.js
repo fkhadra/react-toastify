@@ -1,7 +1,5 @@
 /* eslint-disable */
 var webpack = require('webpack');
-var autoprefixer = require('autoprefixer');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   entry: './src/index.js',
@@ -22,24 +20,8 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         loader: 'babel-loader'
-      },
-      {
-        test: /\.css$/,
-        loader: ExtractTextPlugin.extract('style', 'css?importLoaders=1&-autoprefixer!postcss')
       }
     ]
-  },
-  postcss: function () {
-    return [
-      autoprefixer({
-        browsers: [
-          '>1%',
-          'last 4 versions',
-          'Firefox ESR',
-          'not ie < 9', // React doesn't support IE8 anyway
-        ]
-      }),
-    ];
   },
   externals: [{
     react: {
@@ -76,6 +58,5 @@ module.exports = {
         screw_ie8: true
       }
     }),
-    new ExtractTextPlugin('dist/ReactToastify.min.css')
   ]
 };

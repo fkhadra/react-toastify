@@ -4,17 +4,14 @@ import Toaster from './Toaster';
 import { config } from './config';
 import Transition from 'react-addons-transition-group';
 
+const propTypes = {
+  position: PropTypes.oneOf(objectValues(config.POSITION)),
+  delay: PropTypes.number
+};
 
 const defaultProps = {
   position: config.POSITION.TOP_RIGHT,
   delay: null,
-  type: config.TYPE.DEFAULT,
-};
-
-const propTypes = {
-  position: PropTypes.oneOf(objectValues(config.POSITION)),
-  delay: PropTypes.number,
-  type: PropTypes.oneOf(objectValues(config.TYPE))
 };
 
 class ToasterProvider extends Component {
