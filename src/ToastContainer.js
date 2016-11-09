@@ -1,20 +1,20 @@
 import React, { Component, PropTypes } from 'react';
 import { EventManager, objectValues } from './util';
-import Toaster from './Toaster';
-import { config } from './config';
+import Toast from './Toast';
+import config  from './config';
 import Transition from 'react-addons-transition-group';
 
 const propTypes = {
   position: PropTypes.oneOf(objectValues(config.POSITION)),
-  delay: PropTypes.number
+  autoClose: PropTypes.number
 };
 
 const defaultProps = {
   position: config.POSITION.TOP_RIGHT,
-  delay: null,
+  autoClose: null,
 };
 
-class ToasterProvider extends Component {
+class ToastContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -23,6 +23,21 @@ class ToasterProvider extends Component {
     this.handleCloseBtn = this.handleCloseBtn.bind(this);
     this.handleMouseEnter = this.handleMouseEnter.bind(this);
     this.toastId = 0;
+  }
+
+  componentDidMount() {
+    EventManager
+      .on(config.ACTION.SHOW, params => this.show(params))
+      .on(config.ACTION.CLEAR, () => this.clear());
+  }
+
+  componentWillUnmount(){
+    EventManager.off(config.ACTION.SHOW);
+    EventManager.off(config.ACTION.CLEAR);
+  }
+
+  clear() {
+    this.setState({toast: {}});
   }
 
   handleCloseBtn(e) {
@@ -35,7 +50,7 @@ class ToasterProvider extends Component {
 
   makeToast(params, id) {
     return (
-      <Toaster
+      <Toast
         {...params}
         id={id}
         key={id}
@@ -43,7 +58,7 @@ class ToasterProvider extends Component {
         handleMouseEnter={this.handleMouseEnter}
       >
         {params.content}
-      </Toaster>
+      </Toast>
     );
   }
 
@@ -82,27 +97,10 @@ class ToasterProvider extends Component {
     }
   }
 
-  componentDidMount() {
-    EventManager.on('TOASTIFY_SHOW', params => this.show(params));
 
-    EventManager.on('TOASTIFY_DISMISS', () => this.dismiss());
-  }
 
   isObjectEmpty() {
-    return Object.keys(this.state.toast).length === 0 && this.state.toast.constructor === Object;
-  }
-
-  getPositionClassName() {
-    switch (this.props.position) {
-      case config.POSITION.TOP_RIGHT:
-        return 'top-right';
-      case config.POSITION.TOP_LEFT:
-        return 'top-left';
-      case config.POSITION.BOTTOM_RIGHT:
-        return 'bottom-right';
-      case config.POSITION.BOTTOM_LEFT:
-        return 'bottom-left';
-    }
+    return this.state.toast.constructor === Object && Object.keys(this.state.toast).length === 0;
   }
 
   renderToast() {
@@ -112,7 +110,7 @@ class ToasterProvider extends Component {
 
   render() {
     return (
-      <div className={`toastify toastify--${this.getPositionClassName()}`}>
+      <div className={`toastify toastify--${this.props.position}`}>
         <Transition>
           {this.isObjectEmpty() ? null : this.renderToast()}
         </Transition>
@@ -122,7 +120,7 @@ class ToasterProvider extends Component {
   }
 }
 
-ToasterProvider.defaultProps = defaultProps;
-ToasterProvider.propTypes = propTypes;
+ToastContainer.defaultProps = defaultProps;
+ToastContainer.propTypes = propTypes;
 
-export default ToasterProvider;
+export default ToastContainer;

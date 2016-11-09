@@ -1,6 +1,6 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes, Children } from 'react';
 import {config} from './config';
-import { objectValues } from './util';
+import { objectValues, objectWithoutProps } from './util';
 
 const propTypes = {
   id: PropTypes.number.isRequired,
@@ -13,7 +13,7 @@ const defaultProps = {
   type: config.TYPE.DEFAULT
 };
 
-class Toaster extends Component {
+class Toast extends Component {
   constructor(props) {
     super(props);
     this.setRef = this.setRef.bind(this);
@@ -34,6 +34,11 @@ class Toaster extends Component {
     setTimeout(()=> callback(), 750);
   }
 
+  getChildren() {
+    const props = objectWithoutProps(this.props, Object.keys(Toast.propTypes));
+    return Children.map(this.props.children, child => cloneElement(child, {...props}));
+  }
+
   render() {
     return (
       <div
@@ -50,14 +55,14 @@ class Toaster extends Component {
           ×
         </button>
         <div className="toastify__body">
-          {this.props.children}
+          {this.getChildren()}
         </div>
       </div>
     );
   }
 }
 
-Toaster.defaultProps = defaultProps;
-Toaster.propTypes = propTypes;
+Toast.defaultProps = defaultProps;
+Toast.propTypes = propTypes;
 
-export default Toaster;
+export default Toast;
