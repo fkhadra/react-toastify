@@ -1,8 +1,5 @@
-/*
-* Default Config values
-* */
 
-const config = {
+export default {
   POSITION: {
     TOP_LEFT: 'top-left',
     TOP_RIGHT: 'top-right',
@@ -15,9 +12,9 @@ const config = {
     WARNING: 'warning',
     ERROR: 'error',
     DEFAULT: 'default'
+  },
+  ACTION : {
+    SHOW: 'SHOW_TOAST',
+    CLEAR: 'CLEAR_TOAST'
   }
 };
-
-
-
-export { config };
