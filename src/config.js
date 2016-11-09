@@ -18,10 +18,6 @@ const config = {
   }
 };
 
-/*
-* Will be used if many provider are rendered
-* */
-let id = 0;
-const getProviderId = () => `rt__${++id}`;
 
-export { config, getProviderId };
+
+export { config };
