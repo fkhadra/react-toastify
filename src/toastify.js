@@ -1,15 +1,27 @@
 import { EventManager } from './util';
-import { config } from './config';
+import config from './config';
 
-const emitEvent = (params) => EventManager.emit('TOASTIFY_SHOW', params);
+const { POSITION, TYPE, ACTION } = config;
+
+const defaultOptions = {
+  type: TYPE.DEFAULT,
+  autoClose: null
+};
+
+function mergeOptions(options) {
+  return Object.assign({}, defaultOptions, options);
+}
+
+const emitEvent = (content, options) => EventManager.emit(ACTION.SHOW, content, options);
 
 export default Object.assign(
-  (params) => emitEvent(params),
+  (content, options) => emitEvent(content, mergeOptions(options)),
   {
-    success: (params) => emitEvent(Object.assign(params, {type: config.TYPE.SUCCESS})),
-    info: (params) => emitEvent(Object.assign(params, {type: config.TYPE.INFO})),
-    warn: (params) => emitEvent(Object.assign(params, {type: config.TYPE.WARNING})),
-    error: (params) => emitEvent(Object.assign(params, {type: config.TYPE.ERROR})),
+    success: (content, options) => emitEvent(Object.assign(mergeOptions(options), { type: TYPE.SUCCESS })),
+    info: (content, options) => emitEvent(Object.assign(mergeOptions(options), { type: TYPE.INFO })),
+    warn: (content, options) => emitEvent(Object.assign(mergeOptions(options), { type: TYPE.WARNING })),
+    error: (content, options) => emitEvent(Object.assign(mergeOptions(options), { type: TYPE.ERROR })),
   },
-  config
+  POSITION,
+  TYPE
 );
