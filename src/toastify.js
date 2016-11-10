@@ -17,10 +17,11 @@ const emitEvent = (content, options) => EventManager.emit(ACTION.SHOW, content, 
 export default Object.assign(
   (content, options) => emitEvent(content, mergeOptions(options)),
   {
-    success: (content, options) => emitEvent(Object.assign(mergeOptions(options), { type: TYPE.SUCCESS })),
-    info: (content, options) => emitEvent(Object.assign(mergeOptions(options), { type: TYPE.INFO })),
-    warn: (content, options) => emitEvent(Object.assign(mergeOptions(options), { type: TYPE.WARNING })),
-    error: (content, options) => emitEvent(Object.assign(mergeOptions(options), { type: TYPE.ERROR })),
+    success: (content, options) => emitEvent(content, Object.assign(mergeOptions(options), { type: TYPE.SUCCESS })),
+    info: (content, options) => emitEvent(content, Object.assign(mergeOptions(options), { type: TYPE.INFO })),
+    warn: (content, options) => emitEvent(content, Object.assign(mergeOptions(options), { type: TYPE.WARNING })),
+    error: (content, options) => emitEvent(content, Object.assign(mergeOptions(options), { type: TYPE.ERROR })),
+    dismiss: () => EventManager.emit(ACTION.CLEAR)
   },
   POSITION,
   TYPE
