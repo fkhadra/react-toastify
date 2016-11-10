@@ -7,9 +7,9 @@ import config from './config';
 const propTypes = {
   position: PropTypes.oneOf(Object.values(config.POSITION)),
   autoClose: PropTypes.oneOfType([
-    PropTypes.boolean,
+    PropTypes.bool,
     PropTypes.number
-    ])
+  ])
 };
 
 const defaultProps = {
@@ -31,8 +31,8 @@ class ToastContainer extends Component {
 
   componentDidMount() {
     EventManager
-      .on(config.ACTION.SHOW, () => this.show)
-      .on(config.ACTION.CLEAR,() => this.clear);
+      .on(config.ACTION.SHOW, (content, options) => this.show(content, options))
+      .on(config.ACTION.CLEAR, () => this.clear());
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -66,7 +66,7 @@ class ToastContainer extends Component {
   }
 
   isContentValid(content) {
-    return isValidElement(content) || typeof content === 'string';
+    return isValidElement(content);
   }
 
   shouldAutoClose(autoCloseOpt) {
@@ -81,10 +81,12 @@ class ToastContainer extends Component {
   }
 
   show(content, options) {
+    content = typeof content === 'string' ? <div>{content}</div> : content;
+
     if (this.isContentValid(content)) {
       const toastId = ++this.toastId;
       const autoCloseOpt = options.autoClose;
-      const toastOptions = { id: toastId };
+      const toastOptions = { id: toastId, type: options.type };
 
       if (this.shouldAutoClose(autoCloseOpt)) {
         const delay = autoCloseOpt !== null ? parseInt(autoCloseOpt, 10) : this.props.autoClose;
