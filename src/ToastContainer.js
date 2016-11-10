@@ -6,7 +6,10 @@ import config from './config';
 
 const propTypes = {
   position: PropTypes.oneOf(Object.values(config.POSITION)),
-  autoClose: PropTypes.number
+  autoClose: PropTypes.oneOfType([
+    PropTypes.boolean,
+    PropTypes.number
+    ])
 };
 
 const defaultProps = {
@@ -28,8 +31,8 @@ class ToastContainer extends Component {
 
   componentDidMount() {
     EventManager
-      .on(config.ACTION.SHOW, this.show)
-      .on(config.ACTION.CLEAR, this.clear);
+      .on(config.ACTION.SHOW, () => this.show)
+      .on(config.ACTION.CLEAR,() => this.clear);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
