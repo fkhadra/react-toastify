@@ -1,5 +1,5 @@
 import React, { Component, PropTypes, Children, cloneElement } from 'react';
-import { config } from './config';
+import config from './config';
 import { objectWithoutProps } from './util';
 
 const propTypes = {
