@@ -1,4 +1,3 @@
-
 export default {
   POSITION: {
     TOP_LEFT: 'top-left',
@@ -15,7 +14,7 @@ export default {
     ERROR: 'error',
     DEFAULT: 'default'
   },
-  ACTION : {
+  ACTION: {
     SHOW: 'SHOW_TOAST',
     CLEAR: 'CLEAR_TOAST'
   }

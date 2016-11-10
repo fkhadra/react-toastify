@@ -1,4 +1,4 @@
 import ToastContainer from './ToastContainer';
-import toast from './toast';
+import toastify from './toastify';
 
-export { ToastContainer, toast };
+export { ToastContainer, toastify };

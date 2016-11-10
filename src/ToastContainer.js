@@ -1,17 +1,17 @@
-import React, { Component, PropTypes } from 'react';
-import { EventManager, objectValues } from './util';
-import Toast from './Toast';
-import config  from './config';
+import React, { Component, PropTypes, isValidElement, cloneElement } from 'react';
 import Transition from 'react-addons-transition-group';
+import { EventManager } from './util';
+import Toast from './Toast';
+import config from './config';
 
 const propTypes = {
-  position: PropTypes.oneOf(objectValues(config.POSITION)),
+  position: PropTypes.oneOf(Object.values(config.POSITION)),
   autoClose: PropTypes.number
 };
 
 const defaultProps = {
   position: config.POSITION.TOP_RIGHT,
-  autoClose: null,
+  autoClose: false,
 };
 
 class ToastContainer extends Component {
@@ -20,24 +20,100 @@ class ToastContainer extends Component {
     this.state = {
       toast: {}
     };
+    this.toastId = 0;
     this.handleCloseBtn = this.handleCloseBtn.bind(this);
     this.handleMouseEnter = this.handleMouseEnter.bind(this);
-    this.toastId = 0;
+    this.handleMouseLeave = this.handleMouseLeave.bind(this);
   }
 
   componentDidMount() {
     EventManager
-      .on(config.ACTION.SHOW, params => this.show(params))
-      .on(config.ACTION.CLEAR, () => this.clear());
+      .on(config.ACTION.SHOW, this.show)
+      .on(config.ACTION.CLEAR, this.clear);
   }
 
-  componentWillUnmount(){
+  shouldComponentUpdate(nextProps, nextState) {
+    return !this.isEqualToPreviousState(nextState);
+  }
+
+  componentWillUnmount() {
     EventManager.off(config.ACTION.SHOW);
     EventManager.off(config.ACTION.CLEAR);
   }
 
+  setAutoClose(toastId, delay) {
+    return setTimeout(() => this.removeToast(toastId), delay);
+  }
+
+  isEqualToPreviousState(nextState) {
+    const nextToastIds = Object.keys(nextState.toast);
+    const previousToastIds = Object.keys(this.state.toast);
+
+    if (nextToastIds.length !== previousToastIds.length) {
+      return false;
+    }
+
+    for (let i = 0; i < previousToastIds.length; i++) {
+      if (previousToastIds[i] !== nextToastIds[i]) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  isContentValid(content) {
+    return isValidElement(content) || typeof content === 'string';
+  }
+
+  shouldAutoClose(autoCloseOpt) {
+    return !!((this.props.autoClose !== false && autoCloseOpt !== false)
+    || (this.props.autoClose === false && autoCloseOpt !== false && autoCloseOpt !== null));
+  }
+
+  removeToast(id) {
+    const nextState = Object.assign({}, this.state.toast);
+    delete nextState[id];
+    this.setState({ toast: nextState });
+  }
+
+  show(content, options) {
+    if (this.isContentValid(content)) {
+      const toastId = ++this.toastId;
+      const autoCloseOpt = options.autoClose;
+      const toastOptions = { id: toastId };
+
+      if (this.shouldAutoClose(autoCloseOpt)) {
+        const delay = autoCloseOpt !== null ? parseInt(autoCloseOpt, 10) : this.props.autoClose;
+
+        toastOptions.autoCloseId = this.setAutoClose(toastId, delay);
+        toastOptions.autoCloseDelay = delay;
+        toastOptions.handleMouseEnter = this.handleMouseEnter;
+        toastOptions.handleMouseLeave = this.handleMouseLeave;
+      }
+
+      this.setState({
+        toast: Object.assign({}, this.state.toast, {
+          [toastId]: this.makeToast(content, toastOptions)
+        })
+      });
+    }
+  }
+
+  makeToast(content, options) {
+    return (
+      <Toast
+        {...options}
+        key={`toast-${options.id} `}
+        handleCloseBtn={this.handleCloseBtn}
+      >
+        {content}
+      </Toast>
+    );
+  }
+
   clear() {
-    this.setState({toast: {}});
+    this.setState({ toast: {} });
   }
 
   handleCloseBtn(e) {
@@ -45,67 +121,27 @@ class ToastContainer extends Component {
   }
 
   handleMouseEnter(e) {
-
+    clearTimeout(e.currentTarget.dataset.autoCloseId);
   }
 
-  makeToast(params, id) {
-    return (
-      <Toast
-        {...params}
-        id={id}
-        key={id}
-        handleCloseBtn={this.handleCloseBtn}
-        handleMouseEnter={this.handleMouseEnter}
-      >
-        {params.content}
-      </Toast>
-    );
-  }
-
-  hasContent(params) {
-    if (typeof params.content === 'undefined') {
-      console.warn('Content is missing for your toast');
-      return false;
-    }
-    return true;
-  }
-
-  hasDelay(params) {
-  }
-
-  removeToast(id) {
+  handleMouseLeave(e) {
+    const { toastId, autoCloseDelay } = e.currentTarget.dataset;
+    const toast = cloneElement(this.state.toast[toastId], { autoCloseId: this.setAutoClose(toastId, autoCloseDelay) });
     const nextState = Object.assign({}, this.state.toast);
-    delete nextState[id];
-    this.setState({toast: nextState});
+
+    delete nextState[toastId];
+    nextState[toastId] = toast;
+    this.setState({
+      toast: nextState
+    });
   }
-
-  show(params) {
-    if (this.hasContent(params)) {
-      const toastId = ++this.toastId;
-      const nextState = Object.assign({}, this.state.toast, {
-        [toastId]: this.makeToast(params, toastId)
-      });
-
-
-      /*const toastId = setTimeout(() => {
-        //this.removeToast(toastId);
-      }, params.delay || Toaster.defaultProps.delay);*/
-
-
-
-      this.setState({toast: nextState})
-    }
-  }
-
-
 
   isObjectEmpty() {
-    return this.state.toast.constructor === Object && Object.keys(this.state.toast).length === 0;
+    return Object.keys(this.state.toast).length === 0;
   }
 
   renderToast() {
-    const toasts = this.state.toast;
-    return Object.keys(toasts).map(k => toasts[k]);
+    return Object.values(this.state.toast);
   }
 
   render() {
@@ -115,8 +151,7 @@ class ToastContainer extends Component {
           {this.isObjectEmpty() ? null : this.renderToast()}
         </Transition>
       </div>
-    )
-
+    );
   }
 }
 

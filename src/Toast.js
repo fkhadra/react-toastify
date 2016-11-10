@@ -1,12 +1,16 @@
-import React, { Component, PropTypes, Children } from 'react';
-import {config} from './config';
-import { objectValues, objectWithoutProps } from './util';
+import React, { Component, PropTypes, Children, cloneElement } from 'react';
+import { config } from './config';
+import { objectWithoutProps } from './util';
 
 const propTypes = {
   id: PropTypes.number.isRequired,
   handleCloseBtn: PropTypes.func.isRequired,
+  autoCloseId: PropTypes.number,
+  autoCloseDelay: PropTypes.number,
+  handleMouseEnter: PropTypes.func,
+  handleMouseLeave: PropTypes.func,
   children: PropTypes.node.isRequired,
-  type: PropTypes.oneOf(objectValues(config.TYPE)),
+  type: PropTypes.oneOf(Object.values(config.TYPE)),
 };
 
 const defaultProps = {
@@ -24,6 +28,11 @@ class Toast extends Component {
     this.ref = ref;
   }
 
+  getChildren() {
+    const props = objectWithoutProps(this.props, Object.keys(Toast.propTypes));
+    return Children.map(this.props.children, child => cloneElement(child, { ...props }));
+  }
+
   componentWillEnter(callback) {
     this.ref.classList.add('bounceInRight', 'animated');
     callback();
@@ -31,12 +40,7 @@ class Toast extends Component {
 
   componentWillLeave(callback) {
     this.ref.classList.add('bounceOutRight', 'animated');
-    setTimeout(()=> callback(), 750);
-  }
-
-  getChildren() {
-    const props = objectWithoutProps(this.props, Object.keys(Toast.propTypes));
-    return Children.map(this.props.children, child => cloneElement(child, {...props}));
+    setTimeout(() => callback(), 750);
   }
 
   render() {
