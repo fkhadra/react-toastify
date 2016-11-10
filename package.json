@@ -7,8 +7,9 @@
     "lint": "eslint src/",
     "pretest": "npm run lint",
     "test": "mocha --compilers js:babel-core/register --require jsdomSetup.js --recursive test/",
-    "prebuild": "npm run lint | npm run style",
+    "prebuild": "npm run lint",
     "build": "./scripts/build.sh",
+    "postbuild": "npm run style",
     "prestyle": "sass src/scss/main.scss dist/ReactToastify.css",
     "style": "postcss --use autoprefixer -b 'last 2 versions' < dist/ReactToastify.css | postcss --use cssnano > dist/ReactToastify.min.css"
   },
