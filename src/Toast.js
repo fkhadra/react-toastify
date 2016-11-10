@@ -33,6 +33,24 @@ class Toast extends Component {
     return Children.map(this.props.children, child => cloneElement(child, { ...props }));
   }
 
+  getToastProps() {
+    const { autoCloseId, autoCloseDelay, handleMouseEnter, handleMouseLeave } = this.props;
+    const props = {
+      'data-toast-id': this.props.id,
+      className: `toastify-content toastify-content--${this.props.type}`,
+      ref: this.setRef,
+    };
+
+    if (this.props.autoCloseId) {
+      props['data-auto-close-id'] = autoCloseId;
+      props['data-auto-close-delay'] = autoCloseDelay;
+      props.onMouseEnter = handleMouseEnter;
+      props.onMouseLeave = handleMouseLeave;
+    }
+
+    return props;
+  }
+
   componentWillEnter(callback) {
     this.ref.classList.add('bounceInRight', 'animated');
     callback();
@@ -45,11 +63,7 @@ class Toast extends Component {
 
   render() {
     return (
-      <div
-        className={`toastify-content toastify-content--${this.props.type}`}
-        ref={this.setRef}
-        onMouseEnter={this.props.handleMouseEnter}
-      >
+      <div {...this.getToastProps()}>
         <button
           className="toastify__close"
           type="button"
