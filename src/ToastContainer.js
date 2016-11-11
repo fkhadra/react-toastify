@@ -16,7 +16,7 @@ const propTypes = {
 
 const defaultProps = {
   position: config.POSITION.TOP_RIGHT,
-  autoClose: false,
+  autoClose: 5000,
 };
 
 class ToastContainer extends Component {
