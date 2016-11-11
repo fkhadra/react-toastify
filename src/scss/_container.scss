@@ -14,7 +14,7 @@
   &--top-center {
     top: 1em;
     left: 50%;
-    margin-left: -($toastWidth / 2)px;
+    margin-left: -($toastWidth / 2);
   }
   &--top-right {
     top: 1em;
@@ -28,7 +28,7 @@
   &--bottom-center {
     bottom: 1em;
     left: 50%;
-    margin-left: -($toastWidth / 2)px;
+    margin-left: -($toastWidth / 2);
   }
   &--bottom-right {
     bottom: 1em;
