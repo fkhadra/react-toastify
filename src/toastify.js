@@ -1,4 +1,4 @@
-import { EventManager } from './util';
+import EventManager from './util/EventManager';
 import config from './config';
 
 const { POSITION, TYPE, ACTION } = config;
