@@ -1,16 +1,16 @@
 import React, { Component, PropTypes, Children, cloneElement } from 'react';
 import config from './config';
-import { objectWithoutProps } from './util';
 
 const propTypes = {
   id: PropTypes.number.isRequired,
   handleCloseBtn: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
   autoCloseId: PropTypes.number,
   autoCloseDelay: PropTypes.number,
   handleMouseEnter: PropTypes.func,
   handleMouseLeave: PropTypes.func,
-  children: PropTypes.node.isRequired,
   type: PropTypes.oneOf(Object.values(config.TYPE)),
+  childrenProps: PropTypes.object
 };
 
 const defaultProps = {
@@ -29,7 +29,7 @@ class Toast extends Component {
   }
 
   getChildren() {
-    const props = objectWithoutProps(this.props, Object.keys(Toast.propTypes));
+    const props = this.props.childrenProps || {};
     return Children.map(this.props.children, child => cloneElement(child, { ...props }));
   }
 
@@ -58,7 +58,7 @@ class Toast extends Component {
 
   componentWillLeave(callback) {
     this.ref.classList.add('bounceOutRight', 'animated');
-    setTimeout(() => callback(), 750);
+    setTimeout(() => callback(), 1000);
   }
 
   render() {
