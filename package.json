@@ -2,6 +2,15 @@
   "name": "react-toastify",
   "version": "1.0.0",
   "description": "React notification made easy",
+  "keywords": [
+    "react",
+    "notification",
+    "toast",
+    "react-component",
+    "react-toastify",
+    "push",
+    "alert"
+  ],
   "main": "lib/index.js",
   "scripts": {
     "lint": "eslint src/",
