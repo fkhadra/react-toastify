@@ -9,7 +9,9 @@ const propTypes = {
   autoClose: PropTypes.oneOfType([
     PropTypes.bool,
     PropTypes.number
-  ])
+  ]),
+  className: PropTypes.string,
+  style: PropTypes.object
 };
 
 const defaultProps = {
@@ -69,6 +71,10 @@ class ToastContainer extends Component {
     return isValidElement(content);
   }
 
+  childrenHasProps(props) {
+    return typeof props === 'object' && props.constructor.name === 'Object';
+  }
+
   shouldAutoClose(autoCloseOpt) {
     return !!((this.props.autoClose !== false && autoCloseOpt !== false)
     || (this.props.autoClose === false && autoCloseOpt !== false && autoCloseOpt !== null));
@@ -87,6 +93,10 @@ class ToastContainer extends Component {
       const toastId = ++this.toastId;
       const autoCloseOpt = options.autoClose;
       const toastOptions = { id: toastId, type: options.type };
+
+      if (this.childrenHasProps(options.props)) {
+        toastOptions.childrenProps = options.props;
+      }
 
       if (this.shouldAutoClose(autoCloseOpt)) {
         const delay = autoCloseOpt !== null ? parseInt(autoCloseOpt, 10) : this.props.autoClose;
@@ -145,13 +155,29 @@ class ToastContainer extends Component {
     return Object.keys(this.state.toast).length === 0;
   }
 
+  renderProps() {
+    const props = {
+      className: `toastify toastify--${this.props.position}`
+    };
+
+    if (this.props.className) {
+      props.className = `${props.className} ${this.props.className}`;
+    }
+
+    if (this.props.style) {
+      props.style = this.props.style;
+    }
+
+    return props;
+  }
+
   renderToast() {
     return Object.values(this.state.toast);
   }
 
   render() {
     return (
-      <div className={`toastify toastify--${this.props.position}`}>
+      <div {...this.renderProps()}>
         <Transition>
           {this.isObjectEmpty() ? null : this.renderToast()}
         </Transition>
