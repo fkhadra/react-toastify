@@ -10,7 +10,8 @@ const propTypes = {
   handleMouseEnter: PropTypes.func,
   handleMouseLeave: PropTypes.func,
   type: PropTypes.oneOf(Object.values(config.TYPE)),
-  childrenProps: PropTypes.object
+  childrenProps: PropTypes.object,
+  position: PropTypes.oneOf(Object.values(config.POSITION))
 };
 
 const defaultProps = {
@@ -52,12 +53,13 @@ class Toast extends Component {
   }
 
   componentWillEnter(callback) {
-    this.ref.classList.add('bounceInRight', 'animated');
+    this.ref.classList.add(`bounceIn--${this.props.position}`, 'animated');
     callback();
   }
 
   componentWillLeave(callback) {
-    this.ref.classList.add('bounceOutRight', 'animated');
+    this.ref.classList.remove(`bounceIn--${this.props.position}`, 'animated');
+    this.ref.classList.add(`bounceOut--${this.props.position}`, 'animated');
     setTimeout(() => callback(), 1000);
   }
 

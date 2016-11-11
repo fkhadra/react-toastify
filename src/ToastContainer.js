@@ -1,6 +1,6 @@
 import React, { Component, PropTypes, isValidElement, cloneElement } from 'react';
 import Transition from 'react-addons-transition-group';
-import { EventManager } from './util';
+import EventManager from './util/EventManager';
 import Toast from './Toast';
 import config from './config';
 
@@ -119,6 +119,7 @@ class ToastContainer extends Component {
     return (
       <Toast
         {...options}
+        position={this.props.position}
         key={`toast-${options.id} `}
         handleCloseBtn={this.handleCloseBtn}
       >
