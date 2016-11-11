@@ -23,6 +23,8 @@ export default Object.assign(
     error: (content, options) => emitEvent(content, Object.assign(mergeOptions(options), { type: TYPE.ERROR })),
     dismiss: () => EventManager.emit(ACTION.CLEAR)
   },
-  POSITION,
-  TYPE
+  {
+    POSITION,
+    TYPE
+  }
 );
