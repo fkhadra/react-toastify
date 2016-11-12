@@ -81,13 +81,13 @@ const ToastBtn = () => {
       
 position accept the following value : 
       
-```
+```javascript
 top-right, top-center, top-left, bottom-right, bottom-center, bottom-left
 ```
       
 You can use the toast object to avoid any typo :
 
-```
+```javascript
 import { toast } from 'react-toastify';
       
 toast.POSITION.TOP_LEFT, toast.POSITION.TOP_RIGHT, toast.POSITION.TOP_CENTER
