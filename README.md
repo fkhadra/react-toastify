@@ -1,6 +1,10 @@
 # React Toastify [![npm](https://img.shields.io/npm/dt/react-toastify.svg)]() [![npm](https://img.shields.io/npm/v/react-toastify.svg)]() [![license](https://img.shields.io/github/license/sniphpet/react-toastify.svg?maxAge=2592000)]()
    
 React-Toastify allow you to add toast notification to your app with ease.
+
+## Demo
+   
+Check the demo [here](https://sniphpet.github.io/react-toastify/)   
    
 ## Installation 
    
@@ -118,7 +122,7 @@ const options = {
 toast(<Img />, options) // default, type: 'default'
 toast.success("Hello", options) // add type: 'success' to options
 toast.info("World", options) // add type: 'info' to options
-toast.warning(<Img />, options) // add type: 'warning' to options
+toast.warn(<Img />, options) // add type: 'warning' to options
 toast.error(<Img />, options) // add type: 'error' to options
 toast.dismiss() // Remove all toasts !
 ```
