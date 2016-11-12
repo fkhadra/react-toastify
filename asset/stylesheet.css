@@ -27,7 +27,13 @@ a {
   transition: color 0.2s, background-color 0.2s, border-color 0.2s; }
   .btn + .btn {
     margin-left: 1rem; }
-
+.btn-toast {
+  background: #15915f;
+  color: #ffffff;
+}
+.btn-toast:hover {
+  background-color: #15915f!important;
+}
 .btn:hover {
   color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
