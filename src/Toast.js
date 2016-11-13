@@ -9,6 +9,8 @@ const propTypes = {
   autoCloseDelay: PropTypes.number,
   handleMouseEnter: PropTypes.func,
   handleMouseLeave: PropTypes.func,
+  onOpen: PropTypes.func,
+  onClose: PropTypes.func,
   type: PropTypes.oneOf(Object.values(config.TYPE)),
   childrenProps: PropTypes.object,
   position: PropTypes.oneOf(Object.values(config.POSITION))
@@ -23,6 +25,14 @@ class Toast extends Component {
     super(props);
     this.setRef = this.setRef.bind(this);
     this.ref = null;
+  }
+
+  componentDidMount() {
+    this.props.onOpen(this.props.childrenProps);
+  }
+
+  componentWillUnmount() {
+    this.props.onClose(this.props.childrenProps);
   }
 
   setRef(ref) {

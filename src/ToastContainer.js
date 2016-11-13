@@ -71,6 +71,10 @@ class ToastContainer extends Component {
     return isValidElement(content);
   }
 
+  isFunction(object) {
+    return !!(object && object.constructor && object.call && object.apply);
+  }
+
   childrenHasProps(props) {
     return typeof props === 'object' && props.constructor.name === 'Object';
   }
@@ -92,7 +96,13 @@ class ToastContainer extends Component {
     if (this.isContentValid(content)) {
       const toastId = ++this.toastId;
       const autoCloseOpt = options.autoClose;
-      const toastOptions = { id: toastId, type: options.type };
+      const fn = () => {};
+      const toastOptions = {
+        id: toastId,
+        type: options.type,
+        onOpen: this.isFunction(options.onOpen) ? options.onOpen : fn,
+        onClose: this.isFunction(options.onClose) ? options.onClose : fn
+      };
 
       if (this.childrenHasProps(options.props)) {
         toastOptions.childrenProps = options.props;

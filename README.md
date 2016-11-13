@@ -20,10 +20,11 @@ import 'react-toastify/dist/ReactToastify.min.css'
 
 ## Features
 
+- Can display a react component inside the toast !
+- Has ```onOpen``` and ```onClose``` hooks. Both can access the props passed to the react component rendered inside the toast
 - Can be positioned
 - Define behavior per toast
 - Super easy to style
-- Can display a react component inside the toast !
 
 ## How it works ?
    
@@ -112,6 +113,9 @@ If you pass an autoClose parameter it will overwrite the autoClose behavior defi
 ```javascript
 const Img = (props) => <div><img width={48} src={props.foo} /></div>;
 const options = {
+    //callback can access props passed to the component
+    onOpen: (props) => {console.log(props.foo)},
+    onClose: (props) => {console.log(props.foo)},
     autoClose: false, //The user need to close the toast to remove it
     props: { // props will be passed to the component displayed by the notification 
            foo: 'bar'
@@ -126,6 +130,15 @@ toast.warn(<Img />, options) // add type: 'warning' to options
 toast.error(<Img />, options) // add type: 'error' to options
 toast.dismiss() // Remove all toasts !
 ```
+
+## Release Notes
+
+### 1.1.0
+
+#### Features
+
+- Added onOpen callback
+- Added onClose callback
 
 ## Contribute
 
