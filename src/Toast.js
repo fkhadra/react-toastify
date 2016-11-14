@@ -17,7 +17,8 @@ const propTypes = {
 };
 
 const defaultProps = {
-  type: config.TYPE.DEFAULT
+  type: config.TYPE.DEFAULT,
+  childrenProps: {}
 };
 
 class Toast extends Component {
@@ -28,20 +29,24 @@ class Toast extends Component {
   }
 
   componentDidMount() {
-    this.props.onOpen(this.props.childrenProps);
+    this.props.onOpen(this.getChildrenProps());
   }
 
   componentWillUnmount() {
-    this.props.onClose(this.props.childrenProps);
+    this.props.onClose(this.getChildrenProps());
   }
 
   setRef(ref) {
     this.ref = ref;
   }
 
+  getChildrenProps() {
+    return Object.assign({}, this.props.childrenProps, this.props.children.props);
+  }
+
   getChildren() {
-    const props = this.props.childrenProps || {};
-    return Children.map(this.props.children, child => cloneElement(child, { ...props }));
+    const props = this.props.childrenProps;
+    return Children.map(this.props.children, child => cloneElement(child, { ...props, ...child.props }));
   }
 
   getToastProps() {

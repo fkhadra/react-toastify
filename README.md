@@ -26,6 +26,24 @@ import 'react-toastify/dist/ReactToastify.min.css'
 - Define behavior per toast
 - Super easy to style
 
+## Deprecation Notice
+
+Starting v1.2.0 passing props using toast options will be removed. Use the react way instead :
+
+```javascript
+toast(<MyComponent foo="bar" foorbar={myFunction} />);
+//instead of 
+toast(<MyComponent />, {
+    props: {
+        foo: "bar",
+        foorbar: myFunction
+    }
+});
+```
+
+Thank you for your understanding, God bless you !
+
+
 ## How it works ?
    
 The component use a dead simple pubsub to listen and trigger event. The pubsub allow us to display a toast from everywhere in your app.
@@ -117,13 +135,15 @@ const options = {
     onOpen: (props) => {console.log(props.foo)},
     onClose: (props) => {console.log(props.foo)},
     autoClose: false, //The user need to close the toast to remove it
-    props: { // props will be passed to the component displayed by the notification 
+    // props will be passed to the component displayed by the notification 
+    // Will be removed at the next release. Pass the props directly to the component instead
+    props: { 
            foo: 'bar'
     },
     type: toast.TYPE.INFO
 };
    
-toast(<Img />, options) // default, type: 'default'
+toast(<Img foo={bar}/>, options) // default, type: 'default'
 toast.success("Hello", options) // add type: 'success' to options
 toast.info("World", options) // add type: 'info' to options
 toast.warn(<Img />, options) // add type: 'warning' to options
@@ -132,6 +152,18 @@ toast.dismiss() // Remove all toasts !
 ```
 
 ## Release Notes
+
+### 1.1.1
+
+#### Bug fix
+
+- OnClose and OnOpen can access all the props passed to the component. Before
+only the props passed using toast options were accessible
+
+#### Features
+
+- Passing prop using toast option will be removed at the next release. It doesn't
+make sense to keep both way to pass props. Use the react way instead
 
 ### 1.1.0
 
