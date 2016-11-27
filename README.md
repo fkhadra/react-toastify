@@ -153,6 +153,12 @@ toast.dismiss() // Remove all toasts !
 
 ## Release Notes
 
+### 1.2.1
+
+#### Bug fix
+
+- Added Object.values polyfill otherwise won't work with IE or EDGE
+
 ### 1.1.1
 
 #### Bug fix

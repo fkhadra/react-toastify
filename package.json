@@ -33,6 +33,7 @@
   },
   "homepage": "https://github.com/sniphpet/react-toastify#readme",
   "dependencies": {
+    "object.values": "^1.0.3",
     "react": "^15.3.2",
     "react-addons-transition-group": "^15.3.2"
   },

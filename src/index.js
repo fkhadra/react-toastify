@@ -1,3 +1,4 @@
+import "./ObjectValuesPolyfill";
 import ToastContainer from './ToastContainer';
 import toastify from './toastify';
 
