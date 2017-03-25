@@ -153,6 +153,16 @@ toast.dismiss() // Remove all toasts !
 
 ## Release Notes
 
+### 1.2.2
+
+I was storing react component into state which is a bad practice. [What should Go in State](http://web.archive.org/web/20150419023006/http://facebook.github.io/react/docs/interactivity-and-dynamic-uis.html)
+This is no more the case now. The separation of concern between the data and the view is respected.
+
+#### Bug fix
+
+- Was calling cloneElement on undefined which cause your console bleed. See issue [#2](https://github.com/sniphpet/react-toastify/issues/2)
+
+
 ### 1.2.1
 
 #### Bug fix
