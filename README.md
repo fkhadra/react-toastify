@@ -101,6 +101,7 @@ const ToastBtn = () => {
 |autoClose|false\|int|5000|Delay in ms to close the toast. If set to false, the notification need to be closed manualy|
 |className|string|-|Add classes to the container|
 |style|object|-|Add inline style to the container|
+|closeButton|React Element|-|A React Component to replace the default close button|
       
 position accept the following value : 
       
@@ -124,9 +125,16 @@ All the function inside toast can take 2 parameters :
 |Parameter|Type|Required|Description|
 |---------|----|--------|-----|
 |content|string\|React Element|✓|Element that will be displayed|
-|options|object|✘|Possible keys : autoClose, type, props
+|options|object|✘|Possible keys : autoClose, type, closeButton
    
 If you pass an autoClose parameter it will overwrite the autoClose behavior defined in the container.
+
+When using a custom closeButton, you need to call the following function in your component to close the toast: 
+
+```javascript
+//somewhere inside your component
+this.props.closeToast();
+```
 
 ```javascript
 const Img = (props) => <div><img width={48} src={props.foo} /></div>;
@@ -135,11 +143,7 @@ const options = {
     onOpen: (props) => {console.log(props.foo)},
     onClose: (props) => {console.log(props.foo)},
     autoClose: false, //The user need to close the toast to remove it
-    // props will be passed to the component displayed by the notification 
-    // Will be removed at the next release. Pass the props directly to the component instead
-    props: { 
-           foo: 'bar'
-    },
+    closeButton: <MyCloseButton foo={bar} />,
     type: toast.TYPE.INFO
 };
    
@@ -152,6 +156,14 @@ toast.dismiss() // Remove all toasts !
 ```
 
 ## Release Notes
+
+### 1.3.0
+
+- PropTypes package update
+
+#### Features
+
+- Possibility to use a custom close button
 
 ### 1.2.2
 
