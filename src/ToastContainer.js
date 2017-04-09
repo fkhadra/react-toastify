@@ -2,6 +2,7 @@ import React, { Component, PropTypes, isValidElement, cloneElement } from 'react
 import Transition from 'react-addons-transition-group';
 import EventManager from './util/EventManager';
 import Toast from './Toast';
+import DefaultCloseButton from './DefaultCloseButton';
 import config from './config';
 
 const propTypes = {
@@ -10,6 +11,7 @@ const propTypes = {
     PropTypes.bool,
     PropTypes.number
   ]),
+  closeButton: PropTypes.element,
   className: PropTypes.string,
   style: PropTypes.object
 };
@@ -17,6 +19,7 @@ const propTypes = {
 const defaultProps = {
   position: config.POSITION.TOP_RIGHT,
   autoClose: 5000,
+  closeButton: null
 };
 
 class ToastContainer extends Component {
@@ -27,7 +30,6 @@ class ToastContainer extends Component {
     };
     this.toastId = 0;
     this.collection = {};
-    this.handleCloseBtn = this.handleCloseBtn.bind(this);
     this.handleMouseEnter = this.handleMouseEnter.bind(this);
     this.handleMouseLeave = this.handleMouseLeave.bind(this);
   }
@@ -47,16 +49,8 @@ class ToastContainer extends Component {
     return setTimeout(() => this.removeToast(toastId), delay);
   }
 
-  isContentValid(content) {
-    return isValidElement(content);
-  }
-
   isFunction(object) {
     return !!(object && object.constructor && object.call && object.apply);
-  }
-
-  childrenHasProps(props) {
-    return typeof props === 'object' && props.constructor.name === 'Object';
   }
 
   shouldAutoClose(autoCloseOpt) {
@@ -68,10 +62,33 @@ class ToastContainer extends Component {
     this.setState({ toast: this.state.toast.filter(v => v !== parseInt(id, 10)) });
   }
 
+  withClose(component, props) {
+    return cloneElement(component, { ...props, ...component.props });
+  }
+
+  validateCloseButton(closeButton) {
+    if (!isValidElement(closeButton)) {
+      throw new Error(`CloseButton must be a valid react element instead of ${typeof closeButton}`);
+    }
+  }
+
+  makeCloseButton(optCloseButton, toastId) {
+    let closeButton = <DefaultCloseButton />;
+
+    if (optCloseButton === null && this.props.closeButton !== null) {
+      closeButton = this.props.closeButton;
+    } else if (optCloseButton !== null) {
+      this.validateCloseButton(optCloseButton);
+      closeButton = optCloseButton;
+    }
+
+    return this.withClose(closeButton, { closeToast: () => this.removeToast(toastId) });
+  }
+
   show(content, options) {
     content = typeof content === 'string' ? <div>{content}</div> : content;
 
-    if (this.isContentValid(content)) {
+    if (isValidElement(content)) {
       const toastId = ++this.toastId;
       const autoCloseOpt = options.autoClose;
       const fn = () => {
@@ -80,12 +97,9 @@ class ToastContainer extends Component {
         id: toastId,
         type: options.type,
         onOpen: this.isFunction(options.onOpen) ? options.onOpen : fn,
-        onClose: this.isFunction(options.onClose) ? options.onClose : fn
+        onClose: this.isFunction(options.onClose) ? options.onClose : fn,
+        closeButton: this.makeCloseButton(options.closeButton, toastId)
       };
-
-      if (this.childrenHasProps(options.props)) {
-        toastOptions.childrenProps = options.props;
-      }
 
       if (this.shouldAutoClose(autoCloseOpt)) {
         const delay = autoCloseOpt !== null ? parseInt(autoCloseOpt, 10) : this.props.autoClose;
@@ -112,7 +126,6 @@ class ToastContainer extends Component {
         {...options}
         position={this.props.position}
         key={`toast-${options.id} `}
-        handleCloseBtn={this.handleCloseBtn}
       >
         {content}
       </Toast>
@@ -122,10 +135,6 @@ class ToastContainer extends Component {
   clear() {
     this.collection = {};
     this.setState({ toast: [] });
-  }
-
-  handleCloseBtn(e) {
-    this.removeToast(e.target.value);
   }
 
   handleMouseEnter(e) {
