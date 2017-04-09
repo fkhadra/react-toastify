@@ -1,9 +1,9 @@
-import React, { Component, PropTypes, Children, cloneElement } from 'react';
+import React, { Component, PropTypes } from 'react';
 import config from './config';
 
 const propTypes = {
   id: PropTypes.number.isRequired,
-  handleCloseBtn: PropTypes.func.isRequired,
+  closeButton: PropTypes.element.isRequired,
   children: PropTypes.node.isRequired,
   autoCloseId: PropTypes.number,
   autoCloseDelay: PropTypes.number,
@@ -74,13 +74,7 @@ class Toast extends Component {
   render() {
     return (
       <div {...this.getToastProps()}>
-        <button
-          className="toastify__close"
-          type="button"
-          onClick={this.props.handleCloseBtn}
-        >
-          ×
-        </button>
+        {this.props.closeButton}
         <div className="toastify__body">
           {this.props.children}
         </div>

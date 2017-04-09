@@ -5,7 +5,8 @@ const { POSITION, TYPE, ACTION } = config;
 
 const defaultOptions = {
   type: TYPE.DEFAULT,
-  autoClose: null
+  autoClose: null,
+  closeButton: null
 };
 
 function mergeOptions(options) {
