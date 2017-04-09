@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const DefaultCloseButton = ({ closeToast }) => (
   <button
@@ -11,7 +12,7 @@ const DefaultCloseButton = ({ closeToast }) => (
 );
 
 DefaultCloseButton.propTypes = {
-  closeToast: React.PropTypes.func
+  closeToast: PropTypes.func
 };
 
 export default DefaultCloseButton;
