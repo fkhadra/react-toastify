@@ -52,7 +52,7 @@ The component use a dead simple pubsub to listen and trigger event. The pubsub a
    
 ```javascript
 import React from 'react';
-import { render } from ReactDOM;
+import { render } from 'react-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css'; 
 
