@@ -99,6 +99,7 @@ class ToastContainer extends Component {
   }
 
   makeToast(content, options) {
+    this.handleCloseBtn = this.handleCloseBtn.bind(this, options.id);
     return (
       <Toast
         {...options}
@@ -116,8 +117,8 @@ class ToastContainer extends Component {
     this.setState({ toast: [] });
   }
 
-  handleCloseBtn(e) {
-    this.removeToast(e.target.value);
+  handleCloseBtn(id) {
+    this.removeToast(id);
   }
 
   handleMouseEnter(e) {

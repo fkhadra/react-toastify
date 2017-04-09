@@ -78,7 +78,6 @@ class Toast extends Component {
           className="toastify__close"
           type="button"
           onClick={this.props.handleCloseBtn}
-          value={this.props.id}
         >
           ×
         </button>
