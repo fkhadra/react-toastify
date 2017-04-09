@@ -55,10 +55,6 @@ class ToastContainer extends Component {
     return !!(object && object.constructor && object.call && object.apply);
   }
 
-  childrenHasProps(props) {
-    return typeof props === 'object' && props.constructor.name === 'Object';
-  }
-
   shouldAutoClose(autoCloseOpt) {
     return !!((this.props.autoClose !== false && autoCloseOpt !== false)
     || (this.props.autoClose === false && autoCloseOpt !== false && autoCloseOpt !== null));
@@ -82,10 +78,6 @@ class ToastContainer extends Component {
         onOpen: this.isFunction(options.onOpen) ? options.onOpen : fn,
         onClose: this.isFunction(options.onClose) ? options.onClose : fn
       };
-
-      if (this.childrenHasProps(options.props)) {
-        toastOptions.childrenProps = options.props;
-      }
 
       if (this.shouldAutoClose(autoCloseOpt)) {
         const delay = autoCloseOpt !== null ? parseInt(autoCloseOpt, 10) : this.props.autoClose;

@@ -12,13 +12,11 @@ const propTypes = {
   onOpen: PropTypes.func,
   onClose: PropTypes.func,
   type: PropTypes.oneOf(Object.values(config.TYPE)),
-  childrenProps: PropTypes.object,
   position: PropTypes.oneOf(Object.values(config.POSITION))
 };
 
 const defaultProps = {
-  type: config.TYPE.DEFAULT,
-  childrenProps: {}
+  type: config.TYPE.DEFAULT
 };
 
 class Toast extends Component {
@@ -41,12 +39,7 @@ class Toast extends Component {
   }
 
   getChildrenProps() {
-    return Object.assign({}, this.props.childrenProps, this.props.children.props);
-  }
-
-  getChildren() {
-    const props = this.props.childrenProps;
-    return Children.map(this.props.children, child => cloneElement(child, { ...props, ...child.props }));
+    return this.props.children.props;
   }
 
   getToastProps() {
@@ -90,7 +83,7 @@ class Toast extends Component {
           ×
         </button>
         <div className="toastify__body">
-          {this.getChildren()}
+          {this.props.children}
         </div>
       </div>
     );
