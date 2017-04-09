@@ -1,4 +1,5 @@
-import React, { Component, PropTypes, isValidElement, cloneElement } from 'react';
+import React, { Component, isValidElement, cloneElement } from 'react';
+import PropTypes from 'prop-types';
 import Transition from 'react-addons-transition-group';
 import EventManager from './util/EventManager';
 import Toast from './Toast';
