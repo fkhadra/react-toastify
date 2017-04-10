@@ -10,6 +10,7 @@ Check the demo [here](https://sniphpet.github.io/react-toastify/)
    
 ```
 $ npm install --save react-toastify
+$ yarn add react-toastify
 ```
    
 If you use a style loader you can import the stylesheet as follow :
@@ -24,29 +25,11 @@ import 'react-toastify/dist/ReactToastify.min.css'
 - Has ```onOpen``` and ```onClose``` hooks. Both can access the props passed to the react component rendered inside the toast
 - Can be positioned
 - Define behavior per toast
-- Super easy to style
-
-## Deprecation Notice
-
-Starting v1.2.0 passing props using toast options will be removed. Use the react way instead :
-
-```javascript
-toast(<MyComponent foo="bar" foorbar={myFunction} />);
-//instead of 
-toast(<MyComponent />, {
-    props: {
-        foo: "bar",
-        foorbar: myFunction
-    }
-});
-```
-
-Thank you for your understanding, God bless you !
-
+- Super easy to customize
 
 ## How it works ?
    
-The component use a dead simple pubsub to listen and trigger event. The pubsub allow us to display a toast from everywhere in your app.
+The component use a dead simple pubsub(observer pattern) to listen and trigger event. The pubsub allow us to display a toast from everywhere in your app.
    
 - Add a ToastContainer to your app
    
@@ -77,9 +60,11 @@ render(
 ```javascript
 import React from 'react';
 import { toast } from 'react-toastify';
+
+const Greet = ({ name }) => <div>Hello {name}</div>
     
 function handleClick() {
-    toast('Hello', {
+    toast(<Greet name="John" />, {
       type: toast.TYPE.INFO
     });
 }
@@ -102,8 +87,8 @@ const ToastBtn = () => {
 |className|string|-|Add classes to the container|
 |style|object|-|Add inline style to the container|
 |closeButton|React Element|-|A React Component to replace the default close button|
-      
-position accept the following value : 
+
+Position accept the following value : 
       
 ```javascript
 top-right, top-center, top-left, bottom-right, bottom-center, bottom-left
@@ -117,7 +102,24 @@ import { toast } from 'react-toastify';
 toast.POSITION.TOP_LEFT, toast.POSITION.TOP_RIGHT, toast.POSITION.TOP_CENTER
 toast.POSITION.BOTTOM_LEFT,toast.POSITION.BOTTOM_RIGHT, toast.POSITION.BOTTOM_CENTER
 ```  
-   
+ 
+When using a custom close button, the component will receive a prop ```closeToast```. You need to call it to close the toast.
+
+```javascript
+//The classname toastify__close is used to position the icon on the top right side, you don't need it.
+const FontAwesomeCloseButton = ({ closeToast }) => (
+  <i
+    className="toastify__close fa fa-times"
+    onClick={closeToast}
+  />
+);
+
+...
+<ToastContainer autoClose={false} position="top-center" closeButton={<FontAwesomeCloseButton />}/>
+...
+
+```
+
 ### toast (Type: Object)
    
 All the function inside toast can take 2 parameters :
@@ -127,14 +129,7 @@ All the function inside toast can take 2 parameters :
 |content|string\|React Element|✓|Element that will be displayed|
 |options|object|✘|Possible keys : autoClose, type, closeButton
    
-If you pass an autoClose parameter it will overwrite the autoClose behavior defined in the container.
-
-When using a custom closeButton, you need to call the following function in your component to close the toast: 
-
-```javascript
-//somewhere inside your component
-this.props.closeToast();
-```
+The autoClose and closeButton both take precedence over the container's props.
 
 ```javascript
 const Img = (props) => <div><img width={48} src={props.foo} /></div>;
@@ -143,7 +138,7 @@ const options = {
     onOpen: (props) => {console.log(props.foo)},
     onClose: (props) => {console.log(props.foo)},
     autoClose: false, //The user need to close the toast to remove it
-    closeButton: <MyCloseButton foo={bar} />,
+    closeButton: <FontAwesomeCloseButton />,
     type: toast.TYPE.INFO
 };
    
@@ -157,15 +152,16 @@ toast.dismiss() // Remove all toasts !
 
 ## Release Notes
 
-### 1.3.0
+### v1.3.0
 
 - PropTypes package update
+- Dead code elimination
 
 #### Features
 
-- Possibility to use a custom close button
+- Possibility to use a custom close button. Check the api docs of ToastContainer and toast.
 
-### 1.2.2
+### v1.2.2
 
 I was storing react component into state which is a bad practice. [What should Go in State](http://web.archive.org/web/20150419023006/http://facebook.github.io/react/docs/interactivity-and-dynamic-uis.html)
 This is no more the case now. The separation of concern between the data and the view is respected.
@@ -175,13 +171,13 @@ This is no more the case now. The separation of concern between the data and the
 - Was calling cloneElement on undefined which cause your console bleed. See issue [#2](https://github.com/sniphpet/react-toastify/issues/2)
 
 
-### 1.2.1
+### v1.2.1
 
 #### Bug fix
 
-- Added Object.values polyfill otherwise won't work with IE or EDGE
+- Added Object.values polyfill otherwise won't work with IE or EDGE. I ♥ IE.
 
-### 1.1.1
+### v1.1.1
 
 #### Bug fix
 
@@ -193,7 +189,7 @@ only the props passed using toast options were accessible
 - Passing prop using toast option will be removed at the next release. It doesn't
 make sense to keep both way to pass props. Use the react way instead
 
-### 1.1.0
+### v1.1.0
 
 #### Features
 
