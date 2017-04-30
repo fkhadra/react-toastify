@@ -1,29 +1,57 @@
 import React, { Component, isValidElement, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import Transition from 'react-addons-transition-group';
-import EventManager from './util/EventManager';
+
 import Toast from './Toast';
 import DefaultCloseButton from './DefaultCloseButton';
 import config from './config';
-
-const propTypes = {
-  position: PropTypes.oneOf(Object.values(config.POSITION)),
-  autoClose: PropTypes.oneOfType([
-    PropTypes.bool,
-    PropTypes.number
-  ]),
-  closeButton: PropTypes.element,
-  className: PropTypes.string,
-  style: PropTypes.object
-};
-
-const defaultProps = {
-  position: config.POSITION.TOP_RIGHT,
-  autoClose: 5000,
-  closeButton: null
-};
+import EventManager from './util/EventManager';
+import objectValues from './util/objectValues';
 
 class ToastContainer extends Component {
+
+  static propTypes = {
+    /**
+     * Set toast position
+     */
+    position: PropTypes.oneOf(objectValues(config.POSITION)),
+
+    /**
+     * Disable or set autoClose delay
+     */
+    autoClose: PropTypes.oneOfType([
+      PropTypes.bool,
+      PropTypes.number
+    ]),
+
+    /**
+     * Custom react element for the close button
+     */
+    closeButton: PropTypes.element,
+
+    /**
+     * Hide or not progress bar when autoClose is enabled
+     */
+    hideProgressBar: PropTypes.bool,
+
+    /**
+     * An optional className
+     */
+    className: PropTypes.string,
+
+    /**
+     * An optional style
+     */
+    style: PropTypes.object
+  };
+
+  static defaultProps = {
+    position: config.POSITION.TOP_RIGHT,
+    autoClose: 5000,
+    closeButton: null,
+    hideProgressBar: false
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -32,14 +60,12 @@ class ToastContainer extends Component {
     this.toastId = 0;
     this.collection = {};
     this.dumbFn = () => {};
-    this.handleMouseEnter = this.handleMouseEnter.bind(this);
-    this.handleMouseLeave = this.handleMouseLeave.bind(this);
   }
 
   componentDidMount() {
-    EventManager
-      .on(config.ACTION.SHOW, (content, options) => this.show(content, options))
-      .on(config.ACTION.CLEAR, () => this.clear());
+    EventManager.on(config.ACTION.SHOW,
+      (content, options) => this.show(content, options)).
+      on(config.ACTION.CLEAR, () => this.clear());
   }
 
   componentWillUnmount() {
@@ -47,21 +73,24 @@ class ToastContainer extends Component {
     EventManager.off(config.ACTION.CLEAR);
   }
 
-  setAutoClose(toastId, delay) {
-    return setTimeout(() => this.removeToast(toastId), delay);
-  }
-
   isFunction(object) {
     return !!(object && object.constructor && object.call && object.apply);
   }
 
+  isValidAutoClose(val) {
+    return val === false || (!isNaN(val) && typeof val === 'number');
+  }
+
   shouldAutoClose(autoCloseOpt) {
-    return !!((this.props.autoClose !== false && autoCloseOpt !== false)
-    || (this.props.autoClose === false && autoCloseOpt !== false && autoCloseOpt !== null));
+    return ((this.props.autoClose !== false && autoCloseOpt !== false)
+    || (this.props.autoClose === false && autoCloseOpt !== false &&
+    autoCloseOpt !== null));
   }
 
   removeToast(id) {
-    this.setState({ toast: this.state.toast.filter(v => v !== parseInt(id, 10)) });
+    this.setState({
+      toast: this.state.toast.filter(v => v !== parseInt(id, 10))
+    });
   }
 
   withClose(component, props) {
@@ -70,7 +99,8 @@ class ToastContainer extends Component {
 
   validateCloseButton(closeButton) {
     if (!isValidElement(closeButton)) {
-      throw new Error(`CloseButton must be a valid react element instead of ${typeof closeButton}`);
+      throw new Error(`CloseButton must be a valid react element 
+      instead of ${typeof closeButton}`);
     }
   }
 
@@ -84,7 +114,8 @@ class ToastContainer extends Component {
       closeButton = optCloseButton;
     }
 
-    return this.withClose(closeButton, { closeToast: () => this.removeToast(toastId) });
+    return this.withClose(closeButton,
+      { closeToast: () => this.removeToast(toastId) });
   }
 
   show(content, options) {
@@ -96,18 +127,24 @@ class ToastContainer extends Component {
       const toastOptions = {
         id: toastId,
         type: options.type,
-        onOpen: this.isFunction(options.onOpen) ? options.onOpen : this.dumbFn,
-        onClose: this.isFunction(options.onClose) ? options.onClose : this.dumbFn,
+        onOpen: this.isFunction(options.onOpen)
+          ? options.onOpen
+          : this.dumbFn,
+        onClose: this.isFunction(options.onClose)
+          ? options.onClose
+          : this.dumbFn,
         closeButton: this.makeCloseButton(options.closeButton, toastId)
       };
 
       if (this.shouldAutoClose(autoCloseOpt)) {
-        const delay = autoCloseOpt !== null ? parseInt(autoCloseOpt, 10) : this.props.autoClose;
+        toastOptions.autoCloseDelay = autoCloseOpt !== null
+          ? parseInt(autoCloseOpt,10)
+          : this.props.autoClose;
 
-        toastOptions.autoCloseId = this.setAutoClose(toastId, delay);
-        toastOptions.autoCloseDelay = delay;
-        toastOptions.handleMouseEnter = this.handleMouseEnter;
-        toastOptions.handleMouseLeave = this.handleMouseLeave;
+        toastOptions.hideProgressBar = typeof options.hideProgressBar === 'boolean'
+          ? options.hideProgressBar
+          : this.props.hideProgressBar;
+        toastOptions.closeToast = () => this.removeToast(toastId);
       }
 
       this.collection = Object.assign({}, this.collection, {
@@ -135,21 +172,6 @@ class ToastContainer extends Component {
   clear() {
     this.collection = {};
     this.setState({ toast: [] });
-  }
-
-  handleMouseEnter(e) {
-    clearTimeout(e.currentTarget.dataset.autoCloseId);
-  }
-
-  handleMouseLeave(e) {
-    const { toastId, autoCloseDelay } = e.currentTarget.dataset;
-    if (this.state.toast.length > 0 && typeof this.collection[toastId] !== 'undefined') {
-      this.collection[toastId] = cloneElement(this.collection[toastId], {
-        autoCloseId: this.setAutoClose(toastId, autoCloseDelay)
-      });
-
-      this.forceUpdate();
-    }
   }
 
   isObjectEmpty() {
@@ -192,8 +214,5 @@ class ToastContainer extends Component {
     );
   }
 }
-
-ToastContainer.defaultProps = defaultProps;
-ToastContainer.propTypes = propTypes;
 
 export default ToastContainer;

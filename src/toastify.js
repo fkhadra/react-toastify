@@ -6,7 +6,8 @@ const { POSITION, TYPE, ACTION } = config;
 const defaultOptions = {
   type: TYPE.DEFAULT,
   autoClose: null,
-  closeButton: null
+  closeButton: null,
+  hideProgressBar: null
 };
 
 function mergeOptions(options) {
