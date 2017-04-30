@@ -3,9 +3,9 @@
   z-index: 999;
   position: fixed;
   padding: 4px;
-  width: $toastWidth;
+  width: $toast-width;
   max-width: 98%;
-  color: #999;
+  color: $font-color;
   box-sizing: border-box;
   &--top-left {
     top: 1em;
@@ -14,7 +14,7 @@
   &--top-center {
     top: 1em;
     left: 50%;
-    margin-left: -($toastWidth / 2);
+    margin-left: -($toast-width / 2);
   }
   &--top-right {
     top: 1em;
@@ -28,7 +28,7 @@
   &--bottom-center {
     bottom: 1em;
     left: 50%;
-    margin-left: -($toastWidth / 2);
+    margin-left: -($toast-width / 2);
   }
   &--bottom-right {
     bottom: 1em;
@@ -64,14 +64,7 @@
       background: #eee;
     }
   }
-
-  &__title {
-    margin: 0 0 4px 0;
-    padding: 0;
-    font-size: 18px;
-    font-weight: normal;
-  }
   &__body {
-    font-size: 13px;
+    font-size: $font-size;
   }
 }
