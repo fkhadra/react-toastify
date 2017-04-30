@@ -5,24 +5,24 @@
   min-height: 62px;
   margin-bottom: 12px;
   padding: 8px;
-  background: $toastBackground;
+  background: $toast-background;
   border-left: 8px solid #95a5a6;
   border-radius: 1px;
   box-shadow: 0 1px 10px 0 rgba(0, 0, 0, .1), 0 2px 15px 0 rgba(0, 0, 0, .05);
 
   &--default {
-    border-left-color: $toastBackground;
+    border-left-color: $color-default;
   }
   &--info {
-    border-left-color: #3498db;
+    border-left-color: $color-info;
   }
   &--success {
-    border-left-color: #07bc0c;
+    border-left-color: $color-success;
   }
   &--warning {
-    border-left-color: #f1c40f;
+    border-left-color: $color-warning;
   }
   &--error {
-    border-left-color: #e74c3c;
+    border-left-color: $color-error;
   }
 }
