@@ -16,4 +16,20 @@
   z-index: 999;
   opacity: 0.5;
   animation: track-progress linear 1;
+
+  &--default{
+    background-image: $color-progress-default;
+  }
+  &--info{
+    background-color: $color-info;
+  }
+  &--success{
+    background-color: $color-success;
+  }
+  &--warning{
+    background-color: $color-warning;
+  }
+  &--error{
+    background-color: $color-error;
+  }
 }

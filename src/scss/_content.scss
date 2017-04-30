@@ -6,23 +6,22 @@
   margin-bottom: 12px;
   padding: 8px;
   background: $toast-background;
-  border-left: 8px solid #95a5a6;
   border-radius: 1px;
   box-shadow: 0 1px 10px 0 rgba(0, 0, 0, .1), 0 2px 15px 0 rgba(0, 0, 0, .05);
 
   &--default {
-    border-left-color: $color-default;
+
   }
   &--info {
-    border-left-color: $color-info;
+    border-left: 6px solid $color-info;
   }
   &--success {
-    border-left-color: $color-success;
+    border-left: 6px solid $color-success;
   }
   &--warning {
-    border-left-color: $color-warning;
+    border-left: 6px solid $color-warning;
   }
   &--error {
-    border-left-color: $color-error;
+    border-left: 6px solid $color-error;
   }
 }
