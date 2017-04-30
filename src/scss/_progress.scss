@@ -1,0 +1,18 @@
+@keyframes track-progress {
+  0%{
+    width: 100%;
+  }
+  100%{
+    width: 0;
+  }
+}
+
+.toastify__progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(255,255,255,.4);
+  width: 0;
+  height: 4px;
+  animation: track-progress linear 1;
+}
