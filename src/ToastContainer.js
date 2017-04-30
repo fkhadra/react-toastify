@@ -31,6 +31,7 @@ class ToastContainer extends Component {
     };
     this.toastId = 0;
     this.collection = {};
+    this.dumbFn = () => {};
     this.handleMouseEnter = this.handleMouseEnter.bind(this);
     this.handleMouseLeave = this.handleMouseLeave.bind(this);
   }
@@ -92,13 +93,11 @@ class ToastContainer extends Component {
     if (isValidElement(content)) {
       const toastId = ++this.toastId;
       const autoCloseOpt = options.autoClose;
-      const fn = () => {
-      };
       const toastOptions = {
         id: toastId,
         type: options.type,
-        onOpen: this.isFunction(options.onOpen) ? options.onOpen : fn,
-        onClose: this.isFunction(options.onClose) ? options.onClose : fn,
+        onOpen: this.isFunction(options.onOpen) ? options.onOpen : this.dumbFn,
+        onClose: this.isFunction(options.onClose) ? options.onClose : this.dumbFn,
         closeButton: this.makeCloseButton(options.closeButton, toastId)
       };
 
