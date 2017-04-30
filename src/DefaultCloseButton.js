@@ -7,12 +7,12 @@ const DefaultCloseButton = ({ closeToast }) => (
     type="button"
     onClick={closeToast}
   >
-    ×
+    ✖
   </button>
 );
 
 DefaultCloseButton.propTypes = {
-  closeToast: PropTypes.func
+  closeToast: PropTypes.func.isRequired
 };
 
 export default DefaultCloseButton;
