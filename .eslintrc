@@ -1,19 +1,5 @@
 {
-  "settings": {
-    "react": {
-      "pragma": "React",  // Pragma to use, default to "React"
-      "version": "15.0" // React version, default to the latest React stable release
-    }
-  },
-  "extends": [
-    "eslint:recommended",
-    "airbnb"
-  ],
-  "parserOptions":{
-    "ecmaFeatures": {
-      "experimentalObjectRestSpread": true
-    }
-  },
+  "parser": "babel-eslint",
   "rules": {
     "max-len": [1, 120, 2, {"ignoreComments": true}],
     "react/require-extension": "off",
@@ -28,8 +14,14 @@
     "no-param-reassign": 0,
     "quotes": 0,
     "comma-dangle": 0,
+    "class-methods-use-this": 0,
+    "no-plusplus": 0,
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "no-unused-expressions": ["error", { "allowShortCircuit": true, "allowTernary": true  }],
     "consistent-return": ["warn"]
-  }
+  },
+  "extends": [
+    "eslint:recommended",
+    "airbnb"
+  ]
 }
