@@ -1,7 +1,7 @@
 /* eslint-disable */
 const webpack = require('webpack');
 
-const isDev = process.env.NODE_ENV === "development";
+const isDev = process.env.NODE_ENV === 'development';
 
 module.exports = {
   devtool: 'source-map',
@@ -18,31 +18,16 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel-loader',
         options: {
-          presets: ["env", "react", "stage-0"],
+          presets: ['env', 'react', 'stage-0'],
           sourceMap: true
         }
       }
     ]
   },
-  externals: [{
-    react: {
-      root: 'React',
-      commonjs2: 'react',
-      commonjs: 'react',
-      amd: 'react'
-    },
-    'react-transition-group': {
-      commonjs: 'react-transition-group',
-      commonjs2: 'react-transition-group',
-      amd: 'react-transition-group',
-      root: ['React', 'addons', 'TransitionGroup']
-    }
-  },
-    {
-      'cheerio': 'window',
-      'react/lib/ExecutionEnvironment': true,
-      'react/lib/ReactContext': true
-    }
+  externals: [
+    'react',
+    'prop-types',
+    'react-transition-group/TransitionGroup'
   ],
   plugins: [
     new webpack.LoaderOptionsPlugin({
@@ -50,7 +35,7 @@ module.exports = {
       debug: isDev
     }),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
     }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
@@ -63,12 +48,12 @@ module.exports = {
         dead_code: true,
         evaluate: true,
         if_return: true,
-        join_vars: true,
+        join_vars: true
       },
       output: {
-        comments: false,
+        comments: false
       },
-      disable : true,
+      disable: true,
       sourceMap: true
     })
   ]
