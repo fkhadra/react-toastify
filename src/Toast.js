@@ -62,14 +62,14 @@ class Toast extends Component {
   }
 
   componentWillEnter(callback) {
-    this.ref.classList.add(`bounceIn--${this.props.position}`, 'animated');
+    this.ref.classList.add(`toast-enter--${this.props.position}`, 'animated');
     callback();
   }
 
   componentWillLeave(callback) {
-    this.ref.classList.remove(`bounceIn--${this.props.position}`, 'animated');
-    this.ref.classList.add(`bounceOut--${this.props.position}`, 'animated');
-    setTimeout(() => callback(), 1000);
+    this.ref.classList.remove(`toast-enter--${this.props.position}`, 'animated');
+    this.ref.classList.add(`toast-exit--${this.props.position}`, 'animated');
+    setTimeout(() => callback(), 750);
   }
 
   pauseToast = () => {
