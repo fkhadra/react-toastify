@@ -123,6 +123,9 @@ class ToastContainer extends Component {
 
     if (isValidElement(content)) {
       const toastId = ++this.toastId;
+      content = this.withClose(content, {
+        closeToast: () => this.removeToast(toastId)
+      });
       const autoCloseOpt = options.autoClose;
       const toastOptions = {
         id: toastId,
@@ -138,10 +141,11 @@ class ToastContainer extends Component {
 
       if (this.shouldAutoClose(autoCloseOpt)) {
         toastOptions.autoCloseDelay = autoCloseOpt !== null
-          ? parseInt(autoCloseOpt,10)
+          ? parseInt(autoCloseOpt, 10)
           : this.props.autoClose;
 
-        toastOptions.hideProgressBar = typeof options.hideProgressBar === 'boolean'
+        toastOptions.hideProgressBar = typeof options.hideProgressBar ===
+        'boolean'
           ? options.hideProgressBar
           : this.props.hideProgressBar;
         toastOptions.closeToast = () => this.removeToast(toastId);
