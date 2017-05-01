@@ -9,18 +9,21 @@ class Toast extends Component {
   static propTypes = {
     closeButton: PropTypes.element.isRequired,
     children: PropTypes.node.isRequired,
+    closeToast: PropTypes.func.isRequired,
+    position: PropTypes.oneOf(objectValues(config.POSITION)).isRequired,
     autoCloseDelay: PropTypes.number,
     hideProgressBar: PropTypes.bool,
     onOpen: PropTypes.func,
     onClose: PropTypes.func,
-    type: PropTypes.oneOf(objectValues(config.TYPE)),
-    position: PropTypes.oneOf(objectValues(config.POSITION))
+    type: PropTypes.oneOf(objectValues(config.TYPE))
   };
 
   static defaultProps = {
     type: config.TYPE.DEFAULT,
     autoCloseDelay: null,
-    hideProgressBar: false
+    hideProgressBar: false,
+    onOpen: null,
+    onClose: null
   };
 
   constructor(props) {
@@ -32,14 +35,14 @@ class Toast extends Component {
   }
 
   componentDidMount() {
-    this.props.onOpen(this.getChildrenProps());
+    this.props.onOpen !== null && this.props.onOpen(this.getChildrenProps());
   }
 
   componentWillUnmount() {
-    this.props.onClose(this.getChildrenProps());
+    this.props.onClose !== null && this.props.onClose(this.getChildrenProps());
   }
 
-  setRef = (ref) => {
+  setRef = ref => {
     this.ref = ref;
   };
 
@@ -67,7 +70,8 @@ class Toast extends Component {
   }
 
   componentWillLeave(callback) {
-    this.ref.classList.remove(`toast-enter--${this.props.position}`, 'animated');
+    this.ref.classList.remove(`toast-enter--${this.props.position}`,
+      'animated');
     this.ref.classList.add(`toast-exit--${this.props.position}`, 'animated');
     setTimeout(() => callback(), 750);
   }

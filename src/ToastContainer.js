@@ -49,7 +49,9 @@ class ToastContainer extends Component {
     position: config.POSITION.TOP_RIGHT,
     autoClose: 5000,
     closeButton: null,
-    hideProgressBar: false
+    hideProgressBar: false,
+    className: null,
+    style: null
   };
 
   constructor(props) {
@@ -59,13 +61,12 @@ class ToastContainer extends Component {
     };
     this.toastId = 0;
     this.collection = {};
-    this.dumbFn = () => {};
   }
 
   componentDidMount() {
     EventManager.on(config.ACTION.SHOW,
-      (content, options) => this.show(content, options)).
-      on(config.ACTION.CLEAR, () => this.clear());
+      (content, options) => this.show(content, options))
+      .on(config.ACTION.CLEAR, () => this.clear());
   }
 
   componentWillUnmount() {
@@ -123,21 +124,18 @@ class ToastContainer extends Component {
 
     if (isValidElement(content)) {
       const toastId = ++this.toastId;
-      content = this.withClose(content, {
-        closeToast: () => this.removeToast(toastId)
-      });
       const autoCloseOpt = options.autoClose;
       const toastOptions = {
         id: toastId,
         type: options.type,
-        onOpen: this.isFunction(options.onOpen)
-          ? options.onOpen
-          : this.dumbFn,
-        onClose: this.isFunction(options.onClose)
-          ? options.onClose
-          : this.dumbFn,
         closeButton: this.makeCloseButton(options.closeButton, toastId)
       };
+
+      this.isFunction(options.onOpen) &&
+      (toastOptions.onOpen = options.onOpen);
+
+      this.isFunction(options.onClose) &&
+      (toastOptions.onClose = options.onClose);
 
       if (this.shouldAutoClose(autoCloseOpt)) {
         toastOptions.autoCloseDelay = autoCloseOpt !== null
@@ -150,6 +148,10 @@ class ToastContainer extends Component {
           : this.props.hideProgressBar;
         toastOptions.closeToast = () => this.removeToast(toastId);
       }
+
+      content = this.withClose(content, {
+        closeToast: () => this.removeToast(toastId)
+      });
 
       this.collection = Object.assign({}, this.collection, {
         [toastId]: this.makeToast(content, toastOptions)
@@ -187,11 +189,11 @@ class ToastContainer extends Component {
       className: `toastify toastify--${this.props.position}`
     };
 
-    if (this.props.className) {
+    if (this.props.className !== null) {
       props.className = `${props.className} ${this.props.className}`;
     }
 
-    if (this.props.style) {
+    if (this.props.style !== null) {
       props.style = this.props.style;
     }
 
@@ -199,13 +201,13 @@ class ToastContainer extends Component {
   }
 
   renderToast() {
-    return Object.keys(this.collection).map(idx => {
-      if (this.state.toast.includes(parseInt(idx, 10))) {
-        return this.collection[idx];
-      } else {
-        delete this.collection[idx];
-      }
+    const toastToRender = [];
+    Object.keys(this.collection).forEach(idx => {
+      this.state.toast.includes(parseInt(idx, 10))
+        ? toastToRender.push(this.collection[idx])
+        : delete this.collection[idx];
     });
+    return toastToRender;
   }
 
   render() {
