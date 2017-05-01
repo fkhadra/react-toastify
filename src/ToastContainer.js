@@ -1,6 +1,6 @@
 import React, { Component, isValidElement, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import Transition from 'react-addons-transition-group';
+import Transition from 'react-transition-group/TransitionGroup';
 
 import Toast from './Toast';
 import DefaultCloseButton from './DefaultCloseButton';
