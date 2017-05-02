@@ -1,5 +1,5 @@
 # React Toastify [![npm](https://img.shields.io/npm/dt/react-toastify.svg)]() [![npm](https://img.shields.io/npm/v/react-toastify.svg)]() [![license](https://img.shields.io/github/license/sniphpet/react-toastify.svg?maxAge=2592000)]()
-   
+
 React-Toastify allow you to add toast notification to your app with ease.
 
 ## Demo
@@ -29,7 +29,7 @@ import 'react-toastify/dist/ReactToastify.min.css'
 
 ## How it works ?
    
-The component use a dead simple pubsub(observer pattern) to listen and trigger event. The pubsub allow us to display a toast from everywhere in your app.
+The component use a dead simple pubsub(observer pattern) to listen and trigger event. The pubsub allow us to display a toast from everywhere in our app.
    
 - Add a ToastContainer to your app
    
@@ -87,6 +87,8 @@ const ToastBtn = () => {
 |className|string|-|Add classes to the container|
 |style|object|-|Add inline style to the container|
 |closeButton|React Element|-|A React Component to replace the default close button|
+|hideProgressBar|bool|false|Display or not the progress bar below the toast(remaining time)|
+|removeCloseButton|bool|false|If you don't want the toast to render a close button|
 
 Position accept the following value : 
       
@@ -127,9 +129,14 @@ All the function inside toast can take 2 parameters :
 |Parameter|Type|Required|Description|
 |---------|----|--------|-----|
 |content|string\|React Element|✓|Element that will be displayed|
-|options|object|✘|Possible keys : autoClose, type, closeButton
-   
-The autoClose and closeButton both take precedence over the container's props.
+|options|object|✘|Possible keys : autoClose, type, closeButton, hideProgressBar||
+
+- autoClose : Delay in ms to close the toast. If set to false, the notification need to be closed manualy
+- type: Kind of notification. One of "default", "success", "info", "warning", "error". You can use `toast.TYPE.INFO` and so on to avoid any typo.
+- closeButton: A React element to replace the default closeButton. If set to false the button is removed
+- hideProgressBar: Hide or not the remaining time for the notification
+
+⚠️ autoClose, closeButton, hideProgressBar, supersede ToastContainer props⚠️
 
 ```javascript
 const Img = (props) => <div><img width={48} src={props.foo} /></div>;
