@@ -7,6 +7,7 @@ import DefaultCloseButton from './DefaultCloseButton';
 import config from './config';
 import EventManager from './util/EventManager';
 import objectValues from './util/objectValues';
+import { falseOrNumber, falseOrElement, isNumber, falsy } from './util/propValidator';
 
 class ToastContainer extends Component {
 
@@ -19,15 +20,15 @@ class ToastContainer extends Component {
     /**
      * Disable or set autoClose delay
      */
-    autoClose: PropTypes.oneOfType([
-      PropTypes.bool,
-      PropTypes.number
-    ]),
+    autoClose: falseOrNumber,
 
     /**
      * Custom react element for the close button
      */
-    closeButton: PropTypes.element,
+    closeButton: PropTypes.oneOfType([
+      falsy,
+      PropTypes.element
+    ]),
 
     /**
      * Hide or not progress bar when autoClose is enabled
@@ -48,8 +49,8 @@ class ToastContainer extends Component {
   static defaultProps = {
     position: config.POSITION.TOP_RIGHT,
     autoClose: 5000,
-    closeButton: null,
     hideProgressBar: false,
+    closeButton: null,
     className: null,
     style: null
   };
@@ -78,45 +79,39 @@ class ToastContainer extends Component {
     return !!(object && object.constructor && object.call && object.apply);
   }
 
-  isValidAutoClose(val) {
-    return val === false || (!isNaN(val) && typeof val === 'number');
-  }
-
-  shouldAutoClose(autoCloseOpt) {
-    return ((this.props.autoClose !== false && autoCloseOpt !== false)
-    || (this.props.autoClose === false && autoCloseOpt !== false &&
-    autoCloseOpt !== null));
-  }
-
   removeToast(id) {
     this.setState({
       toast: this.state.toast.filter(v => v !== parseInt(id, 10))
     });
   }
 
-  withClose(component, props) {
+  with(component, props) {
     return cloneElement(component, { ...props, ...component.props });
   }
 
-  validateCloseButton(closeButton) {
-    if (!isValidElement(closeButton)) {
-      throw new Error(`CloseButton must be a valid react element 
-      instead of ${typeof closeButton}`);
+  makeCloseButton(toastClose, toastId) {
+    const containerClose = this.props.closeButton;
+    let closeButton = <DefaultCloseButton/>;
+
+    if (toastClose === false
+      || containerClose === false && !isValidElement(toastClose)) {
+      return false;
+    } else if (isValidElement(toastClose)) {
+      closeButton = toastClose;
     }
+
+    return this.with(closeButton,
+      { closeToast: () => this.removeToast(toastId) });
   }
 
-  makeCloseButton(optCloseButton, toastId) {
-    let closeButton = <DefaultCloseButton />;
-
-    if (optCloseButton === null && this.props.closeButton !== null) {
-      closeButton = this.props.closeButton;
-    } else if (optCloseButton !== null) {
-      this.validateCloseButton(optCloseButton);
-      closeButton = optCloseButton;
+  getAutoCloseDelay(toastAutoClose) {
+    if (toastAutoClose === false) {
+      return false;
+    } else if (isNumber(toastAutoClose)) {
+      return toastAutoClose;
     }
 
-    return this.withClose(closeButton,
-      { closeToast: () => this.removeToast(toastId) });
+    return this.props.autoClose;
   }
 
   show(content, options) {
@@ -124,7 +119,6 @@ class ToastContainer extends Component {
 
     if (isValidElement(content)) {
       const toastId = ++this.toastId;
-      const autoCloseOpt = options.autoClose;
       const toastOptions = {
         id: toastId,
         type: options.type,
@@ -137,19 +131,19 @@ class ToastContainer extends Component {
       this.isFunction(options.onClose) &&
       (toastOptions.onClose = options.onClose);
 
-      if (this.shouldAutoClose(autoCloseOpt)) {
-        toastOptions.autoCloseDelay = autoCloseOpt !== null
-          ? parseInt(autoCloseOpt, 10)
-          : this.props.autoClose;
+      toastOptions.autoClose = this.getAutoCloseDelay(
+        options.autoClose !== false
+          ? parseInt(options, 10)
+          : options.autoClose
+      );
 
-        toastOptions.hideProgressBar = typeof options.hideProgressBar ===
-        'boolean'
-          ? options.hideProgressBar
-          : this.props.hideProgressBar;
-        toastOptions.closeToast = () => this.removeToast(toastId);
-      }
+      toastOptions.hideProgressBar = typeof options.hideProgressBar ===
+      'boolean'
+        ? options.hideProgressBar
+        : this.props.hideProgressBar;
+      toastOptions.closeToast = () => this.removeToast(toastId);
 
-      content = this.withClose(content, {
+      content = this.with(content, {
         closeToast: () => this.removeToast(toastId)
       });
 
@@ -180,8 +174,8 @@ class ToastContainer extends Component {
     this.setState({ toast: [] });
   }
 
-  isObjectEmpty() {
-    return this.state.toast.length === 0;
+  hasToast() {
+    return this.state.toast.length > 0;
   }
 
   renderProps() {
@@ -214,7 +208,7 @@ class ToastContainer extends Component {
     return (
       <div {...this.renderProps()}>
         <Transition>
-          {this.isObjectEmpty() ? null : this.renderToast()}
+          {this.hasToast() ? this.renderToast() : null}
         </Transition>
       </div>
     );

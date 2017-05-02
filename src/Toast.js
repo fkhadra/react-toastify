@@ -4,14 +4,18 @@ import PropTypes from 'prop-types';
 import ProgressBar from './ProgressBar';
 import config from './config';
 import objectValues from './util/objectValues';
+import { falseOrElement, falseOrNumber, falsy } from './util/propValidator';
 
 class Toast extends Component {
   static propTypes = {
-    closeButton: PropTypes.element.isRequired,
+    closeButton: PropTypes.oneOfType([
+      falsy,
+      PropTypes.element
+    ]),
+    autoClose: falseOrNumber,
     children: PropTypes.node.isRequired,
     closeToast: PropTypes.func.isRequired,
     position: PropTypes.oneOf(objectValues(config.POSITION)).isRequired,
-    autoCloseDelay: PropTypes.number,
     hideProgressBar: PropTypes.bool,
     onOpen: PropTypes.func,
     onClose: PropTypes.func,
@@ -20,7 +24,6 @@ class Toast extends Component {
 
   static defaultProps = {
     type: config.TYPE.DEFAULT,
-    autoCloseDelay: null,
     hideProgressBar: false,
     onOpen: null,
     onClose: null
@@ -56,7 +59,7 @@ class Toast extends Component {
       ref: this.setRef
     };
 
-    if (this.props.autoCloseDelay !== null) {
+    if (this.props.autoClose !== false) {
       toastProps.onMouseEnter = this.pauseToast;
       toastProps.onMouseLeave = this.playToast;
     }
@@ -88,7 +91,7 @@ class Toast extends Component {
     const {
       closeButton,
       children,
-      autoCloseDelay,
+      autoClose,
       type,
       hideProgressBar,
       closeToast
@@ -98,14 +101,14 @@ class Toast extends Component {
       <div
         {...this.getToastProps()}
       >
-        {closeButton}
+        {closeButton !== false && closeButton}
         <div className="toastify__body">
           {children}
         </div>
         {
-          autoCloseDelay !== null &&
+          autoClose !== false &&
           <ProgressBar
-            delay={autoCloseDelay}
+            delay={autoClose}
             isRunning={this.state.isRunning}
             closeToast={closeToast}
             hide={hideProgressBar}
