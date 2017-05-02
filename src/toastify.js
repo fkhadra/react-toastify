@@ -1,3 +1,9 @@
+/*
+* TODO: Add validation here :
+*   - Validate type
+*   - Maybe autoClose
+*   - Maybe closeButton as well
+* */
 import EventManager from './util/EventManager';
 import config from './config';
 
