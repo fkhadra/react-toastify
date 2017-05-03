@@ -1,4 +1,9 @@
-import React, { Component, isValidElement, cloneElement } from 'react';
+import React, {
+  Component,
+  isValidElement,
+  cloneElement,
+  createElement
+} from 'react';
 import PropTypes from 'prop-types';
 import Transition from 'react-transition-group/TransitionGroup';
 
@@ -7,7 +12,12 @@ import DefaultCloseButton from './DefaultCloseButton';
 import config from './config';
 import EventManager from './util/EventManager';
 import objectValues from './util/objectValues';
-import { falseOrNumber, falseOrElement, isNumber } from './util/propValidator';
+import {
+  falseOrNumber,
+  falseOrElement,
+  isValidDelay,
+  typeOf
+} from './util/propValidator';
 
 class ToastContainer extends Component {
 
@@ -23,7 +33,7 @@ class ToastContainer extends Component {
     autoClose: falseOrNumber,
 
     /**
-     * Custom react element for the close button
+     * Disable or set a custom react element for the close button
      */
     closeButton: falseOrElement,
 
@@ -87,36 +97,39 @@ class ToastContainer extends Component {
   }
 
   makeCloseButton(toastClose, toastId) {
-    const containerClose = this.props.closeButton;
-    let closeButton = <DefaultCloseButton/>;
+    let closeButton = this.props.closeButton;
 
-    if (toastClose === false
-      || containerClose === false && !isValidElement(toastClose)) {
-      return false;
-    } else if (isValidElement(toastClose)) {
+    if (isValidElement(toastClose) || toastClose === false) {
       closeButton = toastClose;
-    } else if (isValidElement(containerClose) && !isValidElement(toastClose)) {
-      closeButton = containerClose;
     }
 
-    return this.with(closeButton,
-      { closeToast: () => this.removeToast(toastId) });
+    return closeButton === false
+      ? false
+      : this.with(closeButton, {
+        closeToast: () => this.removeToast(toastId)
+      });
   }
 
   getAutoCloseDelay(toastAutoClose) {
-    if (toastAutoClose === false) {
-      return false;
-    } else if (isNumber(toastAutoClose)) {
-      return toastAutoClose;
-    }
 
-    return this.props.autoClose;
+    return toastAutoClose === false
+    || isValidDelay(toastAutoClose)
+      ? toastAutoClose
+      : this.props.autoClose;
+  }
+
+  /**
+   * TODO: check if throwing an error can be helpful
+   */
+  canBeRendered(content) {
+    return isValidElement(content)
+      || typeOf(content) !== 'String'
+      || typeOf(content) !== 'Number';
   }
 
   show(content, options) {
-    content = typeof content === 'string' ? <div>{content}</div> : content;
 
-    if (isValidElement(content)) {
+    if (this.canBeRendered(content)) {
       const toastId = ++this.toastId;
       const toastOptions = {
         id: toastId,
@@ -132,7 +145,7 @@ class ToastContainer extends Component {
 
       toastOptions.autoClose = this.getAutoCloseDelay(
         options.autoClose !== false
-          ? parseInt(options, 10)
+          ? parseInt(options.autoClose, 10)
           : options.autoClose
       );
 
@@ -140,11 +153,14 @@ class ToastContainer extends Component {
       'boolean'
         ? options.hideProgressBar
         : this.props.hideProgressBar;
+
       toastOptions.closeToast = () => this.removeToast(toastId);
 
-      content = this.with(content, {
-        closeToast: () => this.removeToast(toastId)
-      });
+      if (isValidElement(content)) {
+        content = this.with(content, {
+          closeToast: () => this.removeToast(toastId)
+        });
+      }
 
       this.collection = Object.assign({}, this.collection, {
         [toastId]: this.makeToast(content, toastOptions)
