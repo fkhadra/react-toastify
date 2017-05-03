@@ -4,14 +4,11 @@ import PropTypes from 'prop-types';
 import ProgressBar from './ProgressBar';
 import config from './config';
 import objectValues from './util/objectValues';
-import { falseOrElement, falseOrNumber, falsy } from './util/propValidator';
+import { falseOrElement, falseOrNumber } from './util/propValidator';
 
 class Toast extends Component {
   static propTypes = {
-    closeButton: PropTypes.oneOfType([
-      falsy,
-      PropTypes.element
-    ]),
+    closeButton: falseOrElement,
     autoClose: falseOrNumber,
     children: PropTypes.node.isRequired,
     closeToast: PropTypes.func.isRequired,

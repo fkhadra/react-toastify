@@ -10,10 +10,10 @@ export function isNumber(val) {
 
 export function falseOrNumber(props, propName, componentName) {
   const prop = props[propName];
-  console.log('Num:' + typeOf(prop));
-  if (prop !== false || typeOf(prop) !== 'Number') {
+
+  if (prop !== false && !isNumber(prop) && prop > 0) {
     return new Error(`${componentName} expect ${propName} 
-      to be a valid Number or equal to false. ${prop} given.`);
+      to be a valid Number > 0 or equal to false. ${prop} given.`);
   }
 
   return null;
@@ -21,17 +21,8 @@ export function falseOrNumber(props, propName, componentName) {
 
 export function falseOrElement(props, propName, componentName) {
   const prop = props[propName];
-  if (prop !== false || !isValidElement(prop) || prop !== null) {
-    return new Error(`${componentName} expect ${propName} 
-      to be a valid react element or equal to false. ${prop} given.`);
-  }
 
-  return null;
-}
-
-export function falsy(props, propName, componentName) {
-  const prop = props[propName];
-  if (prop !== false ) {
+  if (prop !== false && !isValidElement(prop)) {
     return new Error(`${componentName} expect ${propName} 
       to be a valid react element or equal to false. ${prop} given.`);
   }

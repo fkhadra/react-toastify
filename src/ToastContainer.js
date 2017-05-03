@@ -7,7 +7,7 @@ import DefaultCloseButton from './DefaultCloseButton';
 import config from './config';
 import EventManager from './util/EventManager';
 import objectValues from './util/objectValues';
-import { falseOrNumber, falseOrElement, isNumber, falsy } from './util/propValidator';
+import { falseOrNumber, falseOrElement, isNumber } from './util/propValidator';
 
 class ToastContainer extends Component {
 
@@ -25,10 +25,7 @@ class ToastContainer extends Component {
     /**
      * Custom react element for the close button
      */
-    closeButton: PropTypes.oneOfType([
-      falsy,
-      PropTypes.element
-    ]),
+    closeButton: falseOrElement,
 
     /**
      * Hide or not progress bar when autoClose is enabled
@@ -50,7 +47,7 @@ class ToastContainer extends Component {
     position: config.POSITION.TOP_RIGHT,
     autoClose: 5000,
     hideProgressBar: false,
-    closeButton: null,
+    closeButton: <DefaultCloseButton />,
     className: null,
     style: null
   };
@@ -98,6 +95,8 @@ class ToastContainer extends Component {
       return false;
     } else if (isValidElement(toastClose)) {
       closeButton = toastClose;
+    } else if (isValidElement(containerClose) && !isValidElement(toastClose)) {
+      closeButton = containerClose;
     }
 
     return this.with(closeButton,
