@@ -4,7 +4,7 @@ React-Toastify allow you to add toast notification to your app with ease.
 
 ## Demo
    
-Check the demo [here](https://sniphpet.github.io/react-toastify/)   
+Live demo [here](https://sniphpet.github.io/react-toastify/)   
    
 ## Installation 
    
@@ -30,10 +30,11 @@ import 'react-toastify/dist/ReactToastify.min.css'
 ## How it works ?
    
 The component use a dead simple pubsub(observer pattern) to listen and trigger event. The pubsub allow us to display a toast from everywhere in our app.
-   
+
 - Add a ToastContainer to your app
    
 ```javascript
+//index.js
 import React from 'react';
 import { render } from 'react-dom';
 import { ToastContainer } from 'react-toastify';
@@ -43,7 +44,7 @@ const App = () => {
   return (
     <div>
         {/*Your others component*/}
-      <ToastContainer autoClose={3000} position="top-center"/>
+      <ToastContainer />
     </div>
   );
 };
@@ -58,6 +59,7 @@ render(
 - Display a Toast from everywhere !
    
 ```javascript
+//foo.js
 import React from 'react';
 import { toast } from 'react-toastify';
 
@@ -78,7 +80,7 @@ const ToastBtn = () => {
   
 ## Api
   
-### ToastContainer (Type : React Component)
+### ToastContainer (Type : React Component) 
    
 |Props|Type|Default|Description|
 |-----|----|-------|-----------|
@@ -90,7 +92,7 @@ const ToastBtn = () => {
 |hideProgressBar|bool|false|Display or not the progress bar below the toast(remaining time)|
 |removeCloseButton|bool|false|If you don't want the toast to render a close button|
 
-Position accept the following value : 
+- Position accept the following value : 
       
 ```javascript
 top-right, top-center, top-left, bottom-right, bottom-center, bottom-left
@@ -105,7 +107,7 @@ toast.POSITION.TOP_LEFT, toast.POSITION.TOP_RIGHT, toast.POSITION.TOP_CENTER
 toast.POSITION.BOTTOM_LEFT,toast.POSITION.BOTTOM_RIGHT, toast.POSITION.BOTTOM_CENTER
 ```  
  
-When using a custom close button, the component will receive a prop ```closeToast```. You need to call it to close the toast.
+- When using a custom close button, the component will receive a prop ```closeToast```. You need to call it to close the toast.
 
 ```javascript
 //The classname toastify__close is used to position the icon on the top right side, you don't need it.
@@ -122,7 +124,7 @@ const FontAwesomeCloseButton = ({ closeToast }) => (
 
 ```
 
-### toast (Type: Object)
+### toast (Type: Object) 
    
 All the function inside toast can take 2 parameters :
    
@@ -131,10 +133,13 @@ All the function inside toast can take 2 parameters :
 |content|string\|React Element|✓|Element that will be displayed|
 |options|object|✘|Possible keys : autoClose, type, closeButton, hideProgressBar||
 
-- autoClose : Delay in ms to close the toast. If set to false, the notification need to be closed manualy
-- type: Kind of notification. One of "default", "success", "info", "warning", "error". You can use `toast.TYPE.INFO` and so on to avoid any typo.
-- closeButton: A React element to replace the default closeButton. If set to false the button is removed
-- hideProgressBar: Hide or not the remaining time for the notification
+- Available options :
+    - type: Kind of notification. One of "default", "success", "info", "warning", "error". You can use `toast.TYPE.INFO` and so on to avoid any typo.
+    - onOpen: callback before showing the notification
+    - onClose: callback after closing the notification
+    - autoClose: same as ToastContainer. Supersede ToastContainer
+    - closeButton: same as ToastContainer. Supersede ToastContainer
+    - hideProgressBar: same as ToastContainer. Supersede ToastContainer
 
 ⚠️ autoClose, closeButton, hideProgressBar, supersede ToastContainer props⚠️
 
