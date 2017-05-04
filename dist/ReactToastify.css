@@ -135,7 +135,7 @@
     margin-left: -175px; }
   .toastify--top-right {
     top: 1em;
-    right: 1em; }
+    right: 2em; }
   .toastify--bottom-left {
     bottom: 1em;
     left: 1em; }
@@ -145,7 +145,7 @@
     margin-left: -175px; }
   .toastify--bottom-right {
     bottom: 1em;
-    right: 1em; }
+    right: 2em; }
   .toastify__img {
     float: left;
     margin-right: 8px;
