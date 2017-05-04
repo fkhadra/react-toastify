@@ -162,9 +162,6 @@ toast.error(<Img />, options) // add type: 'error' to options
 toast.dismiss() // Remove all toasts !
 ```
 
-## Style
-
-
 
 ## Release Notes
 
