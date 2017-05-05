@@ -8,8 +8,8 @@ import { falseOrElement, falseOrNumber } from './util/propValidator';
 
 class Toast extends Component {
   static propTypes = {
-    closeButton: falseOrElement,
-    autoClose: falseOrNumber,
+    closeButton: falseOrElement.isRequired,
+    autoClose: falseOrNumber.isRequired,
     children: PropTypes.node.isRequired,
     closeToast: PropTypes.func.isRequired,
     position: PropTypes.oneOf(objectValues(config.POSITION)).isRequired,

@@ -2,7 +2,6 @@ import React, {
   Component,
   isValidElement,
   cloneElement,
-  createElement
 } from 'react';
 import PropTypes from 'prop-types';
 import Transition from 'react-transition-group/TransitionGroup';
@@ -82,10 +81,6 @@ class ToastContainer extends Component {
     EventManager.off(config.ACTION.CLEAR);
   }
 
-  isFunction(object) {
-    return !!(object && object.constructor && object.call && object.apply);
-  }
-
   removeToast(id) {
     this.setState({
       toast: this.state.toast.filter(v => v !== parseInt(id, 10))
@@ -112,10 +107,13 @@ class ToastContainer extends Component {
 
   getAutoCloseDelay(toastAutoClose) {
 
-    return toastAutoClose === false
-    || isValidDelay(toastAutoClose)
+    return toastAutoClose === false || isValidDelay(toastAutoClose)
       ? toastAutoClose
       : this.props.autoClose;
+  }
+
+  isFunction(object) {
+    return !!(object && object.constructor && object.call && object.apply);
   }
 
   /**
