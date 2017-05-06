@@ -39,32 +39,4 @@
     margin-right: 8px;
     vertical-align: middle;
   }
-  &__close{
-    position: absolute;
-    top: 4px;
-    right: 4px;
-    width: 16px;
-    height: 16px;
-    padding: 0;
-    text-align: center;
-    text-decoration: none;
-    color: #aaa;
-    font-weight: bold;
-    font-size: 16px;
-    background: transparent;
-    outline: none;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    opacity: .5;
-    transition: .3s ease;
-    &:hover, &:focus {
-      opacity: 1;
-      color: #999;
-      background: #eee;
-    }
-  }
-  &__body {
-    font-size: $font-size;
-  }
 }

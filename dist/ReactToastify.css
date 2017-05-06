@@ -150,31 +150,28 @@
     float: left;
     margin-right: 8px;
     vertical-align: middle; }
-  .toastify__close {
-    position: absolute;
-    top: 4px;
-    right: 4px;
-    width: 16px;
-    height: 16px;
-    padding: 0;
-    text-align: center;
-    text-decoration: none;
-    color: #aaa;
-    font-weight: bold;
-    font-size: 16px;
-    background: transparent;
-    outline: none;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    opacity: .5;
-    transition: .3s ease; }
-    .toastify__close:hover, .toastify__close:focus {
-      opacity: 1;
-      color: #999;
-      background: #eee; }
-  .toastify__body {
-    font-size: 13px; }
+
+.toastify__close {
+  position: absolute;
+  top: 0px;
+  right: 2px;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  text-align: center;
+  text-decoration: none;
+  color: #aaa;
+  font-weight: bold;
+  font-size: 14px;
+  background: transparent;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  opacity: .5;
+  transition: .3s ease; }
+  .toastify__close:hover, .toastify__close:focus {
+    opacity: 1;
+    color: #000000; }
 
 .toastify-content {
   position: relative;
@@ -193,6 +190,9 @@
     border-left: 6px solid #f1c40f; }
   .toastify-content--error {
     border-left: 6px solid #e74c3c; }
+
+.toastify__body {
+  font-size: 13px; }
 
 @keyframes track-progress {
   0% {
