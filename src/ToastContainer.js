@@ -196,12 +196,19 @@ class ToastContainer extends Component {
       className: `toastify toastify--${this.props.position}`
     };
 
+    if (! this.hasToast()) {
+      props.style = { pointerEvents: 'none' };
+    }
+
     if (this.props.className !== null) {
       props.className = `${props.className} ${this.props.className}`;
     }
 
     if (this.props.style !== null) {
-      props.style = this.props.style;
+      props.style = Object.assign({},
+        this.props.style,
+        typeof props.style !== 'undefined' ? props.style : {}
+        );
     }
 
     return props;
