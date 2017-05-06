@@ -2,6 +2,15 @@
 
 React-Toastify allow you to add toast notification to your app with ease.
 
+ * [Demo](#demo)
+ * [Installation](#installation)
+ * [Features](#features)
+ * [How it works ?](#how-it-works-)
+ * [Api](#api)
+ * [Release Notes](#release-notes)
+ * [Contribute](#contribute)
+ * [License](#license)
+
 ## Demo
    
 Live demo [here](https://sniphpet.github.io/react-toastify/)   
@@ -22,9 +31,11 @@ import 'react-toastify/dist/ReactToastify.min.css'
 ## Features
 
 - Can display a react component inside the toast !
+- Don't rely on `findDOMNode`
 - Has ```onOpen``` and ```onClose``` hooks. Both can access the props passed to the react component rendered inside the toast
 - Can be positioned
 - Define behavior per toast
+- Easy to setup
 - Super easy to customize
 
 ## How it works ?
@@ -66,9 +77,7 @@ import { toast } from 'react-toastify';
 const Greet = ({ name }) => <div>Hello {name}</div>
     
 function handleClick() {
-    toast(<Greet name="John" />, {
-      type: toast.TYPE.INFO
-    });
+    toast(<Greet name="John" />);
 }
     
 const ToastBtn = () => {
@@ -86,8 +95,8 @@ const ToastBtn = () => {
 |-----|----|-------|-----------|
 |position|string|top-right|Define where the toast appear|
 |autoClose|false\|int|5000|Delay in ms to close the toast. If set to false, the notification need to be closed manualy|
-|className|string|-|Add classes to the container|
-|style|object|-|Add inline style to the container|
+|className|string|-|Add optional classes to the container|
+|style|object|-|Add optional inline style to the container|
 |closeButton|React Element|-|A React Component to replace the default close button|
 |hideProgressBar|bool|false|Display or not the progress bar below the toast(remaining time)|
 |removeCloseButton|bool|false|If you don't want the toast to render a close button|
@@ -134,17 +143,17 @@ All the function inside toast can take 2 parameters :
 |options|object|✘|Possible keys : autoClose, type, closeButton, hideProgressBar||
 
 - Available options :
-    - type: Kind of notification. One of "default", "success", "info", "warning", "error". You can use `toast.TYPE.INFO` and so on to avoid any typo.
-    - onOpen: callback before showing the notification. If you display a component its props will be passed to the callback as first parameter.
-    - onClose: callback after closing the notification. If you display a component its props will be passed to the callback as first parameter.
-    - autoClose: same as ToastContainer.
-    - closeButton: same as ToastContainer.
-    - hideProgressBar: same as ToastContainer.
+    - `type`: Kind of notification. One of "default", "success", "info", "warning", "error". You can use `toast.TYPE.INFO` and so on to avoid any typo.
+    - `onOpen`: callback before showing the notification. If you display a component its props will be passed to the callback as first parameter.
+    - `onClose`: callback after closing the notification. If you display a component its props will be passed to the callback as first parameter.
+    - `autoClose`: same as ToastContainer.
+    - `closeButton`: same as ToastContainer.
+    - `hideProgressBar`: same as ToastContainer.
 
-⚠️ autoClose, closeButton, hideProgressBar, supersede ToastContainer props⚠️
+:warning:️ *autoClose, closeButton, hideProgressBar, supersede ToastContainer props* :warning:
 
 ```javascript
-const Img = ({ src })) => <div><img width={48} src={src} /></div>;
+const Img = ({ src }) => <div><img width={48} src={src} /></div>;
 const options = {
     onOpen: props => console.log(props.foo),
     onClose: props => console.log(props.foo),
@@ -176,8 +185,8 @@ toast.dismiss() // Remove all toasts !
 #### New Features
 
 - A progress bar is now visible to track the remaining time before the notification is closed. Of course if you don't like it, you are free to disable it.
-Thanks to [NullVoxPopuli](https://github.com/NullVoxPopuli) for asking me to had that feature :grin:
 - You can choose to display a close button or not.
+- Event pointer is set to none to avoid losing pointer events on everything beneath the toast container when no toast are displayed
 - The `closeToast` callback is also passed down to your component.
 
 ### v1.3.0
