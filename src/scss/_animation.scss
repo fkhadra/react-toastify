@@ -1,6 +1,20 @@
+@import "animations/bounce";
+
 .animated {
-  animation-duration: 1s;
+  animation-duration: $animation-duration;
   animation-fill-mode: both;
 }
 
-@import "animations/bounce";
+.toast-enter {
+  &--top-left, &--bottom-left{@extend .bounceInLeft}
+  &--top-right, &--bottom-right{@extend .bounceInRight}
+  &--top-center {@extend .bounceInDown}
+  &--bottom-center {@extend .bounceInUp}
+}
+
+.toast-exit {
+  &--top-left, &--bottom-left{@extend .bounceOutLeft}
+  &--top-right, &--bottom-right{@extend .bounceOutRight}
+  &--top-center {@extend .bounceOutUp}
+  &--bottom-center {@extend .bounceOutDown}
+}

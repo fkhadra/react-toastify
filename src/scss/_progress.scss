@@ -1,0 +1,35 @@
+@keyframes track-progress {
+  0%{
+    width: 100%;
+  }
+  100%{
+    width: 0;
+  }
+}
+
+.toastify__progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 4px;
+  z-index: 999;
+  opacity: 0.5;
+  animation: track-progress linear 1;
+
+  &--default{
+    background-image: $color-progress-default;
+  }
+  &--info{
+    background-color: $color-info;
+  }
+  &--success{
+    background-color: $color-success;
+  }
+  &--warning{
+    background-color: $color-warning;
+  }
+  &--error{
+    background-color: $color-error;
+  }
+}

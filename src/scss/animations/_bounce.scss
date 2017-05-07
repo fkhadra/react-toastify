@@ -197,17 +197,3 @@
 .bounceOutDown {
   animation-name: bounceOutDown;
 }
-
-.bounceIn {
-  &--top-left, &--bottom-left{@extend .bounceInLeft}
-  &--top-right, &--bottom-right{@extend .bounceInRight}
-  &--top-center {@extend .bounceInDown}
-  &--bottom-center {@extend .bounceInUp}
-}
-
-.bounceOut {
-  &--top-left, &--bottom-left{@extend .bounceOutLeft}
-  &--top-right, &--bottom-right{@extend .bounceOutRight}
-  &--top-center {@extend .bounceOutUp}
-  &--bottom-center {@extend .bounceOutDown}
-}

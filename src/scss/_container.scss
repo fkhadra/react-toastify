@@ -3,9 +3,9 @@
   z-index: 999;
   position: fixed;
   padding: 4px;
-  width: $toastWidth;
+  width: $toast-width;
   max-width: 98%;
-  color: #999;
+  color: $font-color;
   box-sizing: border-box;
   &--top-left {
     top: 1em;
@@ -14,11 +14,11 @@
   &--top-center {
     top: 1em;
     left: 50%;
-    margin-left: -($toastWidth / 2);
+    margin-left: -($toast-width / 2);
   }
   &--top-right {
     top: 1em;
-    right: 1em;
+    right: 2em;
   }
 
   &--bottom-left {
@@ -28,50 +28,15 @@
   &--bottom-center {
     bottom: 1em;
     left: 50%;
-    margin-left: -($toastWidth / 2);
+    margin-left: -($toast-width / 2);
   }
   &--bottom-right {
     bottom: 1em;
-    right: 1em;
+    right: 2em;
   }
   &__img {
     float: left;
     margin-right: 8px;
     vertical-align: middle;
-  }
-  &__close{
-    position: absolute;
-    top: 4px;
-    right: 4px;
-    width: 16px;
-    height: 16px;
-    padding: 0;
-    text-align: center;
-    text-decoration: none;
-    color: #aaa;
-    font-weight: bold;
-    font-size: 16px;
-    background: transparent;
-    outline: none;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    opacity: .5;
-    transition: .3s ease;
-    &:hover, &:focus {
-      opacity: 1;
-      color: #999;
-      background: #eee;
-    }
-  }
-
-  &__title {
-    margin: 0 0 4px 0;
-    padding: 0;
-    font-size: 18px;
-    font-weight: normal;
-  }
-  &__body {
-    font-size: 13px;
   }
 }
