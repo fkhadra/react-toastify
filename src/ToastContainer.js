@@ -120,8 +120,8 @@ class ToastContainer extends Component {
    */
   canBeRendered(content) {
     return isValidElement(content)
-      || typeOf(content) !== 'String'
-      || typeOf(content) !== 'Number';
+      || typeOf(content) === 'String'
+      || typeOf(content) === 'Number';
   }
 
   show(content, options) {
