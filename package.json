@@ -21,14 +21,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sniphpet/react-toastify.git"
+    "url": "git+https://github.com/fkhadra/react-toastify.git"
   },
-  "author": "Fadi Khadra  <fdkhadra@gmail.com> (https://sniphpet.github.io)",
+  "author": "Fadi Khadra  <fdkhadra@gmail.com> (https://fkhadra.github.io)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sniphpet/react-toastify/issues"
+    "url": "https://github.com/fkhadra/react-toastify/issues"
   },
-  "homepage": "https://github.com/sniphpet/react-toastify#readme",
+  "homepage": "https://github.com/fkhadra/react-toastify#readme",
   "dependencies": {
     "prop-types": "^15.5.8",
     "react": "^15.5.4",

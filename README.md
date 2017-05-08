@@ -1,4 +1,4 @@
-# React Toastify [![npm](https://img.shields.io/npm/dt/react-toastify.svg)]() [![npm](https://img.shields.io/npm/v/react-toastify.svg)]() [![license](https://img.shields.io/github/license/sniphpet/react-toastify.svg?maxAge=2592000)]()
+# React Toastify [![npm](https://img.shields.io/npm/dt/react-toastify.svg)]() [![npm](https://img.shields.io/npm/v/react-toastify.svg)]() [![license](https://img.shields.io/github/license/fkhadra/react-toastify.svg?maxAge=2592000)]()
 
 React-Toastify allow you to add toast notification to your app with ease.
 
@@ -13,7 +13,7 @@ React-Toastify allow you to add toast notification to your app with ease.
 
 ## Demo
    
-Live demo [here](https://sniphpet.github.io/react-toastify/)   
+Live demo [here](https://fkhadra.github.io/react-toastify/)   
    
 ## Installation 
    
@@ -205,7 +205,7 @@ This is no more the case now. The separation of concern between the data and the
 
 #### Bug fix
 
-- Was calling cloneElement on undefined which cause your console bleed. See issue [#2](https://github.com/sniphpet/react-toastify/issues/2)
+- Was calling cloneElement on undefined which cause your console bleed. See issue [#2](https://github.com/fkhadra/react-toastify/issues/2)
 
 
 ### v1.2.1
