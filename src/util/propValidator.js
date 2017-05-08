@@ -26,7 +26,7 @@ function withRequired(fn) {
  * TODO: Maybe rethink about the name
  */
 export const falseOrNumber = withRequired(
-  function (props, propName, componentName) {
+  (props, propName, componentName) => {
     const prop = props[propName];
 
     if (prop !== false && !isValidDelay(prop)) {
@@ -39,7 +39,7 @@ export const falseOrNumber = withRequired(
 );
 
 export const falseOrElement = withRequired(
-  function (props, propName, componentName) {
+  (props, propName, componentName) => {
     const prop = props[propName];
 
     if (prop !== false && !isValidElement(prop)) {

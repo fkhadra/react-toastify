@@ -1,7 +1,7 @@
 import React, {
   Component,
   isValidElement,
-  cloneElement,
+  cloneElement
 } from 'react';
 import PropTypes from 'prop-types';
 import Transition from 'react-transition-group/TransitionGroup';
@@ -106,7 +106,6 @@ class ToastContainer extends Component {
   }
 
   getAutoCloseDelay(toastAutoClose) {
-
     return toastAutoClose === false || isValidDelay(toastAutoClose)
       ? toastAutoClose
       : this.props.autoClose;
@@ -126,7 +125,6 @@ class ToastContainer extends Component {
   }
 
   show(content, options) {
-
     if (this.canBeRendered(content)) {
       const toastId = ++this.toastId;
       const toastOptions = {
@@ -196,7 +194,7 @@ class ToastContainer extends Component {
       className: `toastify toastify--${this.props.position}`
     };
 
-    if (! this.hasToast()) {
+    if (!this.hasToast()) {
       props.style = { pointerEvents: 'none' };
     }
 
@@ -208,7 +206,7 @@ class ToastContainer extends Component {
       props.style = Object.assign({},
         this.props.style,
         typeof props.style !== 'undefined' ? props.style : {}
-        );
+      );
     }
 
     return props;

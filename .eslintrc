@@ -4,6 +4,7 @@
     "react/require-extension": "off",
     "react/forbid-prop-types": 0,
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/sort-comp": 0,
     "arrow-parens": [2, "as-needed"],
     "max-len": [1, 120, 2, {"ignoreComments": true}],
     "quote-props": [1, "consistent-as-needed"],
