@@ -174,6 +174,14 @@ toast.dismiss() // Remove all toasts !
 
 ## Release Notes
 
+### v1.4.2
+
+- Don't try to pass down the props when we render a string like so : `toast(<div>hello</div>)`
+
+#### Bug fix
+
+- Fixed the test to check if the toast can be rendered  
+
 ### v1.4.0
 
 - React v16 ready : moving to prop-types and react-transition-group
