@@ -127,6 +127,7 @@ class ToastContainer extends Component {
   show(content, options) {
     if (this.canBeRendered(content)) {
       const toastId = ++this.toastId;
+      const closeToast = () => this.removeToast(toastId);
       const toastOptions = {
         id: toastId,
         type: options.type,
@@ -150,11 +151,11 @@ class ToastContainer extends Component {
         ? options.hideProgressBar
         : this.props.hideProgressBar;
 
-      toastOptions.closeToast = () => this.removeToast(toastId);
+      toastOptions.closeToast = closeToast;
 
-      if (isValidElement(content)) {
+      if (isValidElement(content) && typeOf(content.type) !== 'String') {
         content = this.with(content, {
-          closeToast: () => this.removeToast(toastId)
+          closeToast
         });
       }
 
