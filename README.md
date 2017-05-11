@@ -174,6 +174,10 @@ toast.dismiss() // Remove all toasts !
 
 ## Release Notes
 
+### v1.4.3
+
+- React and react-dom are now peer dependencies
+
 ### v1.4.2
 
 - Don't try to pass down the props when we render a string like so : `toast(<div>hello</div>)`
