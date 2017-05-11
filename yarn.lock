@@ -4193,7 +4193,7 @@ react-addons-test-utils@^15.3.0:
     fbjs "^0.8.4"
     object-assign "^4.1.0"
 
-react-dom@^15.3.0:
+react-dom@^15.5.4:
   version "15.5.4"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.5.4.tgz#ba0c28786fd52ed7e4f2135fe0288d462aef93da"
   dependencies:
