@@ -1,4 +1,4 @@
-# React Toastify [![npm](https://img.shields.io/npm/dt/react-toastify.svg)]() [![npm](https://img.shields.io/npm/v/react-toastify.svg)]() [![license](https://img.shields.io/github/license/fkhadra/react-toastify.svg?maxAge=2592000)]()
+# React Toastify [![Build Status](https://travis-ci.org/fkhadra/react-toastify.svg?branch=master)](https://travis-ci.org/fkhadra/react-toastify) [![npm](https://img.shields.io/npm/dt/react-toastify.svg)]() [![npm](https://img.shields.io/npm/v/react-toastify.svg)]() [![license](https://img.shields.io/github/license/fkhadra/react-toastify.svg?maxAge=2592000)]()
 
 React-Toastify allow you to add toast notification to your app with ease.
 
@@ -176,7 +176,7 @@ toast.dismiss() // Remove all toasts !
 
 ### v1.5.0
 
-- That version does not bring any features but it brings tests made with the amazing jest. 
+- That version does not bring any features but it brings tests made with the amazing jest and aslo Travis CI integration. 
 
 ### v1.4.3
 
