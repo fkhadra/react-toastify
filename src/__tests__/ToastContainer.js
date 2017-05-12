@@ -1,8 +1,20 @@
 import React from 'react';
+import { shallow } from 'enzyme';
+
+import ToastContainer from './../ToastContainer';
+
+function hasProp(component, prop) {
+  return {}.hasOwnProperty.call(component, prop);
+}
 
 describe('ToastContainer', ()=> {
   it('Should merge className and style', () => {
+    const component = shallow(<ToastContainer className="plop" style={{background: 'red'}}/>);
+    const expectedClassName = 'plop';
+    const expectedStyle = {background: 'red'};
 
+    expect(component.props().className).toContain(expectedClassName);
+    expect(component.props().style).toMatchObject(expectedStyle);
   });
 
   it('autoClose can be false or > 0', () => {
