@@ -1,11 +1,11 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount, unmount } from 'enzyme';
 
 import ToastContainer from './../ToastContainer';
 
-function hasProp(component, prop) {
-  return {}.hasOwnProperty.call(component, prop);
-}
+import { typeOf } from './../util/propValidator';
+import config from './../config';
+import EventManager from './../util/EventManager';
 
 describe('ToastContainer', ()=> {
   it('Should merge className and style', () => {
@@ -17,19 +17,29 @@ describe('ToastContainer', ()=> {
     expect(component.props().style).toMatchObject(expectedStyle);
   });
 
-  it('autoClose can be false or > 0', () => {
+  it('Should bind event when mounted and unbind them when unmounted', () => {
+    const component = mount(<ToastContainer/>);
 
+    expect(EventManager.eventList.has(config.ACTION.SHOW)).toBeTruthy();
+    expect(EventManager.eventList.has(config.ACTION.CLEAR)).toBeTruthy();
+    component.unmount();
+
+    expect(EventManager.eventList.has(config.ACTION.SHOW)).toBeFalsy();
+    expect(EventManager.eventList.has(config.ACTION.CLEAR)).toBeFalsy();
+
+  });
+
+  describe('autoClose', () => {
+    it('can be false or int', () => {
+      const component = mount(<ToastContainer autoClose={false} />);
+      expect(component.props().autoClose).toBeFalsy();
+
+      component.setProps({ autoClose: 1000 });
+      expect(typeOf(component.props().autoClose)).toEqual('Number');
+    });
   });
 
   it('closeButton can be false or a valid react element', ()=> {
-
-  });
-
-  it('Should bind event when mounted', () => {
-
-  });
-
-  it('Should unbind event when unmounted', () => {
 
   });
 
