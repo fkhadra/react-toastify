@@ -1,3 +1,4 @@
+/* eslint-env jest */
 import React from 'react';
 import { falseOrElement, falseOrNumber } from './../util/propValidator';
 
@@ -28,7 +29,7 @@ describe('Custom PropTypes', () => {
     it('Can be false or a valid react element', () => {
       const props = { closeButton: false };
       expect(falseOrElement(props, 'closeButton', 'TestComponent')).toBe(null);
-      props.closeButton = <ValidReactElement/>;
+      props.closeButton = <ValidReactElement />;
       expect(falseOrElement(props, 'closeButton', 'TestComponent')).toBe(null);
     });
 

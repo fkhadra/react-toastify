@@ -1,3 +1,4 @@
+/* eslint-env jest */
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 
@@ -8,9 +9,13 @@ import toastify from './../toastify';
 import config from './../config';
 import EventManager from './../util/EventManager';
 
+function hasProp(obj, key) {
+  return Object.prototype.hasOwnProperty.call(obj, key);
+}
+
 describe('ToastContainer', () => {
   it('Should merge className and style', () => {
-    const component = shallow(<ToastContainer className="plop" style={{ background: 'red' }}/>);
+    const component = shallow(<ToastContainer className="plop" style={{ background: 'red' }} />);
     const expectedClassName = 'plop';
     const expectedStyle = { background: 'red' };
 
@@ -19,7 +24,7 @@ describe('ToastContainer', () => {
   });
 
   it('Should bind event when mounted and unbind them when unmounted', () => {
-    const component = mount(<ToastContainer/>);
+    const component = mount(<ToastContainer />);
 
     expect(EventManager.eventList.has(config.ACTION.SHOW)).toBeTruthy();
     expect(EventManager.eventList.has(config.ACTION.CLEAR)).toBeTruthy();
@@ -41,7 +46,7 @@ describe('ToastContainer', () => {
     -position
     -closeToast`, () => {
     const component = mount(<ToastContainer />);
-    //Create a toast
+    // Create a toast
     toastify('coucou');
     const props = component.children().find(Toast).props();
     [
@@ -50,6 +55,6 @@ describe('ToastContainer', () => {
       'children',
       'position',
       'closeToast'
-    ].forEach(key => expect(props.hasOwnProperty(key)).toBeTruthy());
+    ].forEach(key => expect(hasProp(props, key)).toBeTruthy());
   });
 });
