@@ -1,7 +1,10 @@
 import React from 'react';
-import { shallow, mount, unmount } from 'enzyme';
+import { shallow, mount } from 'enzyme';
+import renderer from 'react-test-renderer';
 
 import ToastContainer from './../ToastContainer';
+import Toast from './../Toast';
+import toastify from './../toastify';
 
 import config from './../config';
 import EventManager from './../util/EventManager';
@@ -32,20 +35,22 @@ describe('ToastContainer', () => {
     expect(component.prop('style').pointerEvents).toEqual('none');
   });
 
-  it(`Should always pass down: 
+  it(`Should always pass down to Toast the props: 
     -autoClose
     -closeButton
     -children
     -position
     -closeToast`, () => {
-
-  });
-
-  it('Should render only toast inside `toastToRender` variable', () => {
-
-  });
-
-  it('Should remove toast when not rendered', () => {
-
+    const component = mount(<ToastContainer />);
+    //Create a toast
+    toastify('coucou');
+    const props = component.children().find(Toast).props();
+    [
+      'autoClose',
+      'closeButton',
+      'children',
+      'position',
+      'closeToast'
+    ].forEach(key => expect(props.hasOwnProperty(key)).toBeTruthy());
   });
 });
