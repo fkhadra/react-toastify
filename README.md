@@ -174,6 +174,10 @@ toast.dismiss() // Remove all toasts !
 
 ## Release Notes
 
+### v1.5.0
+
+- That version does not bring any features but it brings tests made with the amazing jest. 
+
 ### v1.4.3
 
 - React and react-dom are now peer dependencies
