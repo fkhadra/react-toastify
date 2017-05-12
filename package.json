@@ -15,6 +15,8 @@
   "scripts": {
     "test": "jest --verbose",
     "lint": "eslint src/",
+    "lint:fix": "eslint --fix src/",
+    "prebuild": "npm run lint && npm run test",
     "build": "NODE_ENV=production ./scripts/build.sh",
     "postbuild": "npm run style",
     "prestyle": "sass src/scss/main.scss dist/ReactToastify.css",
