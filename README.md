@@ -97,9 +97,9 @@ const ToastBtn = () => {
 |autoClose|false\|int|5000|Delay in ms to close the toast. If set to false, the notification need to be closed manualy|
 |className|string|-|Add optional classes to the container|
 |style|object|-|Add optional inline style to the container|
-|closeButton|React Element|-|A React Component to replace the default close button|
+|closeButton|React Element\|false|-|A React Component to replace the default close button or `false` to hide the button|
 |hideProgressBar|bool|false|Display or not the progress bar below the toast(remaining time)|
-|removeCloseButton|bool|false|If you don't want the toast to render a close button|
+
 
 - Position accept the following value : 
       
