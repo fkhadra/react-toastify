@@ -49,6 +49,7 @@ describe('ToastContainer', () => {
     // Create a toast
     toastify('coucou');
     const props = component.children().find(Toast).props();
+
     [
       'autoClose',
       'closeButton',
