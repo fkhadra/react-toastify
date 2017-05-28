@@ -16,12 +16,13 @@ const defaultOptions = {
   hideProgressBar: null
 };
 
-function mergeOptions(options) {
-  return Object.assign({}, defaultOptions, options);
-}
-
 let isContainerMounted = false;
 let queue = [];
+let toastId = 0;
+
+function mergeOptions(options) {
+  return Object.assign({}, defaultOptions, options, { toastId: ++toastId });
+}
 
 EventManager.on(ACTION.MOUNTED, () => {
   isContainerMounted = true;
@@ -37,6 +38,8 @@ const emitEvent = (content, options) => {
   } else {
     queue.push({ action: ACTION.SHOW, content, options });
   }
+
+  return options.toastId;
 };
 
 export default Object.assign(
@@ -46,7 +49,7 @@ export default Object.assign(
     info: (content, options) => emitEvent(content, Object.assign(mergeOptions(options), { type: TYPE.INFO })),
     warn: (content, options) => emitEvent(content, Object.assign(mergeOptions(options), { type: TYPE.WARNING })),
     error: (content, options) => emitEvent(content, Object.assign(mergeOptions(options), { type: TYPE.ERROR })),
-    dismiss: () => EventManager.emit(ACTION.CLEAR)
+    dismiss: (id = null) => EventManager.emit(ACTION.CLEAR, id)
   },
   {
     POSITION,

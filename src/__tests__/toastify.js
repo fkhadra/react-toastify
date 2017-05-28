@@ -18,4 +18,20 @@ describe('toastify', () => {
     mount(<ToastContainer />);
     expect(spy).toHaveBeenCalled();
   });
+
+  it("Should return a new id each time we emit a notification", () => {
+    const firstId = toastify('Hello');
+    const secondId = toastify('Hello');
+
+    expect(firstId).not.toEqual(secondId);
+  });
+
+  it("Can remove toast programmatically", () => {
+    const component = mount(<ToastContainer autoClose={false} />);
+    const id = toastify('hello');
+
+    expect(component.state('toast')[0]).toBe(id);
+    toastify.dismiss(id);
+    expect(component.state('toast').length).toBe(0);
+  });
 });

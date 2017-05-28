@@ -66,7 +66,6 @@ class ToastContainer extends Component {
     this.state = {
       toast: []
     };
-    this.toastId = 0;
     this.collection = {};
   }
 
@@ -74,7 +73,8 @@ class ToastContainer extends Component {
     EventManager
       .on(config.ACTION.SHOW,
       (content, options) => this.show(content, options))
-      .on(config.ACTION.CLEAR, () => this.clear())
+      .on(config.ACTION.CLEAR,
+        id => (id !== null ? this.removeToast(id) : this.clear()))
       .emit(config.ACTION.MOUNTED);
   }
 
@@ -128,7 +128,7 @@ class ToastContainer extends Component {
 
   show(content, options) {
     if (this.canBeRendered(content)) {
-      const toastId = ++this.toastId;
+      const toastId = options.toastId;
       const closeToast = () => this.removeToast(toastId);
       const toastOptions = {
         id: toastId,
