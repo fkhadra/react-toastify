@@ -34,6 +34,7 @@ import 'react-toastify/dist/ReactToastify.min.css'
 - Don't rely on `findDOMNode`
 - Has ```onOpen``` and ```onClose``` hooks. Both can access the props passed to the react component rendered inside the toast
 - Can be positioned
+- Can remove toast programmatically
 - Define behavior per toast
 - Easy to setup
 - Super easy to customize
@@ -135,7 +136,8 @@ const FontAwesomeCloseButton = ({ closeToast }) => (
 
 ### toast (Type: Object) 
    
-All the function inside toast can take 2 parameters :
+All the method of toast return a **toastId** except `dismiss`. The **toastId** can be used to remove a toast programmatically. 
+All the method but `dismiss` can take 2 parameters :
    
 |Parameter|Type|Required|Description|
 |---------|----|--------|-----|
@@ -162,17 +164,33 @@ const options = {
     type: toast.TYPE.INFO,
     hideProgressBar: false
 };
-   
-toast(<Img foo={bar}/>, options) // default, type: 'default'
+
+// each method return a toast id except dismiss.   
+const toastId = toast(<Img foo={bar}/>, options) // default, type: 'default'
 toast.success("Hello", options) // add type: 'success' to options
 toast.info("World", options) // add type: 'info' to options
 toast.warn(<Img />, options) // add type: 'warning' to options
 toast.error(<Img />, options) // add type: 'error' to options
 toast.dismiss() // Remove all toasts !
+toast.dismiss(toastId) // Remove given toast
 ```
 
 
 ## Release Notes
+
+### v1.6.0
+
+#### New Features
+
+- Can now remove a toast programmatically. When you display a toast, the function return a **toastId**. You can use it
+as follow to remove a given toast `toast.dismiss(toastId)`
+- If the container is not mounted, the notification will be added to a queue and dispatched as soon as the container is mounted.
+For more details check [issue #4](https://github.com/fkhadra/react-toastify/issues/4)
+
+#### Others
+
+- Added --no-idents flag to cssnano to avoid animation name collision with others libs.
+- Tests are no longer transpiled 
 
 ### v1.5.0
 
