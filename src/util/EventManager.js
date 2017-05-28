@@ -23,7 +23,7 @@ const eventManager = {
 
     this.eventList
       .get(event)
-      .forEach(callback => callback.call(this, ...args));
+      .forEach(callback => setTimeout(() => callback.call(this, ...args), 0));
 
     return true;
   }

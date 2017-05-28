@@ -13,6 +13,8 @@ function hasProp(obj, key) {
   return Object.prototype.hasOwnProperty.call(obj, key);
 }
 
+jest.useFakeTimers();
+
 describe('ToastContainer', () => {
   it('Should merge className and style', () => {
     const component = shallow(<ToastContainer className="plop" style={{ background: 'red' }} />);
@@ -48,6 +50,8 @@ describe('ToastContainer', () => {
     const component = mount(<ToastContainer />);
     // Create a toast
     toastify('coucou');
+    jest.runAllTimers();
+
     const props = component.children().find(Toast).props();
 
     [
