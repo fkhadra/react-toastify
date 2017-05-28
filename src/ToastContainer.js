@@ -71,9 +71,11 @@ class ToastContainer extends Component {
   }
 
   componentDidMount() {
-    EventManager.on(config.ACTION.SHOW,
+    EventManager
+      .on(config.ACTION.SHOW,
       (content, options) => this.show(content, options))
-      .on(config.ACTION.CLEAR, () => this.clear());
+      .on(config.ACTION.CLEAR, () => this.clear())
+      .emit(config.ACTION.MOUNTED);
   }
 
   componentWillUnmount() {
