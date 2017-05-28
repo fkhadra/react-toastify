@@ -1,20 +1,20 @@
 @import "animations/bounce";
 
-.animated {
+.toastify-animated {
   animation-duration: $animation-duration;
   animation-fill-mode: both;
 }
 
 .toast-enter {
-  &--top-left, &--bottom-left{@extend .bounceInLeft}
-  &--top-right, &--bottom-right{@extend .bounceInRight}
-  &--top-center {@extend .bounceInDown}
-  &--bottom-center {@extend .bounceInUp}
+  &--top-left, &--bottom-left{@extend .toastify-bounceInLeft}
+  &--top-right, &--bottom-right{@extend .toastify-bounceInRight}
+  &--top-center {@extend .toastify-bounceInDown}
+  &--bottom-center {@extend .toastify-bounceInUp}
 }
 
 .toast-exit {
-  &--top-left, &--bottom-left{@extend .bounceOutLeft}
-  &--top-right, &--bottom-right{@extend .bounceOutRight}
-  &--top-center {@extend .bounceOutUp}
-  &--bottom-center {@extend .bounceOutDown}
+  &--top-left, &--bottom-left{@extend .toastify-bounceOutLeft}
+  &--top-right, &--bottom-right{@extend .toastify-bounceOutRight}
+  &--top-center {@extend .toastify-bounceOutUp}
+  &--bottom-center {@extend .toastify-bounceOutDown}
 }

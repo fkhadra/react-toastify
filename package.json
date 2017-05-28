@@ -20,7 +20,7 @@
     "build": "NODE_ENV=production ./scripts/build.sh",
     "postbuild": "npm run style",
     "prestyle": "sass src/scss/main.scss dist/ReactToastify.css",
-    "style": "postcss --use autoprefixer -b 'last 2 versions' < dist/ReactToastify.css | postcss --use cssnano > dist/ReactToastify.min.css"
+    "style": "postcss --use autoprefixer -b 'last 2 versions' < dist/ReactToastify.css | cssnano --no-reduceIdents > dist/ReactToastify.min.css"
   },
   "repository": {
     "type": "git",
@@ -46,6 +46,7 @@
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-0": "^6.5.0",
     "cssnano": "^3.8.0",
+    "cssnano-cli": "^1.0.5",
     "enzyme": "^2.8.2",
     "eslint": "^3.2.2",
     "eslint-config-airbnb": "^14.1.0",

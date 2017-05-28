@@ -1,4 +1,4 @@
-@keyframes bounceInRight {
+@keyframes toastify-bounceInRight {
   from, 60%, 75%, 90%, to {
     animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1); }
   from {
@@ -13,20 +13,20 @@
     transform: translate3d(-5px, 0, 0); }
   to {
     transform: none; } }
-.bounceInRight, .toast-enter--top-right, .toast-enter--bottom-right {
-  animation-name: bounceInRight; }
+.toastify-bounceInRight, .toast-enter--top-right, .toast-enter--bottom-right {
+  animation-name: toastify-bounceInRight; }
 
-@keyframes bounceOutRight {
+@keyframes toastify-bounceOutRight {
   20% {
     opacity: 1;
     transform: translate3d(-20px, 0, 0); }
   to {
     opacity: 0;
     transform: translate3d(2000px, 0, 0); } }
-.bounceOutRight, .toast-exit--top-right, .toast-exit--bottom-right {
-  animation-name: bounceOutRight; }
+.toastify-bounceOutRight, .toast-exit--top-right, .toast-exit--bottom-right {
+  animation-name: toastify-bounceOutRight; }
 
-@keyframes bounceInLeft {
+@keyframes toastify-bounceInLeft {
   from, 60%, 75%, 90%, to {
     animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1); }
   0% {
@@ -41,20 +41,20 @@
     transform: translate3d(5px, 0, 0); }
   to {
     transform: none; } }
-.bounceInLeft, .toast-enter--top-left, .toast-enter--bottom-left {
-  animation-name: bounceInLeft; }
+.toastify-bounceInLeft, .toast-enter--top-left, .toast-enter--bottom-left {
+  animation-name: toastify-bounceInLeft; }
 
-@keyframes bounceOutLeft {
+@keyframes toastify-bounceOutLeft {
   20% {
     opacity: 1;
     transform: translate3d(20px, 0, 0); }
   to {
     opacity: 0;
     transform: translate3d(-2000px, 0, 0); } }
-.bounceOutLeft, .toast-exit--top-left, .toast-exit--bottom-left {
-  animation-name: bounceOutLeft; }
+.toastify-bounceOutLeft, .toast-exit--top-left, .toast-exit--bottom-left {
+  animation-name: toastify-bounceOutLeft; }
 
-@keyframes bounceInUp {
+@keyframes toastify-bounceInUp {
   from, 60%, 75%, 90%, to {
     animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1); }
   from {
@@ -69,10 +69,10 @@
     transform: translate3d(0, -5px, 0); }
   to {
     transform: translate3d(0, 0, 0); } }
-.bounceInUp, .toast-enter--bottom-center {
-  animation-name: bounceInUp; }
+.toastify-bounceInUp, .toast-enter--bottom-center {
+  animation-name: toastify-bounceInUp; }
 
-@keyframes bounceOutUp {
+@keyframes toastify-bounceOutUp {
   20% {
     transform: translate3d(0, -10px, 0); }
   40%, 45% {
@@ -81,10 +81,10 @@
   to {
     opacity: 0;
     transform: translate3d(0, -2000px, 0); } }
-.bounceOutUp, .toast-exit--top-center {
-  animation-name: bounceOutUp; }
+.toastify-bounceOutUp, .toast-exit--top-center {
+  animation-name: toastify-bounceOutUp; }
 
-@keyframes bounceInDown {
+@keyframes toastify-bounceInDown {
   from, 60%, 75%, 90%, to {
     animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1); }
   0% {
@@ -99,10 +99,10 @@
     transform: translate3d(0, 5px, 0); }
   to {
     transform: none; } }
-.bounceInDown, .toast-enter--top-center {
-  animation-name: bounceInDown; }
+.toastify-bounceInDown, .toast-enter--top-center {
+  animation-name: toastify-bounceInDown; }
 
-@keyframes bounceOutDown {
+@keyframes toastify-bounceOutDown {
   20% {
     transform: translate3d(0, 10px, 0); }
   40%, 45% {
@@ -111,10 +111,10 @@
   to {
     opacity: 0;
     transform: translate3d(0, 2000px, 0); } }
-.bounceOutDown, .toast-exit--bottom-center {
-  animation-name: bounceOutDown; }
+.toastify-bounceOutDown, .toast-exit--bottom-center {
+  animation-name: toastify-bounceOutDown; }
 
-.animated {
+.toastify-animated {
   animation-duration: 0.75s;
   animation-fill-mode: both; }
 
