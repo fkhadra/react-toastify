@@ -17,12 +17,14 @@ jest.useFakeTimers();
 
 describe('ToastContainer', () => {
   it('Should merge className and style', () => {
-    const component = shallow(<ToastContainer className="plop" style={{ background: 'red' }} />);
-    const expectedClassName = 'plop';
+    const component = mount(<ToastContainer className="plop" style={{ background: 'red' }} />);
     const expectedStyle = { background: 'red' };
 
-    expect(component.props().className).toContain(expectedClassName);
-    expect(component.props().style).toMatchObject(expectedStyle);
+    toastify('coucou');
+    jest.runAllTimers();
+
+    expect(component.find('.toastify').hasClass('plop')).toBe(true);
+    expect(component.find('.toastify').prop('style')).toMatchObject(expectedStyle);
   });
 
   it('Should bind event when mounted and unbind them when unmounted', () => {
@@ -37,8 +39,14 @@ describe('ToastContainer', () => {
   });
 
   it('Should set style pointer events to none when there is no toast to render', () => {
-    const component = shallow(<ToastContainer />);
-    expect(component.prop('style').pointerEvents).toEqual('none');
+    const component = mount(<ToastContainer />);
+
+    toastify('coucou');
+    jest.runAllTimers();
+    toastify.dismiss();
+    jest.runAllTimers();
+
+    expect(component.find('.toastify').prop('style').pointerEvents).toEqual('none');
   });
 
   it(`Should always pass down to Toast the props: 

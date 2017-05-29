@@ -72,7 +72,7 @@ class ToastContainer extends Component {
   componentDidMount() {
     EventManager
       .on(config.ACTION.SHOW,
-      (content, options) => this.show(content, options))
+        (content, options) => this.show(content, options))
       .on(config.ACTION.CLEAR,
         id => (id !== null ? this.removeToast(id) : this.clear()))
       .emit(config.ACTION.MOUNTED);
@@ -187,7 +187,6 @@ class ToastContainer extends Component {
   }
 
   clear() {
-    this.collection = {};
     this.setState({ toast: [] });
   }
 
@@ -195,14 +194,11 @@ class ToastContainer extends Component {
     return this.state.toast.length > 0;
   }
 
-  getContainerProps(pos) {
+  getContainerProps(pos, disablePointer) {
     const props = {
-      className: `toastify toastify--${pos}`
+      className: `toastify toastify--${pos}`,
+      style: disablePointer ? { pointerEvents: 'none' } : {}
     };
-
-    if (!this.hasToast()) {
-      props.style = { pointerEvents: 'none' };
-    }
 
     if (this.props.className !== null) {
       props.className = `${props.className} ${this.props.className}`;
@@ -211,7 +207,7 @@ class ToastContainer extends Component {
     if (this.props.style !== null) {
       props.style = Object.assign({},
         this.props.style,
-        typeof props.style !== 'undefined' ? props.style : {}
+        props.style
       );
     }
 
@@ -228,17 +224,26 @@ class ToastContainer extends Component {
       if (this.state.toast.includes(parseInt(idx, 10))) {
         toastToRender[item.position].push(item.content);
       } else {
-        //Temporal zone for animation
+        // Temporal zone for animation
         toastToRender[item.position].push(null);
         delete this.collection[idx];
       }
     });
 
-    return Object.keys(toastToRender).map( position => (
-      <Transition component="div" {...this.getContainerProps(position)} key={'container-' + position}>
-        {toastToRender[position].map( item => item)}
-      </Transition>
-    ));
+    return Object.keys(toastToRender).map(position => {
+      const disablePointer = toastToRender[position].length === 1
+        && toastToRender[position][0] === null;
+
+      return (
+        <Transition
+          component="div"
+          {...this.getContainerProps(position, disablePointer)}
+          key={`container-${position}`}
+        >
+          {toastToRender[position].map(item => item)}
+        </Transition>
+      );
+    });
   }
 
   render() {
