@@ -64,6 +64,11 @@ class Toast extends Component {
     return toastProps;
   }
 
+  componentWillAppear(callback) {
+    this.ref.classList.add(`toast-enter--${this.props.position}`, 'toastify-animated');
+    callback();
+  }
+
   componentWillEnter(callback) {
     this.ref.classList.add(`toast-enter--${this.props.position}`, 'toastify-animated');
     callback();
