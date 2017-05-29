@@ -133,7 +133,8 @@ class ToastContainer extends Component {
       const toastOptions = {
         id: toastId,
         type: options.type,
-        closeButton: this.makeCloseButton(options.closeButton, toastId)
+        closeButton: this.makeCloseButton(options.closeButton, toastId),
+        position: options.position || this.props.position
       };
 
       this.isFunction(options.onOpen) &&
@@ -162,7 +163,10 @@ class ToastContainer extends Component {
       }
 
       this.collection = Object.assign({}, this.collection, {
-        [toastId]: this.makeToast(content, toastOptions)
+        [toastId]: {
+          content: this.makeToast(content, toastOptions),
+          position: toastOptions.position
+        }
       });
 
       this.setState({
@@ -175,7 +179,6 @@ class ToastContainer extends Component {
     return (
       <Toast
         {...options}
-        position={this.props.position}
         key={`toast-${options.id} `}
       >
         {content}
@@ -192,9 +195,9 @@ class ToastContainer extends Component {
     return this.state.toast.length > 0;
   }
 
-  renderProps() {
+  getContainerProps(pos) {
     const props = {
-      className: `toastify toastify--${this.props.position}`
+      className: `toastify toastify--${pos}`
     };
 
     if (!this.hasToast()) {
@@ -216,21 +219,32 @@ class ToastContainer extends Component {
   }
 
   renderToast() {
-    const toastToRender = [];
+    const toastToRender = {};
+
     Object.keys(this.collection).forEach(idx => {
-      this.state.toast.includes(parseInt(idx, 10))
-        ? toastToRender.push(this.collection[idx])
-        : delete this.collection[idx];
+      const item = this.collection[idx];
+      toastToRender[item.position] || (toastToRender[item.position] = []);
+
+      if (this.state.toast.includes(parseInt(idx, 10))) {
+        toastToRender[item.position].push(item.content);
+      } else {
+        //Temporal zone for animation
+        toastToRender[item.position].push(null);
+        delete this.collection[idx];
+      }
     });
-    return toastToRender;
+
+    return Object.keys(toastToRender).map( position => (
+      <Transition component="div" {...this.getContainerProps(position)} key={'container-' + position}>
+        {toastToRender[position].map( item => item)}
+      </Transition>
+    ));
   }
 
   render() {
     return (
-      <div {...this.renderProps()}>
-        <Transition>
-          {this.hasToast() ? this.renderToast() : null}
-        </Transition>
+      <div>
+        {this.renderToast()}
       </div>
     );
   }
