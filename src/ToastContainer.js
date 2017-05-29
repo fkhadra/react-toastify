@@ -216,17 +216,21 @@ class ToastContainer extends Component {
 
   renderToast() {
     const toastToRender = {};
+    const collection = Object.keys(this.collection);
 
-    Object.keys(this.collection).forEach(idx => {
-      const item = this.collection[idx];
+    collection.forEach(toastId => {
+      const item = this.collection[toastId];
       toastToRender[item.position] || (toastToRender[item.position] = []);
 
-      if (this.state.toast.includes(parseInt(idx, 10))) {
+      if (this.state.toast.includes(parseInt(toastId, 10))) {
         toastToRender[item.position].push(item.content);
       } else {
         // Temporal zone for animation
         toastToRender[item.position].push(null);
-        delete this.collection[idx];
+        // Delay garbage collecting. Useful when a lots of toast
+        setTimeout(
+          () => delete this.collection[toastId]
+          , collection.length * 10);
       }
     });
 
