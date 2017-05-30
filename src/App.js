@@ -21,9 +21,10 @@ class App extends Component {
   }
 
   componentDidMount(){
-    toast(<Message/>,{
-      autoClose: 6000
-    });
+    Object.keys(toast.POSITION).forEach(pos => toast(<Message/>,{
+      autoClose: 6000,
+      position: toast.POSITION[pos]
+    }));
   }
 
   handleSelect = e => {
@@ -64,7 +65,8 @@ class App extends Component {
     toast(<Message/>, {
       autoClose: this.state.autoClose === false ? false : this.getDelay(),
       hideProgressBar: this.state.hideProgressBar,
-      type: this.state.type
+      type: this.state.type,
+      position: this.state.position
     });
   };
 
@@ -130,7 +132,6 @@ class App extends Component {
         </button>
         </div>
         <ToastContainer
-          position={this.state.position}
           autoClose={this.getDelay()}
           hideProgressBar={this.state.hideProgressBar}
           style={{}}
