@@ -33,7 +33,7 @@ import 'react-toastify/dist/ReactToastify.min.css'
 - Can display a react component inside the toast !
 - Don't rely on `findDOMNode`
 - Has ```onOpen``` and ```onClose``` hooks. Both can access the props passed to the react component rendered inside the toast
-- Can be positioned
+- Can be positioned per toast
 - Can remove toast programmatically
 - Define behavior per toast
 - Easy to setup
@@ -153,7 +153,7 @@ All the method but `dismiss` can take 2 parameters :
     - `hideProgressBar`: same as ToastContainer.
     - `position`: same as ToastContainer
 
-:warning:️ *autoClose, closeButton, hideProgressBar, supersede ToastContainer props* :warning:
+:warning:️ *autoClose, closeButton, hideProgressBar, position supersede ToastContainer props* :warning:
 
 ```javascript
 const Img = ({ src }) => <div><img width={48} src={src} /></div>;
