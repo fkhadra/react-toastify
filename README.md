@@ -33,7 +33,7 @@ import 'react-toastify/dist/ReactToastify.min.css'
 - Can display a react component inside the toast !
 - Don't rely on `findDOMNode`
 - Has ```onOpen``` and ```onClose``` hooks. Both can access the props passed to the react component rendered inside the toast
-- Can be positioned
+- Can be positioned per toast
 - Can remove toast programmatically
 - Define behavior per toast
 - Easy to setup
@@ -129,7 +129,7 @@ const FontAwesomeCloseButton = ({ closeToast }) => (
 );
 
 ...
-<ToastContainer autoClose={false} position="top-center" closeButton={<FontAwesomeCloseButton />}/>
+<ToastContainer autoClose={false} position={toast.POSITION.TOP_CENTER} closeButton={<FontAwesomeCloseButton />}/>
 ...
 
 ```
@@ -151,8 +151,9 @@ All the method but `dismiss` can take 2 parameters :
     - `autoClose`: same as ToastContainer.
     - `closeButton`: same as ToastContainer.
     - `hideProgressBar`: same as ToastContainer.
+    - `position`: same as ToastContainer
 
-:warning:️ *autoClose, closeButton, hideProgressBar, supersede ToastContainer props* :warning:
+:warning:️ *autoClose, closeButton, hideProgressBar, position supersede ToastContainer props* :warning:
 
 ```javascript
 const Img = ({ src }) => <div><img width={48} src={src} /></div>;
@@ -162,7 +163,8 @@ const options = {
     autoClose: 6000, 
     closeButton: <FontAwesomeCloseButton />,
     type: toast.TYPE.INFO,
-    hideProgressBar: false
+    hideProgressBar: false,
+    position: toast.POSITION.TOP_LEFT
 };
 
 // each method return a toast id except dismiss.   
@@ -177,6 +179,12 @@ toast.dismiss(toastId) // Remove given toast
 
 
 ## Release Notes
+
+### v1.7.0
+
+#### New Features
+
+- Toast can now be positioned individually ! 
 
 ### v1.6.0
 

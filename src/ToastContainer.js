@@ -72,7 +72,7 @@ class ToastContainer extends Component {
   componentDidMount() {
     EventManager
       .on(config.ACTION.SHOW,
-      (content, options) => this.show(content, options))
+        (content, options) => this.show(content, options))
       .on(config.ACTION.CLEAR,
         id => (id !== null ? this.removeToast(id) : this.clear()))
       .emit(config.ACTION.MOUNTED);
@@ -133,7 +133,8 @@ class ToastContainer extends Component {
       const toastOptions = {
         id: toastId,
         type: options.type,
-        closeButton: this.makeCloseButton(options.closeButton, toastId)
+        closeButton: this.makeCloseButton(options.closeButton, toastId),
+        position: options.position || this.props.position
       };
 
       this.isFunction(options.onOpen) &&
@@ -162,7 +163,10 @@ class ToastContainer extends Component {
       }
 
       this.collection = Object.assign({}, this.collection, {
-        [toastId]: this.makeToast(content, toastOptions)
+        [toastId]: {
+          content: this.makeToast(content, toastOptions),
+          position: toastOptions.position
+        }
       });
 
       this.setState({
@@ -175,7 +179,6 @@ class ToastContainer extends Component {
     return (
       <Toast
         {...options}
-        position={this.props.position}
         key={`toast-${options.id} `}
       >
         {content}
@@ -184,7 +187,6 @@ class ToastContainer extends Component {
   }
 
   clear() {
-    this.collection = {};
     this.setState({ toast: [] });
   }
 
@@ -192,14 +194,11 @@ class ToastContainer extends Component {
     return this.state.toast.length > 0;
   }
 
-  renderProps() {
+  getContainerProps(pos, disablePointer) {
     const props = {
-      className: `toastify toastify--${this.props.position}`
+      className: `toastify toastify--${pos}`,
+      style: disablePointer ? { pointerEvents: 'none' } : {}
     };
-
-    if (!this.hasToast()) {
-      props.style = { pointerEvents: 'none' };
-    }
 
     if (this.props.className !== null) {
       props.className = `${props.className} ${this.props.className}`;
@@ -208,7 +207,7 @@ class ToastContainer extends Component {
     if (this.props.style !== null) {
       props.style = Object.assign({},
         this.props.style,
-        typeof props.style !== 'undefined' ? props.style : {}
+        props.style
       );
     }
 
@@ -216,21 +215,45 @@ class ToastContainer extends Component {
   }
 
   renderToast() {
-    const toastToRender = [];
-    Object.keys(this.collection).forEach(idx => {
-      this.state.toast.includes(parseInt(idx, 10))
-        ? toastToRender.push(this.collection[idx])
-        : delete this.collection[idx];
+    const toastToRender = {};
+    const collection = Object.keys(this.collection);
+
+    collection.forEach(toastId => {
+      const item = this.collection[toastId];
+      toastToRender[item.position] || (toastToRender[item.position] = []);
+
+      if (this.state.toast.includes(parseInt(toastId, 10))) {
+        toastToRender[item.position].push(item.content);
+      } else {
+        // Temporal zone for animation
+        toastToRender[item.position].push(null);
+        // Delay garbage collecting. Useful when a lots of toast
+        setTimeout(
+          () => delete this.collection[toastId]
+          , collection.length * 10);
+      }
     });
-    return toastToRender;
+
+    return Object.keys(toastToRender).map(position => {
+      const disablePointer = toastToRender[position].length === 1
+        && toastToRender[position][0] === null;
+
+      return (
+        <Transition
+          component="div"
+          {...this.getContainerProps(position, disablePointer)}
+          key={`container-${position}`}
+        >
+          {toastToRender[position].map(item => item)}
+        </Transition>
+      );
+    });
   }
 
   render() {
     return (
-      <div {...this.renderProps()}>
-        <Transition>
-          {this.hasToast() ? this.renderToast() : null}
-        </Transition>
+      <div>
+        {this.renderToast()}
       </div>
     );
   }

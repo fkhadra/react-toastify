@@ -13,7 +13,8 @@ const defaultOptions = {
   type: TYPE.DEFAULT,
   autoClose: null,
   closeButton: null,
-  hideProgressBar: null
+  hideProgressBar: null,
+  position: null
 };
 
 let isContainerMounted = false;
