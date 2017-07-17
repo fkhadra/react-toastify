@@ -222,7 +222,7 @@ class ToastContainer extends Component {
       const item = this.collection[toastId];
       toastToRender[item.position] || (toastToRender[item.position] = []);
 
-      if (this.state.toast.includes(parseInt(toastId, 10))) {
+      if (this.state.toast.indexOf(parseInt(toastId, 10)) !== -1) {
         toastToRender[item.position].push(item.content);
       } else {
         // Temporal zone for animation
