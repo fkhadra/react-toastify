@@ -54,6 +54,7 @@ describe('ToastContainer', () => {
     -closeButton
     -children
     -position
+    -pauseOnHover
     -closeToast`, () => {
     const component = mount(<ToastContainer />);
     // Create a toast
@@ -67,7 +68,8 @@ describe('ToastContainer', () => {
       'closeButton',
       'children',
       'position',
-      'closeToast'
+      'closeToast',
+      'pauseOnHover'
     ].forEach(key => expect(hasProp(props, key)).toBeTruthy());
   });
 });

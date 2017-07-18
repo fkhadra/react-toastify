@@ -13,6 +13,7 @@ class Toast extends Component {
     children: PropTypes.node.isRequired,
     closeToast: PropTypes.func.isRequired,
     position: PropTypes.oneOf(objectValues(config.POSITION)).isRequired,
+    pauseOnHover: PropTypes.bool.isRequired,
     hideProgressBar: PropTypes.bool,
     onOpen: PropTypes.func,
     onClose: PropTypes.func,
@@ -56,7 +57,7 @@ class Toast extends Component {
       ref: this.setRef
     };
 
-    if (this.props.autoClose !== false) {
+    if (this.props.autoClose !== false && this.props.pauseOnHover === true) {
       toastProps.onMouseEnter = this.pauseToast;
       toastProps.onMouseLeave = this.playToast;
     }

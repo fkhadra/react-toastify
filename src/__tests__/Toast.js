@@ -11,7 +11,8 @@ const REQUIRED_PROPS = {
   closeButton: <DefaultCloseButton />,
   autoClose: 5000,
   closeToast: () => {},
-  position: config.POSITION.TOP_RIGHT
+  position: config.POSITION.TOP_RIGHT,
+  pauseOnHover: true
 };
 
 describe('Toast', () => {
@@ -71,7 +72,7 @@ describe('Toast', () => {
     expect(onClose).toHaveBeenCalled();
   });
 
-  it('Should pause toast delay on mouse enter', () => {
+  it('Can pause toast delay on mouse enter', () => {
     const component = shallow(
       <Toast
         {...REQUIRED_PROPS}
@@ -83,6 +84,22 @@ describe('Toast', () => {
     expect(component.state('isRunning')).toBeTruthy();
     component.simulate('mouseEnter');
     expect(component.state('isRunning')).toBeFalsy();
+  });
+
+
+  it('Can keep runing on mouse enter', () => {
+    const component = shallow(
+      <Toast
+        {...REQUIRED_PROPS}
+        pauseOnHover={false}
+      >
+        FooBar
+      </Toast>
+    );
+
+    expect(component.state('isRunning')).toBeTruthy();
+    component.simulate('mouseEnter');
+    expect(component.state('isRunning')).toBeTruthy();
   });
 
   it('Should play toast delay on mouse leave', () => {

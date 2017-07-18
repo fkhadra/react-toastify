@@ -14,7 +14,8 @@ const defaultOptions = {
   autoClose: null,
   closeButton: null,
   hideProgressBar: null,
-  position: null
+  position: null,
+  pauseOnHover: null
 };
 
 let isContainerMounted = false;
