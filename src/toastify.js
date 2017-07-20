@@ -51,7 +51,8 @@ export default Object.assign(
     info: (content, options) => emitEvent(content, Object.assign(mergeOptions(options), { type: TYPE.INFO })),
     warn: (content, options) => emitEvent(content, Object.assign(mergeOptions(options), { type: TYPE.WARNING })),
     error: (content, options) => emitEvent(content, Object.assign(mergeOptions(options), { type: TYPE.ERROR })),
-    dismiss: (id = null) => EventManager.emit(ACTION.CLEAR, id)
+    dismiss: (id = null) => EventManager.emit(ACTION.CLEAR, id),
+    isRunning: id => EventManager.emit(ACTION.IS_RUNNING, id)
   },
   {
     POSITION,

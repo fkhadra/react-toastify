@@ -42,4 +42,12 @@ describe('toastify', () => {
     jest.runAllTimers();
     expect(component.state('toast').length).toBe(0);
   });
+
+  it("Can tell if a toast is running based on the id", () => {
+    const component = mount(<ToastContainer autoClose={false} />);
+    const id = toastify('hello');
+
+    jest.runAllTimers();
+    expect(toastify.isRunning(id)).toBe(true);
+  });
 });

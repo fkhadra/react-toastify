@@ -1,22 +1,18 @@
-import React, {
-  Component,
-  isValidElement,
-  cloneElement
-} from 'react';
-import PropTypes from 'prop-types';
-import Transition from 'react-transition-group/TransitionGroup';
+import React, { Component, isValidElement, cloneElement } from "react";
+import PropTypes from "prop-types";
+import Transition from "react-transition-group/TransitionGroup";
 
-import Toast from './Toast';
-import DefaultCloseButton from './DefaultCloseButton';
-import config from './config';
-import EventManager from './util/EventManager';
-import objectValues from './util/objectValues';
+import Toast from "./Toast";
+import DefaultCloseButton from "./DefaultCloseButton";
+import config from "./config";
+import EventManager from "./util/EventManager";
+import objectValues from "./util/objectValues";
 import {
   falseOrNumber,
   falseOrElement,
   isValidDelay,
   typeOf
-} from './util/propValidator';
+} from "./util/propValidator";
 
 class ToastContainer extends Component {
   static propTypes = {
@@ -81,6 +77,9 @@ class ToastContainer extends Component {
       .on(
         config.ACTION.CLEAR,
         id => (id !== null ? this.removeToast(id) : this.clear())
+      )
+      .on(config.ACTION.IS_RUNNING, id =>
+        this.state.toast.indexOf(parseInt(id, 10) !== -1)
       )
       .emit(config.ACTION.MOUNTED);
   }
