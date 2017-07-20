@@ -123,8 +123,6 @@
   position: fixed;
   padding: 4px;
   width: 350px;
-  max-width: 98%;
-  color: #999;
   box-sizing: border-box; }
   .toastify--top-left {
     top: 1em;
@@ -152,47 +150,42 @@
     vertical-align: middle; }
 
 .toastify__close {
-  position: absolute;
-  top: 0px;
-  right: 2px;
-  width: 16px;
-  height: 16px;
   padding: 0;
-  text-align: center;
-  text-decoration: none;
-  color: #aaa;
+  color: #fff;
   font-weight: bold;
   font-size: 14px;
   background: transparent;
   outline: none;
   border: none;
   cursor: pointer;
-  opacity: .5;
-  transition: .3s ease; }
+  opacity: .7;
+  transition: .3s ease;
+  align-self: flex-start; }
   .toastify__close:hover, .toastify__close:focus {
-    opacity: 1;
-    color: #000000; }
+    opacity: 1; }
 
 .toastify-content {
   position: relative;
-  width: 100%;
-  min-height: 62px;
-  margin-bottom: 12px;
+  margin-bottom: 1rem;
   padding: 8px;
-  background: #ffffff;
   border-radius: 1px;
-  box-shadow: 0 1px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 15px 0 rgba(0, 0, 0, 0.05); }
+  box-shadow: 0 1px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 15px 0 rgba(0, 0, 0, 0.05);
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  max-height: 800px;
+  overflow: hidden;
+  font-family: sans-serif; }
+  .toastify-content--default {
+    background: #323232; }
   .toastify-content--info {
-    border-left: 6px solid #3498db; }
+    background: #3498db; }
   .toastify-content--success {
-    border-left: 6px solid #07bc0c; }
+    background: #07bc0c; }
   .toastify-content--warning {
-    border-left: 6px solid #f1c40f; }
+    background: #f1c40f; }
   .toastify-content--error {
-    border-left: 6px solid #e74c3c; }
-
-.toastify__body {
-  font-size: 13px; }
+    background: #e74c3c; }
 
 @keyframes track-progress {
   0% {
@@ -204,19 +197,10 @@
   bottom: 0;
   left: 0;
   width: 0;
-  height: 4px;
+  height: 5px;
   z-index: 999;
-  opacity: 0.5;
-  animation: track-progress linear 1; }
-  .toastify__progress--default {
-    background-image: linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55); }
-  .toastify__progress--info {
-    background-color: #3498db; }
-  .toastify__progress--success {
-    background-color: #07bc0c; }
-  .toastify__progress--warning {
-    background-color: #f1c40f; }
-  .toastify__progress--error {
-    background-color: #e74c3c; }
+  opacity: 0.7;
+  animation: track-progress linear 1;
+  background-color: rgba(255, 255, 255, 0.7); }
 
 /*# sourceMappingURL=ReactToastify.css.map */

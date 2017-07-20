@@ -104,10 +104,10 @@ class Toast extends Component {
       <div
         {...this.getToastProps()}
       >
-        {closeButton !== false && closeButton}
         <div className="toastify__body">
           {children}
         </div>
+        {closeButton !== false && closeButton}
         {
           autoClose !== false &&
           <ProgressBar

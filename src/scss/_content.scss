@@ -1,31 +1,33 @@
 
 .toastify-content {
   position: relative;
-  width: 100%;
-  min-height: 62px;
-  margin-bottom: 12px;
+  margin-bottom: 1rem;
   padding: 8px;
-  background: $toast-background;
   border-radius: 1px;
   box-shadow: 0 1px 10px 0 rgba(0, 0, 0, .1), 0 2px 15px 0 rgba(0, 0, 0, .05);
-
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  max-height: 800px;
+  overflow: hidden;
+  font-family: sans-serif;
   &--default {
-
+    background: $color-default;
   }
   &--info {
-    border-left: 6px solid $color-info;
+    background: $color-info;
   }
   &--success {
-    border-left: 6px solid $color-success;
+    background: $color-success;
   }
   &--warning {
-    border-left: 6px solid $color-warning;
+    background: $color-warning;
   }
   &--error {
-    border-left: 6px solid $color-error;
+    background: $color-error;
   }
 }
 
 .toastify__body {
-  font-size: $font-size;
+  
 }
