@@ -17,7 +17,6 @@ export default {
   ACTION: {
     SHOW: 'SHOW_TOAST',
     CLEAR: 'CLEAR_TOAST',
-    MOUNTED: 'CONTAINER_MOUNTED',
-    IS_RUNNING: 'IS_RUNNING'
+    MOUNTED: 'CONTAINER_MOUNTED'
   }
 };

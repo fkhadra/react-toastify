@@ -105,7 +105,7 @@ class App extends Component{
   toastId = null;
 
   sendEmail = () => {
-    if (!toast.isRunning(this.toastId)){
+    if (!toast.isActive(this.toastId)){
       this.toastId = toast.success('Email sent !');
     }
   }
@@ -167,8 +167,9 @@ const FontAwesomeCloseButton = ({ closeToast }) => (
 
 ### toast (Type: Object) 
    
-All the method of toast return a **toastId** except `dismiss`. The **toastId** can be used to remove a toast programmatically. 
-All the method but `dismiss` can take 2 parameters :
+All the method of toast return a **toastId** except `dismiss` and `isActive`. 
+The **toastId** can be used to remove a toast programmatically or to check if the toast is displayed. 
+All the method but `dismiss` and `isActive` can take 2 parameters :
    
 |Parameter|Type|Required|Description|
 |---------|----|--------|-----|
@@ -208,7 +209,7 @@ toast.warn(<Img />, options) // add type: 'warning' to options
 toast.error(<Img />, options) // add type: 'error' to options
 toast.dismiss() // Remove all toasts !
 toast.dismiss(toastId) // Remove given toast
-toast.isRunning(toastId) //Check if a toast is displayed or not
+toast.isActive(toastId) //Check if a toast is displayed or not
 ```
 
 
