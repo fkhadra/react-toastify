@@ -6,6 +6,7 @@ React-Toastify allow you to add toast notification to your app with ease.
  * [Installation](#installation)
  * [Features](#features)
  * [How it works ?](#how-it-works-)
+ * [How do I prevent duplicates ?](#how-do-i-prevent-duplicates-)
  * [Api](#api)
  * [Release Notes](#release-notes)
  * [Contribute](#contribute)
@@ -87,6 +88,35 @@ const ToastBtn = () => {
     )
 }
 ```
+
+## How do I prevent duplicates ?
+
+When you display a toast, the message will be transformed to a react component. Compare equality of react component is not easy as comparing string.
+
+Furthermore, it will add too much complexity if the library had to manage it. Any better idea are welcome !
+
+By checking if a given toast is running or not we can easly prevent duplicates. You will also have more control over the way to prevent duplicates.
+
+```javascript
+import React, { Component } from 'react';
+import { toast } from 'react-toastify';
+
+class App extends Component{
+  toastId = null;
+
+  sendEmail = () => {
+    if (!toast.isRunning(this.toastId)){
+      this.toastId = toast.success('Email sent !');
+    }
+  }
+
+  render(){
+    return <button onClick={this.sendEmail}>Send Email</button>
+  }
+}
+
+```
+
   
 ## Api
   
@@ -100,6 +130,7 @@ const ToastBtn = () => {
 |style|object|-|Add optional inline style to the container|
 |closeButton|React Element\|false|-|A React Component to replace the default close button or `false` to hide the button|
 |hideProgressBar|bool|false|Display or not the progress bar below the toast(remaining time)|
+|pauseOnHover|bool|true|Timer keep running or not on hover|
 
 
 - Position accept the following value : 
@@ -152,8 +183,9 @@ All the method but `dismiss` can take 2 parameters :
     - `closeButton`: same as ToastContainer.
     - `hideProgressBar`: same as ToastContainer.
     - `position`: same as ToastContainer
+    - `pauseOnHover`: same as ToastContainer
 
-:warning:️ *autoClose, closeButton, hideProgressBar, position supersede ToastContainer props* :warning:
+:warning:️ *Toast options supersede ToastContainer props* :warning:
 
 ```javascript
 const Img = ({ src }) => <div><img width={48} src={src} /></div>;
@@ -164,7 +196,8 @@ const options = {
     closeButton: <FontAwesomeCloseButton />,
     type: toast.TYPE.INFO,
     hideProgressBar: false,
-    position: toast.POSITION.TOP_LEFT
+    position: toast.POSITION.TOP_LEFT,
+    pauseOnHover: true
 };
 
 // each method return a toast id except dismiss.   
@@ -175,6 +208,7 @@ toast.warn(<Img />, options) // add type: 'warning' to options
 toast.error(<Img />, options) // add type: 'error' to options
 toast.dismiss() // Remove all toasts !
 toast.dismiss(toastId) // Remove given toast
+toast.isRunning(toastId) //Check if a toast is displayed or not
 ```
 
 
