@@ -44,7 +44,7 @@ describe('toastify', () => {
   });
 
   it("Can tell if a toast is running based on the id", () => {
-    const component = mount(<ToastContainer autoClose={false} />);
+    mount(<ToastContainer autoClose={false} />);
     const id = toastify('hello');
 
     jest.runAllTimers();
