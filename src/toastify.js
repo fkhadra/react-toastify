@@ -22,10 +22,17 @@ let isContainerMounted = false;
 let queue = [];
 let toastId = 0;
 
+/**
+ * Merge provided options with the defaults settings and generate the toastId
+ * @param {*} options 
+ */
 function mergeOptions(options) {
   return Object.assign({}, defaultOptions, options, { toastId: ++toastId });
 }
 
+/**
+ * Wait until the ToastContainer is mounted to dispatch the toast
+ */
 EventManager.on(ACTION.MOUNTED, () => {
   isContainerMounted = true;
   queue.forEach(item => {
@@ -34,6 +41,11 @@ EventManager.on(ACTION.MOUNTED, () => {
   queue = [];
 });
 
+/**
+ * Dispatch toast. If the container is not mounted with add the toast is enqueued
+ * @param {*} content 
+ * @param {*} options 
+ */
 const emitEvent = (content, options) => {
   if (isContainerMounted) {
     EventManager.emit(ACTION.SHOW, content, options);
