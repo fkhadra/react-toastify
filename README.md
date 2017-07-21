@@ -180,6 +180,19 @@ toast.dismiss(toastId) // Remove given toast
 
 ## Release Notes
 
+### V2.0.0
+
+#### New Features
+
+- The default design has been reviewed. The component is now usable out of the box without the need to touch the css. Relate to [issue #28](https://github.com/fkhadra/react-toastify/issues/28)
+- The toast timer can keep running on hover. [issue #33](https://github.com/fkhadra/react-toastify/issues/33)
+- Added a possibility to check if a given toast is displayed or not. By using that method we can prevent duplicate. [issue #3](https://github.com/fkhadra/react-toastify/issues/3)
+
+#### Bug Fixes
+
+- The space in of left boxes from window & right boxes from window is different.[issue #25](https://github.com/fkhadra/react-toastify/issues/25)
+- Support ie11. [issue #26](https://github.com/fkhadra/react-toastify/issues/26)
+
 ### v1.7.0
 
 #### New Features
