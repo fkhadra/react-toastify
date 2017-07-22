@@ -121,9 +121,6 @@ class ToastContainer extends Component {
     return !!(object && object.constructor && object.call && object.apply);
   }
 
-  /**
-   * TODO: check if throwing an error can be helpful
-   */
   canBeRendered(content) {
     return (
       isValidElement(content) ||
@@ -133,55 +130,60 @@ class ToastContainer extends Component {
   }
 
   show(content, options) {
-    if (this.canBeRendered(content)) {
-      const toastId = options.toastId;
-      const closeToast = () => this.removeToast(toastId);
-      const toastOptions = {
-        id: toastId,
-        type: options.type,
-        closeButton: this.makeCloseButton(options.closeButton, toastId),
-        position: options.position || this.props.position,
-        pauseOnHover:
+    if (!(this.canBeRendered(content))) {
+      throw new Error(`The element you provided cannot be rendered. You provided an element of type ${typeof content}`);
+    }
+    const toastId = options.toastId;
+    const closeToast = () => this.removeToast(toastId);
+    const toastOptions = {
+      id: toastId,
+      type: options.type,
+      closeButton: this.makeCloseButton(options.closeButton, toastId),
+      position: options.position || this.props.position,
+      pauseOnHover:
           options.pauseOnHover !== null
             ? options.pauseOnHover
             : this.props.pauseOnHover
-      };
+    };
 
-      this.isFunction(options.onOpen) && (toastOptions.onOpen = options.onOpen);
+    options.className !== null && (toastOptions.className = options.className);
+    options.bodyClassName !== null && (toastOptions.bodyClassName = options.bodyClassName);
+    options.progressClassName !== null && (toastOptions.progressClassName = options.progressClassName);
 
-      this.isFunction(options.onClose) &&
+    this.isFunction(options.onOpen) && (toastOptions.onOpen = options.onOpen);
+
+    this.isFunction(options.onClose) &&
         (toastOptions.onClose = options.onClose);
 
-      toastOptions.autoClose = this.getAutoCloseDelay(
+    toastOptions.autoClose = this.getAutoCloseDelay(
         options.autoClose !== false
           ? parseInt(options.autoClose, 10)
           : options.autoClose
       );
 
-      toastOptions.hideProgressBar =
+    toastOptions.hideProgressBar =
         typeof options.hideProgressBar === "boolean"
           ? options.hideProgressBar
           : this.props.hideProgressBar;
 
-      toastOptions.closeToast = closeToast;
+    toastOptions.closeToast = closeToast;
 
-      if (isValidElement(content) && typeOf(content.type) !== "String") {
-        content = this.with(content, {
-          closeToast
-        });
-      }
-
-      this.collection = Object.assign({}, this.collection, {
-        [toastId]: {
-          content: this.makeToast(content, toastOptions),
-          position: toastOptions.position
-        }
-      });
-
-      this.setState({
-        toast: [...this.state.toast, toastId]
+    if (isValidElement(content) && typeOf(content.type) !== "String") {
+      content = this.with(content, {
+        closeToast
       });
     }
+
+    this.collection = Object.assign({}, this.collection, {
+      [toastId]: {
+        content: this.makeToast(content, toastOptions),
+        position: toastOptions.position
+      }
+    });
+
+    this.setState({
+      toast: [...this.state.toast, toastId]
+    });
   }
 
   makeToast(content, options) {

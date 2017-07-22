@@ -16,6 +16,22 @@ const REQUIRED_PROPS = {
 };
 
 describe('Toast', () => {
+  it('Should merge container and body className', () => {
+    const component = shallow(
+      <Toast
+        {...REQUIRED_PROPS}
+        autoClose={false}
+        className="container-class"
+        bodyClassName="body-class"
+      >
+        FooBar
+      </Toast>
+    );
+
+    expect(component.find('.container-class')).toHaveLength(1);
+    expect(component.find('.body-class')).toHaveLength(1);
+  });
+
   it('Should not render ProgressBar if autoClose prop is set to false', () => {
     const component = shallow(
       <Toast

@@ -15,7 +15,10 @@ const defaultOptions = {
   closeButton: null,
   hideProgressBar: null,
   position: null,
-  pauseOnHover: null
+  pauseOnHover: null,
+  className: null,
+  bodyClassName: null,
+  progressClassName: null
 };
 
 let container = null;

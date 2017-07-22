@@ -50,4 +50,19 @@ describe('toastify', () => {
     jest.runAllTimers();
     expect(toaster.isActive(id)).toBe(true);
   });
+
+  it("Can overwrite classNames", () => {
+    const component = mount(<ToastContainer />);
+    toaster('hello', {
+      className: 'class1',
+      bodyClassName: 'class2',
+      progressClassName: 'class3'
+    });
+
+    jest.runAllTimers();
+
+    expect(component.find('.toastify-content').hasClass('class1')).toBe(true);
+    expect(component.find('.toastify__body').hasClass('class2')).toBe(true);
+    expect(component.find('.toastify__progress').hasClass('class3')).toBe(true);
+  });
 });
