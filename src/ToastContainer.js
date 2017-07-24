@@ -49,7 +49,22 @@ class ToastContainer extends Component {
     /**
      * An optional style
      */
-    style: PropTypes.object
+    style: PropTypes.object,
+
+    /**
+     * An optional className for the toast
+     */
+    toastClassName: PropTypes.string,
+
+    /**
+     * An optional className for the toast body
+     */
+    bodyClassName: PropTypes.string,
+
+    /**
+     * An optional className for the toast progress bar
+     */
+    progressClassName: PropTypes.string,
   };
 
   static defaultProps = {
@@ -59,7 +74,10 @@ class ToastContainer extends Component {
     closeButton: <DefaultCloseButton />,
     pauseOnHover: true,
     className: null,
-    style: null
+    style: null,
+    toastClassName: '',
+    bodyClassName: '',
+    progressClassName: '',
   };
 
   constructor(props) {
@@ -143,12 +161,11 @@ class ToastContainer extends Component {
       pauseOnHover:
           options.pauseOnHover !== null
             ? options.pauseOnHover
-            : this.props.pauseOnHover
+            : this.props.pauseOnHover,
+      className: options.className || this.props.toastClassName,
+      bodyClassName: options.bodyClassName || this.props.bodyClassName,
+      progressClassName: options.progressClassName || this.props.progressClassName,
     };
-
-    options.className !== null && (toastOptions.className = options.className);
-    options.bodyClassName !== null && (toastOptions.bodyClassName = options.bodyClassName);
-    options.progressClassName !== null && (toastOptions.progressClassName = options.progressClassName);
 
     this.isFunction(options.onOpen) && (toastOptions.onOpen = options.onOpen);
 
