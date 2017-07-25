@@ -5,6 +5,7 @@
   padding: 4px;
   width: $toast-width;
   box-sizing: border-box;
+
   &--top-left {
     top: 1em;
     left: 1em;
@@ -32,9 +33,22 @@
     bottom: 1em;
     right: 1em;
   }
-  &__img {
-    float: left;
-    margin-right: 8px;
-    vertical-align: middle;
+  
+}
+
+@media #{$smartphone-portrait} {
+  .toastify{
+    width: 100%;
+  }
+  .toastify--top-left, .toastify--top-center, .toastify--top-right {
+    left: 0;
+    top: 0;
+    margin: 0;
+  }
+  
+  .toastify--bottom-left, .toastify--bottom-center, .toastify--bottom-right {
+    left: 0;
+    bottom: 0;
+    margin: 0;
   }
 }
