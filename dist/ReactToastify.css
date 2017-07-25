@@ -166,6 +166,7 @@
 
 .toastify-content {
   position: relative;
+  min-height: 48px;
   margin-bottom: 1rem;
   padding: 8px;
   border-radius: 1px;
@@ -186,6 +187,9 @@
     background: #f1c40f; }
   .toastify-content--error {
     background: #e74c3c; }
+
+.toastify__body {
+  margin: auto 0; }
 
 @keyframes track-progress {
   0% {

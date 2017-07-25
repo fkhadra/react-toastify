@@ -1,6 +1,7 @@
 
 .toastify-content {
   position: relative;
+  min-height: 48px;
   margin-bottom: 1rem;
   padding: 8px;
   border-radius: 1px;
@@ -29,5 +30,5 @@
 }
 
 .toastify__body {
-  
+  margin: auto 0;
 }
