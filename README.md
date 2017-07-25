@@ -131,7 +131,9 @@ class App extends Component{
 |closeButton|React Element\|false|-|A React Component to replace the default close button or `false` to hide the button|
 |hideProgressBar|bool|false|Display or not the progress bar below the toast(remaining time)|
 |pauseOnHover|bool|true|Timer keep running or not on hover|
-
+|toastClassName|string|-|Add optional classes to the toast|
+|bodyClassName|string|-|Add optional classes to the toast body|
+|progressClassName|string|-|Add optional classes to the progress bar|
 
 - Position accept the following value : 
       
@@ -185,7 +187,10 @@ All the method but `dismiss` and `isActive` can take 2 parameters :
     - `hideProgressBar`: same as ToastContainer.
     - `position`: same as ToastContainer
     - `pauseOnHover`: same as ToastContainer
-
+    - `className`: same as ToastContainer toastClassName
+    - `bodyClassName`: same as ToastContainer
+    - `progressClassName`: same as ToastContainer
+    
 :warning:️ *Toast options supersede ToastContainer props* :warning:
 
 ```javascript
