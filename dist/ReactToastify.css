@@ -122,7 +122,7 @@
   z-index: 999;
   position: fixed;
   padding: 4px;
-  width: 350px;
+  width: 320px;
   box-sizing: border-box; }
   .toastify--top-left {
     top: 1em;
@@ -130,7 +130,7 @@
   .toastify--top-center {
     top: 1em;
     left: 50%;
-    margin-left: -175px; }
+    margin-left: -160px; }
   .toastify--top-right {
     top: 1em;
     right: 1em; }
@@ -140,7 +140,7 @@
   .toastify--bottom-center {
     bottom: 1em;
     left: 50%;
-    margin-left: -175px; }
+    margin-left: -160px; }
   .toastify--bottom-right {
     bottom: 1em;
     right: 1em; }
@@ -179,13 +179,14 @@
   margin-bottom: 1rem;
   padding: 8px;
   border-radius: 1px;
-  box-shadow: 0 1px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 15px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
   color: #fff;
   display: flex;
   justify-content: space-between;
   max-height: 800px;
   overflow: hidden;
-  font-family: sans-serif; }
+  font-family: sans-serif;
+  cursor: pointer; }
   .toastify-content--default {
     background: #323232; }
   .toastify-content--info {

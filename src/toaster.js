@@ -16,6 +16,7 @@ const defaultOptions = {
   hideProgressBar: null,
   position: null,
   pauseOnHover: null,
+  closeOnClick: null,
   className: null,
   bodyClassName: null,
   progressClassName: null

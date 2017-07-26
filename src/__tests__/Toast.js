@@ -12,7 +12,8 @@ const REQUIRED_PROPS = {
   autoClose: 5000,
   closeToast: () => {},
   position: config.POSITION.TOP_RIGHT,
-  pauseOnHover: true
+  pauseOnHover: true,
+  closeOnClick: true
 };
 
 describe('Toast', () => {

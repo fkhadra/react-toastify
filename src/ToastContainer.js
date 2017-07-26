@@ -42,6 +42,11 @@ class ToastContainer extends Component {
     pauseOnHover: PropTypes.bool,
 
     /**
+     * Dismiss toast on click
+     */
+    closeOnClick: PropTypes.bool,
+
+    /**
      * An optional className
      */
     className: PropTypes.string,
@@ -73,6 +78,7 @@ class ToastContainer extends Component {
     hideProgressBar: false,
     closeButton: <DefaultCloseButton />,
     pauseOnHover: true,
+    closeOnClick: true,
     className: null,
     style: null,
     toastClassName: '',
@@ -162,6 +168,7 @@ class ToastContainer extends Component {
           options.pauseOnHover !== null
             ? options.pauseOnHover
             : this.props.pauseOnHover,
+      closeOnClick: options.closeOnClick !== null ? options.closeOnClick : this.props.closeOnClick,
       className: options.className || this.props.toastClassName,
       bodyClassName: options.bodyClassName || this.props.bodyClassName,
       progressClassName: options.progressClassName || this.props.progressClassName,
