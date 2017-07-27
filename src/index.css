@@ -1,55 +1,5 @@
-.app{
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-}
-.btn-container{
-  flex-basis:100%;
-  text-align: center;
-}
-.btn{
-  display: inline-block;
-  margin-bottom: 1rem;
-  color: rgba(255, 255, 255, 0.7);
-  background-color: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.2);
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 0.3rem;
-  transition: color 0.2s, background-color 0.2s, border-color 0.2s;
-}
-.btn-toast {
-  background: #15915f;
-  color: #ffffff;
-}
-
-.btn:hover {
-  color: rgba(255, 255, 255, 0.8);
-  text-decoration: none;
-  background-color: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.3);
-}
-.btn-toast:hover {
-  background-color: #15915f!important;
-}
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-  width: 85px;
-  position: absolute;
-  left: 0;
-  top: -10%;
-}
-
-.msg-content{
-  margin-left: 65px;
-  margin-top: 5px;
-}
-
-
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
 }

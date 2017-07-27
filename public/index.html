@@ -1,292 +1,41 @@
-<!DOCTYPE html>
-<html lang="en-us">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <!--
+      manifest.json provides metadata used when your web app is added to the
+      homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
+    -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+    <link rel="stylesheet" href="https://unpkg.com/react-md/dist/react-md.indigo-pink.min.css">
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
 
-<head>
-  <meta charset="UTF-8">
-  <title>React Toastify</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="keywords" content="react,notification,toast,react-component,react-toastify,push,alert">
-  <meta property="og:title" content="Notify your user with ease using react-toastify">
-  <meta property="og:image" content="//sniphpet.github.io/react-toastify/static/media/react.svg">
-  <meta property="og:description" content="React Toastify let you notify your user from any component. It's very easy to use. If you don't want to waste time, this component is for you !">
-  <meta property="og:url" content="//sniphpet.github.io/react-toastify">
-  <link rel="stylesheet" href="/react-toastify/css/normalize.css">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
-  <link rel="stylesheet" href="/react-toastify/css/cayman.css">
-</head>
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>React App</title>
+  </head>
+  <body>
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+    <div id="root"></div>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
 
-<body id="preview">
-<section class="page-header">
-  <h1 class="project-name">React Toastify</h1>
-  <h2 class="project-tagline">React notification made easy !</h2><a href="https://github.com/sniphpet/react-toastify" class="btn">View on GitHub</a> <a href="https://github.com/sniphpet/react-toastify/zipball/master" class="btn">Download .zip</a> <a href="https://github.com/sniphpet/react-toastify/tarball/master" class="btn">Download .tar.gz</a></section>
-<section class="main-content">
-  <h1><a id="React_Toastify_npmhttpsimgshieldsionpmdtreacttoastifysvg_npmhttpsimgshieldsionpmvreacttoastifysvg_licensehttpsimgshieldsiogithublicensesniphpetreacttoastifysvgmaxAge2592000_0"></a>React Toastify <a href=""><img src="https://img.shields.io/npm/dt/react-toastify.svg" alt="npm"></a> <a href=""><img src="https://img.shields.io/npm/v/react-toastify.svg" alt="npm"></a> <a href=""><img src="https://img.shields.io/github/license/sniphpet/react-toastify.svg?maxAge=2592000" alt="license"></a></h1>
-  <p>React-Toastify allow you to add toast notification to your app with ease.</p>
-  <ul>
-    <li><a href="#Demo">Demo</a></li>
-    <li><a href="#Installation">Installation</a></li>
-    <li><a href="#Features">Features</a></li>
-    <li><a href="#How-it-works-">How it works ?</a></li>
-    <li><a href="#Api">Api</a></li>
-    <li><a href="#Release-notes">Release Notes</a></li>
-    <li><a href="#Contribute">Contribute</a></li>
-    <li><a href="#License">License</a></li>
-  </ul>
-  <h2><a id="Demo"></a>Demo</h2>
-  <div id="root"></div>
-  <h2><a id="Installation"></a>Installation</h2><pre><code>$ npm install --save react-toastify
-$ yarn add react-toastify
-</code></pre>
-  <p>If you use a style loader you can import the stylesheet as follow :</p><pre><code class="language-javascript"><span class="hljs-keyword">import</span> <span class="hljs-string">'react-toastify/dist/ReactToastify.min.css'</span>
-</code></pre>
-  <h2><a id="Features"></a>Features</h2>
-  <ul>
-    <li>Can display a react component inside the toast !</li>
-    <li>Don’t rely on <code>findDOMNode</code></li>
-    <li>Has <code>onOpen</code> and <code>onClose</code> hooks. Both can access the props passed to the react component rendered inside the toast</li>
-    <li>Can be positioned</li>
-    <li>Define behavior per toast</li>
-    <li>Easy to setup</li>
-    <li>Super easy to customize</li>
-  </ul>
-  <h2><a id="How_it_works_"></a>How it works ?</h2>
-  <p>The component use a dead simple pubsub(observer pattern) to listen and trigger event. The pubsub allow us to display a toast from everywhere in our app.</p>
-  <ul>
-    <li>Add a ToastContainer to your app</li>
-  </ul><pre><code class="language-javascript"><span class="hljs-comment">//index.js</span>
-<span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
-<span class="hljs-keyword">import</span> { render } <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
-<span class="hljs-keyword">import</span> { ToastContainer } <span class="hljs-keyword">from</span> <span class="hljs-string">'react-toastify'</span>;
-<span class="hljs-keyword">import</span> <span class="hljs-string">'react-toastify/dist/ReactToastify.min.css'</span>;
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
 
-<span class="hljs-keyword">const</span> App = () =&gt; {
-  <span class="hljs-keyword">return</span> (
-    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-        {/*Your others component*/}
-      <span class="hljs-tag">&lt;<span class="hljs-title">ToastContainer</span> /&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-  )</span>;
-};
-
-render(
-  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">App</span>/&gt;</span>,
-  document.getElementById('root')
-);
-
-</span></code></pre>
-  <ul>
-    <li>Display a Toast from everywhere !</li>
-  </ul><pre><code class="language-javascript"><span class="hljs-comment">//foo.js</span>
-<span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
-<span class="hljs-keyword">import</span> { toast } <span class="hljs-keyword">from</span> <span class="hljs-string">'react-toastify'</span>;
-
-<span class="hljs-keyword">const</span> Greet = ({ name }) =&gt; <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>Hello {name}<span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-
-function handleClick() {
-    toast(<span class="hljs-tag">&lt;<span class="hljs-title">Greet</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">"John"</span> /&gt;</span>)</span>;
-}
-
-<span class="hljs-keyword">const</span> ToastBtn = () =&gt; {
-    <span class="hljs-keyword">return</span>(
-        <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{handleClick}</span>&gt;</span>My Awesome Button<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
-    )</span>
-}
-</code></pre>
-  <h2><a id="Api"></a>Api</h2>
-  <h3><a id="ToastContainer_Type__React_Component_90"></a>ToastContainer (Type : React Component)</h3>
-  <table class="table table-striped table-bordered">
-    <thead>
-    <tr>
-      <th>Props</th>
-      <th>Type</th>
-      <th>Default</th>
-      <th>Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <td>position</td>
-      <td>string</td>
-      <td>top-right</td>
-      <td>Define where the toast appear</td>
-    </tr>
-    <tr>
-      <td>autoClose</td>
-      <td>false|int</td>
-      <td>5000</td>
-      <td>Delay in ms to close the toast. If set to false, the notification need to be closed manualy</td>
-    </tr>
-    <tr>
-      <td>className</td>
-      <td>string</td>
-      <td>-</td>
-      <td>Add optional classes to the container</td>
-    </tr>
-    <tr>
-      <td>style</td>
-      <td>object</td>
-      <td>-</td>
-      <td>Add optional inline style to the container</td>
-    </tr>
-    <tr>
-      <td>closeButton</td>
-      <td>React Element</td>
-      <td>-</td>
-      <td>A React Component to replace the default close button</td>
-    </tr>
-    <tr>
-      <td>hideProgressBar</td>
-      <td>bool</td>
-      <td>false</td>
-      <td>Display or not the progress bar below the toast(remaining time)</td>
-    </tr>
-    <tr>
-      <td>removeCloseButton</td>
-      <td>bool</td>
-      <td>false</td>
-      <td>If you don’t want the toast to render a close button</td>
-    </tr>
-    </tbody>
-  </table>
-  <ul>
-    <li>Position accept the following value :</li>
-  </ul><pre><code class="language-javascript">top-right, top-center, top-left, bottom-right, bottom-center, bottom-left
-</code></pre>
-  <p>You can use the toast object to avoid any typo :</p><pre><code class="language-javascript"><span class="hljs-keyword">import</span> { toast } <span class="hljs-keyword">from</span> <span class="hljs-string">'react-toastify'</span>;
-
-toast.POSITION.TOP_LEFT, toast.POSITION.TOP_RIGHT, toast.POSITION.TOP_CENTER
-toast.POSITION.BOTTOM_LEFT,toast.POSITION.BOTTOM_RIGHT, toast.POSITION.BOTTOM_CENTER
-</code></pre>
-  <ul>
-    <li>When using a custom close button, the component will receive a prop <code>closeToast</code>. You need to call it to close the toast.</li>
-  </ul><pre><code class="language-javascript"><span class="hljs-comment">//The classname toastify__close is used to position the icon on the top right side, you don't need it.</span>
-<span class="hljs-keyword">const</span> FontAwesomeCloseButton = ({ closeToast }) =&gt; (
-  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">i</span>
-    <span class="hljs-attribute">className</span>=<span class="hljs-value">"toastify__close fa fa-times"</span>
-    <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{closeToast}</span>
-  /&gt;</span>
-)</span>;
-
-...
-&lt;ToastContainer autoClose={<span class="hljs-literal">false</span>} position=<span class="hljs-string">"top-center"</span> closeButton={<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">FontAwesomeCloseButton</span> /&gt;</span>}/&gt;
-...
-
-</span></code></pre>
-  <h3><a id="toast_Type_Object_134"></a>toast (Type: Object)</h3>
-  <p>All the function inside toast can take 2 parameters :</p>
-  <table class="table table-striped table-bordered">
-    <thead>
-    <tr>
-      <th>Parameter</th>
-      <th>Type</th>
-      <th>Required</th>
-      <th>Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <td>content</td>
-      <td>string|React Element</td>
-      <td>✓</td>
-      <td>Element that will be displayed</td>
-    </tr>
-    <tr>
-      <td>options</td>
-      <td>object</td>
-      <td>✘</td>
-      <td>Possible keys : autoClose, type, closeButton, hideProgressBar</td>
-    </tr>
-    </tbody>
-  </table>
-  <ul>
-    <li>Available options :
-      <ul>
-        <li><code>type</code>: Kind of notification. One of “default”, “success”, “info”, “warning”, “error”. You can use <code>toast.TYPE.INFO</code> and so on to avoid any typo.</li>
-        <li><code>onOpen</code>: callback before showing the notification. If you display a component its props will be passed to the callback as first parameter.</li>
-        <li><code>onClose</code>: callback after closing the notification. If you display a component its props will be passed to the callback as first parameter.</li>
-        <li><code>autoClose</code>: same as ToastContainer.</li>
-        <li><code>closeButton</code>: same as ToastContainer.</li>
-        <li><code>hideProgressBar</code>: same as ToastContainer.</li>
-      </ul>
-    </li>
-  </ul>
-  <p>⚠️ <em>autoClose, closeButton, hideProgressBar, supersede ToastContainer props</em> ⚠</p><pre><code class="language-javascript"><span class="hljs-keyword">const</span> Img = ({ src }) =&gt; <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">img</span> <span class="hljs-attribute">width</span>=<span class="hljs-value">{48}</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">{src}</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>;</span>
-<span class="hljs-keyword">const</span> options = {
-    onOpen: props =&gt; <span class="hljs-built_in">console</span>.log(props.foo),
-    onClose: props =&gt; <span class="hljs-built_in">console</span>.log(props.foo),
-    autoClose: <span class="hljs-number">6000</span>,
-    closeButton: <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">FontAwesomeCloseButton</span> /&gt;</span>,
-    type: toast.TYPE.INFO,
-    hideProgressBar: false
-};
-
-toast(<span class="hljs-tag">&lt;<span class="hljs-title">Img</span> <span class="hljs-attribute">foo</span>=<span class="hljs-value">{bar}</span>/&gt;</span>, options) // default, type: 'default'
-toast.success("Hello", options) // add type: 'success' to options
-toast.info("World", options) // add type: 'info' to options
-toast.warn(<span class="hljs-tag">&lt;<span class="hljs-title">Img</span> /&gt;</span>, options) // add type: 'warning' to options
-toast.error(<span class="hljs-tag">&lt;<span class="hljs-title">Img</span> /&gt;</span>, options) // add type: 'error' to options
-toast.dismiss() // Remove all toasts !
-</span></code></pre>
-  <h2><a id="Release_Notes"></a>Release Notes</h2>
-  <h3><a id="v140_175"></a>v1.4.0</h3>
-  <ul>
-    <li>React v16 ready : moving to prop-types and react-transition-group</li>
-    <li>Internal rewrite of components. The implementation wasn’t bad but it wasn’t good either. A better props validation has been added has well.</li>
-    <li>Removed useless dependencies. I was using the Object.values polyfill when a one line forEach can do the same is my case.</li>
-    <li>Now I believe it’s even easier to style the components. The sass sources files are now included when you install the package via yarn or npm</li>
-    <li>The default close button has been replaced.</li>
-  </ul>
-  <h4><a id="New_Features_183"></a>New Features</h4>
-  <ul>
-    <li>A progress bar is now visible to track the remaining time before the notification is closed. Of course if you don’t like it, you are free to disable it.</li>
-    <li>You can choose to display a close button or not.</li>
-    <li>Event pointer is set to none to avoid losing pointer events on everything beneath the toast container when no toast are displayed</li>
-    <li>The <code>closeToast</code> callback is also passed down to your component.</li>
-  </ul>
-  <h3><a id="v130_190"></a>v1.3.0</h3>
-  <ul>
-    <li>PropTypes package update</li>
-    <li>Dead code elimination</li>
-  </ul>
-  <h4><a id="New_Features_195"></a>New Features</h4>
-  <ul>
-    <li>Possibility to use a custom close button. Check the api docs of ToastContainer and toast.</li>
-  </ul>
-  <h3><a id="v122_199"></a>v1.2.2</h3>
-  <p>I was storing react component into state which is a bad practice. <a href="http://web.archive.org/web/20150419023006/http://facebook.github.io/react/docs/interactivity-and-dynamic-uis.html">What should Go in State</a>
-    <br>This is no more the case now. The separation of concern between the data and the view is respected.</p>
-  <h4><a id="Bug_fix_204"></a>Bug fix</h4>
-  <ul>
-    <li>Was calling cloneElement on undefined which cause your console bleed. See issue <a href="https://github.com/sniphpet/react-toastify/issues/2">#2</a></li>
-  </ul>
-  <h3><a id="v121_209"></a>v1.2.1</h3>
-  <h4><a id="Bug_fix_211"></a>Bug fix</h4>
-  <ul>
-    <li>Added Object.values polyfill otherwise won’t work with IE or EDGE. I ♥ IE.</li>
-  </ul>
-  <h3><a id="v111_215"></a>v1.1.1</h3>
-  <h4><a id="Bug_fix_217"></a>Bug fix</h4>
-  <ul>
-    <li>OnClose and OnOpen can access all the props passed to the component. Before
-      <br>only the props passed using toast options were accessible</li>
-  </ul>
-  <h4><a id="New_Features_222"></a>New Features</h4>
-  <ul>
-    <li>Passing prop using toast option will be removed at the next release. It doesn’t
-      <br>make sense to keep both way to pass props. Use the react way instead</li>
-  </ul>
-  <h3><a id="v110_227"></a>v1.1.0</h3>
-  <h4><a id="New_Features_229"></a>New Features</h4>
-  <ul>
-    <li>Added onOpen callback</li>
-    <li>Added onClose callback</li>
-  </ul>
-  <h2><a id="Contribute_234"></a>Contribute</h2>
-  <p>Any suggestions and pull request are welcome !</p>
-  <h2><a id="License_238"></a>License</h2>
-  <p>Licensed under MIT</p>
-  <footer class="site-footer"><span class="site-footer-owner"><a href="">React Toastify</a> is maintained by <a href="https://github.com/sniphpet">Fadi Khadra</a>.</span> <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span></footer>
-</section>
-</body>
-
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+  </body>
 </html>

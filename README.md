@@ -1,3 +1,1 @@
-# react-toastify
-
-GH-pages of react-toastify
+# Gh-pages of react-toastify

@@ -1,15 +1,15 @@
 {
-  "name": "gh-pages-react-toastify",
-  "homepage": "https://sniphpet.github.io/react-toastify/",
+  "name": "gh-toast",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "react": "^15.5.4",
-    "react-dom": "^15.5.4",
-    "react-toastify": "^1.7.0"
-  },
   "devDependencies": {
-    "react-scripts": "0.9.5"
+    "react-scripts": "1.0.10"
+  },
+  "dependencies": {
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-jss": "^7.0.2",
+    "react-md": "^1.0.17"
   },
   "scripts": {
     "start": "react-scripts start",
