@@ -6,7 +6,6 @@
   padding: 8px;
   border-radius: 1px;
   box-shadow: 0 1px 10px 0 rgba(0, 0, 0, .1), 0 2px 15px 0 rgba(0, 0, 0, .05);
-  color: #fff;
   display: flex;
   justify-content: space-between;
   max-height: 800px;
@@ -15,6 +14,7 @@
   cursor: pointer;
   &--default {
     background: $color-default;
+    color: #aaa;
   }
   &--info {
     background: $color-info;

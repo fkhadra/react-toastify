@@ -123,7 +123,8 @@
   position: fixed;
   padding: 4px;
   width: 320px;
-  box-sizing: border-box; }
+  box-sizing: border-box;
+  color: #fff; }
   .toastify--top-left {
     top: 1em;
     left: 1em; }
@@ -172,6 +173,11 @@
   align-self: flex-start; }
   .toastify__close:hover, .toastify__close:focus {
     opacity: 1; }
+  .toastify-content--default .toastify__close {
+    color: #000;
+    opacity: 0.3; }
+    .toastify-content--default .toastify__close:hover {
+      opacity: 1; }
 
 .toastify-content {
   position: relative;
@@ -180,7 +186,6 @@
   padding: 8px;
   border-radius: 1px;
   box-shadow: 0 1px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 15px 0 rgba(0, 0, 0, 0.05);
-  color: #fff;
   display: flex;
   justify-content: space-between;
   max-height: 800px;
@@ -188,7 +193,8 @@
   font-family: sans-serif;
   cursor: pointer; }
   .toastify-content--default {
-    background: #323232; }
+    background: #fff;
+    color: #aaa; }
   .toastify-content--info {
     background: #3498db; }
   .toastify-content--success {
@@ -216,5 +222,7 @@
   opacity: 0.7;
   animation: track-progress linear 1;
   background-color: rgba(255, 255, 255, 0.7); }
+  .toastify__progress--default {
+    background: linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55); }
 
 /*# sourceMappingURL=ReactToastify.css.map */
