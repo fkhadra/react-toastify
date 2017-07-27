@@ -47,6 +47,11 @@ class ToastContainer extends Component {
     closeOnClick: PropTypes.bool,
 
     /**
+     * Newest on top
+     */
+    newestOnTop: PropTypes.bool,
+
+    /**
      * An optional className
      */
     className: PropTypes.string,
@@ -79,6 +84,7 @@ class ToastContainer extends Component {
     closeButton: <DefaultCloseButton />,
     pauseOnHover: true,
     closeOnClick: true,
+    newestOnTop: false,
     className: null,
     style: null,
     toastClassName: '',
@@ -245,7 +251,9 @@ class ToastContainer extends Component {
 
   renderToast() {
     const toastToRender = {};
-    const collection = Object.keys(this.collection);
+    const collection = this.props.newestOnTop
+    ? Object.keys(this.collection).reverse()
+    : Object.keys(this.collection);
 
     collection.forEach(toastId => {
       const item = this.collection[toastId];
