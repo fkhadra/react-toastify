@@ -148,7 +148,8 @@
 
 @media only screen and (max-width: 480px) {
   .toastify {
-    width: 100%; }
+    width: 100%;
+    padding: 0; }
 
   .toastify--top-left, .toastify--top-center, .toastify--top-right {
     left: 0;
@@ -207,6 +208,9 @@
 .toastify__body {
   margin: auto 0; }
 
+@media only screen and (max-width: 480px) {
+  .toastify-content {
+    margin-bottom: 0; } }
 @keyframes track-progress {
   0% {
     width: 100%; }

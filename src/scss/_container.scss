@@ -39,6 +39,7 @@
 @media #{$smartphone-portrait} {
   .toastify{
     width: 100%;
+    padding: 0;
   }
   .toastify--top-left, .toastify--top-center, .toastify--top-right {
     left: 0;

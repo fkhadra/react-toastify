@@ -33,3 +33,9 @@
 .toastify__body {
   margin: auto 0;
 }
+
+@media #{$smartphone-portrait} {
+  .toastify-content{
+    margin-bottom: 0;  
+  }
+}
