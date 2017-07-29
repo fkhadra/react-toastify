@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import "react-toastify/dist/ReactToastify.min.css";
 import './index.css';
 import 'react-md/dist/react-md.indigo-pink.min.css'
 import App from './App';

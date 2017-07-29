@@ -3,3 +3,52 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  text-align: center;
+    background-color: #222;
+    height: 250px;
+    padding: 20px;
+    color: #fff;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.code{
+  display: inline-block;
+  background: #000;
+  color: #fff;
+}
+
+.dark-toast{
+  background: #323232;
+  color: #fff;
+}
+
+.dark-toast > .toastify__close{
+  color: #fff;
+}
+
+.transparent-progress{
+  background:  rgba(255,255,255,.7);
+}
+
+.fancy-progress{
+  background: repeating-radial-gradient(red, yellow 10%, green 15%);
+}
+
+button{
+  margin-right: 10px;
+}

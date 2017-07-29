@@ -57,7 +57,12 @@ class RemoveToast extends Component {
   render() {
     return (
       <Card title="Remove Toast Programmatically">
-        <p>A toast id is returned each time you display a toast. </p>
+        <p>
+          An id is returned each time you display a toast, use it to remove a given toast programmatically by calling <span className="code">toast.dismiss(id);</span>
+        </p>
+        <p>
+          Without args, all the displayed toasts will be dismissed.
+        </p>
         <div>
           <Button raised primary onClick={this.notify} label="Notify" />
 

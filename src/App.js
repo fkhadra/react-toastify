@@ -6,7 +6,7 @@ import Header from "./Header";
 import BasicExample from "./BasicExample";
 
 import "./App.css";
-import "react-toastify/dist/ReactToastify.min.css";
+
 
 const style = {
   container: {
@@ -33,7 +33,7 @@ class App extends Component {
       position: toast.POSITION.TOP_CENTER
     });
     toast.error("Error Notification !", {
-      position: toast.POSITION.BOTTOM_RIGHT
+      position: toast.POSITION.TOP_LEFT
     });
     toast.warn("Warning Notification !", {
       position: toast.POSITION.BOTTOM_LEFT
@@ -41,8 +41,10 @@ class App extends Component {
     toast.info("Info Notification !", {
       position: toast.POSITION.BOTTOM_CENTER
     });
-    toast("Default Notification !", {
-      position: toast.POSITION.TOP_LEFT
+    toast("Custom Style Notification !", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      className: 'dark-toast',
+      progressClassName: 'transparent-progress'
     });
   }
 
@@ -52,9 +54,13 @@ class App extends Component {
     });
   };
 
-  handleSelect = (value, name) =>{
+  setDelay = (value) => {
+      this.setState({ delay: value > 0  ? parseInt(value, 10) : 1});
+  }
+
+  handleRadio = (value, e) =>{
     this.setState({
-      [name]: value
+      [e.target.name]: value
     });
   };
 
@@ -65,7 +71,8 @@ class App extends Component {
         <Header />
           <BasicExample 
           handleCheckBox={this.handleCheckBox} 
-          handleSelect={this.handleSelect}
+          handleRadio={this.handleRadio}
+          setDelay={this.setDelay}
           {...this.state}/>
         <ToastContainer 
           hideProgressBar={this.state.hideProgressBar}

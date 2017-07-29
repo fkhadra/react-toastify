@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { toast } from "react-toastify";
 
-import SelectField from "react-md/lib/SelectFields";
+import TextField from 'react-md/lib/TextFields';
+import Radio from 'react-md/lib/SelectionControls/Radio';
 import Checkbox from "react-md/lib/SelectionControls/Checkbox";
 import Card from "./Card";
 import Button from "react-md/lib/Buttons";
@@ -126,11 +127,33 @@ class Simple extends Component {
   }
 
   getPositions() {
-    return Object.keys(toast.POSITION).map(k => toast.POSITION[k]);
+    return Object.keys(toast.POSITION).map(k => 
+       <Radio
+            id={toast.POSITION[k]}
+            key={toast.POSITION[k]}
+            inline
+            name="position"
+            value={toast.POSITION[k]}
+            label={toast.POSITION[k]}
+            checked={toast.POSITION[k] === this.props.position}
+            onChange={this.props.handleRadio}
+          />
+    );
   }
 
   getTypes() {
-    return Object.keys(toast.TYPE).map(k => toast.TYPE[k]);
+    return Object.keys(toast.TYPE).map(k => 
+       <Radio
+            id={toast.TYPE[k]}
+            key={toast.TYPE[k]}
+            inline
+            name="type"
+            value={toast.TYPE[k]}
+            label={toast.TYPE[k]}
+            checked={toast.TYPE[k] === this.props.type}
+            onChange={this.props.handleRadio}
+          />
+    );
   }
 
   handlePosition = value => this.props.handleSelect(value, "position");
@@ -139,47 +162,43 @@ class Simple extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <Card title="Simple Example">
+      <Card title="Usage">
+        <p>
+          By default all toasts will inherits ToastContainer's props. Props defined on <span className="code">toast supersede ToastContainer's props</span>.
+        </p>
         <div>
           <label className={classes.label} htmlFor="position">
-            Position:{" "}
+            Position*:
           </label>
-          <SelectField
-            id="position"
-            placeholder="position"
-            name="position"
-            value={this.props.position}
-            menuItems={this.getPositions()}
-            position={SelectField.Positions.BELOW}
-            className="md-cell"
-            onChange={this.handlePosition}
-          />
+          {this.getPositions()}
         </div>
 
         <div>
           <label className={classes.label} htmlFor="type">
-            Type:{" "}
+            Type*:
           </label>
-          <SelectField
-            id="type"
-            placeholder="type"
-            menuItems={this.getTypes()}
-            value={this.props.type}
-            position={SelectField.Positions.BELOW}
-            className="md-cell"
-            onChange={this.handleType}
+          {this.getTypes()}
+        </div>
+        <div>
+            <TextField
+            id="delay"
+            label="delay"
+            type="number"
+            value={this.props.delay}
+            className="md-cell md-cell--bottom"
+            onChange={this.props.setDelay}
           />
         </div>
         <Checkbox
           id="autoClose"
           name="autoClose"
-          label="Auto close after delay"
+          label="Auto close after delay*"
           checked={this.props.autoClose}
           onChange={this.props.handleCheckBox}
         />
         <Checkbox
           id="hideProgressBar"
-          name="hideProgressBar"
+          name="hideProgressBar*"
           label="Hide progress bar (less fanciness !)"
           checked={this.props.hideProgressBar}
           onChange={this.props.handleCheckBox}
@@ -194,23 +213,25 @@ class Simple extends Component {
         <Checkbox
           id="closeOnClick"
           name="closeOnClick"
-          label="Close on click"
+          label="Close on click*"
           checked={this.props.closeOnClick}
           onChange={this.props.handleCheckBox}
         />
         <Checkbox
           id="pauseOnHover"
           name="pauseOnHover"
-          label="Pause progress bar on hover"
+          label="Pause progress bar on hover*"
           checked={this.props.pauseOnHover}
           onChange={this.props.handleCheckBox}
         />
+        <p><i>* can be overwritten by toast props</i></p>
         <Button
           raised
           onClick={this.notify}
           label="Notify !"
           className={classes.btn}
         />
+        
         <HighLight>
           {this.getCode()}
         </HighLight>
