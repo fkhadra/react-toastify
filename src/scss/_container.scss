@@ -4,9 +4,8 @@
   position: fixed;
   padding: 4px;
   width: $toast-width;
-  max-width: 98%;
-  color: $font-color;
   box-sizing: border-box;
+  color: #fff;
   &--top-left {
     top: 1em;
     left: 1em;
@@ -18,7 +17,7 @@
   }
   &--top-right {
     top: 1em;
-    right: 2em;
+    right: 1em;
   }
 
   &--bottom-left {
@@ -32,11 +31,25 @@
   }
   &--bottom-right {
     bottom: 1em;
-    right: 2em;
+    right: 1em;
   }
-  &__img {
-    float: left;
-    margin-right: 8px;
-    vertical-align: middle;
+  
+}
+
+@media #{$smartphone-portrait} {
+  .toastify{
+    width: 100%;
+    padding: 0;
+  }
+  .toastify--top-left, .toastify--top-center, .toastify--top-right {
+    left: 0;
+    top: 0;
+    margin: 0;
+  }
+  
+  .toastify--bottom-left, .toastify--bottom-center, .toastify--bottom-right {
+    left: 0;
+    bottom: 0;
+    margin: 0;
   }
 }

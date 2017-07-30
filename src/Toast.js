@@ -13,17 +13,25 @@ class Toast extends Component {
     children: PropTypes.node.isRequired,
     closeToast: PropTypes.func.isRequired,
     position: PropTypes.oneOf(objectValues(config.POSITION)).isRequired,
+    pauseOnHover: PropTypes.bool.isRequired,
+    closeOnClick: PropTypes.bool.isRequired,
     hideProgressBar: PropTypes.bool,
     onOpen: PropTypes.func,
     onClose: PropTypes.func,
-    type: PropTypes.oneOf(objectValues(config.TYPE))
+    type: PropTypes.oneOf(objectValues(config.TYPE)),
+    className: PropTypes.string,
+    bodyClassName: PropTypes.string,
+    progressClassName: PropTypes.string
   };
 
   static defaultProps = {
     type: config.TYPE.DEFAULT,
     hideProgressBar: false,
     onOpen: null,
-    onClose: null
+    onClose: null,
+    className: '',
+    bodyClassName: '',
+    progressClassName: ''
   };
 
   constructor(props) {
@@ -52,14 +60,16 @@ class Toast extends Component {
 
   getToastProps() {
     const toastProps = {
-      className: `toastify-content toastify-content--${this.props.type}`,
+      className: `toastify-content toastify-content--${this.props.type} ${this.props.className}`,
       ref: this.setRef
     };
 
-    if (this.props.autoClose !== false) {
+    if (this.props.autoClose !== false && this.props.pauseOnHover === true) {
       toastProps.onMouseEnter = this.pauseToast;
       toastProps.onMouseLeave = this.playToast;
     }
+
+    this.props.closeOnClick && (toastProps.onClick = this.props.closeToast);
 
     return toastProps;
   }
@@ -103,10 +113,10 @@ class Toast extends Component {
       <div
         {...this.getToastProps()}
       >
-        {closeButton !== false && closeButton}
-        <div className="toastify__body">
+        <div className={`toastify__body ${this.props.bodyClassName}`}>
           {children}
         </div>
+        {closeButton !== false && closeButton}
         {
           autoClose !== false &&
           <ProgressBar
@@ -115,6 +125,7 @@ class Toast extends Component {
             closeToast={closeToast}
             hide={hideProgressBar}
             type={type}
+            className={this.props.progressClassName}
           />
         }
       </div>

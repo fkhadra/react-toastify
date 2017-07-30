@@ -1,10 +1,10 @@
 /* eslint-env jest */
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 
 import ToastContainer from './../ToastContainer';
 import Toast from './../Toast';
-import toastify from './../toastify';
+import toaster from './../toaster';
 
 import config from './../config';
 import EventManager from './../util/EventManager';
@@ -20,7 +20,7 @@ describe('ToastContainer', () => {
     const component = mount(<ToastContainer className="plop" style={{ background: 'red' }} />);
     const expectedStyle = { background: 'red' };
 
-    toastify('coucou');
+    toaster('coucou');
     jest.runAllTimers();
 
     expect(component.find('.toastify').hasClass('plop')).toBe(true);
@@ -41,9 +41,9 @@ describe('ToastContainer', () => {
   it('Should set style pointer events to none when there is no toast to render', () => {
     const component = mount(<ToastContainer />);
 
-    toastify('coucou');
+    toaster('coucou');
     jest.runAllTimers();
-    toastify.dismiss();
+    toaster.dismiss();
     jest.runAllTimers();
 
     expect(component.find('.toastify').prop('style').pointerEvents).toEqual('none');
@@ -54,10 +54,11 @@ describe('ToastContainer', () => {
     -closeButton
     -children
     -position
+    -pauseOnHover
     -closeToast`, () => {
     const component = mount(<ToastContainer />);
     // Create a toast
-    toastify('coucou');
+    toaster('coucou');
     jest.runAllTimers();
 
     const props = component.children().find(Toast).props();
@@ -67,7 +68,8 @@ describe('ToastContainer', () => {
       'closeButton',
       'children',
       'position',
-      'closeToast'
+      'closeToast',
+      'pauseOnHover'
     ].forEach(key => expect(hasProp(props, key)).toBeTruthy());
   });
 });

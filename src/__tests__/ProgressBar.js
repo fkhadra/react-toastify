@@ -11,6 +11,16 @@ const REQUIRED_PROPS = {
 };
 
 describe('ProgressBar', () => {
+  it('Should merge className', () => {
+    const component = shallow(
+      <ProgressBar
+        {...REQUIRED_PROPS}
+        className="test"
+      />
+    );
+    expect(component.find('.test')).toHaveLength(1);
+  });
+
   it('Should call closeToast function when animation end', () => {
     const component = shallow(<ProgressBar {...REQUIRED_PROPS} />);
 

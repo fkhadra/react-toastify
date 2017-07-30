@@ -1,23 +1,24 @@
 .toastify__close{
-  position: absolute;
-  top: 0px;
-  right: 2px;
-  width: 16px;
-  height: 16px;
   padding: 0;
-  text-align: center;
-  text-decoration: none;
-  color: #aaa;
+  color: #fff;
   font-weight: bold;
   font-size: 14px;
   background: transparent;
   outline: none;
   border: none;
   cursor: pointer;
-  opacity: .5;
+  opacity: .7;
   transition: .3s ease;
+  align-self: flex-start;
   &:hover, &:focus {
     opacity: 1;
-    color: #000000;
+  }
+  .toastify-content--default &{
+    color: #000;  
+    opacity: 0.3;
+    &:hover{
+      opacity: 1;
+    }
   }
 }
+

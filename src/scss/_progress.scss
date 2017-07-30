@@ -12,24 +12,16 @@
   bottom: 0;
   left: 0;
   width: 0;
-  height: 4px;
+  height: 5px;
   z-index: 999;
-  opacity: 0.5;
+  opacity: 0.7;
   animation: track-progress linear 1;
-
+  background-color: rgba(255,255,255,.7);
   &--default{
-    background-image: $color-progress-default;
+    background: $color-progress-default;
   }
-  &--info{
-    background-color: $color-info;
-  }
-  &--success{
-    background-color: $color-success;
-  }
-  &--warning{
-    background-color: $color-warning;
-  }
-  &--error{
-    background-color: $color-error;
-  }
+  &--info{}
+  &--success{}
+  &--warning{}
+  &--error{}
 }

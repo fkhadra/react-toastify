@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import config from './config';
 
-function ProgressBar({ delay, isRunning, closeToast, type, hide }) {
+function ProgressBar({ delay, isRunning, closeToast, type, hide, className }) {
   const style = {
     animationDuration: `${delay}ms`,
     animationPlayState: isRunning ? 'running' : 'paused'
@@ -16,7 +16,7 @@ function ProgressBar({ delay, isRunning, closeToast, type, hide }) {
 
   return (
     <div
-      className={`toastify__progress toastify__progress--${type}`}
+      className={`toastify__progress toastify__progress--${type} ${className}`}
       style={style}
       onAnimationEnd={closeToast}
     />
@@ -47,12 +47,18 @@ ProgressBar.propTypes = {
   /**
    * Hide or not the progress bar
    */
-  hide: PropTypes.bool
+  hide: PropTypes.bool,
+
+  /**
+   * Optionnal className
+   */
+  className: PropTypes.string
 };
 
 ProgressBar.defaultProps = {
   type: config.TYPE.DEFAULT,
-  hide: false
+  hide: false,
+  className: ''
 };
 
 export default ProgressBar;
