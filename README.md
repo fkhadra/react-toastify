@@ -415,7 +415,7 @@ But, it brings a lots of new and exciting features !
 - Added a possibility to check if a given toast is displayed or not. By using that method we can prevent duplicate. [issue #3](https://github.com/fkhadra/react-toastify/issues/3)
 - Can decide to close the toast on click
 - Can show newest toast on top
-- Can define additionnal className for toast
+- Can define additionnal className for toast[issue #21](https://github.com/fkhadra/react-toastify/issues/21)
 - Much more mobile ready than the past
 
 #### Bug Fixes
