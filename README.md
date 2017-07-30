@@ -10,12 +10,15 @@ React-Toastify allow you to add notification to your app with ease.
  * [Features](#features)
  * [Usage](#usage)
     * [Simple](##simple)
+    * [Positioning toast](##positioning-toast)
     * [Remove a toast programmatically](##remove-a-toast-programmatically)
     * [Prevent duplicate](##prevent-duplicate)
     * [Define hook](##define-hook)
     * [Set a custom close button or simply remove it](##set-a-custom-close-button-or-simply-remove-it)
     * [Define your style](##define-your-style)
+    * [Mobile](##mobile)
  * [Api](#api)
+ * [Browser Support](#browser-support)
  * [Release Notes](#release-notes)
  * [Contribute](#contribute)
  * [License](#license)
@@ -82,6 +85,52 @@ By default all toasts will inherits ToastContainer's props. **Props defined on t
     }
   }
 ```
+
+### Positioning toast
+
+By default all the toasts will be positionned on the top right of your browser. If a position is set on a toast, the one defined on ToastContainer will be overwritten
+
+The following values are allowed: **top-right, top-center, top-left, bottom-right, bottom-center, bottom-left**
+
+For convenience, toast expose a POSITION property to avoid any typo.
+
+```javascript
+ // toast.POSITION.TOP_LEFT, toast.POSITION.TOP_RIGHT, toast.POSITION.TOP_CENTER
+ // toast.POSITION.BOTTOM_LEFT,toast.POSITION.BOTTOM_RIGHT, toast.POSITION.BOTTOM_CENTER
+
+  import React, { Component } from 'react';
+  import { toast } from 'react-toastify';
+
+  class Position extends Component {
+    notify = () => {
+      toast("Default Notification !");
+    toast.success("Success Notification !", {
+      position: toast.POSITION.TOP_CENTER
+    });
+    toast.error("Error Notification !", {
+      position: toast.POSITION.TOP_LEFT
+    });
+    toast.warn("Warning Notification !", {
+      position: toast.POSITION.BOTTOM_LEFT
+    });
+    toast.info("Info Notification !", {
+      position: toast.POSITION.BOTTOM_CENTER
+    });
+    toast("Custom Style Notification !", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      className: 'dark-toast',
+      progressClassName: 'transparent-progress'
+    });
+  };
+
+    render(){
+      return <button onClick={this.notify}>Notify</button>;
+    }
+  }
+```
+
+
+
 
 ### Remove a toast programmatically
 
@@ -269,13 +318,19 @@ Taste and colours are not always the same ! You have several options.
   }
 ```
 
+### Mobile
+
+On mobile the toast will take all the width available.
+
+![react toastiy mobile](https://user-images.githubusercontent.com/5574267/28754040-ae7195ea-753d-11e7-86e1-f23c5e6bc531.gif)
+
 ## Api
   
 ### ToastContainer (Type : React Component) 
    
 | Props             | Type           | Default   | Description                                                     |
 | ----------------- | -------------- | --------- | --------------------------------------------------------------- |
-| position          | string         | top-right | Define where the toast appear                                   |
+| position          | string         | top-right | One of top-right, top-center, top-left, bottom-right, bottom-center, bottom-left                                   |
 | autoClose         | false or int   | 5000      | Delay in ms to close the toast. If set to false, the notification need to be closed manualy |
 | closeButton       | React Element or false     | -                                                               | A React Component to replace the default close button or `false` to hide the button |
 | hideProgressBar   | bool           | false     | Display or not the progress bar below the toast(remaining time) |
@@ -287,44 +342,13 @@ Taste and colours are not always the same ! You have several options.
 | toastClassName    | string         | -         | Add optional classes to the toast                               |
 | bodyClassName     | string         | -         | Add optional classes to the toast body                          |
 | progressClassName | string         | -         | Add optional classes to the progress bar                        |
-
-- Position accept the following value : 
       
-```javascript
-top-right, top-center, top-left, bottom-right, bottom-center, bottom-left
-```
-      
-You can use the toast object to avoid any typo :
-
-```javascript
-import { toast } from 'react-toastify';
-      
-toast.POSITION.TOP_LEFT, toast.POSITION.TOP_RIGHT, toast.POSITION.TOP_CENTER
-toast.POSITION.BOTTOM_LEFT,toast.POSITION.BOTTOM_RIGHT, toast.POSITION.BOTTOM_CENTER
-```  
- 
-- When using a custom close button, the component will receive a prop ```closeToast```. You need to call it to close the toast.
-
-```javascript
-//The classname toastify__close is used to position the icon on the top right side, you don't need it.
-const FontAwesomeCloseButton = ({ closeToast }) => (
-  <i
-    className="toastify__close fa fa-times"
-    onClick={closeToast}
-  />
-);
-
-...
-<ToastContainer autoClose={false} position={toast.POSITION.TOP_CENTER} closeButton={<FontAwesomeCloseButton />}/>
-...
-
-```
 
 ### toast (Type: Object) 
    
 All the method of toast return a **toastId** except `dismiss` and `isActive`. 
 The **toastId** can be used to remove a toast programmatically or to check if the toast is displayed. 
-All the method but `dismiss` and `isActive` can take 2 parameters :
+
    
 | Parameter | Type    | Required      | Description                                                   |
 | --------- | ------- | ------------- | ------------------------------------------------------------- |
@@ -333,10 +357,11 @@ All the method but `dismiss` and `isActive` can take 2 parameters :
 
 - Available options :
     - `type`: Kind of notification. One of "default", "success", "info", "warning", "error". You can use `toast.TYPE.INFO` and so on to avoid any typo.
-    - `onOpen`: callback before showing the notification. If you display a component its props will be passed to the callback as first parameter.
-    - `onClose`: callback after closing the notification. If you display a component its props will be passed to the callback as first parameter.
+    - `onOpen`: Called inside componentDidMount
+    - `onClose`: Called inside componentWillUnmount
     - `autoClose`: same as ToastContainer.
     - `closeButton`: same as ToastContainer.
+    - `closeOnClick`: same as ToastContainer.
     - `hideProgressBar`: same as ToastContainer.
     - `position`: same as ToastContainer
     - `pauseOnHover`: same as ToastContainer
@@ -359,7 +384,6 @@ const options = {
     pauseOnHover: true
 };
 
-// each method return a toast id except dismiss.   
 const toastId = toast(<Img foo={bar}/>, options) // default, type: 'default'
 toast.success("Hello", options) // add type: 'success' to options
 toast.info("World", options) // add type: 'info' to options
@@ -370,21 +394,34 @@ toast.dismiss(toastId) // Remove given toast
 toast.isActive(toastId) //Check if a toast is displayed or not
 ```
 
+## Browser Support
+
+Chrome | Firefox | IE 11 | Edge | Safari
+--- | --- | --- | --- | --- |
+ ✔ |  ✔ | Partial, need to fix animation asap | ✔ | ✔ |
 
 ## Release Notes
 
 ### V2.0.0
+
+This version may introduce breaking changes due to redesign. My apologies.
+
+But, it brings a lots of new and exciting features ! 
 
 #### New Features
 
 - The default design has been reviewed. The component is now usable out of the box without the need to touch the css. Relate to [issue #28](https://github.com/fkhadra/react-toastify/issues/28)
 - The toast timer can keep running on hover. [issue #33](https://github.com/fkhadra/react-toastify/issues/33)
 - Added a possibility to check if a given toast is displayed or not. By using that method we can prevent duplicate. [issue #3](https://github.com/fkhadra/react-toastify/issues/3)
+- Can decide to close the toast on click
+- Can show newest toast on top
+- Can define additionnal className for toast
+- Much more mobile ready than the past
 
 #### Bug Fixes
 
 - The space in of left boxes from window & right boxes from window is different.[issue #25](https://github.com/fkhadra/react-toastify/issues/25)
-- Support ie11. [issue #26](https://github.com/fkhadra/react-toastify/issues/26)
+- Partial support of ie11. I still need to fix the animation but I need a computer with ie11 for that xD [issue #26](https://github.com/fkhadra/react-toastify/issues/26)
 
 ### v1.7.0
 
