@@ -1,12 +1,20 @@
 # React Toastify [![Build Status](https://travis-ci.org/fkhadra/react-toastify.svg?branch=master)](https://travis-ci.org/fkhadra/react-toastify) [![npm](https://img.shields.io/npm/dm/react-toastify.svg)]() [![npm](https://img.shields.io/npm/v/react-toastify.svg)]() [![license](https://img.shields.io/github/license/fkhadra/react-toastify.svg?maxAge=2592000)]()
 
-React-Toastify allow you to add toast notification to your app with ease.
+
+![React toastify](https://user-images.githubusercontent.com/5574267/28753331-1380a2f0-7534-11e7-8456-0b32e959db07.gif "React toastify")
+
+React-Toastify allow you to add notification to your app with ease.
 
  * [Demo](#demo)
  * [Installation](#installation)
  * [Features](#features)
- * [How it works ?](#how-it-works-)
- * [How do I prevent duplicates ?](#how-do-i-prevent-duplicates-)
+ * [Usage](#usage)
+    * [Simple](##simple)
+    * [Remove a toast programmatically](##remove-a-toast-programmatically)
+    * [Prevent duplicate](##prevent-duplicate)
+    * [Define hook](##define-hook)
+    * [Set a custom close button or simply remove it](##set-a-custom-close-button-or-simply-remove-it)
+    * [Define your style](##define-your-style)
  * [Api](#api)
  * [Release Notes](#release-notes)
  * [Contribute](#contribute)
@@ -14,7 +22,7 @@ React-Toastify allow you to add toast notification to your app with ease.
 
 ## Demo
    
-Live demo [here](https://fkhadra.github.io/react-toastify/)   
+[A demo is worth thousand word](https://fkhadra.github.io/react-toastify/)   
    
 ## Installation 
    
@@ -32,7 +40,7 @@ import 'react-toastify/dist/ReactToastify.min.css'
 ## Features
 
 - Can display a react component inside the toast !
-- Don't rely on `findDOMNode`
+- Don't rely on `findDOMNode` or any DOM hack
 - Has ```onOpen``` and ```onClose``` hooks. Both can access the props passed to the react component rendered inside the toast
 - Can be positioned per toast
 - Can remove toast programmatically
@@ -40,100 +48,245 @@ import 'react-toastify/dist/ReactToastify.min.css'
 - Easy to setup
 - Super easy to customize
 
-## How it works ?
-   
-The component use a dead simple pubsub(observer pattern) to listen and trigger event. The pubsub allow us to display a toast from everywhere in our app.
+## Usage
 
-- Add a ToastContainer to your app
-   
-```javascript
-//index.js
-import React from 'react';
-import { render } from 'react-dom';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.min.css'; 
+### Simple 
 
-const App = () => {
-  return (
-    <div>
-        {/*Your others component*/}
-      <ToastContainer />
-    </div>
-  );
-};
-
-render(
-  <App/>,
-  document.getElementById('root')
-);
-
-```
-
-- Display a Toast from everywhere !
-   
-```javascript
-//foo.js
-import React from 'react';
-import { toast } from 'react-toastify';
-
-const Greet = ({ name }) => <div>Hello {name}</div>
-    
-function handleClick() {
-    toast(<Greet name="John" />);
-}
-    
-const ToastBtn = () => {
-    return(
-        <button onClick={handleClick}>My Awesome Button</button>
-    )
-}
-```
-
-## How do I prevent duplicates ?
-
-When you display a toast, the message will be transformed to a react component. Compare equality of react component is not easy as comparing string.
-
-Furthermore, it will add too much complexity if the library had to manage it. Any better idea are welcome !
-
-By checking if a given toast is running or not we can easly prevent duplicates. You will also have more control over the way to prevent duplicates.
+By default all toasts will inherits ToastContainer's props. **Props defined on toast supersede ToastContainer's props.**
 
 ```javascript
-import React, { Component } from 'react';
-import { toast } from 'react-toastify';
+  import React, { Component } from 'react';
+  import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.min.css';
 
-class App extends Component{
-  toastId = null;
+  class App extends Component {
+    notify = () => toast("Wow so easy !");
 
-  sendEmail = () => {
-    if (!toast.isActive(this.toastId)){
-      this.toastId = toast.success('Email sent !');
+    render(){
+      return (
+        <div>
+        <button onClick={this.notify}>Notify !</button>
+        {/* One container to rule them all! */}
+        <ToastContainer 
+          position="top-right"
+          type="default"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          pauseOnHover
+        />
+        {/*Can be written <ToastContainer />. Props defined are the same as the default one. */}
+        </div>
+      );
     }
   }
-
-  render(){
-    return <button onClick={this.sendEmail}>Send Email</button>
-  }
-}
-
 ```
 
+### Remove a toast programmatically
+
+An id is returned each time you display a toast, use it to remove a given toast programmatically by calling ```toast.dismiss(id)```
+
+Without args, all the displayed toasts will be dismissed.
+
+```javascript
+  import React, { Component } from 'react';
+  import { toast } from 'react-toastify';
+
+  class Example extends Component {
+    toastId = null;
+
+    notify = () => this.toastId = toast("Lorem ipsum dolor");
+Define hook
+    dismiss = () =>  toast.dismiss(this.toastId);
+
+    dismissAll = () =>  toast.dismiss();
+
+    render(){
+      return (
+        <div>
+          <button onClick={this.notify}>Notify</button>
+          <button onClick={this.dismiss}>Dismiss</button>
+          <button onClick={this.dismissAll}>Dismiss All</button>
+        </div>
+      );
+    }
+  }
+```
+
+### Prevent duplicate
+
+To prevent duplicates, you can check if a given toast is active by calling toast.isActive(id) like the snippet below. With this approach, you can decide with more precision whether or not you want to display a toast.
+
+```javascript
+  import React, { Component } from 'react';
+  import { toast } from 'react-toastify';
+
+  class Example extends Component {
+    toastId = null;
+
+    notify = () => {
+      if (! toast.isActive(this.toastId)) {
+        this.toastId = toast("I cannot be duplicated !");
+      }
+    }
+
+    render(){
+      return (
+        <div>
+          <button onClick={this.notify}>Notify</button>
+        </div>
+      );
+    }
+  }
+```
+
+### Define hook
+
+You can define two hooks on toast:
+
+- onOpen is called inside componentDidMount
+- onClose is called inside componentWillUnmount
+
+```javascript
+  import React, { Component } from 'react';
+  import { toast } from 'react-toastify';
+
+  class Hook extends Component {
+    notify = () => toast("Lorem ipsum dolor", {
+      onOpen: (childrenProps) => window.alert('I counted to infinity once then..'),
+      onClose: (childrenProps) => window.alert('I counted to infinity twice')
+    });
+
+    render(){
+      return <button onClick={this.notify}>Notify</button>;
+    }
+  }
+```
   
+### Set a custom close button or simply remove it
+
+When you use a custom close button, your button will receive a ```closeToast``` props. You need to call it in order to close the toast. The customCloseButton can be passed to the ToastContainer so all the toast display the custom close or you can set it by toast.
+If ```customCloseButton``` is set to false, the close button will be not displayed.
+
+
+```javascript
+  import React, { Component } from 'react';
+  import { toast } from 'react-toastify';
+
+  const CloseButton = ({ YouCanPassProps, closeToast }) => (
+    <i
+      className="material-icons"
+      onClick={closeToast}
+    >
+    delete
+    </i>
+  );
+
+  class CustomClose extends Component {
+    notify = () => {
+      toast("The close button change when Chuck Norris display a toast",{
+        closeButton: <CloseButton YouCanPassProps="foo" />
+      });
+    };
+
+    render(){
+      return <button onClick={this.notify}>Notify</button>;
+    }
+  }
+```
+
+### Define your style
+
+Taste and colours are not always the same ! You have several options.
+
+- Overwrite ```toastify-content``` and ```toastify__progress```
+- Create two css classes and pass them to a toast
+
+```css
+.dark-toast{
+  background: #323232;
+  color: #fff;
+}
+
+.dark-toast > .toastify__close{
+  color: #fff;
+}
+
+.transparent-progress{
+  background:  rgba(255,255,255,.7);
+}
+
+.fancy-progress{
+  background: repeating-radial-gradient(red, yellow 10%, green 15%);
+}
+                
+```
+
+```javascript
+  import React, { Component } from 'react';
+  import { toast } from 'react-toastify';
+
+  class Style extends Component {
+    notify = () => {
+      toast("Dark style notification with default type progress bar",{
+        className: 'dark-toast',
+        autoClose: 5000
+      });
+
+      toast("Dark style with transparent progress bar, the one used with others types.",{
+        className: 'dark-toast',
+        progressClassName: 'transparent-progress',
+        autoClose: 5000
+      });
+
+      toast("Dark style with ugly progress bar",{
+        className: 'dark-toast',
+        progressClassName: 'fancy-progress',
+        autoClose: 5000
+      });
+    };
+    
+    render(){
+      return <button onClick={this.notify}>Notify</button>;
+    }
+  }
+```
+
+- Or pass your classes to the ToastContainer to set the classes for all your toast in one shot.
+
+
+```javascript
+  render(){
+    return(
+      {/*Component*/}
+      <ToastContainer 
+        toastClassName="dark-toast"
+        progressClassName="transparent-progress" 
+      />
+      {/*Component*/}
+    );
+  }
+```
+
 ## Api
   
 ### ToastContainer (Type : React Component) 
    
-|Props|Type|Default|Description|
-|-----|----|-------|-----------|
-|position|string|top-right|Define where the toast appear|
-|autoClose|false\|int|5000|Delay in ms to close the toast. If set to false, the notification need to be closed manualy|
-|className|string|-|Add optional classes to the container|
-|style|object|-|Add optional inline style to the container|
-|closeButton|React Element\|false|-|A React Component to replace the default close button or `false` to hide the button|
-|hideProgressBar|bool|false|Display or not the progress bar below the toast(remaining time)|
-|pauseOnHover|bool|true|Timer keep running or not on hover|
-|toastClassName|string|-|Add optional classes to the toast|
-|bodyClassName|string|-|Add optional classes to the toast body|
-|progressClassName|string|-|Add optional classes to the progress bar|
+| Props             | Type           | Default   | Description                                                     |
+| ----------------- | -------------- | --------- | --------------------------------------------------------------- |
+| position          | string         | top-right | Define where the toast appear                                   |
+| autoClose         | false or int   | 5000      | Delay in ms to close the toast. If set to false, the notification need to be closed manualy |
+| closeButton       | React Element or false     | -                                                               | A React Component to replace the default close button or `false` to hide the button |
+| hideProgressBar   | bool           | false     | Display or not the progress bar below the toast(remaining time) |
+| pauseOnHover      | bool           | true      | Keep the timer running or not on hover                          |
+| closeOnClick      | bool           | true      | Dismiss toast on click                                          |
+| newestOnTop       | bool           | false     | Display newest toast on top                                     |
+| className         | string         | -         | Add optional classes to the container                           |
+| style             | object         | -         | Add optional inline style to the container                      |
+| toastClassName    | string         | -         | Add optional classes to the toast                               |
+| bodyClassName     | string         | -         | Add optional classes to the toast body                          |
+| progressClassName | string         | -         | Add optional classes to the progress bar                        |
 
 - Position accept the following value : 
       
@@ -173,10 +326,10 @@ All the method of toast return a **toastId** except `dismiss` and `isActive`.
 The **toastId** can be used to remove a toast programmatically or to check if the toast is displayed. 
 All the method but `dismiss` and `isActive` can take 2 parameters :
    
-|Parameter|Type|Required|Description|
-|---------|----|--------|-----|
-|content|string\|React Element|✓|Element that will be displayed|
-|options|object|✘|Possible keys : autoClose, type, closeButton, hideProgressBar||
+| Parameter | Type    | Required      | Description                                                   |
+| --------- | ------- | ------------- | ------------------------------------------------------------- |
+| content   | string\ | React Element | ✓                                                             | Element that will be displayed |
+| options   | object  | ✘             | Possible keys : autoClose, type, closeButton, hideProgressBar |  |
 
 - Available options :
     - `type`: Kind of notification. One of "default", "success", "info", "warning", "error". You can use `toast.TYPE.INFO` and so on to avoid any typo.
