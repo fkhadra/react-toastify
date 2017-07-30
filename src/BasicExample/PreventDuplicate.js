@@ -4,7 +4,6 @@ import { toast } from "react-toastify";
 import Card from "./Card";
 import Button from "react-md/lib/Buttons";
 
-import injectSheet from "react-jss";
 import HighLight from "./../HighLight";
 
 class DuplicateToast extends Component {

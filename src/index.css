@@ -10,11 +10,18 @@ body {
 }
 
 .App-header {
-  text-align: center;
+    text-align: center;
     background-color: #222;
     height: 250px;
     padding: 20px;
     color: #fff;
+}
+  .App-header a{
+    margin-right: 10px; 
+  }
+
+.white{
+  color: #fff;
 }
 
 .App-intro {
@@ -51,4 +58,8 @@ body {
 
 button{
   margin-right: 10px;
+}
+
+.contaier{
+  max-width: 1024px;
 }

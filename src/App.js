@@ -1,19 +1,8 @@
 import React, { Component } from "react";
 import { ToastContainer, toast } from "react-toastify";
 
-import injectSheet from "react-jss";
 import Header from "./Header";
 import BasicExample from "./BasicExample";
-
-import "./App.css";
-
-
-const style = {
-  container: {
-    maxWidth: "1080px",
-    composes: "md-grid"
-  }
-};
 
 class App extends Component {
   state = {
@@ -65,7 +54,6 @@ class App extends Component {
   };
 
   render() {
-    const { classes } = this.props;
     return (
       <div className="App">
         <Header />
@@ -87,4 +75,4 @@ class App extends Component {
   }
 }
 
-export default injectSheet(style)(App);
+export default App;

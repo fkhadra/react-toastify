@@ -1,30 +1,31 @@
 import React from "react";
-
+import Button from 'react-md/lib/Buttons/Button';
 import logo from "./logo.svg";
 
 export default () =>
   <div className="App-header">
     <img src={logo} className="App-logo" alt="logo" />
-    <h2>Welcome to React-toastify</h2>
-    <h6>Adding a context menu to your react app has never been easier!</h6>
+    <h2 className="white">Welcome to React-toastify</h2>
+    <h6 className="white">React notification made easy !</h6>
     <div>
-      <a
+      <Button
         href="https://github.com/fkhadra/react-toastify"
-        className="button button-primary"
-      >
-        View on GitHub
-      </a>
-      <a
+        raised
+        primary
+        label="View on GitHub"
+      />
+        
+      <Button
+        raised
+        primary
         href="https://github.com/fkhadra/react-toastify/zipball/master"
-        className="button button-primary"
-      >
-        Download .zip
-      </a>
-      <a
+        label="Download .zip"
+      />
+      <Button
+        raised
+        primary
         href="https://github.com/fkhadra/react-toastify/tarball/master"
-        className="button button-primary"
-      >
-        Download .tar.gz
-      </a>
+        label=" Download .tar.gz"
+      />
     </div>
   </div>;

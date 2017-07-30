@@ -7,10 +7,12 @@ import Hook from './Hook';
 import CustomClose from './CustomClose';
 import Style from './Style';
 import Mobile from './Mobile';
+import Position from './Position';
 
 export default (props) => (
   <div className="md-grid" style={{maxWidth: "1024px"}}>
     <Simple {...props}/>
+    <Position />
     <RemoveToast />
     <PreventDuplicate />
     <Hook />

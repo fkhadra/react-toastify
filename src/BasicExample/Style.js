@@ -68,7 +68,7 @@ class Style extends Component {
         <ul>
           <li>
             Overwrite <span className="code">toastify-content</span> and
-            <span className="code">toastify__progress</span>
+            <span className="code"> toastify__progress</span>
           </li>
           <li>
             <div>Create two css classes and pass them to a toast</div>
@@ -105,7 +105,10 @@ class Style extends Component {
             render(){
               return(
                 {/*Component*/}
-                <ToastContainer toastClassName="dark-toast" progressClassName="transparent-progress" />
+                <ToastContainer 
+                  toastClassName="dark-toast" 
+                  progressClassName="transparent-progress" 
+                />
                 {/*Component*/}
               );
             }
