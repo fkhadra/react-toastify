@@ -1,5 +1,6 @@
 {
   "name": "gh-toast",
+  "homepage": "https://fkhadra.github.io/react-toastify",
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
