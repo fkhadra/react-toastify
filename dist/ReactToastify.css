@@ -148,7 +148,7 @@
 
 @media only screen and (max-width: 480px) {
   .toastify {
-    width: 100%;
+    width: 100vw;
     padding: 0; }
 
   .toastify--top-left, .toastify--top-center, .toastify--top-right {
