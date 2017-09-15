@@ -398,7 +398,7 @@ toast.isActive(toastId) //Check if a toast is displayed or not
 
 Chrome | Firefox | IE 11 | Edge | Safari
 --- | --- | --- | --- | --- |
- ✔ |  ✔ | Partial, need to fix animation asap | ✔ | ✔ |
+ ✔ |  ✔ | ✔ | ✔ | ✔ |
 
 ## Release Notes
 
