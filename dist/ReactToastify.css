@@ -206,7 +206,8 @@
     background: #e74c3c; }
 
 .toastify__body {
-  margin: auto 0; }
+  margin: auto 0;
+  flex: 1; }
 
 @media only screen and (max-width: 480px) {
   .toastify-content {

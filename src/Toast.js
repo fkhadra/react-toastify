@@ -75,20 +75,27 @@ class Toast extends Component {
   }
 
   componentWillAppear(callback) {
-    this.ref.classList.add(`toast-enter--${this.props.position}`, 'toastify-animated');
+    this.setEntranceAnimation();
     callback();
   }
 
   componentWillEnter(callback) {
-    this.ref.classList.add(`toast-enter--${this.props.position}`, 'toastify-animated');
+    this.setEntranceAnimation();
     callback();
   }
 
+  // ie11 classList support sucks too hard !
   componentWillLeave(callback) {
-    this.ref.classList.remove(`toast-enter--${this.props.position}`,
-      'toastify-animated');
-    this.ref.classList.add(`toast-exit--${this.props.position}`, 'toastify-animated');
+    this.ref.classList.remove(`toast-enter--${this.props.position}`);
+    this.ref.classList.remove('toastify-animated');
+    this.ref.classList.add(`toast-exit--${this.props.position}`);
+    this.ref.classList.add('toastify-animated');
     setTimeout(() => callback(), 750);
+  }
+
+  setEntranceAnimation() {
+    this.ref.classList.add(`toast-enter--${this.props.position}`);
+    this.ref.classList.add('toastify-animated');
   }
 
   pauseToast = () => {
