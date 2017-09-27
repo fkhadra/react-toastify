@@ -1,6 +1,6 @@
 import React, { Component, isValidElement, cloneElement } from "react";
 import PropTypes from "prop-types";
-import Transition from "react-transition-group/TransitionGroup";
+import TransitionGroup from "react-transition-group/TransitionGroup";
 
 import Toast from "./Toast";
 import DefaultCloseButton from "./DefaultCloseButton";
@@ -218,7 +218,7 @@ class ToastContainer extends Component {
 
   makeToast(content, options) {
     return (
-      <Toast {...options} key={`toast-${options.id} `}>
+      <Toast {...options} key={`toast-${options.id}`}>
         {content}
       </Toast>
     );
@@ -278,13 +278,12 @@ class ToastContainer extends Component {
         toastToRender[position][0] === null;
 
       return (
-        <Transition
-          component="div"
+        <TransitionGroup
           {...this.getContainerProps(position, disablePointer)}
           key={`container-${position}`}
         >
           {toastToRender[position].map(item => item)}
-        </Transition>
+        </TransitionGroup>
       );
     });
   }
@@ -292,7 +291,7 @@ class ToastContainer extends Component {
   render() {
     return (
       <div>
-        {this.renderToast()}
+        {this.renderToast()} 
       </div>
     );
   }
