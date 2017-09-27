@@ -16,9 +16,7 @@
     "test": "jest --verbose",
     "lint": "eslint src/",
     "lint:fix": "eslint --fix src/",
-    "prebuild": "npm run lint && npm run test",
     "build": "NODE_ENV=production ./scripts/build.sh",
-    "postbuild": "npm run style",
     "prestyle": "sass src/scss/main.scss dist/ReactToastify.css",
     "style": "postcss --use autoprefixer -b 'last 2 versions' < dist/ReactToastify.css | cssnano --no-reduceIdents > dist/ReactToastify.min.css"
   },
@@ -34,7 +32,7 @@
   "homepage": "https://github.com/fkhadra/react-toastify#readme",
   "dependencies": {
     "prop-types": "^15.5.8",
-    "react-transition-group": "^1.1.2"
+    "react-transition-group": "^2.2.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.5.2",
@@ -57,14 +55,12 @@
     "jest": "^20.0.1",
     "postcss": "^5.2.5",
     "postcss-cli": "^3.2.0",
-    "react": "^15.5.4",
     "react-addons-test-utils": "^15.3.0",
-    "react-dom": "^15.5.4",
     "react-test-renderer": "^15.5.4",
     "webpack": "^2.4.1"
   },
   "peerDependencies": {
-    "react": "^15.5.4",
-    "react-dom": "^15.5.4"
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
   }
 }
