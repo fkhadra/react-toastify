@@ -4,6 +4,7 @@ import TransitionGroup from "react-transition-group/TransitionGroup";
 
 import Toast from "./Toast";
 import DefaultCloseButton from "./DefaultCloseButton";
+import DefaultTransition from "./DefaultTransition";
 import config from "./config";
 import EventManager from "./util/EventManager";
 import objectValues from "./util/objectValues";
@@ -75,10 +76,16 @@ class ToastContainer extends Component {
      * An optional className for the toast progress bar
      */
     progressClassName: PropTypes.string,
+
+    /**
+     * Define enter and exit transition using react-transition-group
+     */
+    transition: PropTypes.func
   };
 
   static defaultProps = {
     position: config.POSITION.TOP_RIGHT,
+    transition: DefaultTransition,
     autoClose: 5000,
     hideProgressBar: false,
     closeButton: <DefaultCloseButton />,
@@ -120,8 +127,6 @@ class ToastContainer extends Component {
       toast: this.state.toast.filter(v => v !== parseInt(id, 10))
     });
   }
-
-  is
 
   with(component, props) {
     return cloneElement(component, { ...props, ...component.props });
@@ -170,6 +175,7 @@ class ToastContainer extends Component {
       type: options.type,
       closeButton: this.makeCloseButton(options.closeButton, toastId),
       position: options.position || this.props.position,
+      transition: options.transition || this.props.transition,
       pauseOnHover:
           options.pauseOnHover !== null
             ? options.pauseOnHover
