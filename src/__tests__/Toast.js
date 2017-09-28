@@ -4,11 +4,14 @@ import { shallow, mount } from 'enzyme';
 
 import Toast from './../Toast';
 import DefaultCloseButton from './../DefaultCloseButton';
+import DefaultTransition from './../DefaultTransition';
 import ProgressBar from './../ProgressBar';
 import config from './../config';
 
 const REQUIRED_PROPS = {
   closeButton: <DefaultCloseButton />,
+  transition: DefaultTransition,
+  in: true,
   autoClose: 5000,
   closeToast: () => {},
   position: config.POSITION.TOP_RIGHT,
@@ -69,7 +72,7 @@ describe('Toast', () => {
       >
         FooBar
       </Toast>
-    );
+    ).render();
 
     expect(onOpen).toHaveBeenCalled();
   });
@@ -97,10 +100,9 @@ describe('Toast', () => {
         FooBar
       </Toast>
     );
-
-    expect(component.state('isRunning')).toBeTruthy();
-    component.simulate('mouseEnter');
-    expect(component.state('isRunning')).toBeFalsy();
+    expect(component.instance().state.isRunning).toBeTruthy();
+    component.find('.toastify-content').simulate('mouseEnter');
+    expect(component.instance().state.isRunning).toBeFalsy();
   });
 
 
@@ -113,9 +115,8 @@ describe('Toast', () => {
         FooBar
       </Toast>
     );
-
     expect(component.state('isRunning')).toBeTruthy();
-    component.simulate('mouseEnter');
+    component.find('.toastify-content').simulate('mouseEnter');
     expect(component.state('isRunning')).toBeTruthy();
   });
 
@@ -129,9 +130,9 @@ describe('Toast', () => {
     );
 
     expect(component.state('isRunning')).toBeTruthy();
-    component.simulate('mouseEnter');
+    component.find('.toastify-content').simulate('mouseEnter');
     expect(component.state('isRunning')).toBeFalsy();
-    component.simulate('mouseLeave');
+    component.find('.toastify-content').simulate('mouseLeave');
     expect(component.state('isRunning')).toBeTruthy();
   });
 
@@ -144,7 +145,6 @@ describe('Toast', () => {
         FooBar
       </Toast>
     );
-
     expect(component.state('isRunning')).toBeTruthy();
     component.simulate('mouseEnter');
     expect(component.state('isRunning')).toBeTruthy();
