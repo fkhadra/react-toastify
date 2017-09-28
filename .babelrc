@@ -1,4 +1,4 @@
 {
-    "presets": ["env", "stage-0", "react"],
+    "presets": ["env", "react-app"],
     "plugins": ["transform-object-assign"]
 }
