@@ -67,7 +67,7 @@
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-test-renderer": "^16.0.0",
-    "webpack": "^2.4.1"
+    "webpack": "^3.6.0"
   },
   "peerDependencies": {
     "react": "^16.0.0",
