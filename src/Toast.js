@@ -95,7 +95,7 @@ class Toast extends Component {
     const Transition = transition;
 
     return (
-      <Transition in={this.props.in} appear position={position}>
+      <Transition in={this.props.in} appear unmountOnExit position={position}>
         <div {...this.getToastProps()}>
           <div className={`toastify__body ${this.props.bodyClassName}`}>
             {children}
