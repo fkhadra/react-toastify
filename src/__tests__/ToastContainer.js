@@ -3,7 +3,6 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import ToastContainer from './../ToastContainer';
-import Toast from './../Toast';
 import toaster from './../toaster';
 
 import config from './../config';
