@@ -15,6 +15,7 @@ React-Toastify allow you to add notification to your app with ease.
     * [Prevent duplicate](#prevent-duplicate)
     * [Define hook](#define-hook)
     * [Set a custom close button or simply remove it](#set-a-custom-close-button-or-simply-remove-it)
+    * [Define a custom enter and exit transition](#define-a-custom-enter-and-exit-transition)
     * [Define your style](#define-your-style)
     * [Mobile](#mobile)
  * [Api](#api)
@@ -131,7 +132,7 @@ For convenience, toast expose a POSITION property to avoid any typo.
 
 
 
-
+****
 ### Remove a toast programmatically
 
 An id is returned each time you display a toast, use it to remove a given toast programmatically by calling ```toast.dismiss(id)```
@@ -245,6 +246,105 @@ If ```customCloseButton``` is set to false, the close button will be not display
   }
 ```
 
+### Define a custom enter and exit transition
+
+The toast rely on `react-transition-group` for the enter and exit transition. 
+
+- I'll use the zoom animation from animate.css
+```css
+/* style.css*/
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale3d(.3, .3, .3);
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.zoomIn {
+  animation-name: zoomIn;
+}
+
+@keyframes zoomOut {
+  from {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+    transform: scale3d(.3, .3, .3);
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+.zoomOut {
+  animation-name: zoomOut;
+}
+
+.animate{
+  animation-duration: 800ms;
+}
+```
+
+- Create a transition and apply it
+
+```js
+import React, { Component } from 'react';
+import { toast } from 'react-toastify';
+import Transition from 'react-transition-group/Transition';
+import 'style.css';
+
+// Any transition created with react-transition-group/Transition will work ! 
+const ZoomInAndOut = ({ children, position, ...props }) => (
+  <Transition
+    {...props}
+    {/* Same as the animation duration */}
+    timeout={800}
+    onEnter={ node => node.classList.add('zoomIn', 'animate')}
+    onExit={node => {
+      node.classList.remove('zoomIn', 'animate');
+      node.classList.add('zoomOut', 'animate');
+    }}
+  >
+    {children}
+  </Transition>
+);
+
+class App extends Component {
+  notify = () => {
+    toast("ZoomIn and ZoomOut", {
+      transition: ZoomInAndOut,
+      autoClose: 5000
+    });
+  };
+    
+  render(){
+    return <button onClick={this.notify}>Notify</button>;
+  }
+}
+
+```
+
+- Or pass your transition to the ToastContainer to overwrite the default one.
+
+```js
+render(){
+  return(
+  {/*Component*/}
+    <ToastContainer 
+      transition={ZoomInAndOut}
+    />
+  {/*Component*/}
+  );
+}
+```
+
 ### Define your style
 
 Taste and colours are not always the same ! You have several options.
@@ -333,6 +433,7 @@ On mobile the toast will take all the width available.
 | position          | string         | top-right | One of top-right, top-center, top-left, bottom-right, bottom-center, bottom-left                                   |
 | autoClose         | false or int   | 5000      | Delay in ms to close the toast. If set to false, the notification need to be closed manualy |
 | closeButton       | React Element or false     | -                                                               | A React Component to replace the default close button or `false` to hide the button |
+| transition        | function       | -     | A reference to a valid react-transition-group/Transition component  |
 | hideProgressBar   | bool           | false     | Display or not the progress bar below the toast(remaining time) |
 | pauseOnHover      | bool           | true      | Keep the timer running or not on hover                          |
 | closeOnClick      | bool           | true      | Dismiss toast on click                                          |
@@ -352,7 +453,7 @@ The **toastId** can be used to remove a toast programmatically or to check if th
    
 | Parameter | Type    | Required      | Description                                                   |
 | --------- | ------- | ------------- | ------------------------------------------------------------- |
-| content   | string\ | React Element | ✓                                                             | Element that will be displayed |
+| content   | string or React Element | ✓                                                             | Element that will be displayed |
 | options   | object  | ✘             | Possible keys : autoClose, type, closeButton, hideProgressBar |  |
 
 - Available options :
@@ -361,6 +462,7 @@ The **toastId** can be used to remove a toast programmatically or to check if th
     - `onClose`: Called inside componentWillUnmount
     - `autoClose`: same as ToastContainer.
     - `closeButton`: same as ToastContainer.
+    - `transition`: same as ToastContainer.
     - `closeOnClick`: same as ToastContainer.
     - `hideProgressBar`: same as ToastContainer.
     - `position`: same as ToastContainer
@@ -381,7 +483,8 @@ const options = {
     type: toast.TYPE.INFO,
     hideProgressBar: false,
     position: toast.POSITION.TOP_LEFT,
-    pauseOnHover: true
+    pauseOnHover: true,
+    transition: MyCustomTransition
 };
 
 const toastId = toast(<Img foo={bar}/>, options) // default, type: 'default'
@@ -401,6 +504,21 @@ Chrome | Firefox | IE 11 | Edge | Safari
  ✔ |  ✔ | ✔ | ✔ | ✔ |
 
 ## Release Notes
+
+### V2.1.0
+
+#### New Features
+
+- Can set a custom transition when the toat enter and exit the screen :sparkles:
+
+#### Others
+
+- Upgrade to react v16
+- Upgrade to enzyme v3
+- Switched to react-app preset for eslint
+- Upgrade to webpack v3
+- Upgrade to react-transition-group v2
+
 
 ### V2.0.0
 
