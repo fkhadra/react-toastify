@@ -3,7 +3,6 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import ToastContainer from './../ToastContainer';
-import Toast from './../Toast';
 import toaster from './../toaster';
 
 import config from './../config';
@@ -23,8 +22,8 @@ describe('ToastContainer', () => {
     toaster('coucou');
     jest.runAllTimers();
 
-    expect(component.find('.toastify').hasClass('plop')).toBe(true);
-    expect(component.find('.toastify').prop('style')).toMatchObject(expectedStyle);
+    expect(component.render().find('.toastify').hasClass('plop')).toBe(true);
+    expect(component.render().find('.toastify').prop('style')).toMatchObject(expectedStyle);
   });
 
   it('Should bind event when mounted and unbind them when unmounted', () => {
@@ -45,8 +44,7 @@ describe('ToastContainer', () => {
     jest.runAllTimers();
     toaster.dismiss();
     jest.runAllTimers();
-
-    expect(component.find('.toastify').prop('style').pointerEvents).toEqual('none');
+    expect(component.render().find('.toastify').attr('style').includes('pointer-events: none')).toEqual(true);
   });
 
   it(`Should always pass down to Toast the props: 
@@ -55,13 +53,17 @@ describe('ToastContainer', () => {
     -children
     -position
     -pauseOnHover
+    -transition
     -closeToast`, () => {
     const component = mount(<ToastContainer />);
     // Create a toast
     toaster('coucou');
     jest.runAllTimers();
-
-    const props = component.children().find(Toast).props();
+    // toast collection
+    const collection = component.instance().collection;
+    // retrieve collection first index
+    const idx = Object.keys(collection)[0];
+    const props = collection[idx].content.props;
 
     [
       'autoClose',
@@ -69,6 +71,7 @@ describe('ToastContainer', () => {
       'children',
       'position',
       'closeToast',
+      'transition',
       'pauseOnHover'
     ].forEach(key => expect(hasProp(props, key)).toBeTruthy());
   });

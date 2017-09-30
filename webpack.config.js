@@ -9,7 +9,7 @@ module.exports = {
   output: {
     filename: 'dist/ReactToastify.js',
     libraryTarget: 'umd',
-    library: 'ReactOnScreen'
+    library: 'ReactToastify'
   },
   module: {
     rules: [
@@ -18,7 +18,7 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel-loader',
         options: {
-          presets: ['env', 'react', 'stage-0'],
+          presets: ['env', 'react-app'],
           sourceMap: true
         }
       }
@@ -26,8 +26,9 @@ module.exports = {
   },
   externals: [
     'react',
+    'react-dom',
     'prop-types',
-    'react-transition-group/TransitionGroup'
+    'react-transition-group'
   ],
   plugins: [
     new webpack.LoaderOptionsPlugin({

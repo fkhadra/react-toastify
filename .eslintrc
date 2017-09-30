@@ -1,28 +1,3 @@
 {
-  "parser": "babel-eslint",
-  "rules": {
-    "react/require-extension": "off",
-    "react/forbid-prop-types": 0,
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-    "react/sort-comp": 0,
-    "arrow-parens": [2, "as-needed"],
-    "max-len": [1, 120, 2, {"ignoreComments": true}],
-    "quote-props": [1, "consistent-as-needed"],
-    "no-cond-assign": [2, "except-parens"],
-    "space-infix-ops": 0,
-    "no-unused-vars": [1, {"vars": "local", "args": "none"}],
-    "default-case": 0,
-    "no-else-return": 0,
-    "no-param-reassign": 0,
-    "quotes": 0,
-    "comma-dangle": 0,
-    "class-methods-use-this": 0,
-    "no-plusplus": 0,
-    "no-unused-expressions": ["error", { "allowShortCircuit": true, "allowTernary": true  }],
-    "consistent-return": ["warn"]
-  },
-  "extends": [
-    "eslint:recommended",
-    "airbnb"
-  ]
+  "extends": "react-app"
 }

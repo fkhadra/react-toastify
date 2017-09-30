@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
-import ProgressBar from './ProgressBar';
-import config from './config';
-import objectValues from './util/objectValues';
-import { falseOrElement, falseOrNumber } from './util/propValidator';
+import ProgressBar from "./ProgressBar";
+import config from "./config";
+import objectValues from "./util/objectValues";
+import { falseOrElement, falseOrNumber } from "./util/propValidator";
 
 class Toast extends Component {
   static propTypes = {
@@ -15,6 +15,8 @@ class Toast extends Component {
     position: PropTypes.oneOf(objectValues(config.POSITION)).isRequired,
     pauseOnHover: PropTypes.bool.isRequired,
     closeOnClick: PropTypes.bool.isRequired,
+    transition: PropTypes.func.isRequired,
+    in: PropTypes.bool,
     hideProgressBar: PropTypes.bool,
     onOpen: PropTypes.func,
     onClose: PropTypes.func,
@@ -26,17 +28,17 @@ class Toast extends Component {
 
   static defaultProps = {
     type: config.TYPE.DEFAULT,
+    in: true,
     hideProgressBar: false,
     onOpen: null,
     onClose: null,
-    className: '',
-    bodyClassName: '',
-    progressClassName: ''
+    className: "",
+    bodyClassName: "",
+    progressClassName: ""
   };
 
   constructor(props) {
     super(props);
-    this.ref = null;
     this.state = {
       isRunning: true
     };
@@ -50,18 +52,14 @@ class Toast extends Component {
     this.props.onClose !== null && this.props.onClose(this.getChildrenProps());
   }
 
-  setRef = ref => {
-    this.ref = ref;
-  };
-
   getChildrenProps() {
     return this.props.children.props;
   }
 
   getToastProps() {
     const toastProps = {
-      className: `toastify-content toastify-content--${this.props.type} ${this.props.className}`,
-      ref: this.setRef
+      className: `toastify-content toastify-content--${this.props.type} ${this
+        .props.className}`
     };
 
     if (this.props.autoClose !== false && this.props.pauseOnHover === true) {
@@ -72,30 +70,6 @@ class Toast extends Component {
     this.props.closeOnClick && (toastProps.onClick = this.props.closeToast);
 
     return toastProps;
-  }
-
-  componentWillAppear(callback) {
-    this.setEntranceAnimation();
-    callback();
-  }
-
-  componentWillEnter(callback) {
-    this.setEntranceAnimation();
-    callback();
-  }
-
-  // ie11 classList support sucks too hard !
-  componentWillLeave(callback) {
-    this.ref.classList.remove(`toast-enter--${this.props.position}`);
-    this.ref.classList.remove('toastify-animated');
-    this.ref.classList.add(`toast-exit--${this.props.position}`);
-    this.ref.classList.add('toastify-animated');
-    setTimeout(() => callback(), 750);
-  }
-
-  setEntranceAnimation() {
-    this.ref.classList.add(`toast-enter--${this.props.position}`);
-    this.ref.classList.add('toastify-animated');
   }
 
   pauseToast = () => {
@@ -113,29 +87,32 @@ class Toast extends Component {
       autoClose,
       type,
       hideProgressBar,
-      closeToast
+      closeToast,
+      transition,
+      position
     } = this.props;
 
+    const Transition = transition;
+
     return (
-      <div
-        {...this.getToastProps()}
-      >
-        <div className={`toastify__body ${this.props.bodyClassName}`}>
-          {children}
+      <Transition in={this.props.in} appear unmountOnExit position={position}>
+        <div {...this.getToastProps()}>
+          <div className={`toastify__body ${this.props.bodyClassName}`}>
+            {children}
+          </div>
+          {closeButton !== false && closeButton}
+          {autoClose !== false && (
+            <ProgressBar
+              delay={autoClose}
+              isRunning={this.state.isRunning}
+              closeToast={closeToast}
+              hide={hideProgressBar}
+              type={type}
+              className={this.props.progressClassName}
+            />
+          )}
         </div>
-        {closeButton !== false && closeButton}
-        {
-          autoClose !== false &&
-          <ProgressBar
-            delay={autoClose}
-            isRunning={this.state.isRunning}
-            closeToast={closeToast}
-            hide={hideProgressBar}
-            type={type}
-            className={this.props.progressClassName}
-          />
-        }
-      </div>
+      </Transition>
     );
   }
 }

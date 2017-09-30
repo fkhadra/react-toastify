@@ -19,7 +19,8 @@ const defaultOptions = {
   closeOnClick: null,
   className: null,
   bodyClassName: null,
-  progressClassName: null
+  progressClassName: null,
+  tansition: null
 };
 
 let container = null;
