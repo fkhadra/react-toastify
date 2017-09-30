@@ -249,7 +249,7 @@ If ```customCloseButton``` is set to false, the close button will be not display
 ### Define a custom enter and exit transition
 
 The toast rely on `react-transition-group` for the enter and exit transition. 
-
+![toastify_custom_trans](https://user-images.githubusercontent.com/5574267/31049179-0d52e14c-a62e-11e7-9abd-b0d169a0fadc.gif)
 - I'll use the zoom animation from animate.css
 ```css
 /* style.css*/
