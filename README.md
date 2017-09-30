@@ -15,7 +15,7 @@ React-Toastify allow you to add notification to your app with ease.
     * [Prevent duplicate](#prevent-duplicate)
     * [Define hook](#define-hook)
     * [Set a custom close button or simply remove it](#set-a-custom-close-button-or-simply-remove-it)
-    * [Define a custom enter and exit transition](#define-a-custom-enter-and-exit-transition)
+    * [ :fire: Define a custom enter and exit transition :fire: ](#define-a-custom-enter-and-exit-transition)
     * [Define your style](#define-your-style)
     * [Mobile](#mobile)
  * [Api](#api)
