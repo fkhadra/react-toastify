@@ -8,6 +8,7 @@ import CustomClose from './CustomClose';
 import Style from './Style';
 import Mobile from './Mobile';
 import Position from './Position';
+import CustomTransition from './CustomTransition';
 
 export default (props) => (
   <div className="md-grid" style={{maxWidth: "1024px"}}>
@@ -17,6 +18,7 @@ export default (props) => (
     <PreventDuplicate />
     <Hook />
     <CustomClose />
+    <CustomTransition />
     <Style />
     <Mobile />
   </div>
