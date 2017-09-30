@@ -34,7 +34,7 @@
   "homepage": "https://github.com/fkhadra/react-toastify#readme",
   "dependencies": {
     "prop-types": "^15.6.0",
-    "react-transition-group": "^2.2.0"
+    "react-transition-group": "^2.2.1"
   },
   "jest": {
     "verbose": true,
@@ -72,7 +72,7 @@
     "webpack": "^3.6.0"
   },
   "peerDependencies": {
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0"
+    "react": ">=15.0.0",
+    "react-dom": ">=15.0.0"
   }
 }
