@@ -9,7 +9,7 @@ function DefaultCloseButton({ closeToast }) {
       type="button"
       onClick={closeToast}
     >
-      ✖
+      &times;
     </button>
   );
 }
