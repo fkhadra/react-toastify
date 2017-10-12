@@ -268,13 +268,7 @@ class ToastContainer extends Component {
       if (this.state.toast.indexOf(parseInt(toastId, 10)) !== -1) {
         toastToRender[item.position].push(item.content);
       } else {
-        // Temporal zone for animation
-        toastToRender[item.position].push(null);
-        // Delay garbage collecting. Useful when a lots of toast
-        setTimeout(
-          () => delete this.collection[toastId],
-          collection.length * 10
-        );
+        delete this.collection[toastId]
       }
     });
 
