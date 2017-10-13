@@ -268,10 +268,11 @@ class ToastContainer extends Component {
       if (this.state.toast.indexOf(parseInt(toastId, 10)) !== -1) {
         toastToRender[item.position].push(item.content);
       } else {
+        toastToRender[item.position].push(null);
         delete this.collection[toastId]
       }
     });
-
+ 
     return Object.keys(toastToRender).map(position => {
       const disablePointer =
         toastToRender[position].length === 1 &&
@@ -282,18 +283,14 @@ class ToastContainer extends Component {
           {...this.getContainerProps(position, disablePointer)}
           key={`container-${position}`}
         >
-          {toastToRender[position].map(item => item)}
+          {toastToRender[position]}
         </TransitionGroup>
       );
     });
   }
 
   render() {
-    return (
-      <div>
-        {this.renderToast()} 
-      </div>
-    );
+    return this.renderToast();
   }
 }
 

@@ -505,6 +505,12 @@ Chrome | Firefox | IE 11 | Edge | Safari
 
 ## Release Notes
 
+### V2.1.1
+
+#### Bugfix
+
+- Remove toast from react dom when not displayed. Because of that the `onClose` callback on the toast was never called. Relate to [issue #50](https://github.com/fkhadra/react-toastify/issues/50)
+
 ### V2.1.0
 
 #### New Features
