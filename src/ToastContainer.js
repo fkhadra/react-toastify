@@ -290,7 +290,11 @@ class ToastContainer extends Component {
   }
 
   render() {
-    return this.renderToast();
+    return (
+      <div>
+        {this.renderToast()}
+      </div>
+    );
   }
 }
 

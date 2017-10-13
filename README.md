@@ -505,6 +505,9 @@ Chrome | Firefox | IE 11 | Edge | Safari
 
 ## Release Notes
 
+### V2.1.2
+
+- Previous version was breaking compatibility with react < 16
 ### V2.1.1
 
 #### Bugfix
