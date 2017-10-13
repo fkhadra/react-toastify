@@ -17,6 +17,7 @@ class Toast extends Component {
     closeOnClick: PropTypes.bool.isRequired,
     transition: PropTypes.func.isRequired,
     in: PropTypes.bool,
+    onExited: PropTypes.func,
     hideProgressBar: PropTypes.bool,
     onOpen: PropTypes.func,
     onClose: PropTypes.func,
@@ -89,13 +90,14 @@ class Toast extends Component {
       hideProgressBar,
       closeToast,
       transition,
-      position
+      position,
+      onExited
     } = this.props;
 
     const Transition = transition;
 
     return (
-      <Transition in={this.props.in} appear unmountOnExit position={position}>
+      <Transition in={this.props.in} appear unmountOnExit onExited={onExited} position={position}>
         <div {...this.getToastProps()}>
           <div className={`toastify__body ${this.props.bodyClassName}`}>
             {children}
