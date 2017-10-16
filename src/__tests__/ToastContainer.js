@@ -1,11 +1,11 @@
 /* eslint-env jest */
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 
 import ToastContainer from './../ToastContainer';
 import toaster from './../toaster';
 
-import config from './../config';
+import config from './../constant';
 import EventManager from './../util/EventManager';
 
 function hasProp(obj, key) {

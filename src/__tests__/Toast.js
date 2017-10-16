@@ -6,7 +6,7 @@ import Toast from './../Toast';
 import DefaultCloseButton from './../DefaultCloseButton';
 import DefaultTransition from './../DefaultTransition';
 import ProgressBar from './../ProgressBar';
-import config from './../config';
+import config from './../constant';
 
 const REQUIRED_PROPS = {
   closeButton: <DefaultCloseButton />,

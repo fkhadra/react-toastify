@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import config from './config';
+import config from './constant';
 
 function ProgressBar({ delay, isRunning, closeToast, type, hide, className }) {
   const style = {

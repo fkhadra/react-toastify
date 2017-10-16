@@ -5,7 +5,7 @@
 *   - Maybe closeButton as well
 * */
 import EventManager from './util/EventManager';
-import config from './config';
+import config from './constant';
 
 const { POSITION, TYPE, ACTION } = config;
 

@@ -5,7 +5,7 @@ import TransitionGroup from "react-transition-group/TransitionGroup";
 import Toast from "./Toast";
 import DefaultCloseButton from "./DefaultCloseButton";
 import DefaultTransition from "./DefaultTransition";
-import config from "./config";
+import config from "./constant";
 import EventManager from "./util/EventManager";
 import objectValues from "./util/objectValues";
 import {

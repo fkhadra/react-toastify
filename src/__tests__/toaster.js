@@ -6,7 +6,7 @@ import { mount } from 'enzyme';
 import ToastContainer from './../ToastContainer';
 import toaster from './../toaster';
 import EventManager from './../util/EventManager';
-import config from './../config';
+import config from './../constant';
 
 jest.useFakeTimers();
 

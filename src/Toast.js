@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import ProgressBar from "./ProgressBar";
-import config from "./config";
+import config from "./constant";
 import objectValues from "./util/objectValues";
 import { falseOrElement, falseOrNumber } from "./util/propValidator";
 
