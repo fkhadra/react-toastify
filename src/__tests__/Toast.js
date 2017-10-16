@@ -6,7 +6,7 @@ import Toast from './../Toast';
 import DefaultCloseButton from './../DefaultCloseButton';
 import DefaultTransition from './../DefaultTransition';
 import ProgressBar from './../ProgressBar';
-import config from './../constant';
+import { POSITION } from './../constant';
 
 const REQUIRED_PROPS = {
   closeButton: <DefaultCloseButton />,
@@ -14,7 +14,7 @@ const REQUIRED_PROPS = {
   in: true,
   autoClose: 5000,
   closeToast: () => {},
-  position: config.POSITION.TOP_RIGHT,
+  position: POSITION.TOP_RIGHT,
   pauseOnHover: true,
   closeOnClick: true
 };

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import ProgressBar from "./ProgressBar";
-import config from "./constant";
+import { POSITION, TYPE, ACTION } from "./constant";
 import objectValues from "./util/objectValues";
 import { falseOrElement, falseOrNumber } from "./util/propValidator";
 
@@ -12,7 +12,7 @@ class Toast extends Component {
     autoClose: falseOrNumber.isRequired,
     children: PropTypes.node.isRequired,
     closeToast: PropTypes.func.isRequired,
-    position: PropTypes.oneOf(objectValues(config.POSITION)).isRequired,
+    position: PropTypes.oneOf(objectValues(POSITION)).isRequired,
     pauseOnHover: PropTypes.bool.isRequired,
     closeOnClick: PropTypes.bool.isRequired,
     transition: PropTypes.func.isRequired,
@@ -21,14 +21,14 @@ class Toast extends Component {
     hideProgressBar: PropTypes.bool,
     onOpen: PropTypes.func,
     onClose: PropTypes.func,
-    type: PropTypes.oneOf(objectValues(config.TYPE)),
+    type: PropTypes.oneOf(objectValues(TYPE)),
     className: PropTypes.string,
     bodyClassName: PropTypes.string,
     progressClassName: PropTypes.string
   };
 
   static defaultProps = {
-    type: config.TYPE.DEFAULT,
+    type: TYPE.DEFAULT,
     in: true,
     hideProgressBar: false,
     onOpen: null,

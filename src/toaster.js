@@ -5,9 +5,7 @@
 *   - Maybe closeButton as well
 * */
 import EventManager from './util/EventManager';
-import config from './constant';
-
-const { POSITION, TYPE, ACTION } = config;
+import { POSITION, TYPE, ACTION } from './constant';
 
 const defaultOptions = {
   type: TYPE.DEFAULT,
