@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import ProgressBar from "./ProgressBar";
-import { POSITION, TYPE, ACTION } from "./constant";
+import { POSITION, TYPE } from "./constant";
 import objectValues from "./util/objectValues";
 import { falseOrElement, falseOrNumber } from "./util/propValidator";
 
@@ -47,11 +47,15 @@ class Toast extends Component {
 
   componentDidMount() {
     this.props.onOpen !== null && this.props.onOpen(this.getChildrenProps());
+    document.addEventListener("visibilitychange", this.handleVisibility);
   }
 
   componentWillUnmount() {
     this.props.onClose !== null && this.props.onClose(this.getChildrenProps());
+    document.removeEventListener("visibilitychange", this.handleVisibility);
   }
+
+  handleVisibility = () => this.setState({ isRunning: !document.hidden });
 
   getChildrenProps() {
     return this.props.children.props;
