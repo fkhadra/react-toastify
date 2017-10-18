@@ -3,7 +3,7 @@
 
 ![React toastify](https://user-images.githubusercontent.com/5574267/28753331-1380a2f0-7534-11e7-8456-0b32e959db07.gif "React toastify")
 
-React-Toastify allow you to add notification to your app with ease. No bullshit !
+🎉 React-Toastify allow you to add notification to your app with ease. No bullshit !
 
  * [Demo](#demo)
  * [Installation](#installation)
