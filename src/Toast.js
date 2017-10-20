@@ -38,13 +38,10 @@ class Toast extends Component {
     progressClassName: ""
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      isRunning: true
-    };
-  }
-
+  state = {
+    isRunning: true
+  };
+  
   componentDidMount() {
     this.props.onOpen !== null && this.props.onOpen(this.getChildrenProps());
     document.addEventListener("visibilitychange", this.handleVisibility);

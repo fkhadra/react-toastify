@@ -99,13 +99,11 @@ class ToastContainer extends Component {
     progressClassName: '',
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      toast: []
-    };
-    this.collection = {};
-  }
+  state = {
+    toast: []
+  };
+
+  collection = {};
 
   componentDidMount() {
     const { SHOW, CLEAR, MOUNTED } = ACTION;
