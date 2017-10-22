@@ -5,7 +5,7 @@ import TransitionGroup from "react-transition-group/TransitionGroup";
 import Toast from "./Toast";
 import DefaultCloseButton from "./DefaultCloseButton";
 import DefaultTransition from "./DefaultTransition";
-import config from "./config";
+import { POSITION, ACTION } from "./constant";
 import EventManager from "./util/EventManager";
 import objectValues from "./util/objectValues";
 import {
@@ -20,7 +20,7 @@ class ToastContainer extends Component {
     /**
      * Set toast position
      */
-    position: PropTypes.oneOf(objectValues(config.POSITION)),
+    position: PropTypes.oneOf(objectValues(POSITION)),
 
     /**
      * Disable or set autoClose delay
@@ -84,7 +84,7 @@ class ToastContainer extends Component {
   };
 
   static defaultProps = {
-    position: config.POSITION.TOP_RIGHT,
+    position: POSITION.TOP_RIGHT,
     transition: DefaultTransition,
     autoClose: 5000,
     hideProgressBar: false,
@@ -99,16 +99,14 @@ class ToastContainer extends Component {
     progressClassName: '',
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      toast: []
-    };
-    this.collection = {};
-  }
+  state = {
+    toast: []
+  };
+
+  collection = {};
 
   componentDidMount() {
-    const { SHOW, CLEAR, MOUNTED } = config.ACTION;
+    const { SHOW, CLEAR, MOUNTED } = ACTION;
     EventManager
     .on(SHOW, (content, options) => this.show(content, options))
     .on(CLEAR, id => (id !== null ? this.removeToast(id) : this.clear()))
@@ -116,8 +114,8 @@ class ToastContainer extends Component {
   }
 
   componentWillUnmount() {
-    EventManager.off(config.ACTION.SHOW);
-    EventManager.off(config.ACTION.CLEAR);
+    EventManager.off(ACTION.SHOW);
+    EventManager.off(ACTION.CLEAR);
   }
 
   isToastActive = id => this.state.toast.indexOf(parseInt(id, 10)) !== -1;

@@ -12,6 +12,7 @@
     "alert"
   ],
   "main": "lib/index.js",
+  "typings" : "./index.d.ts",
   "scripts": {
     "test": "jest",
     "lint": "eslint src/",

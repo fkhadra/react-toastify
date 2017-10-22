@@ -6,7 +6,7 @@ import { mount } from 'enzyme';
 import ToastContainer from './../ToastContainer';
 import toaster from './../toaster';
 import EventManager from './../util/EventManager';
-import config from './../config';
+import { ACTION } from './../constant';
 
 jest.useFakeTimers();
 
@@ -14,7 +14,7 @@ describe('toastify', () => {
   it("Should emit notification only if a container is mounted", () => {
     const spy = jest.fn();
 
-    EventManager.on(config.ACTION.SHOW, spy);
+    EventManager.on(ACTION.SHOW, spy);
     toaster('hello');
     expect(spy).not.toHaveBeenCalled();
 

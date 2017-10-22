@@ -3,7 +3,7 @@
 
 ![React toastify](https://user-images.githubusercontent.com/5574267/28753331-1380a2f0-7534-11e7-8456-0b32e959db07.gif "React toastify")
 
-React-Toastify allow you to add notification to your app with ease.
+🎉 React-Toastify allow you to add notification to your app with ease. No bullshit !
 
  * [Demo](#demo)
  * [Installation](#installation)
@@ -647,7 +647,7 @@ make sense to keep both way to pass props. Use the react way instead
 
 ## Contribute
 
-Any suggestions and pull request are welcome ! 
+Show your 😻 and support by giving a ⭐. Any suggestions and pull request are welcome ! 
    
 ## License
    

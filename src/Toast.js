@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import ProgressBar from "./ProgressBar";
-import config from "./config";
+import { POSITION, TYPE } from "./constant";
 import objectValues from "./util/objectValues";
 import { falseOrElement, falseOrNumber } from "./util/propValidator";
 
@@ -12,7 +12,7 @@ class Toast extends Component {
     autoClose: falseOrNumber.isRequired,
     children: PropTypes.node.isRequired,
     closeToast: PropTypes.func.isRequired,
-    position: PropTypes.oneOf(objectValues(config.POSITION)).isRequired,
+    position: PropTypes.oneOf(objectValues(POSITION)).isRequired,
     pauseOnHover: PropTypes.bool.isRequired,
     closeOnClick: PropTypes.bool.isRequired,
     transition: PropTypes.func.isRequired,
@@ -21,14 +21,14 @@ class Toast extends Component {
     hideProgressBar: PropTypes.bool,
     onOpen: PropTypes.func,
     onClose: PropTypes.func,
-    type: PropTypes.oneOf(objectValues(config.TYPE)),
+    type: PropTypes.oneOf(objectValues(TYPE)),
     className: PropTypes.string,
     bodyClassName: PropTypes.string,
     progressClassName: PropTypes.string
   };
 
   static defaultProps = {
-    type: config.TYPE.DEFAULT,
+    type: TYPE.DEFAULT,
     in: true,
     hideProgressBar: false,
     onOpen: null,
@@ -38,20 +38,21 @@ class Toast extends Component {
     progressClassName: ""
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      isRunning: true
-    };
-  }
-
+  state = {
+    isRunning: true
+  };
+  
   componentDidMount() {
     this.props.onOpen !== null && this.props.onOpen(this.getChildrenProps());
+    document.addEventListener("visibilitychange", this.handleVisibility);
   }
 
   componentWillUnmount() {
     this.props.onClose !== null && this.props.onClose(this.getChildrenProps());
+    document.removeEventListener("visibilitychange", this.handleVisibility);
   }
+
+  handleVisibility = () => this.setState({ isRunning: !document.hidden });
 
   getChildrenProps() {
     return this.props.children.props;

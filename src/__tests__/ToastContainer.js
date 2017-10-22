@@ -1,11 +1,11 @@
 /* eslint-env jest */
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 
 import ToastContainer from './../ToastContainer';
 import toaster from './../toaster';
 
-import config from './../config';
+import { ACTION } from './../constant';
 import EventManager from './../util/EventManager';
 
 function hasProp(obj, key) {
@@ -18,12 +18,12 @@ describe('ToastContainer', () => {
   it('Should bind event when mounted and unbind them when unmounted', () => {
     const component = mount(<ToastContainer />);
 
-    expect(EventManager.eventList.has(config.ACTION.SHOW)).toBeTruthy();
-    expect(EventManager.eventList.has(config.ACTION.CLEAR)).toBeTruthy();
+    expect(EventManager.eventList.has(ACTION.SHOW)).toBeTruthy();
+    expect(EventManager.eventList.has(ACTION.CLEAR)).toBeTruthy();
 
     component.unmount();
-    expect(EventManager.eventList.has(config.ACTION.SHOW)).toBeFalsy();
-    expect(EventManager.eventList.has(config.ACTION.CLEAR)).toBeFalsy();
+    expect(EventManager.eventList.has(ACTION.SHOW)).toBeFalsy();
+    expect(EventManager.eventList.has(ACTION.CLEAR)).toBeFalsy();
   });
 
   it(`Should always pass down to Toast the props: 
