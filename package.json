@@ -45,6 +45,8 @@
     ]
   },
   "devDependencies": {
+    "@types/react": "^16.0.18",
+    "@types/react-transition-group": "^2.0.6",
     "autoprefixer": "^7.1.4",
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.0.1",
