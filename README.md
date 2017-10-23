@@ -505,6 +505,10 @@ Chrome | Firefox | IE 11 | Edge | Safari
 
 ## Release Notes
 
+### V2.1.4
+
+- Fix broken typescript dependencies
+
 ### V2.1.3
 
 - Added typescript definition
