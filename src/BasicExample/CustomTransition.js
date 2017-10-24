@@ -123,9 +123,9 @@ class CustomTransition extends Component {
               }
               `}
             </HighLight>
-            <li>Create a Transition and apply it
+            <div>Create a Transition and apply it
             <HighLight>{this.getCode()}</HighLight>
-            </li>
+            </div>
           </li>
           <li>
             Or pass your transition to the ToastContainer to overwrite the

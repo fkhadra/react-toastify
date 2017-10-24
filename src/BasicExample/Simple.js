@@ -198,7 +198,7 @@ class Simple extends Component {
         />
         <Checkbox
           id="hideProgressBar"
-          name="hideProgressBar*"
+          name="hideProgressBar"
           label="Hide progress bar (less fanciness !)"
           checked={this.props.hideProgressBar}
           onChange={this.props.handleCheckBox}
