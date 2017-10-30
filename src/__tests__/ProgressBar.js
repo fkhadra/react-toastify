@@ -28,4 +28,14 @@ describe('ProgressBar', () => {
     component.simulate('animationEnd');
     expect(REQUIRED_PROPS.closeToast).toHaveBeenCalled();
   });
+
+  it("Should be able to hide the progress bar", () => {
+    const component = shallow(<ProgressBar {...REQUIRED_PROPS} hide/>);
+    expect(component.props().style.opacity).toBe(0);
+  });
+  
+  it("Should be able to pause animation", () => {
+    const component = shallow(<ProgressBar {...REQUIRED_PROPS} isRunning={false} />);
+    expect(component.props().style.animationPlayState).toBe("paused");    
+  });
 });
