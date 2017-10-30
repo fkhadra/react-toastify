@@ -149,4 +149,24 @@ describe('Toast', () => {
     component.simulate('mouseEnter');
     expect(component.state('isRunning')).toBeTruthy();
   });
+
+  it("Should update state when document visibility change", () => {
+    let trigger;
+    let event;
+  document.addEventListener = (evt, cb) => {
+    trigger = cb;
+    event = evt;
+  }
+    
+    const component = mount(
+      <Toast {...REQUIRED_PROPS}>
+      FooBar
+    </Toast>
+    );
+    expect(event).toBe("visibilitychange");
+    expect(component.state().isRunning).toBe(true);
+    trigger();
+    expect(component.state().isRunning).toBe(false);
+    
+  });
 });
