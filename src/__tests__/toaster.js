@@ -6,7 +6,7 @@ import { mount } from 'enzyme';
 import ToastContainer from './../ToastContainer';
 import toaster from './../toaster';
 import EventManager from './../util/EventManager';
-import { ACTION } from './../constant';
+import { ACTION, TYPE } from './../constant';
 
 jest.useFakeTimers();
 
@@ -31,8 +31,8 @@ describe('toastify', () => {
     expect(firstId).not.toEqual(secondId);
   });
 
-  it("Can remove toast programmatically", () => {
-    const component = mount(<ToastContainer autoClose={false} />);
+  it("Should be able remove toast programmatically", () => {
+    const component = mount(<ToastContainer />);
     const id = toaster('hello');
 
     jest.runAllTimers();
@@ -43,12 +43,18 @@ describe('toastify', () => {
     expect(component.state('toast').length).toBe(0);
   });
 
-  it("Can tell if a toast is active based on the id", () => {
-    mount(<ToastContainer autoClose={false} />);
-    const id = toaster('hello');
-
-    jest.runAllTimers();
-    expect(toaster.isActive(id)).toBe(true);
+  describe("isActive function", () => {
+    it("toast.isActive should return false until the container is mounted", () => {
+      expect(toaster.isActive()).toBe(false);
+    });
+    
+    it("Should be able to tell if a toast is active based on the id as soon as the container is mounted", () => {
+      mount(<ToastContainer />);
+      const id = toaster('hello');
+  
+      jest.runAllTimers();
+      expect(toaster.isActive(id)).toBe(true);
+    });
   });
 
   it("Can append classNames", () => {
@@ -63,5 +69,25 @@ describe('toastify', () => {
     expect(component.render().find('.toastify-content').hasClass('class1')).toBe(true);
     expect(component.render().find('.toastify__body').hasClass('class2')).toBe(true);
     expect(component.render().find('.toastify__progress').hasClass('class3')).toBe(true);
+  });
+
+  it("Should be able to use syntaxic sugar for different notification type", () => {
+    const component = mount(<ToastContainer />);
+
+    toaster.success("plop");
+    toaster.error("plop");
+    toaster.warning("plop");
+    toaster.info("plop");
+    toaster.warn("plop");
+    jest.runAllTimers();
+
+    // Remove default types as there is no shortcut for that one
+    const expectedTypes = Object.keys(TYPE).map(k => TYPE[k]).filter(v => v !== "default").sort();
+
+    // Array unique since warn and warning use the same type
+    const typesToMatch = [...new Set(Object.keys(component.instance().collection)
+      .map(k => component.instance().collection[k].content.props.type))].sort();
+
+    expect(expectedTypes).toEqual(typesToMatch);
   });
 });
