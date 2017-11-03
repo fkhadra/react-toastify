@@ -13,20 +13,20 @@
   font-family: sans-serif;
   cursor: pointer;
   &--default {
-    background: $color-default;
+    background: $rt-color-default;
     color: #aaa;
   }
   &--info {
-    background: $color-info;
+    background: $rt-color-info;
   }
   &--success {
-    background: $color-success;
+    background: $rt-color-success;
   }
   &--warning {
-    background: $color-warning;
+    background: $rt-color-warning;
   }
   &--error {
-    background: $color-error;
+    background: $rt-color-error;
   }
 }
 
@@ -35,7 +35,7 @@
   flex: 1;
 }
 
-@media #{$smartphone-portrait} {
+@media #{$rt-smartphone-portrait} {
   .toastify-content{
     margin-bottom: 0;  
   }
