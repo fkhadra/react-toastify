@@ -18,6 +18,7 @@
     * [Set a custom close button or simply remove it](#set-a-custom-close-button-or-simply-remove-it)
     * [ :fire: Define a custom enter and exit transition :fire: ](#define-a-custom-enter-and-exit-transition)
     * [Define your style](#define-your-style)
+    * [Replace default sass variable](#replace-default-sass-variable)
     * [Mobile](#mobile)
  * [Api](#api)
  * [Browser Support](#browser-support)
@@ -417,6 +418,37 @@ Taste and colours are not always the same ! You have several options.
       {/*Component*/}
     );
   }
+```
+
+### Replace default sass variable
+
+If you use a sass loader you could replace the default variable to suits your needs.
+
+- Define your variable: 
+
+```css
+/* Below the variable you can replace */
+$toast-width: 320px !default;
+$toast-background: #ffffff !default;
+$font-color: #999 !default;
+$font-size: 13px !default;
+$animation-duration: 0.75s !default;
+
+$color-default: #fff !default;
+$color-info: #3498db !default;
+$color-success: #07bc0c !default;
+$color-warning: #f1c40f !default;
+$color-error: #e74c3c !default;
+
+$color-progress-default: linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55) !default;
+
+$smartphone-portrait: "only screen and (max-width : 480px)" !default;
+```
+
+- Include the file and voila!
+```css
+@include 'my_custom_variables';
+@include 'react-toastify/src/scss/main';
 ```
 
 ### Mobile
