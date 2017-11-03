@@ -3,7 +3,7 @@
   z-index: 999;
   position: fixed;
   padding: 4px;
-  width: $toast-width;
+  width: $rt-toast-width;
   box-sizing: border-box;
   color: #fff;
   &--top-left {
@@ -13,7 +13,7 @@
   &--top-center {
     top: 1em;
     left: 50%;
-    margin-left: -($toast-width / 2);
+    margin-left: -($rt-toast-width / 2);
   }
   &--top-right {
     top: 1em;
@@ -27,7 +27,7 @@
   &--bottom-center {
     bottom: 1em;
     left: 50%;
-    margin-left: -($toast-width / 2);
+    margin-left: -($rt-toast-width / 2);
   }
   &--bottom-right {
     bottom: 1em;
@@ -36,7 +36,7 @@
   
 }
 
-@media #{$smartphone-portrait} {
+@media #{$rt-smartphone-portrait} {
   .toastify{
     width: 100vw;
     padding: 0;

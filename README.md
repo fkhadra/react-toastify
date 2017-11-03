@@ -428,21 +428,21 @@ If you use a sass loader you could replace the default variable to suits your ne
 
 ```css
 /* Below the variable you can replace */
-$toast-width: 320px !default;
-$toast-background: #ffffff !default;
-$font-color: #999 !default;
-$font-size: 13px !default;
-$animation-duration: 0.75s !default;
+$rt-toast-width: 320px !default;
+$rt-toast-background: #ffffff !default;
+$rt-font-color: #999 !default;
+$rt-font-size: 13px !default;
+$rt-animation-duration: 0.75s !default;
 
-$color-default: #fff !default;
-$color-info: #3498db !default;
-$color-success: #07bc0c !default;
-$color-warning: #f1c40f !default;
-$color-error: #e74c3c !default;
+$rt-color-default: #fff !default;
+$rt-color-info: #3498db !default;
+$rt-color-success: #07bc0c !default;
+$rt-color-warning: #f1c40f !default;
+$rt-color-error: #e74c3c !default;
 
-$color-progress-default: linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55) !default;
+$rt-color-progress-default: linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55) !default;
 
-$smartphone-portrait: "only screen and (max-width : 480px)" !default;
+$rt-smartphone-portrait: "only screen and (max-width : 480px)" !default;
 ```
 
 - Include the file and voila!
