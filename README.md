@@ -537,9 +537,9 @@ IE 11+ ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ |
 
 ## Release Notes
 
-### V2.1.8
+### V2.2.0
 
-- sass variables are now namespaced
+- Sass variables are now namespaced
 
 ### V2.1.7
 
