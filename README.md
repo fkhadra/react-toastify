@@ -75,7 +75,6 @@ By default all toasts will inherits ToastContainer's props. **Props defined on t
         {/* One container to rule them all! */}
         <ToastContainer 
           position="top-right"
-          type="default"
           autoClose={5000}
           hideProgressBar={false}
           newestOnTop={false}
