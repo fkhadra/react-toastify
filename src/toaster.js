@@ -49,6 +49,12 @@ function emitEvent(content, options) {
   return options.toastId;
 }
 
+function emitDismiss(id) {
+  if (container !== null) {
+    EventManager.emit(ACTION.CLEAR, id);
+  }
+}
+
 const toaster = Object.assign(
   (content, options) => emitEvent(content, mergeOptions(options)),
   {
@@ -57,7 +63,7 @@ const toaster = Object.assign(
     warn: (content, options) => emitEvent(content, Object.assign(mergeOptions(options), { type: TYPE.WARNING })),
     warning: (content, options) => emitEvent(content, Object.assign(mergeOptions(options), { type: TYPE.WARNING })),
     error: (content, options) => emitEvent(content, Object.assign(mergeOptions(options), { type: TYPE.ERROR })),
-    dismiss: (id = null) => EventManager.emit(ACTION.CLEAR, id),
+    dismiss: (id = null) => emitDismiss(id),
     isActive: () => false
   },
   {
