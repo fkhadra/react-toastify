@@ -22,7 +22,7 @@
     "build": "NODE_ENV=production ./scripts/build.sh",
     "postbuild": "npm run style",
     "prestyle": "sass src/scss/main.scss dist/ReactToastify.css",
-    "style": "postcss --use autoprefixer -b 'last 2 versions' < dist/ReactToastify.css | cssnano --no-reduceIdents > dist/ReactToastify.min.css"
+    "style": "postcss --use autoprefixer -b 'last 2 versions' < dist/ReactToastify.css | cssnano --no-zindex --no-reduceIdents > dist/ReactToastify.min.css"
   },
   "repository": {
     "type": "git",
