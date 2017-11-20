@@ -541,6 +541,10 @@ IE 11+ ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ |
 
 ## Release Notes
 
+### V2.2.1
+
+- Fix [issue #71](https://github.com/fkhadra/react-toastify/issues/71)
+
 ### V2.2.0
 
 - Sass variables are now namespaced
