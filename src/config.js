@@ -3,7 +3,6 @@ export default {
   background: "#ffffff",
   fontColor: "#999",
   fontSize: "13px",
-  animationDuration: "0.75s",
   colorDefault: "#fff",
   colorInfo: "#3498db",
   colorSuccess: "#07bc0c",
