@@ -1,10 +1,37 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { css } from "glamor";
 
 import ProgressBar from "./ProgressBar";
 import { POSITION, TYPE } from "./constant";
+import config from "./config";
 import objectValues from "./util/objectValues";
 import { falseOrElement, falseOrNumber } from "./util/propValidator";
+
+const toast = type => css({
+  position: "relative",
+  minHeight: "48px",
+  marginBottom: "1rem",
+  padding: "8px",
+  borderRadius: "1px",
+  boxShadow: "0 1px 10px 0 rgba(0, 0, 0, .1), 0 2px 15px 0 rgba(0, 0, 0, .05)",
+  display: "flex",
+  justifyContent: "space-between",
+  maxHeight: "800px",
+  overflow: "hidden",
+  fontFamily: "sans-serif",
+  cursor: "pointer",
+  background: config[`color${type.charAt(0).toUpperCase()}${type.slice(1)}`],
+  ...type === "default" ? { color: "#aaa" } : {},
+  [`@media ${config.smartphonePortrait}`]: {
+    marginBottom: 0  
+  }
+});
+
+const body = css({
+  margin: "auto 0",
+  flex: 1
+});
 
 class Toast extends Component {
   static propTypes = {
@@ -59,10 +86,7 @@ class Toast extends Component {
   }
 
   getToastProps() {
-    const toastProps = {
-      className: `toastify-content toastify-content--${this.props.type} ${this
-        .props.className}`
-    };
+    const toastProps = {};
 
     if (this.props.autoClose !== false && this.props.pauseOnHover === true) {
       toastProps.onMouseEnter = this.pauseToast;
@@ -90,17 +114,18 @@ class Toast extends Component {
       type,
       hideProgressBar,
       closeToast,
-      transition,
+      transition: Transition,
       position,
-      onExited
+      onExited,
+      className,
+      bodyClassName,
+      progressClassName
     } = this.props;
-
-    const Transition = transition;
 
     return (
       <Transition in={this.props.in} appear unmountOnExit onExited={onExited} position={position}>
-        <div {...this.getToastProps()}>
-          <div className={`toastify__body ${this.props.bodyClassName}`}>
+        <div {...toast(type)} {...this.getToastProps()} {...className}>
+          <div {...body} className={bodyClassName}>
             {children}
           </div>
           {closeButton !== false && closeButton}
@@ -111,7 +136,7 @@ class Toast extends Component {
               closeToast={closeToast}
               hide={hideProgressBar}
               type={type}
-              className={this.props.progressClassName}
+              className={progressClassName}
             />
           )}
         </div>
