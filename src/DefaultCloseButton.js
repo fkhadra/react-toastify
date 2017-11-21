@@ -1,11 +1,30 @@
 /* eslint react/require-default-props: 0 */
 import React from 'react';
 import PropTypes from 'prop-types';
+import { css } from "glamor";
 
-function DefaultCloseButton({ closeToast }) {
+const rule = isDefault => css({
+  padding: 0,
+  color: isDefault ? "#000" : "#fff",
+  fontWeight: "bold",
+  fontSize: "14px",
+  background: "transparent",
+  outline: "none",
+  border: "none",
+  cursor: "pointer",
+  opacity: isDefault ? "0.3" : "0.7",
+  transition: ".3s ease",
+  alignSelf: "flex-start",
+  ":hover, :focus": {
+    opacity: 1
+  }
+});
+
+
+function DefaultCloseButton({ closeToast, type }) {
   return (
     <button
-      className="toastify__close"
+      {...rule(type === "default")}
       type="button"
       onClick={closeToast}
     >
