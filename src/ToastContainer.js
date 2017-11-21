@@ -130,7 +130,7 @@ class ToastContainer extends Component {
     return cloneElement(component, { ...props, ...component.props });
   }
 
-  makeCloseButton(toastClose, toastId) {
+  makeCloseButton(toastClose, toastId, type) {
     let closeButton = this.props.closeButton;
 
     if (isValidElement(toastClose) || toastClose === false) {
@@ -140,7 +140,8 @@ class ToastContainer extends Component {
     return closeButton === false
       ? false
       : this.with(closeButton, {
-        closeToast: () => this.removeToast(toastId)
+        closeToast: () => this.removeToast(toastId),
+        type: type
       });
   }
 
@@ -171,7 +172,7 @@ class ToastContainer extends Component {
     const toastOptions = {
       id: toastId,
       type: options.type,
-      closeButton: this.makeCloseButton(options.closeButton, toastId),
+      closeButton: this.makeCloseButton(options.closeButton, toastId, options.type),
       position: options.position || this.props.position,
       transition: options.transition || this.props.transition,
       pauseOnHover:
