@@ -19,10 +19,7 @@
     "lint": "eslint src/",
     "lint:fix": "eslint --fix src/",
     "prebuild": "npm run test",
-    "build": "NODE_ENV=production ./scripts/build.sh",
-    "postbuild": "npm run style",
-    "prestyle": "sass src/scss/main.scss dist/ReactToastify.css",
-    "style": "postcss --use autoprefixer -b 'last 2 versions' < dist/ReactToastify.css | cssnano --no-zindex --no-reduceIdents > dist/ReactToastify.min.css"
+    "build": "NODE_ENV=production ./scripts/build.sh"
   },
   "repository": {
     "type": "git",
@@ -35,6 +32,7 @@
   },
   "homepage": "https://github.com/fkhadra/react-toastify#readme",
   "dependencies": {
+    "glamor": "^2.20.40",
     "prop-types": "^15.6.0",
     "react-transition-group": "^2.2.1"
   },
@@ -48,7 +46,6 @@
   "devDependencies": {
     "@types/react": "^16.0.18",
     "@types/react-transition-group": "^2.0.6",
-    "autoprefixer": "^7.1.4",
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.0.1",
     "babel-jest": "^21.2.0",
@@ -57,8 +54,6 @@
     "babel-preset-env": "^1.6.0",
     "babel-preset-react-app": "^3.0.3",
     "coveralls": "^3.0.0",
-    "cssnano": "^3.10.0",
-    "cssnano-cli": "^1.0.5",
     "enzyme": "^3.0.0",
     "enzyme-adapter-react-16": "^1.0.0",
     "eslint": "^4.7.2",
@@ -69,8 +64,6 @@
     "eslint-plugin-react": "^7.4.0",
     "jest": "^21.2.1",
     "jest-cli": "^21.2.1",
-    "postcss": "^5.2.5",
-    "postcss-cli": "^3.2.0",
     "raf": "^3.3.2",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
