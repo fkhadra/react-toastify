@@ -1,11 +1,13 @@
 import React, { Component, isValidElement, cloneElement } from "react";
 import PropTypes from "prop-types";
+import { css } from "glamor";
 import TransitionGroup from "react-transition-group/TransitionGroup";
 
 import Toast from "./Toast";
 import DefaultCloseButton from "./DefaultCloseButton";
 import DefaultTransition from "./DefaultTransition";
 import { POSITION, ACTION } from "./constant";
+import config from "./config";
 import EventManager from "./util/EventManager";
 import objectValues from "./util/objectValues";
 import {
@@ -14,6 +16,71 @@ import {
   isValidDelay,
   typeOf
 } from "./util/propValidator";
+
+const container = css({
+  zIndex: 999,
+  position: "fixed",
+  padding: "4px",
+  width: config.width,
+  boxSizing: "border-box",
+  color: "#fff",
+  [`@media ${config.smartphonePortrait}`]: {
+    width: "100vw",
+    padding: 0
+  }
+});
+
+const toastPosition = pos => {
+  let rule;
+  switch (pos) {
+    case POSITION.TOP_LEFT:
+      rule = {
+        top: "1em",
+        left: "1em"
+      };
+      break;
+    case POSITION.TOP_CENTER:
+      rule = {
+        top: "1em",
+        left: "50%",
+        marginLeft: `-${config.width}/2`
+      }; 
+      break;
+    case POSITION.TOP_RIGHT:
+    default:
+      rule = {
+        top: "1em",
+        right: "1em"
+      };  
+      break;
+    case POSITION.BOTTOM_LEFT: 
+      rule = {
+        bottom: "1em",
+        left: "1em"
+      };
+      break;
+    case POSITION.BOTTOM_CENTER:
+      rule = {
+        bottom: "1em",
+        left: "50%",
+        marginLeft: `-${config.width}/2`
+      };
+      break;
+    case POSITION.BOTTOM_RIGHT:
+      rule = {
+        bottom: "1em",
+        right: "1em"
+      }; 
+  }
+  return css(rule, css({
+    [`@media ${config.smartphonePortrait}`]: {
+      left: 0,
+      margin: 0,
+      position: "fixed",
+      ...pos.substring(0,3) === "top" ? { top: 0 } : { bottom: 0 }
+    }
+  }));
+};
 
 class ToastContainer extends Component {
   static propTypes = {
@@ -237,18 +304,17 @@ class ToastContainer extends Component {
     return this.state.toast.length > 0;
   }
 
-  getContainerProps(pos, disablePointer) {
+  getContainerProps(disablePointer) {
     const props = {
-      className: `toastify toastify--${pos}`,
       style: disablePointer ? { pointerEvents: "none" } : {}
     };
 
     if (this.props.className !== null) {
-      props.className = `${props.className} ${this.props.className}`;
+      props.className = this.props.className;
     }
 
     if (this.props.style !== null) {
-      props.style = Object.assign({}, this.props.style, props.style);
+      props.style = {...this.props.style, ...props.style};
     }
 
     return props;
@@ -279,7 +345,9 @@ class ToastContainer extends Component {
 
       return (
         <TransitionGroup
-          {...this.getContainerProps(position, disablePointer)}
+          {...container}
+          {...toastPosition(position)}
+          {...this.getContainerProps(disablePointer)}
           key={`container-${position}`}
         >
           {toastToRender[position]}
