@@ -1,7 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { css } from "glamor";
 
 import { TYPE } from './constant';
+import config from "./config";
+
+const trackProgress = css.keyframes('track-progress', {
+  "0%": { width: "100%" },
+  "100%": { width: 0 }
+});
+
+const progress = type => css({
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  width: 0,
+  height: "5px",
+  zIndex: 999,
+  opacity: 0.7,
+  animation: `${trackProgress} linear 1`,
+  backgroundColor: "rgba(255,255,255,.7)",
+  ...type === "default" ? { background: config.colorProgressDefault } : {}
+});
 
 function ProgressBar({ delay, isRunning, closeToast, type, hide, className }) {
   const style = {
@@ -16,7 +36,8 @@ function ProgressBar({ delay, isRunning, closeToast, type, hide, className }) {
 
   return (
     <div
-      className={`toastify__progress toastify__progress--${type} ${className}`}
+      {...progress(type)}
+      className={className}
       style={style}
       onAnimationEnd={closeToast}
     />
