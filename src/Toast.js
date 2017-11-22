@@ -124,7 +124,7 @@ class Toast extends Component {
 
     return (
       <Transition in={this.props.in} appear unmountOnExit onExited={onExited} position={position}>
-        <div {...toast(type)} {...this.getToastProps()} {...className}>
+        <div {...toast(type)} {...this.getToastProps()} className={className}>
           <div {...body} className={bodyClassName}>
             {children}
           </div>
