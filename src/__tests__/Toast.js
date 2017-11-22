@@ -31,7 +31,7 @@ describe('Toast', () => {
         FooBar
       </Toast>
     );
-
+    
     expect(component.find('.container-class')).toHaveLength(1);
     expect(component.find('.body-class')).toHaveLength(1);
   });
@@ -100,8 +100,9 @@ describe('Toast', () => {
         FooBar
       </Toast>
     );
+    
     expect(component.instance().state.isRunning).toBeTruthy();
-    component.find('.toastify-content').simulate('mouseEnter');
+    component.find('div').first().simulate('mouseEnter');
     expect(component.instance().state.isRunning).toBeFalsy();
   });
 
@@ -116,11 +117,11 @@ describe('Toast', () => {
       </Toast>
     );
     expect(component.state('isRunning')).toBeTruthy();
-    component.find('.toastify-content').simulate('mouseEnter');
+    component.find('div').first().simulate('mouseEnter');
     expect(component.state('isRunning')).toBeTruthy();
   });
 
-  it('Should play toast delay on mouse leave', () => {
+  it('Should resume toast delay on mouse leave', () => {
     const component = shallow(
       <Toast
         {...REQUIRED_PROPS}
@@ -130,9 +131,9 @@ describe('Toast', () => {
     );
 
     expect(component.state('isRunning')).toBeTruthy();
-    component.find('.toastify-content').simulate('mouseEnter');
+    component.find('div').first().simulate('mouseEnter');
     expect(component.state('isRunning')).toBeFalsy();
-    component.find('.toastify-content').simulate('mouseLeave');
+    component.find('div').first().simulate('mouseLeave');
     expect(component.state('isRunning')).toBeTruthy();
   });
 
