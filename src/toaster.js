@@ -18,7 +18,7 @@ const defaultOptions = {
   className: null,
   bodyClassName: null,
   progressClassName: null,
-  tansition: null
+  transition: null
 };
 
 let container = null;
