@@ -123,9 +123,8 @@ describe('ToastContainer', () => {
     let component = mount(<ToastContainer />);
     toaster('hello');
     jest.runAllTimers();
-    
     // ensure that close button is present by default
-    expect(component.html()).toMatch(/toastify__close/);
+    expect(component.html()).toMatch(/✖/);
     component.unmount()
 
     component = mount(<ToastContainer closeButton={false} />);
@@ -140,7 +139,7 @@ describe('ToastContainer', () => {
     toaster('hello');
     jest.runAllTimers();
 
-    expect(component.html()).toMatch(/class="toastify .+ foo"/);
+    expect(component.html()).toMatch(/class="foo"/);
     expect(component.html()).toMatch(/style="background: red;"/);
   });
 
