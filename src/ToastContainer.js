@@ -17,7 +17,7 @@ import {
   typeOf
 } from "./util/propValidator";
 
-const container = css({
+const container = () => css({
   zIndex: 999,
   position: "fixed",
   padding: "4px",
@@ -342,7 +342,7 @@ class ToastContainer extends Component {
 
       return (
         <TransitionGroup
-          {...container}
+          {...container()}
           {...toastPosition(position)}
           {...this.getContainerProps(disablePointer)}
           key={`container-${position}`}
