@@ -23,7 +23,7 @@ const toast = type => css({
   cursor: "pointer",
   background: config[`color${type.charAt(0).toUpperCase()}${type.slice(1)}`],
   ...type === "default" ? { color: "#aaa" } : {},
-  [`@media ${config.smartphonePortrait}`]: {
+  [`@media ${config.mobile}`]: {
     marginBottom: 0  
   }
 });
@@ -49,9 +49,9 @@ class Toast extends Component {
     onOpen: PropTypes.func,
     onClose: PropTypes.func,
     type: PropTypes.oneOf(objectValues(TYPE)),
-    className: PropTypes.string,
-    bodyClassName: PropTypes.string,
-    progressClassName: PropTypes.string
+    className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    bodyClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    progressClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
   };
 
   static defaultProps = {

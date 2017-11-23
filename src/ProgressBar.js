@@ -73,7 +73,7 @@ ProgressBar.propTypes = {
   /**
    * Optionnal className
    */
-  className: PropTypes.string
+  className: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
 };
 
 ProgressBar.defaultProps = {

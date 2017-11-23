@@ -24,7 +24,7 @@ const container = css({
   width: config.width,
   boxSizing: "border-box",
   color: "#fff",
-  [`@media ${config.smartphonePortrait}`]: {
+  [`@media ${config.mobile}`]: {
     width: "100vw",
     padding: 0
   }
@@ -32,6 +32,7 @@ const container = css({
 
 const toastPosition = pos => {
   let rule;
+  const marginLeft = `-${parseInt(config.width,10)/2}px`;
   switch (pos) {
     case POSITION.TOP_LEFT:
       rule = {
@@ -43,7 +44,7 @@ const toastPosition = pos => {
       rule = {
         top: "1em",
         left: "50%",
-        marginLeft: `-${config.width}/2`
+        marginLeft: marginLeft
       }; 
       break;
     case POSITION.TOP_RIGHT:
@@ -63,7 +64,7 @@ const toastPosition = pos => {
       rule = {
         bottom: "1em",
         left: "50%",
-        marginLeft: `-${config.width}/2`
+        marginLeft: marginLeft
       };
       break;
     case POSITION.BOTTOM_RIGHT:
@@ -73,7 +74,7 @@ const toastPosition = pos => {
       }; 
   }
   return css(rule, css({
-    [`@media ${config.smartphonePortrait}`]: {
+    [`@media ${config.mobile}`]: {
       left: 0,
       margin: 0,
       position: "fixed",
@@ -122,7 +123,7 @@ class ToastContainer extends Component {
     /**
      * An optional className
      */
-    className: PropTypes.string,
+    className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 
     /**
      * An optional style
@@ -132,17 +133,17 @@ class ToastContainer extends Component {
     /**
      * An optional className for the toast
      */
-    toastClassName: PropTypes.string,
+    toastClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 
     /**
      * An optional className for the toast body
      */
-    bodyClassName: PropTypes.string,
+    bodyClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 
     /**
      * An optional className for the toast progress bar
      */
-    progressClassName: PropTypes.string,
+    progressClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 
     /**
      * Define enter and exit transition using react-transition-group
