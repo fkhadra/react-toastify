@@ -3,6 +3,8 @@ import Transition from "react-transition-group/Transition";
 
 export let toast: Toast;
 
+type ToastType = "info" | "success" | "warning" | "error" | "default";
+
 interface Toast {
   success(content: React.ReactNode, options?: ToastOptions): number;
   info(content: React.ReactNode, options?: ToastOptions): number;
@@ -29,6 +31,7 @@ interface CommonOptions {
 interface ToastOptions extends CommonOptions {
   onOpen?: () => void;
   onClose?: () => void;
+  type: ToastType;
 }
 
 interface ToastContainerProps extends CommonOptions {
