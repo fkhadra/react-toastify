@@ -300,10 +300,6 @@ class ToastContainer extends Component {
     this.setState({ toast: [] });
   }
 
-  hasToast() {
-    return this.state.toast.length > 0;
-  }
-
   getContainerProps(disablePointer) {
     const props = {
       style: disablePointer ? { pointerEvents: "none" } : {}

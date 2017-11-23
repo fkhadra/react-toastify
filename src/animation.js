@@ -104,7 +104,7 @@ export default function getAnimation(pos){
           }
         }
       }
-    case POSITION.BOTTON_CENTER:    
+    case POSITION.BOTTOM_CENTER:    
       return {
         enter: {
           "0%": {
