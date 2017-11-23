@@ -9,5 +9,5 @@ export default {
   colorWarning: "#f1c40f",
   colorError: "#e74c3c",
   colorProgressDefault: "linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55)",
-  smartphonePortrait: "only screen and (max-width : 480px)",
+  mobile: "only screen and (max-width : 480px)",
 };

@@ -7,7 +7,7 @@ import Toast from "./Toast";
 import DefaultCloseButton from "./DefaultCloseButton";
 import DefaultTransition from "./DefaultTransition";
 import { POSITION, ACTION } from "./constant";
-import config from "./config";
+import style from "./style";
 import EventManager from "./util/EventManager";
 import objectValues from "./util/objectValues";
 import {
@@ -21,10 +21,10 @@ const container = css({
   zIndex: 999,
   position: "fixed",
   padding: "4px",
-  width: config.width,
+  width: style.width,
   boxSizing: "border-box",
   color: "#fff",
-  [`@media ${config.mobile}`]: {
+  [`@media ${style.mobile}`]: {
     width: "100vw",
     padding: 0
   }
@@ -32,7 +32,7 @@ const container = css({
 
 const toastPosition = pos => {
   let rule;
-  const marginLeft = `-${parseInt(config.width,10)/2}px`;
+  const marginLeft = `-${parseInt(style.width,10)/2}px`;
   switch (pos) {
     case POSITION.TOP_LEFT:
       rule = {
@@ -74,7 +74,7 @@ const toastPosition = pos => {
       }; 
   }
   return css(rule, css({
-    [`@media ${config.mobile}`]: {
+    [`@media ${style.mobile}`]: {
       left: 0,
       margin: 0,
       position: "fixed",

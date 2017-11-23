@@ -11,17 +11,17 @@ const animate = {
 
 const animation = pos => {
   const { enter, exit } = getAnimation(pos);
-  const enterKey = css.keyframes('enter', {
+  const enterAnimation = css.keyframes('enter', {
     "from, 60%, 75%, 90%, to": {
       animationTimingFunction: "cubic-bezier(0.215, 0.610, 0.355, 1.000)"
     },
     ...enter,
   });
-  const exitKey = css.keyframes('exit', exit)
+  const exitAnimation = css.keyframes('exit', exit)
   
   return {
-    enter: css({...animate, animationName: enterKey}),
-    exit: css({...animate, animationName: exitKey}),
+    enter: css({...animate, animationName: enterAnimation}),
+    exit: css({...animate, animationName: exitAnimation}),
   };
 }
 

@@ -4,7 +4,7 @@ import { css } from "glamor";
 
 import ProgressBar from "./ProgressBar";
 import { POSITION, TYPE } from "./constant";
-import config from "./config";
+import style from "./style";
 import objectValues from "./util/objectValues";
 import { falseOrElement, falseOrNumber } from "./util/propValidator";
 
@@ -21,9 +21,9 @@ const toast = type => css({
   overflow: "hidden",
   fontFamily: "sans-serif",
   cursor: "pointer",
-  background: config[`color${type.charAt(0).toUpperCase()}${type.slice(1)}`],
+  background: style[`color${type.charAt(0).toUpperCase()}${type.slice(1)}`],
   ...type === "default" ? { color: "#aaa" } : {},
-  [`@media ${config.mobile}`]: {
+  [`@media ${style.mobile}`]: {
     marginBottom: 0  
   }
 });

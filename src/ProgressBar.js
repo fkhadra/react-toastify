@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { css } from "glamor";
 
 import { TYPE } from './constant';
-import config from "./config";
+import style from "./style";
 
 const trackProgress = css.keyframes('track-progress', {
   "0%": { width: "100%" },
@@ -20,7 +20,7 @@ const progress = type => css({
   opacity: 0.7,
   animation: `${trackProgress} linear 1`,
   backgroundColor: "rgba(255,255,255,.7)",
-  ...type === "default" ? { background: config.colorProgressDefault } : {}
+  ...type === "default" ? { background: style.colorProgressDefault } : {}
 });
 
 function ProgressBar({ delay, isRunning, closeToast, type, hide, className }) {
