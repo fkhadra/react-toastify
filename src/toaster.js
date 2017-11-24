@@ -56,7 +56,7 @@ const toaster = Object.assign(
     warn: (content, options) => emitEvent(content, Object.assign(mergeOptions(options), { type: TYPE.WARNING })),
     warning: (content, options) => emitEvent(content, Object.assign(mergeOptions(options), { type: TYPE.WARNING })),
     error: (content, options) => emitEvent(content, Object.assign(mergeOptions(options), { type: TYPE.ERROR })),
-    dismiss: (id = null) => EventManager.emit(ACTION.CLEAR, id),
+    dismiss: (id = null) => container && EventManager.emit(ACTION.CLEAR, id),
     isActive: () => false
   },
   {
