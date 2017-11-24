@@ -13,16 +13,19 @@
  * [Demo](#demo)
  * [Installation](#installation)
  * [Features](#features)
+ * [Migrate from v2 to v3](#migrate-from-v2-to-v3)
  * [Usage](#usage)
     * [Simple](#simple)
     * [Positioning toast](#positioning-toast)
     * [Remove a toast programmatically](#remove-a-toast-programmatically)
     * [Prevent duplicate](#prevent-duplicate)
     * [Define hook](#define-hook)
+    * [Add an undo option to a toast](#add-an-undo-option-to-a-toast)
     * [Set a custom close button or simply remove it](#set-a-custom-close-button-or-simply-remove-it)
     * [ :fire: Define a custom enter and exit transition :fire: ](#define-a-custom-enter-and-exit-transition)
     * [Define your style](#define-your-style)
-    * [Replace default sass variable](#replace-default-sass-variable)
+      * [Replace global style](#replace-global-style)
+      * [Style with className](#style-with-classname)
     * [Mobile](#mobile)
  * [Api](#api)
  * [Browser Support](#browser-support)
@@ -40,12 +43,6 @@
 $ npm install --save react-toastify
 $ yarn add react-toastify
 ```
-   
-If you use a style loader you can import the stylesheet as follow :
-   
-```javascript
-import 'react-toastify/dist/ReactToastify.min.css' 
-```
 
 ## Features
 
@@ -57,6 +54,16 @@ import 'react-toastify/dist/ReactToastify.min.css'
 - Define behavior per toast
 - Easy to setup
 - Super easy to customize
+- Use glamor for styling
+
+## Migrate from v2 to v3
+
+The v3 rely on glamor for styling. Using css classes is still fine but 
+you may need to replace your css classes by a glamor rule in some case.
+
+No more css file to import !
+
+Style helper added to mimic sass variables.
 
 ## Usage
 
@@ -67,7 +74,6 @@ By default all toasts will inherits ToastContainer's props. **Props defined on t
 ```javascript
   import React, { Component } from 'react';
   import { ToastContainer, toast } from 'react-toastify';
-  import 'react-toastify/dist/ReactToastify.min.css';
 
   class App extends Component {
     notify = () => toast("Wow so easy !");
@@ -76,16 +82,8 @@ By default all toasts will inherits ToastContainer's props. **Props defined on t
       return (
         <div>
         <button onClick={this.notify}>Notify !</button>
-        {/* One container to rule them all! */}
-        <ToastContainer 
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          pauseOnHover
-        />
-        {/*Can be written <ToastContainer />. Props defined are the same as the default one. */}
+          {/* One container to rule them all! */}
+          <ToastContainer />
         </div>
       );
     }
@@ -123,9 +121,7 @@ For convenience, toast expose a POSITION property to avoid any typo.
       position: toast.POSITION.BOTTOM_CENTER
     });
     toast("Custom Style Notification !", {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      className: 'dark-toast',
-      progressClassName: 'transparent-progress'
+      position: toast.POSITION.BOTTOM_RIGHT
     });
   };
 
@@ -134,7 +130,6 @@ For convenience, toast expose a POSITION property to avoid any typo.
     }
   }
 ```
-
 
 
 ****
@@ -152,7 +147,7 @@ Without args, all the displayed toasts will be dismissed.
     toastId = null;
 
     notify = () => this.toastId = toast("Lorem ipsum dolor");
-Define hook
+
     dismiss = () =>  toast.dismiss(this.toastId);
 
     dismissAll = () =>  toast.dismiss();
@@ -218,7 +213,107 @@ You can define two hooks on toast:
     }
   }
 ```
+
+### Add an undo option to a toast
+
+[![Edit l2qkywz7xl](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/l2qkywz7xl)
+
+```javascript
+const ToastUndo = ({ id, undo, closeToast }) => {
+  function handleClick(){
+    undo(id); 
+    closeToast();
+  }
+
+  return (
+    <div>
+      <h3>
+        Row Deleted <button onClick={handleClick}>UNDO</button>
+      </h3>
+    </div>
+  );
+}
+
+
+
+class App extends Component {
+  state = {
+    collection: data,
+    // Buffer 
+    toRemove: []
+  };
+
+  // Remove the row id from the buffer
+  undo = id => {
+    this.setState({
+      toRemove: this.state.toRemove.filter(v => v !== id)
+    });
+  }
+    
+  // Remove definetly 
+  cleanCollection = () => this.setState({
+    // Return element which are not included in toRemove
+    collection: this.state.collection.filter(v => !this.state.toRemove.includes(v.id)),
+    //Cleanup the buffer
+    toRemove: []
+  });
+
+
   
+   // Remove row from render process 
+   // then display the toast with undo action available
+  removeRow = e => {
+    const id = e.target.dataset.rowId;
+    this.setState({
+      toRemove: [...this.state.toRemove, id]
+    });
+    toast(<ToastUndo undo={this.undo} id={id} />, {
+      // hook will be called whent the component unmount
+      onClose: this.cleanCollection
+    });
+  };
+
+  renderRows() {
+    const { collection, toRemove } = this.state;
+
+    // Render all the element wich are not present in toRemove
+    // Im using data-attribute to grab the row id
+    return collection.filter(v => !toRemove.includes(v.id)).map(v => (
+      <tr key={v.id}>
+        <td>{v.firstName}</td>
+        <td>{v.lastName}</td>
+        <td>{v.email}</td>
+        <td>
+          <button onClick={this.removeRow} data-row-id={v.id}>
+            Delete
+          </button>
+        </td>
+      </tr>
+    ));
+  }
+
+  render() {
+    // Dont close the toast on click
+    return (
+      <div style={styles}>
+        <table>
+        <tbody>
+          <tr>
+            <th>name</th>
+            <th>firstname</th>
+            <th>gender</th>
+            <th />
+          </tr>
+          {this.renderRows()}
+          </tbody>
+        </table>
+        <ToastContainer closeOnClick={false} />
+      </div>
+    );
+  }
+}
+```
+
 ### Set a custom close button or simply remove it
 
 When you use a custom close button, your button will receive a ```closeToast``` props. You need to call it in order to close the toast. The customCloseButton can be passed to the ToastContainer so all the toast display the custom close or you can set it by toast.
@@ -255,7 +350,9 @@ If ```customCloseButton``` is set to false, the close button will be not display
 
 The toast rely on `react-transition-group` for the enter and exit transition. 
 ![toastify_custom_trans](https://user-images.githubusercontent.com/5574267/31049179-0d52e14c-a62e-11e7-9abd-b0d169a0fadc.gif)
-- I'll use the zoom animation from animate.css
+
+I'll use the zoom animation from animate.css. Of course, you could create the animation using glamor.
+
 ```css
 /* style.css*/
 @keyframes zoomIn {
@@ -303,7 +400,7 @@ The toast rely on `react-transition-group` for the enter and exit transition.
 import React, { Component } from 'react';
 import { toast } from 'react-toastify';
 import Transition from 'react-transition-group/Transition';
-import 'style.css';
+import './style.css';
 
 // Any transition created with react-transition-group/Transition will work ! 
 const ZoomInAndOut = ({ children, position, ...props }) => (
@@ -352,52 +449,48 @@ render(){
 
 ### Define your style
 
-Taste and colours are not always the same ! You have several options.
+#### Replace global style
 
-- Overwrite ```toastify-content``` and ```toastify__progress```
-- Create two css classes and pass them to a toast
+```javascript
+import { style } from "react-toastify";
 
-```css
-.dark-toast{
-  background: #323232;
-  color: #fff;
-}
-
-.dark-toast > .toastify__close{
-  color: #fff;
-}
-
-.transparent-progress{
-  background:  rgba(255,255,255,.7);
-}
-
-.fancy-progress{
-  background: repeating-radial-gradient(red, yellow 10%, green 15%);
-}
-                
+style({
+  width: "320px",
+  colorDefault: "#fff",
+  colorInfo: "#3498db",
+  colorSuccess: "#07bc0c",
+  colorWarning: "#f1c40f",
+  colorError: "#e74c3c",
+  colorProgressDefault: "linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55)",
+  mobile: "only screen and (max-width : 480px)",
+});
 ```
+
+#### Style with className
+
+className can be a css class or a glamor rule.
+
+⚠️ Use a glamor rule rather than a css class when you want to override a property cause glamor stylesheet
+will be injected last ⚠️
 
 ```javascript
   import React, { Component } from 'react';
   import { toast } from 'react-toastify';
+  import { css } from 'glamor';
 
   class Style extends Component {
     notify = () => {
       toast("Dark style notification with default type progress bar",{
-        className: 'dark-toast',
-        autoClose: 5000
+        className: css({
+          background: "black"
+        }),
+        bodyClassName: "grow-font-size"
       });
 
-      toast("Dark style with transparent progress bar, the one used with others types.",{
-        className: 'dark-toast',
-        progressClassName: 'transparent-progress',
-        autoClose: 5000
-      });
-
-      toast("Dark style with ugly progress bar",{
-        className: 'dark-toast',
-        progressClassName: 'fancy-progress',
-        autoClose: 5000
+      toast("Fancy progress bar.",{
+        progressClassName: css({
+          background: "repeating-radial-gradient(red, yellow 10%, green 15%)"
+        })
       });
     };
     
@@ -407,7 +500,7 @@ Taste and colours are not always the same ! You have several options.
   }
 ```
 
-- Or pass your classes to the ToastContainer to set the classes for all your toast in one shot.
+You could apply glamor rules or css classes gloablly:
 
 
 ```javascript
@@ -416,42 +509,13 @@ Taste and colours are not always the same ! You have several options.
       {/*Component*/}
       <ToastContainer 
         toastClassName="dark-toast"
-        progressClassName="transparent-progress" 
+        progressClassName={css({
+          height: "2px"
+        })}
       />
       {/*Component*/}
     );
   }
-```
-
-### Replace default sass variable
-
-If you use a sass loader you could replace the default variable to suits your needs.
-
-- Define your variable: 
-
-```css
-/* Below the variable you can replace */
-$rt-toast-width: 320px !default;
-$rt-toast-background: #ffffff !default;
-$rt-font-color: #999 !default;
-$rt-font-size: 13px !default;
-$rt-animation-duration: 0.75s !default;
-
-$rt-color-default: #fff !default;
-$rt-color-info: #3498db !default;
-$rt-color-success: #07bc0c !default;
-$rt-color-warning: #f1c40f !default;
-$rt-color-error: #e74c3c !default;
-
-$rt-color-progress-default: linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55) !default;
-
-$rt-smartphone-portrait: "only screen and (max-width : 480px)" !default;
-```
-
-- Include the file and voila!
-```css
-@include 'my_custom_variables';
-@include 'react-toastify/src/scss/main';
 ```
 
 ### Mobile
@@ -474,11 +538,11 @@ On mobile the toast will take all the width available.
 | pauseOnHover      | bool           | true      | Keep the timer running or not on hover                          |
 | closeOnClick      | bool           | true      | Dismiss toast on click                                          |
 | newestOnTop       | bool           | false     | Display newest toast on top                                     |
-| className         | string         | -         | Add optional classes to the container                           |
+| className         | string\|glamor rule         | -         | Add optional classes to the container                           |
 | style             | object         | -         | Add optional inline style to the container                      |
-| toastClassName    | string         | -         | Add optional classes to the toast                               |
-| bodyClassName     | string         | -         | Add optional classes to the toast body                          |
-| progressClassName | string         | -         | Add optional classes to the progress bar                        |
+| toastClassName    | string\|glamor rule         | -         | Add optional classes to the toast                               |
+| bodyClassName     | string\|glamor rule         | -         | Add optional classes to the toast body                          |
+| progressClassName | string\|glamor rule         | -         | Add optional classes to the progress bar                        |
       
 
 ### toast (Type: Object) 
@@ -540,6 +604,13 @@ toast.isActive(toastId) //Check if a toast is displayed or not
 IE 11+ ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ |
 
 ## Release Notes
+
+### V3.0.0
+
+- Switched to styled component with glamor
+- Added style helper to replace sass variables
+- Test suite improved
+- Typescript definition improved
 
 ### V2.2.1
 
