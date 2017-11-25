@@ -1,11 +1,13 @@
 import React, { Component, isValidElement, cloneElement } from "react";
 import PropTypes from "prop-types";
+import { css } from "glamor";
 import TransitionGroup from "react-transition-group/TransitionGroup";
 
 import Toast from "./Toast";
 import DefaultCloseButton from "./DefaultCloseButton";
 import DefaultTransition from "./DefaultTransition";
 import { POSITION, ACTION } from "./constant";
+import style from "./style";
 import EventManager from "./util/EventManager";
 import objectValues from "./util/objectValues";
 import {
@@ -14,6 +16,72 @@ import {
   isValidDelay,
   typeOf
 } from "./util/propValidator";
+
+const container = () => css({
+  zIndex: 999,
+  position: "fixed",
+  padding: "4px",
+  width: style.width,
+  boxSizing: "border-box",
+  color: "#fff",
+  [`@media ${style.mobile}`]: {
+    width: "100vw",
+    padding: 0
+  }
+});
+
+const toastPosition = pos => {
+  let rule;
+  const marginLeft = `-${parseInt(style.width,10)/2}px`;
+  switch (pos) {
+    case POSITION.TOP_LEFT:
+      rule = {
+        top: "1em",
+        left: "1em"
+      };
+      break;
+    case POSITION.TOP_CENTER:
+      rule = {
+        top: "1em",
+        left: "50%",
+        marginLeft: marginLeft
+      }; 
+      break;
+    case POSITION.TOP_RIGHT:
+    default:
+      rule = {
+        top: "1em",
+        right: "1em"
+      };  
+      break;
+    case POSITION.BOTTOM_LEFT: 
+      rule = {
+        bottom: "1em",
+        left: "1em"
+      };
+      break;
+    case POSITION.BOTTOM_CENTER:
+      rule = {
+        bottom: "1em",
+        left: "50%",
+        marginLeft: marginLeft
+      };
+      break;
+    case POSITION.BOTTOM_RIGHT:
+      rule = {
+        bottom: "1em",
+        right: "1em"
+      }; 
+  }
+  return css(rule, css({
+    [`@media ${style.mobile}`]: {
+      left: 0,
+      margin: 0,
+      position: "fixed",
+      ...pos.substring(0,3) === "top" ? { top: 0 } : { bottom: 0 }
+    }
+  }));
+};
 
 class ToastContainer extends Component {
   static propTypes = {
@@ -55,7 +123,7 @@ class ToastContainer extends Component {
     /**
      * An optional className
      */
-    className: PropTypes.string,
+    className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 
     /**
      * An optional style
@@ -65,17 +133,17 @@ class ToastContainer extends Component {
     /**
      * An optional className for the toast
      */
-    toastClassName: PropTypes.string,
+    toastClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 
     /**
      * An optional className for the toast body
      */
-    bodyClassName: PropTypes.string,
+    bodyClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 
     /**
      * An optional className for the toast progress bar
      */
-    progressClassName: PropTypes.string,
+    progressClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 
     /**
      * Define enter and exit transition using react-transition-group
@@ -130,7 +198,7 @@ class ToastContainer extends Component {
     return cloneElement(component, { ...props, ...component.props });
   }
 
-  makeCloseButton(toastClose, toastId) {
+  makeCloseButton(toastClose, toastId, type) {
     let closeButton = this.props.closeButton;
 
     if (isValidElement(toastClose) || toastClose === false) {
@@ -140,7 +208,8 @@ class ToastContainer extends Component {
     return closeButton === false
       ? false
       : this.with(closeButton, {
-        closeToast: () => this.removeToast(toastId)
+        closeToast: () => this.removeToast(toastId),
+        type: type
       });
   }
 
@@ -171,7 +240,7 @@ class ToastContainer extends Component {
     const toastOptions = {
       id: toastId,
       type: options.type,
-      closeButton: this.makeCloseButton(options.closeButton, toastId),
+      closeButton: this.makeCloseButton(options.closeButton, toastId, options.type),
       position: options.position || this.props.position,
       transition: options.transition || this.props.transition,
       pauseOnHover:
@@ -232,22 +301,17 @@ class ToastContainer extends Component {
     this.setState({ toast: [] });
   }
 
-  hasToast() {
-    return this.state.toast.length > 0;
-  }
-
-  getContainerProps(pos, disablePointer) {
+  getContainerProps(disablePointer) {
     const props = {
-      className: `toastify toastify--${pos}`,
       style: disablePointer ? { pointerEvents: "none" } : {}
     };
 
     if (this.props.className !== null) {
-      props.className = `${props.className} ${this.props.className}`;
+      props.className = this.props.className;
     }
 
     if (this.props.style !== null) {
-      props.style = Object.assign({}, this.props.style, props.style);
+      props.style = {...this.props.style, ...props.style};
     }
 
     return props;
@@ -278,7 +342,9 @@ class ToastContainer extends Component {
 
       return (
         <TransitionGroup
-          {...this.getContainerProps(position, disablePointer)}
+          {...container()}
+          {...toastPosition(position)}
+          {...this.getContainerProps(disablePointer)}
           key={`container-${position}`}
         >
           {toastToRender[position]}

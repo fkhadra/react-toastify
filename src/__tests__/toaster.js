@@ -66,9 +66,9 @@ describe('toastify', () => {
     });
 
     jest.runAllTimers();
-    expect(component.render().find('.toastify-content').hasClass('class1')).toBe(true);
-    expect(component.render().find('.toastify__body').hasClass('class2')).toBe(true);
-    expect(component.render().find('.toastify__progress').hasClass('class3')).toBe(true);
+    expect(component.render().find('.class1')).toHaveLength(1);
+    expect(component.render().find('.class2')).toHaveLength(1);
+    expect(component.render().find('.class3')).toHaveLength(1);
   });
 
   it("Should be able to use syntaxic sugar for different notification type", () => {
