@@ -1,13 +1,5 @@
 # React Toastify [![Build Status](https://travis-ci.org/fkhadra/react-toastify.svg?branch=master)](https://travis-ci.org/fkhadra/react-toastify) [![npm](https://img.shields.io/npm/dm/react-toastify.svg)]() [![npm](https://img.shields.io/npm/v/react-toastify.svg)]() [![license](https://img.shields.io/github/license/fkhadra/react-toastify.svg?maxAge=2592000)]() [![Coverage Status](https://coveralls.io/repos/github/fkhadra/react-toastify/badge.svg?branch=master)](https://coveralls.io/github/fkhadra/react-toastify?branch=master)
 
-
-:fire: Try [react-toastify v3](https://github.com/fkhadra/react-toastify/tree/v3-beta) ! :fire:
-
-```
-$ npm install --save react-toastify@next
-$ yarn add react-toastify@next
-```
-
 ![React toastify](https://user-images.githubusercontent.com/5574267/28753331-1380a2f0-7534-11e7-8456-0b32e959db07.gif "React toastify")
 
 
@@ -17,28 +9,35 @@ $ yarn add react-toastify@next
 
 🎉 React-Toastify allow you to add notification to your app with ease. No bullshit !
 
- * [Demo](#demo)
- * [Installation](#installation)
- * [Features](#features)
- * [Migrate from v2 to v3](#migrate-from-v2-to-v3)
- * [Usage](#usage)
-    * [Simple](#simple)
-    * [Positioning toast](#positioning-toast)
-    * [Remove a toast programmatically](#remove-a-toast-programmatically)
-    * [Prevent duplicate](#prevent-duplicate)
-    * [Define hook](#define-hook)
-    * [Add an undo option to a toast](#add-an-undo-option-to-a-toast)
-    * [Set a custom close button or simply remove it](#set-a-custom-close-button-or-simply-remove-it)
-    * [ :fire: Define a custom enter and exit transition :fire: ](#define-a-custom-enter-and-exit-transition)
-    * [Define your style](#define-your-style)
-      * [Replace global style](#replace-global-style)
-      * [Style with className](#style-with-classname)
-    * [Mobile](#mobile)
- * [Api](#api)
- * [Browser Support](#browser-support)
- * [Release Notes](#release-notes)
- * [Contribute](#contribute)
- * [License](#license)
+* [Demo](#demo)
+* [Installation](#installation)
+* [Features](#features)
+* [Migrate from v2 to v3](#migrate-from-v2-to-v3)
+* [Usage](#usage)
+  + [One component to rule them all](#one-component-to-rule-them-all)
+  + [Positioning toast](#positioning-toast)
+  + [Set autoclose delay or disable it](#set-autoclose-delay-or-disable-it)
+  + [Render a component](#render-a-component)
+  + [Remove a toast programmatically](#remove-a-toast-programmatically)
+  + [Prevent duplicate](#prevent-duplicate)
+  + [Define hook](#define-hook)
+  + [Set a custom close button or simply remove it](#set-a-custom-close-button-or-simply-remove-it)
+    - [Override the default one](#override-the-default-one)
+    - [Define it per toast](#define-it-per-toast)
+    - [Remove it](#remove-it)
+  + [Add an undo option to a toast](#add-an-undo-option-to-a-toast)
+  + [ :fire: Define a custom enter and exit transition :fire: ](#define-a-custom-enter-and-exit-transition)
+  + [Le style](#le-style)
+    - [Replace default style](#replace-default-style)
+    - [Style with className](#style-with-classname)
+  + [Mobile](#mobile)
+* [Api](#api)
+  + [ToastContainer](#toastcontainer)
+  + [toast](#toast)
+* [Browser Support](#browser-support)
+* [Release Notes](#release-notes)
+* [Contribute](#contribute)
+* [License](#license)
 
 ## Demo
    
@@ -585,7 +584,7 @@ render(){
 
 ### Le style
 
-#### Replace global style
+#### Replace default style
 
 ```javascript
 import { style } from "react-toastify";
@@ -662,7 +661,7 @@ On mobile the toast will take all the width available.
 
 ## Api
   
-### ToastContainer (Type : React Component) 
+### ToastContainer
    
 | Props             | Type           | Default   | Description                                                     |
 | ----------------- | -------------- | --------- | --------------------------------------------------------------- |
@@ -681,7 +680,7 @@ On mobile the toast will take all the width available.
 | progressClassName | string\|glamor rule         | -         | Add optional classes to the progress bar                        |
       
 
-### toast (Type: Object) 
+### toast
    
 All the method of toast return a **toastId** except `dismiss` and `isActive`. 
 The **toastId** can be used to remove a toast programmatically or to check if the toast is displayed. 
@@ -693,7 +692,7 @@ The **toastId** can be used to remove a toast programmatically or to check if th
 | options   | object  | ✘             | Possible keys : autoClose, type, closeButton, hideProgressBar |  |
 
 - Available options :
-    - `type`: Kind of notification. One of "default", "success", "info", "warning", "error". You can use `toast.TYPE.INFO` and so on to avoid any typo.
+    - `type`: Kind of notification. One of "default", "success", "info", "warning", "error". You can use `toast.TYPE.SUCCESS` and so on to avoid any typo.
     - `onOpen`: Called inside componentDidMount
     - `onClose`: Called inside componentWillUnmount
     - `autoClose`: same as ToastContainer.
