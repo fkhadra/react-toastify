@@ -1,8 +1,15 @@
 # React Toastify [![Build Status](https://travis-ci.org/fkhadra/react-toastify.svg?branch=master)](https://travis-ci.org/fkhadra/react-toastify) [![npm](https://img.shields.io/npm/dm/react-toastify.svg)]() [![npm](https://img.shields.io/npm/v/react-toastify.svg)]() [![license](https://img.shields.io/github/license/fkhadra/react-toastify.svg?maxAge=2592000)]() [![Coverage Status](https://coveralls.io/repos/github/fkhadra/react-toastify/badge.svg?branch=master)](https://coveralls.io/github/fkhadra/react-toastify?branch=master)
 
 
+:fire: Try [react-toastify v3](https://github.com/fkhadra/react-toastify/tree/v3-beta) ! :fire:
+
+```
+$ npm install --save react-toastify@next
+$ yarn add react-toastify@next
+```
 
 ![React toastify](https://user-images.githubusercontent.com/5574267/28753331-1380a2f0-7534-11e7-8456-0b32e959db07.gif "React toastify")
+
 
 <a target='_blank' rel='nofollow' href='https://app.codesponsor.io/link/qxxWZzh3YmHPKmwHHm79SuG4/fkhadra/react-toastify'>
   <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/qxxWZzh3YmHPKmwHHm79SuG4/fkhadra/react-toastify.svg' />
