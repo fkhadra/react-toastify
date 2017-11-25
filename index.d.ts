@@ -5,7 +5,7 @@ export let toast: Toast;
 
 type ToastType = "info" | "success" | "warning" | "error" | "default";
 
-type styleProps = {
+interface styleProps {
   width?: string,
   colorDefault?: string,
   colorInfo?: string,

@@ -46,15 +46,16 @@ $ yarn add react-toastify
 
 ## Features
 
+- Easy to setup for real
+- Super easy to customize
 - Can display a react component inside the toast !
 - Don't rely on `findDOMNode` or any DOM hack
 - Has ```onOpen``` and ```onClose``` hooks. Both can access the props passed to the react component rendered inside the toast
-- Can be positioned per toast
-- Can remove toast programmatically
+- Can remove a toast programmatically
 - Define behavior per toast
-- Easy to setup
-- Super easy to customize
 - Use glamor for styling
+- Pause toast when the browser is not visible thanks to visibility api
+- Fancy progress bar to display the remaining time
 
 ## Migrate from v2 to v3
 
@@ -63,11 +64,11 @@ you may need to replace your css classes by a glamor rule in some case.
 
 No more css file to import !
 
-Style helper added to mimic sass variables.
+A style helper has been added to mimic the old sass variables.
 
 ## Usage
 
-### Simple 
+### One component to rule them all 
 
 By default all toasts will inherits ToastContainer's props. **Props defined on toast supersede ToastContainer's props.**
 
@@ -82,7 +83,6 @@ By default all toasts will inherits ToastContainer's props. **Props defined on t
       return (
         <div>
         <button onClick={this.notify}>Notify !</button>
-          {/* One container to rule them all! */}
           <ToastContainer />
         </div>
       );
@@ -92,7 +92,7 @@ By default all toasts will inherits ToastContainer's props. **Props defined on t
 
 ### Positioning toast
 
-By default all the toasts will be positionned on the top right of your browser. If a position is set on a toast, the one defined on ToastContainer will be overwritten
+By default all the toasts will be positionned on the top right of your browser. If a position is set on a toast, the one defined on ToastContainer will be replaced.
 
 The following values are allowed: **top-right, top-center, top-left, bottom-right, bottom-center, bottom-left**
 
@@ -104,6 +104,7 @@ For convenience, toast expose a POSITION property to avoid any typo.
 
   import React, { Component } from 'react';
   import { toast } from 'react-toastify';
+  import { css } from 'glamor';
 
   class Position extends Component {
     notify = () => {
@@ -121,7 +122,10 @@ For convenience, toast expose a POSITION property to avoid any typo.
       position: toast.POSITION.BOTTOM_CENTER
     });
     toast("Custom Style Notification !", {
-      position: toast.POSITION.BOTTOM_RIGHT
+      position: toast.POSITION.BOTTOM_RIGHT,
+      className: css({
+        background: "black"
+      })
     });
   };
 
@@ -131,13 +135,90 @@ For convenience, toast expose a POSITION property to avoid any typo.
   }
 ```
 
+### Set autoclose delay or disable it
 
-****
+- Set the default delay
+
+```js
+  import React from 'react';
+  import { ToastContainer } from 'react-toastify'; 
+  
+  // close toast after 8 seconds
+  const App = () => (
+    <ToastContainer autoClose={8000} />
+  );
+```
+
+- Set the delay per toast for more control
+
+```js
+  import React from 'react';
+  import { ToastContainer } from 'react-toastify'; 
+  
+  class App extends Component {
+    closeAfter15 = () => toast("YOLO", { autoClose: 15000 });
+
+    closeAfter7 = () => toast("7 Kingdoms", { autoClose: 15000 })
+
+    render(){
+      return (
+        <div>
+          <button onClick={this.closeAfter15}>Close after 15 seconds</button>
+          <button onClick={this.closeAfter7}>Close after 7 seconds</button>
+          <ToastContainer autoClose={8000} />
+        </div>
+      );
+    }
+  }
+```
+
+- Disable it by default
+
+```js
+  {/* Some components */}
+    <ToastContainer autoClose={false} />
+  {/* Some components */}
+```
+
+- Disable it per toast
+
+```js
+  {/* Some components */}
+    toast("hello", {
+      autoClose: false
+    })
+  {/* Some components */}
+```
+
+### Render a component
+
+When you render a component, a `closeToast` function is passed as a props. That way you can close the toast on user interaction for example.
+
+```js
+import React from 'react';
+import { ToastContainer, toast } from "react-toastify";
+
+const Msg = ({ closeToast }) => (
+  <div>
+    Lorem ipsum dolor
+    <button>Retry</button>
+    <button onClick={closeToast}>Close</button>
+  </div>
+)
+
+const App = () => (
+  <div>
+    <button onClick={() => toast(<Msg />)}>Hello 😀</button>
+    <ToastContainer />
+  </div>
+);
+```
+
 ### Remove a toast programmatically
 
 An id is returned each time you display a toast, use it to remove a given toast programmatically by calling ```toast.dismiss(id)```
 
-Without args, all the displayed toasts will be dismissed.
+Without args, all the displayed toasts will be removed.
 
 ```javascript
   import React, { Component } from 'react';
@@ -166,7 +247,7 @@ Without args, all the displayed toasts will be dismissed.
 
 ### Prevent duplicate
 
-To prevent duplicates, you can check if a given toast is active by calling toast.isActive(id) like the snippet below. With this approach, you can decide with more precision whether or not you want to display a toast.
+To prevent duplicates, you can check if a given toast is active by calling `toast.isActive(id)` like the snippet below. With this approach, you can decide with more precision whether or not you want to display a toast.
 
 ```javascript
   import React, { Component } from 'react';
@@ -193,7 +274,7 @@ To prevent duplicates, you can check if a given toast is active by calling toast
 
 ### Define hook
 
-You can define two hooks on toast:
+You can define two hooks on toast. Hooks are really useful when the toast are not used only to display messages.
 
 - onOpen is called inside componentDidMount
 - onClose is called inside componentWillUnmount
@@ -203,9 +284,9 @@ You can define two hooks on toast:
   import { toast } from 'react-toastify';
 
   class Hook extends Component {
-    notify = () => toast("Lorem ipsum dolor", {
-      onOpen: (childrenProps) => window.alert('I counted to infinity once then..'),
-      onClose: (childrenProps) => window.alert('I counted to infinity twice')
+    notify = () => toast(<MyComponent foo="bar" />, {
+      onOpen: ({ foo }) => window.alert('I counted to infinity once then..'),
+      onClose: ({ foo }) => window.alert('I counted to infinity twice')
     });
 
     render(){
@@ -214,7 +295,90 @@ You can define two hooks on toast:
   }
 ```
 
+### Set a custom close button or simply remove it
+
+#### Override the default one
+
+You can pass a custom close button to the `ToastContainer` to replace the default one.
+
+⚠️ **When you use a custom close button, your button will receive a ```closeToast``` function.
+You need to call it in order to close the toast.** ⚠️
+
+```javascript
+  import React, { Component } from 'react';
+  import { toast, ToastContainer } from 'react-toastify';
+
+  const CloseButton = ({ YouCanPassAnyProps, closeToast }) => (
+    <i
+      className="material-icons"
+      onClick={closeToast}
+    >
+    delete
+    </i>
+  );
+
+  class CustomClose extends Component {
+    notify = () => {
+      toast("The close button change when Chuck Norris display a toast");
+    };
+
+    render(){
+      return (
+        <div>
+          <button onClick={this.notify}>Notify</button>;
+          <ToastContainer closeButton={<CloseButton YouCanPassAnyProps="foo" />} />
+        </div>
+      );
+    }
+  }
+```
+
+#### Define it per toast
+
+```javascript
+  import React, { Component } from 'react';
+  import { toast } from 'react-toastify';
+
+  // Let's use the closeButton we defined on the previous example
+  class CustomClose extends Component {
+    notify = () => {
+      toast("The close button change when Chuck Norris display a toast",{
+        closeButton: <CloseButton YouCanPassAnyProps="foo" />
+      });
+    };
+
+    render(){
+      return <button onClick={this.notify}>Notify</button>;
+    }
+  }
+```
+
+#### Remove it
+
+Sometimes you don't want to display a close button. It can be removed globally or per toast. Simply pass
+`false` to `closeButton` props:
+
+- remove it by default
+
+```js
+  {/* Some components */}
+    <ToastContainer closeButton={false} />
+  {/* Some components */}
+```
+
+- remove it per toast
+
+```js
+  {/* Some components */}
+    toast("hello", {
+      closeButton: false
+    })
+  {/* Some components */}
+```
+
 ### Add an undo option to a toast
+
+See it in action:
 
 [![Edit l2qkywz7xl](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/l2qkywz7xl)
 
@@ -233,8 +397,6 @@ const ToastUndo = ({ id, undo, closeToast }) => {
     </div>
   );
 }
-
-
 
 class App extends Component {
   state = {
@@ -257,8 +419,6 @@ class App extends Component {
     //Cleanup the buffer
     toRemove: []
   });
-
-
   
    // Remove row from render process 
    // then display the toast with undo action available
@@ -314,41 +474,10 @@ class App extends Component {
 }
 ```
 
-### Set a custom close button or simply remove it
-
-When you use a custom close button, your button will receive a ```closeToast``` props. You need to call it in order to close the toast. The customCloseButton can be passed to the ToastContainer so all the toast display the custom close or you can set it by toast.
-If ```customCloseButton``` is set to false, the close button will be not displayed.
-
-
-```javascript
-  import React, { Component } from 'react';
-  import { toast } from 'react-toastify';
-
-  const CloseButton = ({ YouCanPassProps, closeToast }) => (
-    <i
-      className="material-icons"
-      onClick={closeToast}
-    >
-    delete
-    </i>
-  );
-
-  class CustomClose extends Component {
-    notify = () => {
-      toast("The close button change when Chuck Norris display a toast",{
-        closeButton: <CloseButton YouCanPassProps="foo" />
-      });
-    };
-
-    render(){
-      return <button onClick={this.notify}>Notify</button>;
-    }
-  }
-```
-
 ### Define a custom enter and exit transition
 
 The toast rely on `react-transition-group` for the enter and exit transition. 
+
 ![toastify_custom_trans](https://user-images.githubusercontent.com/5574267/31049179-0d52e14c-a62e-11e7-9abd-b0d169a0fadc.gif)
 
 I'll use the zoom animation from animate.css. Of course, you could create the animation using glamor.
@@ -433,7 +562,7 @@ class App extends Component {
 
 ```
 
-- Or pass your transition to the ToastContainer to overwrite the default one.
+- Or pass your transition to the ToastContainer to replace the default one.
 
 ```js
 render(){
@@ -447,7 +576,7 @@ render(){
 }
 ```
 
-### Define your style
+### Le style
 
 #### Replace global style
 
@@ -468,7 +597,7 @@ style({
 
 #### Style with className
 
-className can be a css class or a glamor rule.
+All className like props can be a css class or a glamor rule.
 
 ⚠️ Use a glamor rule rather than a css class when you want to override a property cause glamor stylesheet
 will be injected last ⚠️
@@ -500,7 +629,7 @@ will be injected last ⚠️
   }
 ```
 
-You could apply glamor rules or css classes gloablly:
+You could define your style gloablly:
 
 
 ```javascript
