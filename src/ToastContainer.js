@@ -18,7 +18,7 @@ import {
 } from "./util/propValidator";
 
 const container = () => css({
-  zIndex: 999,
+  zIndex: style.zIndex,
   position: "fixed",
   padding: "4px",
   width: style.width,
