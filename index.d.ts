@@ -14,6 +14,7 @@ interface styleProps {
   colorError?: string,
   colorProgressDefault?: string,
   mobile?: string,
+  zIndex?: string | number,
 }
 
 interface Toast {

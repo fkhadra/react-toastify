@@ -16,7 +16,7 @@ const progress = type => css({
   left: 0,
   width: 0,
   height: "5px",
-  zIndex: 999,
+  zIndex: style.zIndex,
   opacity: 0.7,
   animation: `${trackProgress} linear 1`,
   backgroundColor: "rgba(255,255,255,.7)",

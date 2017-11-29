@@ -13,10 +13,12 @@ describe("style", () => {
     expect(style.width).toBe("100px");
   });
 
-  it("Should not mutate style when value is not a string", () => {
+  it("Should mutate only available keys", () => {
     defineStyle({
-      width: 100
+      zIndex: 999,
+      overflow: "hidden"
     });
-    expect(style.width).toBe("320px");
+    expect(style.zIndex).toBe(999);
+    expect(style.overflow).toBe(undefined);
   });
 });
