@@ -635,7 +635,7 @@ will be injected last ⚠️
   }
 ```
 
-You could define your style gloablly:
+You could define your style globally:
 
 
 ```javascript
