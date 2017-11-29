@@ -1,4 +1,4 @@
-let style = {
+const style = {
   width: "320px",
   colorDefault: "#fff",
   colorInfo: "#3498db",

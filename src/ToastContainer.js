@@ -13,26 +13,26 @@ import objectValues from "./util/objectValues";
 import {
   falseOrNumber,
   falseOrElement,
-  isValidDelay,
-  typeOf
+  isValidDelay
 } from "./util/propValidator";
 
-const container = () => css({
-  zIndex: style.zIndex,
-  position: "fixed",
-  padding: "4px",
-  width: style.width,
-  boxSizing: "border-box",
-  color: "#fff",
-  [`@media ${style.mobile}`]: {
-    width: "100vw",
-    padding: 0
-  }
-});
+const container = () =>
+  css({
+    zIndex: style.zIndex,
+    position: "fixed",
+    padding: "4px",
+    width: style.width,
+    boxSizing: "border-box",
+    color: "#fff",
+    [`@media ${style.mobile}`]: {
+      width: "100vw",
+      padding: 0
+    }
+  });
 
 const toastPosition = pos => {
   let rule;
-  const marginLeft = `-${parseInt(style.width,10)/2}px`;
+  const marginLeft = `-${parseInt(style.width, 10) / 2}px`;
   switch (pos) {
     case POSITION.TOP_LEFT:
       rule = {
@@ -45,16 +45,16 @@ const toastPosition = pos => {
         top: "1em",
         left: "50%",
         marginLeft: marginLeft
-      }; 
+      };
       break;
     case POSITION.TOP_RIGHT:
     default:
       rule = {
         top: "1em",
         right: "1em"
-      };  
+      };
       break;
-    case POSITION.BOTTOM_LEFT: 
+    case POSITION.BOTTOM_LEFT:
       rule = {
         bottom: "1em",
         left: "1em"
@@ -71,16 +71,19 @@ const toastPosition = pos => {
       rule = {
         bottom: "1em",
         right: "1em"
-      }; 
+      };
   }
-  return css(rule, css({
-    [`@media ${style.mobile}`]: {
-      left: 0,
-      margin: 0,
-      position: "fixed",
-      ...pos.substring(0,3) === "top" ? { top: 0 } : { bottom: 0 }
-    }
-  }));
+  return css(
+    rule,
+    css({
+      [`@media ${style.mobile}`]: {
+        left: 0,
+        margin: 0,
+        position: "fixed",
+        ...(pos.substring(0, 3) === "top" ? { top: 0 } : { bottom: 0 })
+      }
+    })
+  );
 };
 
 class ToastContainer extends Component {
@@ -143,7 +146,10 @@ class ToastContainer extends Component {
     /**
      * An optional className for the toast progress bar
      */
-    progressClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    progressClassName: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.object
+    ]),
 
     /**
      * Define enter and exit transition using react-transition-group
@@ -162,9 +168,9 @@ class ToastContainer extends Component {
     newestOnTop: false,
     className: null,
     style: null,
-    toastClassName: '',
-    bodyClassName: '',
-    progressClassName: '',
+    toastClassName: "",
+    bodyClassName: "",
+    progressClassName: ""
   };
 
   state = {
@@ -175,10 +181,9 @@ class ToastContainer extends Component {
 
   componentDidMount() {
     const { SHOW, CLEAR, MOUNTED } = ACTION;
-    EventManager
-    .on(SHOW, (content, options) => this.show(content, options))
-    .on(CLEAR, id => (id !== null ? this.removeToast(id) : this.clear()))
-    .emit(MOUNTED, this);
+    EventManager.on(SHOW, (content, options) => this.show(content, options))
+      .on(CLEAR, id => (id !== null ? this.removeToast(id) : this.clear()))
+      .emit(MOUNTED, this);
   }
 
   componentWillUnmount() {
@@ -208,9 +213,9 @@ class ToastContainer extends Component {
     return closeButton === false
       ? false
       : this.with(closeButton, {
-        closeToast: () => this.removeToast(toastId),
-        type: type
-      });
+          closeToast: () => this.removeToast(toastId),
+          type: type
+        });
   }
 
   getAutoCloseDelay(toastAutoClose) {
@@ -226,52 +231,69 @@ class ToastContainer extends Component {
   canBeRendered(content) {
     return (
       isValidElement(content) ||
-      typeOf(content) === "String" ||
-      typeOf(content) === "Number"
+      typeof content === "string" ||
+      typeof content === "number"
     );
   }
 
   show(content, options) {
-    if (!(this.canBeRendered(content))) {
-      throw new Error(`The element you provided cannot be rendered. You provided an element of type ${typeof content}`);
+    if (!this.canBeRendered(content)) {
+      throw new Error(
+        `The element you provided cannot be rendered. You provided an element of type ${typeof content}`
+      );
     }
     const toastId = options.toastId;
     const closeToast = () => this.removeToast(toastId);
     const toastOptions = {
       id: toastId,
       type: options.type,
-      closeButton: this.makeCloseButton(options.closeButton, toastId, options.type),
+      closeButton: this.makeCloseButton(
+        options.closeButton,
+        toastId,
+        options.type
+      ),
       position: options.position || this.props.position,
       transition: options.transition || this.props.transition,
       pauseOnHover:
-          options.pauseOnHover !== null
-            ? options.pauseOnHover
-            : this.props.pauseOnHover,
-      closeOnClick: options.closeOnClick !== null ? options.closeOnClick : this.props.closeOnClick,
+        options.pauseOnHover !== null
+          ? options.pauseOnHover
+          : this.props.pauseOnHover,
+      closeOnClick:
+        options.closeOnClick !== null
+          ? options.closeOnClick
+          : this.props.closeOnClick,
       className: options.className || this.props.toastClassName,
       bodyClassName: options.bodyClassName || this.props.bodyClassName,
-      progressClassName: options.progressClassName || this.props.progressClassName,
+      progressClassName:
+        options.progressClassName || this.props.progressClassName
     };
 
     this.isFunction(options.onOpen) && (toastOptions.onOpen = options.onOpen);
 
     this.isFunction(options.onClose) &&
-        (toastOptions.onClose = options.onClose);
+      (toastOptions.onClose = options.onClose);
 
     toastOptions.autoClose = this.getAutoCloseDelay(
-        options.autoClose !== false
-          ? parseInt(options.autoClose, 10)
-          : options.autoClose
-      );
+      options.autoClose !== false
+        ? parseInt(options.autoClose, 10)
+        : options.autoClose
+    );
 
     toastOptions.hideProgressBar =
-        typeof options.hideProgressBar === "boolean"
-          ? options.hideProgressBar
-          : this.props.hideProgressBar;
+      typeof options.hideProgressBar === "boolean"
+        ? options.hideProgressBar
+        : this.props.hideProgressBar;
 
     toastOptions.closeToast = closeToast;
 
-    if (isValidElement(content) && typeOf(content.type) !== "String") {
+    /**
+     * add closeToast function to react component only
+     */
+    if (
+      isValidElement(content) &&
+      typeof content.type !== "string" &&
+      typeof content.type !== "number"
+    ) {
       content = this.with(content, {
         closeToast
       });
@@ -311,7 +333,7 @@ class ToastContainer extends Component {
     }
 
     if (this.props.style !== null) {
-      props.style = {...this.props.style, ...props.style};
+      props.style = { ...this.props.style, ...props.style };
     }
 
     return props;
@@ -320,8 +342,8 @@ class ToastContainer extends Component {
   renderToast() {
     const toastToRender = {};
     const collection = this.props.newestOnTop
-    ? Object.keys(this.collection).reverse()
-    : Object.keys(this.collection);
+      ? Object.keys(this.collection).reverse()
+      : Object.keys(this.collection);
 
     collection.forEach(toastId => {
       const item = this.collection[toastId];
@@ -331,10 +353,10 @@ class ToastContainer extends Component {
         toastToRender[item.position].push(item.content);
       } else {
         toastToRender[item.position].push(null);
-        delete this.collection[toastId]
+        delete this.collection[toastId];
       }
     });
- 
+
     return Object.keys(toastToRender).map(position => {
       const disablePointer =
         toastToRender[position].length === 1 &&
@@ -354,11 +376,7 @@ class ToastContainer extends Component {
   }
 
   render() {
-    return (
-      <div>
-        {this.renderToast()}
-      </div>
-    );
+    return <div>{this.renderToast()}</div>;
   }
 }
 

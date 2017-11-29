@@ -1,11 +1,7 @@
 import { isValidElement } from 'react';
 
-export function typeOf(obj) {
-  return Object.prototype.toString.call(obj).slice(8, -1);
-}
-
 export function isValidDelay(val) {
-  return typeOf(val) === 'Number' && !isNaN(val) && val > 0;
+  return typeof val === 'number' && !isNaN(val) && val > 0;
 }
 
 function withRequired(fn) {
