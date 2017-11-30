@@ -1,9 +1,3 @@
-/*
-* TODO: Add validation here :
-*   - Validate type
-*   - Maybe autoClose
-*   - Maybe closeButton as well
-* */
 import EventManager from './util/EventManager';
 import { POSITION, TYPE, ACTION } from './constant';
 
@@ -57,7 +51,18 @@ const toaster = Object.assign(
     warning: (content, options) => emitEvent(content, Object.assign(mergeOptions(options), { type: TYPE.WARNING })),
     error: (content, options) => emitEvent(content, Object.assign(mergeOptions(options), { type: TYPE.ERROR })),
     dismiss: (id = null) => container && EventManager.emit(ACTION.CLEAR, id),
-    isActive: () => false
+    isActive: () => false,
+    update(id, options){
+      if(container && typeof container.collection[id] !== 'undefined') {
+        const {options: oldOptions, rawContent: oldContent } =  container.collection[id];
+        const content = typeof options.render !== "undefined" ? options.render : oldContent;
+        delete options.render;
+        
+        return emitEvent(content, Object.assign({}, oldOptions, options, { toastId: id }));        
+      }
+
+      return false;
+    }
   },
   {
     POSITION,

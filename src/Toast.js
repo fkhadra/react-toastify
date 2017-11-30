@@ -33,6 +33,16 @@ const body = css({
   flex: 1
 });
 
+const container = css({
+  position: "absolute",
+  top: 0,
+  left: 0,
+  bottom:0,
+  width: "100%",
+  transform: 'none',
+  display: "flex"
+})
+
 class Toast extends Component {
   static propTypes = {
     closeButton: falseOrElement.isRequired,
@@ -51,7 +61,8 @@ class Toast extends Component {
     type: PropTypes.oneOf(objectValues(TYPE)),
     className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     bodyClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    progressClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+    progressClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    isUpdate: PropTypes.bool
   };
 
   static defaultProps = {
@@ -62,7 +73,8 @@ class Toast extends Component {
     onClose: null,
     className: "",
     bodyClassName: "",
-    progressClassName: ""
+    progressClassName: "",
+    isUpdate: false
   };
 
   state = {
@@ -119,12 +131,14 @@ class Toast extends Component {
       onExited,
       className,
       bodyClassName,
-      progressClassName
+      progressClassName,
+      isUpdate
     } = this.props;
-
+    
     return (
       <Transition in={this.props.in} appear unmountOnExit onExited={onExited} position={position}>
         <div {...toast(type)} {...this.getToastProps()} className={className}>
+        <div {...container}> 
           <div {...body} className={bodyClassName}>
             {children}
           </div>
@@ -139,6 +153,7 @@ class Toast extends Component {
               className={progressClassName}
             />
           )}
+        </div>
         </div>
       </Transition>
     );

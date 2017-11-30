@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { css } from "glamor";
 
 const rule = isDefault => css({
-  padding: 0,
   color: isDefault ? "#000" : "#fff",
   fontWeight: "bold",
   fontSize: "14px",
@@ -13,6 +12,7 @@ const rule = isDefault => css({
   border: "none",
   cursor: "pointer",
   opacity: isDefault ? "0.3" : "0.7",
+  padding: "5px",
   transition: ".3s ease",
   alignSelf: "flex-start",
   ":hover, :focus": {

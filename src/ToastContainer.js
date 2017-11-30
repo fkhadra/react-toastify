@@ -285,6 +285,7 @@ class ToastContainer extends Component {
         : this.props.hideProgressBar;
 
     toastOptions.closeToast = closeToast;
+    toastOptions.isUpdate = typeof this.collection[toastId] !== "undefined";
 
     /**
      * add closeToast function to react component only
@@ -302,12 +303,14 @@ class ToastContainer extends Component {
     this.collection = Object.assign({}, this.collection, {
       [toastId]: {
         content: this.makeToast(content, toastOptions),
-        position: toastOptions.position
+        position: toastOptions.position,
+        options: toastOptions,
+        rawContent: content
       }
     });
 
     this.setState({
-      toast: [...this.state.toast, toastId]
+      toast: toastOptions.isUpdate ? [...this.state.toast] : [...this.state.toast, toastId]
     });
   }
 
