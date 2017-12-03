@@ -53,6 +53,7 @@ class Toast extends Component {
     pauseOnHover: PropTypes.bool.isRequired,
     closeOnClick: PropTypes.bool.isRequired,
     transition: PropTypes.func.isRequired,
+    isDocumentHidden: PropTypes.bool.isRequired,
     in: PropTypes.bool,
     onExited: PropTypes.func,
     hideProgressBar: PropTypes.bool,
@@ -83,15 +84,19 @@ class Toast extends Component {
   
   componentDidMount() {
     this.props.onOpen !== null && this.props.onOpen(this.getChildrenProps());
-    document.addEventListener("visibilitychange", this.handleVisibility);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(this.props.isDocumentHidden !== nextProps.isDocumentHidden){
+      this.setState({
+        isRunning: !nextProps.isDocumentHidden
+      })
+    }
   }
 
   componentWillUnmount() {
     this.props.onClose !== null && this.props.onClose(this.getChildrenProps());
-    document.removeEventListener("visibilitychange", this.handleVisibility);
   }
-
-  handleVisibility = () => this.setState({ isRunning: !document.hidden });
 
   getChildrenProps() {
     return this.props.children.props;

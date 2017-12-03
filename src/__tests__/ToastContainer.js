@@ -156,6 +156,21 @@ describe("ToastContainer", () => {
     expect(props).toHaveProperty("closeToast");
   });
 
+  it("Should update state when document visibility change", () => {
+    let trigger;
+    let event;
+    document.addEventListener = (evt, cb) => {
+      trigger = cb;
+      event = evt;
+    };
+
+    const component = mount(<ToastContainer />);
+    expect(event).toBe("visibilitychange");
+    expect(component.state().isDocumentHidden).toBe(false);
+    trigger();
+    expect(component.state().isDocumentHidden).toBe(true);
+  });
+
   describe("closeToast function", () => {
     it("Should remove toast when closeToast is called by the close button", () => {
       const component = mount(<ToastContainer />);

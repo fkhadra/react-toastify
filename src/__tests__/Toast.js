@@ -16,7 +16,8 @@ const REQUIRED_PROPS = {
   closeToast: () => {},
   position: POSITION.TOP_RIGHT,
   pauseOnHover: true,
-  closeOnClick: true
+  closeOnClick: true,
+  isDocumentHidden: false
 };
 
 describe('Toast', () => {
@@ -151,23 +152,16 @@ describe('Toast', () => {
     expect(component.state('isRunning')).toBeTruthy();
   });
 
-  it("Should update state when document visibility change", () => {
-    let trigger;
-    let event;
-  document.addEventListener = (evt, cb) => {
-    trigger = cb;
-    event = evt;
-  }
-    
+  it("Should pause Toast when document visibility change", () => {
     const component = mount(
-      <Toast {...REQUIRED_PROPS}>
-      FooBar
-    </Toast>
+      <Toast
+        {...REQUIRED_PROPS}
+      >
+        FooBar
+      </Toast>
     );
-    expect(event).toBe("visibilitychange");
-    expect(component.state().isRunning).toBe(true);
-    trigger();
-    expect(component.state().isRunning).toBe(false);
-    
+    expect(component.state('isRunning')).toBe(true);
+    component.setProps({isDocumentHidden: true});
+    expect(component.state('isRunning')).toBe(false);
   });
 });

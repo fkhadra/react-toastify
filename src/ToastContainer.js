@@ -16,7 +16,7 @@ import {
   isValidDelay
 } from "./util/propValidator";
 
-const container = () =>
+const container = disablePointer =>
   css({
     zIndex: style.zIndex,
     position: "fixed",
@@ -24,6 +24,7 @@ const container = () =>
     width: style.width,
     boxSizing: "border-box",
     color: "#fff",
+    ...disablePointer ? { pointerEvents: "none" } : {},
     [`@media ${style.mobile}`]: {
       width: "100vw",
       padding: 0
@@ -173,10 +174,21 @@ class ToastContainer extends Component {
     progressClassName: ""
   };
 
+  /**
+   * Hold toast ids
+   */
   state = {
-    toast: []
+    toast: [],
+    isDocumentHidden: false
   };
 
+  /**
+   * Hold toast's informations:
+   * - what to render
+   * - position
+   * - raw content
+   * - options
+   */
   collection = {};
 
   componentDidMount() {
@@ -184,23 +196,23 @@ class ToastContainer extends Component {
     EventManager.on(SHOW, (content, options) => this.show(content, options))
       .on(CLEAR, id => (id !== null ? this.removeToast(id) : this.clear()))
       .emit(MOUNTED, this);
+    document.addEventListener("visibilitychange", this.isDocumentHidden);
   }
 
   componentWillUnmount() {
     EventManager.off(ACTION.SHOW);
     EventManager.off(ACTION.CLEAR);
+    document.removeEventListener("visibilitychange", this.isDocumentHidden);
   }
 
-  isToastActive = id => this.state.toast.indexOf(parseInt(id, 10)) !== -1;
+  isDocumentHidden = () => this.setState({ isDocumentHidden: document.hidden });
 
+  isToastActive = id => this.state.toast.indexOf(parseInt(id, 10)) !== -1;
+  
   removeToast(id) {
     this.setState({
       toast: this.state.toast.filter(v => v !== parseInt(id, 10))
     });
-  }
-
-  with(component, props) {
-    return cloneElement(component, { ...props, ...component.props });
   }
 
   makeCloseButton(toastClose, toastId, type) {
@@ -212,7 +224,7 @@ class ToastContainer extends Component {
 
     return closeButton === false
       ? false
-      : this.with(closeButton, {
+      : cloneElement(closeButton, {
           closeToast: () => this.removeToast(toastId),
           type: type
         });
@@ -295,7 +307,7 @@ class ToastContainer extends Component {
       typeof content.type !== "string" &&
       typeof content.type !== "number"
     ) {
-      content = this.with(content, {
+      content = cloneElement(content, {
         closeToast
       });
     }
@@ -316,7 +328,7 @@ class ToastContainer extends Component {
 
   makeToast(content, options) {
     return (
-      <Toast {...options} key={`toast-${options.id}`}>
+      <Toast {...options} isDocumentHidden={this.state.isDocumentHidden} key={`toast-${options.id}`}>
         {content}
       </Toast>
     );
@@ -326,25 +338,10 @@ class ToastContainer extends Component {
     this.setState({ toast: [] });
   }
 
-  getContainerProps(disablePointer) {
-    const props = {
-      style: disablePointer ? { pointerEvents: "none" } : {}
-    };
-
-    if (this.props.className !== null) {
-      props.className = this.props.className;
-    }
-
-    if (this.props.style !== null) {
-      props.style = { ...this.props.style, ...props.style };
-    }
-
-    return props;
-  }
-
   renderToast() {
     const toastToRender = {};
-    const collection = this.props.newestOnTop
+    const { className, style, newestOnTop } = this.props;
+    const collection = newestOnTop
       ? Object.keys(this.collection).reverse()
       : Object.keys(this.collection);
 
@@ -367,9 +364,10 @@ class ToastContainer extends Component {
 
       return (
         <TransitionGroup
-          {...container()}
+          {...container(disablePointer)}
           {...toastPosition(position)}
-          {...this.getContainerProps(disablePointer)}
+          {...className !== null && { className }}
+          {...style !== null && { style }}
           key={`container-${position}`}
         >
           {toastToRender[position]}
