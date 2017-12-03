@@ -1,6 +1,7 @@
 /* eslint-env jest */
 import React from 'react';
 import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json'
 
 import ProgressBar from './../ProgressBar';
 
@@ -31,11 +32,11 @@ describe('ProgressBar', () => {
 
   it("Should be able to hide the progress bar", () => {
     const component = shallow(<ProgressBar {...REQUIRED_PROPS} hide/>);
-    expect(component.props().style.opacity).toBe(0);
+    expect(toJson(component)).toMatchSnapshot();
   });
   
   it("Should be able to pause animation", () => {
     const component = shallow(<ProgressBar {...REQUIRED_PROPS} isRunning={false} />);
-    expect(component.props().style.animationPlayState).toBe("paused");    
+    expect(toJson(component)).toMatchSnapshot();
   });
 });
