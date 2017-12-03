@@ -23,8 +23,8 @@ let toastId = 0;
  * Merge provided options with the defaults settings and generate the toastId
  * @param {*} options
  */
-function mergeOptions(options) {
-  return Object.assign({}, defaultOptions, options, { toastId: ++toastId });
+function mergeOptions(options, type) {
+  return Object.assign({}, defaultOptions, options, { type: type, toastId: ++toastId });
 }
 
 /**
@@ -43,22 +43,23 @@ function emitEvent(content, options) {
 }
 
 const toaster = Object.assign(
-  (content, options) => emitEvent(content, mergeOptions(options)),
+  (content, options) => emitEvent(content, mergeOptions(options, TYPE.DEFAULT)),
   {
-    success: (content, options) => emitEvent(content, Object.assign(mergeOptions(options), { type: TYPE.SUCCESS })),
-    info: (content, options) => emitEvent(content, Object.assign(mergeOptions(options), { type: TYPE.INFO })),
-    warn: (content, options) => emitEvent(content, Object.assign(mergeOptions(options), { type: TYPE.WARNING })),
-    warning: (content, options) => emitEvent(content, Object.assign(mergeOptions(options), { type: TYPE.WARNING })),
-    error: (content, options) => emitEvent(content, Object.assign(mergeOptions(options), { type: TYPE.ERROR })),
+    success: (content, options) => emitEvent(content, mergeOptions(options, TYPE.SUCCESS)),
+    info: (content, options) => emitEvent(content, mergeOptions(options, TYPE.INFO)),
+    warn: (content, options) => emitEvent(content, mergeOptions(options, TYPE.WARNING)),
+    warning: (content, options) => emitEvent(content, mergeOptions(options, TYPE.WARNING)),
+    error: (content, options) => emitEvent(content, mergeOptions(options, TYPE.ERROR)),
     dismiss: (id = null) => container && EventManager.emit(ACTION.CLEAR, id),
     isActive: () => false,
     update(id, options){
       if(container && typeof container.collection[id] !== 'undefined') {
         const {options: oldOptions, rawContent: oldContent } =  container.collection[id];
-        const content = typeof options.render !== "undefined" ? options.render : oldContent;
-        delete options.render;
+        const nextOptions = Object.assign({}, oldOptions, options, { toastId: id });
+        const content = typeof nextOptions.render !== "undefined" ? nextOptions.render : oldContent;
+        delete nextOptions.render;
         
-        return emitEvent(content, Object.assign({}, oldOptions, options, { toastId: id }));        
+        return emitEvent(content, nextOptions);        
       }
 
       return false;
