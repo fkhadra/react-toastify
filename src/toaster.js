@@ -12,7 +12,8 @@ const defaultOptions = {
   className: null,
   bodyClassName: null,
   progressClassName: null,
-  transition: null
+  transition: null,
+  updateTransition: null
 };
 
 let container = null;
@@ -54,7 +55,7 @@ const toaster = Object.assign(
     isActive: () => false,
     update(id, options){
       if(container && typeof container.collection[id] !== 'undefined') {
-        const {options: oldOptions, rawContent: oldContent } =  container.collection[id];
+        const {options: oldOptions, content: oldContent } =  container.collection[id];
         const nextOptions = Object.assign({}, oldOptions, options, { toastId: id });
         const content = typeof nextOptions.render !== "undefined" ? nextOptions.render : oldContent;
         delete nextOptions.render;

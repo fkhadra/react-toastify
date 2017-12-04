@@ -9,11 +9,11 @@ import DefaultTransition from "./DefaultTransition";
 import { POSITION, ACTION } from "./constant";
 import style from "./style";
 import EventManager from "./util/EventManager";
-import objectValues from "./util/objectValues";
 import {
   falseOrNumber,
   falseOrElement,
-  isValidDelay
+  isValidDelay,
+  objectValues
 } from "./util/propValidator";
 
 const container = disablePointer =>
@@ -24,7 +24,7 @@ const container = disablePointer =>
     width: style.width,
     boxSizing: "border-box",
     color: "#fff",
-    ...disablePointer ? { pointerEvents: "none" } : {},
+    ...(disablePointer ? { pointerEvents: "none" } : {}),
     [`@media ${style.mobile}`]: {
       width: "100vw",
       padding: 0
@@ -86,6 +86,32 @@ const toastPosition = pos => {
     })
   );
 };
+
+const up = css.keyframes('up', {
+  // "0%": {
+  //   boxShadow: "0 0 0 0 rgba(204, 169, 44, 0.4)"
+  // },
+  // "70%": {
+  //   boxShadow: "0 0 0 10px rgba(204, 169, 44, 0)"
+  // },
+  // "100%": {
+  //   boxShadow: "0 0 0 0 rgba(204, 169, 44, 0)"
+  // }
+  "0%": { transform: "scale(1)", boxShadow: "0 0 0 0 rgba(204, 169, 44, 0.4)" },
+  "50%": { transform: "scale(1.1)", boxShadow: "0 0 0 10px rgba(204, 169, 44, 0)" },
+  "100%": { transform: "scale(1)", boxShadow: "0 0 0 0 rgba(204, 169, 44, 0)" },
+});
+
+const updateTransition = css({
+  // borderRadius: "50%",
+  // background: "#cca92c",
+  // cursor: "pointer",
+  // boxShadow: "0 0 0 rgba(204, 169, 44, 0.4)",
+  // animation: `${up} 2s infinite`
+  // transform: "scale(1.25)",
+  // transition: "transform 3s"
+  animation: `${up} 3s 3`
+})
 
 class ToastContainer extends Component {
   static propTypes = {
@@ -155,12 +181,15 @@ class ToastContainer extends Component {
     /**
      * Define enter and exit transition using react-transition-group
      */
-    transition: PropTypes.func
+    transition: PropTypes.func,
+
+    updateTransition: PropTypes.any
   };
 
   static defaultProps = {
     position: POSITION.TOP_RIGHT,
     transition: DefaultTransition,
+    updateTransition: updateTransition,
     autoClose: 5000,
     hideProgressBar: false,
     closeButton: <DefaultCloseButton />,
@@ -208,7 +237,7 @@ class ToastContainer extends Component {
   isDocumentHidden = () => this.setState({ isDocumentHidden: document.hidden });
 
   isToastActive = id => this.state.toast.indexOf(parseInt(id, 10)) !== -1;
-  
+
   removeToast(id) {
     this.setState({
       toast: this.state.toast.filter(v => v !== parseInt(id, 10))
@@ -259,13 +288,17 @@ class ToastContainer extends Component {
     const toastOptions = {
       id: toastId,
       type: options.type,
+      closeToast: closeToast,
+      isUpdate: typeof this.collection[toastId] !== "undefined",
+      position: options.position || this.props.position,
+      transition: options.transition || this.props.transition,
+      className: options.className || this.props.toastClassName,
+      bodyClassName: options.bodyClassName || this.props.bodyClassName,
       closeButton: this.makeCloseButton(
         options.closeButton,
         toastId,
         options.type
       ),
-      position: options.position || this.props.position,
-      transition: options.transition || this.props.transition,
       pauseOnHover:
         options.pauseOnHover !== null
           ? options.pauseOnHover
@@ -274,30 +307,27 @@ class ToastContainer extends Component {
         options.closeOnClick !== null
           ? options.closeOnClick
           : this.props.closeOnClick,
-      className: options.className || this.props.toastClassName,
-      bodyClassName: options.bodyClassName || this.props.bodyClassName,
       progressClassName:
-        options.progressClassName || this.props.progressClassName
+        options.progressClassName || this.props.progressClassName,
+      autoClose: this.getAutoCloseDelay(
+        options.autoClose !== false
+          ? parseInt(options.autoClose, 10)
+          : options.autoClose
+      ),
+      hideProgressBar:
+        typeof options.hideProgressBar === "boolean"
+          ? options.hideProgressBar
+          : this.props.hideProgressBar,
+      updateTransition:
+        options.updateTransition !== null
+          ? options.updateTransition
+          : this.props.updateTransition
     };
 
     this.isFunction(options.onOpen) && (toastOptions.onOpen = options.onOpen);
 
     this.isFunction(options.onClose) &&
       (toastOptions.onClose = options.onClose);
-
-    toastOptions.autoClose = this.getAutoCloseDelay(
-      options.autoClose !== false
-        ? parseInt(options.autoClose, 10)
-        : options.autoClose
-    );
-
-    toastOptions.hideProgressBar =
-      typeof options.hideProgressBar === "boolean"
-        ? options.hideProgressBar
-        : this.props.hideProgressBar;
-
-    toastOptions.closeToast = closeToast;
-    toastOptions.isUpdate = typeof this.collection[toastId] !== "undefined";
 
     /**
      * add closeToast function to react component only
@@ -314,21 +344,26 @@ class ToastContainer extends Component {
 
     this.collection = Object.assign({}, this.collection, {
       [toastId]: {
-        content: this.makeToast(content, toastOptions),
         position: toastOptions.position,
         options: toastOptions,
-        rawContent: content
+        content: content
       }
     });
 
     this.setState({
-      toast: toastOptions.isUpdate ? [...this.state.toast] : [...this.state.toast, toastId]
+      toast: toastOptions.isUpdate
+        ? [...this.state.toast]
+        : [...this.state.toast, toastId]
     });
   }
 
   makeToast(content, options) {
     return (
-      <Toast {...options} isDocumentHidden={this.state.isDocumentHidden} key={`toast-${options.id}`}>
+      <Toast
+        {...options}
+        isDocumentHidden={this.state.isDocumentHidden}
+        key={`toast-${options.id}`}
+      >
         {content}
       </Toast>
     );
@@ -350,7 +385,9 @@ class ToastContainer extends Component {
       toastToRender[item.position] || (toastToRender[item.position] = []);
 
       if (this.state.toast.indexOf(parseInt(toastId, 10)) !== -1) {
-        toastToRender[item.position].push(item.content);
+        toastToRender[item.position].push(
+          this.makeToast(item.content, item.options)
+        );
       } else {
         toastToRender[item.position].push(null);
         delete this.collection[toastId];
