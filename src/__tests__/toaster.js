@@ -105,6 +105,7 @@ describe('toastify', () => {
   it("Should be able to use syntaxic sugar for different notification type", () => {
     const component = mount(<ToastContainer />);
 
+    toaster('plop');
     toaster.success("plop");
     toaster.error("plop");
     toaster.warning("plop");
@@ -113,11 +114,11 @@ describe('toastify', () => {
     jest.runAllTimers();
 
     // Remove default types as there is no shortcut for that one
-    const expectedTypes = Object.keys(TYPE).map(k => TYPE[k]).filter(v => v !== "default").sort();
+    const expectedTypes = Object.keys(TYPE).map(k => TYPE[k]).sort();
 
     // Array unique since warn and warning use the same type
     const typesToMatch = [...new Set(Object.keys(component.instance().collection)
-      .map(k => component.instance().collection[k].content.props.type))].sort();
+      .map(k => component.instance().collection[k].options.type))].sort();
 
     expect(expectedTypes).toEqual(typesToMatch);
   });

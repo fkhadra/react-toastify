@@ -1,6 +1,6 @@
 /* eslint-env jest */
 import React from 'react';
-import { falseOrElement, falseOrNumber } from './../util/propValidator';
+import { falseOrElement, falseOrNumber, objectValues } from './../util/propValidator';
 
 const ValidReactElement = () => <div>Hello</div>;
 
@@ -48,5 +48,10 @@ describe('Custom PropTypes', () => {
       expect(falseOrNumber.isRequired(props, 'autoClose', 'TestComponent')).toBeInstanceOf(Error);
       expect(falseOrElement.isRequired(props, 'closeButton', 'TestComponent')).toBeInstanceOf(Error);
     });
+  });
+  describe('ObjectValues', () => {
+    it('Should return the values contained in an Object', () => {
+      expect(objectValues({a:1, b:3})).toMatchObject([1, 3]);
+    })
   });
 });
