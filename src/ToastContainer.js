@@ -87,32 +87,6 @@ const toastPosition = pos => {
   );
 };
 
-const up = css.keyframes('up', {
-  // "0%": {
-  //   boxShadow: "0 0 0 0 rgba(204, 169, 44, 0.4)"
-  // },
-  // "70%": {
-  //   boxShadow: "0 0 0 10px rgba(204, 169, 44, 0)"
-  // },
-  // "100%": {
-  //   boxShadow: "0 0 0 0 rgba(204, 169, 44, 0)"
-  // }
-  "0%": { transform: "scale(1)", boxShadow: "0 0 0 0 rgba(204, 169, 44, 0.4)" },
-  "50%": { transform: "scale(1.1)", boxShadow: "0 0 0 10px rgba(204, 169, 44, 0)" },
-  "100%": { transform: "scale(1)", boxShadow: "0 0 0 0 rgba(204, 169, 44, 0)" },
-});
-
-const updateTransition = css({
-  // borderRadius: "50%",
-  // background: "#cca92c",
-  // cursor: "pointer",
-  // boxShadow: "0 0 0 rgba(204, 169, 44, 0.4)",
-  // animation: `${up} 2s infinite`
-  // transform: "scale(1.25)",
-  // transition: "transform 3s"
-  animation: `${up} 3s 3`
-})
-
 class ToastContainer extends Component {
   static propTypes = {
     /**
@@ -183,13 +157,16 @@ class ToastContainer extends Component {
      */
     transition: PropTypes.func,
 
+    /**
+     * TODO: use proptypes
+     */
     updateTransition: PropTypes.any
   };
 
   static defaultProps = {
     position: POSITION.TOP_RIGHT,
     transition: DefaultTransition,
-    updateTransition: updateTransition,
+    updateTransition: false,
     autoClose: 5000,
     hideProgressBar: false,
     closeButton: <DefaultCloseButton />,

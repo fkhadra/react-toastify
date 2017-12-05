@@ -5,28 +5,33 @@ import { css } from "glamor";
 import ProgressBar from "./ProgressBar";
 import { POSITION, TYPE } from "./constant";
 import style from "./style";
-import objectValues from "./util/objectValues";
-import { falseOrElement, falseOrNumber } from "./util/propValidator";
+import {
+  falseOrElement,
+  falseOrNumber,
+  objectValues
+} from "./util/propValidator";
 
-const toast = type => css({
-  position: "relative",
-  minHeight: "48px",
-  marginBottom: "1rem",
-  padding: "8px",
-  borderRadius: "1px",
-  boxShadow: "0 1px 10px 0 rgba(0, 0, 0, .1), 0 2px 15px 0 rgba(0, 0, 0, .05)",
-  display: "flex",
-  justifyContent: "space-between",
-  maxHeight: "800px",
-  overflow: "hidden",
-  fontFamily: "sans-serif",
-  cursor: "pointer",
-  background: style[`color${type.charAt(0).toUpperCase()}${type.slice(1)}`],
-  ...type === "default" ? { color: "#aaa" } : {},
-  [`@media ${style.mobile}`]: {
-    marginBottom: 0  
-  }
-});
+const toast = type =>
+  css({
+    position: "relative",
+    minHeight: "48px",
+    marginBottom: "1rem",
+    padding: "8px",
+    borderRadius: "1px",
+    boxShadow:
+      "0 1px 10px 0 rgba(0, 0, 0, .1), 0 2px 15px 0 rgba(0, 0, 0, .05)",
+    display: "flex",
+    justifyContent: "space-between",
+    maxHeight: "800px",
+    overflow: "hidden",
+    fontFamily: "sans-serif",
+    cursor: "pointer",
+    background: style[`color${type.charAt(0).toUpperCase()}${type.slice(1)}`],
+    ...(type === "default" ? { color: "#aaa" } : {}),
+    [`@media ${style.mobile}`]: {
+      marginBottom: 0
+    }
+  });
 
 const body = css({
   margin: "auto 0",
@@ -37,11 +42,11 @@ const container = css({
   position: "absolute",
   top: 0,
   left: 0,
-  bottom:0,
+  bottom: 0,
   width: "100%",
-  transform: 'none',
+  transform: "none",
   display: "flex"
-})
+});
 
 class Toast extends Component {
   static propTypes = {
@@ -62,7 +67,10 @@ class Toast extends Component {
     type: PropTypes.oneOf(objectValues(TYPE)),
     className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     bodyClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    progressClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    progressClassName: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.object
+    ]),
     isUpdate: PropTypes.bool
   };
 
@@ -87,10 +95,10 @@ class Toast extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(this.props.isDocumentHidden !== nextProps.isDocumentHidden){
+    if (this.props.isDocumentHidden !== nextProps.isDocumentHidden) {
       this.setState({
         isRunning: !nextProps.isDocumentHidden
-      })
+      });
     }
   }
 
@@ -123,6 +131,12 @@ class Toast extends Component {
     this.setState({ isRunning: true });
   };
 
+  renderToast(){
+    if(this.props.isUpdate){
+
+    }
+  }
+
   render() {
     const {
       closeButton,
@@ -137,28 +151,40 @@ class Toast extends Component {
       className,
       bodyClassName,
       progressClassName,
-      isUpdate
+      isUpdate,
+      updateTransition
     } = this.props;
-    
     return (
-      <Transition in={this.props.in} appear unmountOnExit onExited={onExited} position={position}>
-        <div {...toast(type)} {...this.getToastProps()} className={className}>
-        <div {...container}> 
-          <div {...body} className={bodyClassName}>
-            {children}
+      <Transition
+        in={this.props.in}
+        appear
+        unmountOnExit
+        onExited={onExited}
+        position={position}
+      >
+        <div
+          {...toast(type)}
+          {...this.getToastProps()}
+          ref={ref => this.ref = ref}
+          {...isUpdate && updateTransition !== false && updateTransition}
+          className={className}
+        >
+          <div {...container}>
+            <div {...body} className={bodyClassName}>
+              {children}
+            </div>
+            {closeButton !== false && closeButton}
+            {autoClose !== false && (
+              <ProgressBar
+                delay={autoClose}
+                isRunning={this.state.isRunning}
+                closeToast={closeToast}
+                hide={hideProgressBar}
+                type={type}
+                className={progressClassName}
+              />
+            )}
           </div>
-          {closeButton !== false && closeButton}
-          {autoClose !== false && (
-            <ProgressBar
-              delay={autoClose}
-              isRunning={this.state.isRunning}
-              closeToast={closeToast}
-              hide={hideProgressBar}
-              type={type}
-              className={progressClassName}
-            />
-          )}
-        </div>
         </div>
       </Transition>
     );
