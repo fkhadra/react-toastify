@@ -155,18 +155,12 @@ class ToastContainer extends Component {
     /**
      * Define enter and exit transition using react-transition-group
      */
-    transition: PropTypes.func,
-
-    /**
-     * TODO: use proptypes
-     */
-    updateTransition: PropTypes.any
+    transition: PropTypes.func
   };
 
   static defaultProps = {
     position: POSITION.TOP_RIGHT,
     transition: DefaultTransition,
-    updateTransition: false,
     autoClose: 5000,
     hideProgressBar: false,
     closeButton: <DefaultCloseButton />,
@@ -294,11 +288,7 @@ class ToastContainer extends Component {
       hideProgressBar:
         typeof options.hideProgressBar === "boolean"
           ? options.hideProgressBar
-          : this.props.hideProgressBar,
-      updateTransition:
-        options.updateTransition !== null
-          ? options.updateTransition
-          : this.props.updateTransition
+          : this.props.hideProgressBar
     };
 
     this.isFunction(options.onOpen) && (toastOptions.onOpen = options.onOpen);

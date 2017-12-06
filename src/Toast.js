@@ -89,7 +89,7 @@ class Toast extends Component {
   state = {
     isRunning: true
   };
-  
+
   componentDidMount() {
     this.props.onOpen !== null && this.props.onOpen(this.getChildrenProps());
   }
@@ -131,12 +131,6 @@ class Toast extends Component {
     this.setState({ isRunning: true });
   };
 
-  renderToast(){
-    if(this.props.isUpdate){
-
-    }
-  }
-
   render() {
     const {
       closeButton,
@@ -150,10 +144,9 @@ class Toast extends Component {
       onExited,
       className,
       bodyClassName,
-      progressClassName,
-      isUpdate,
-      updateTransition
+      progressClassName
     } = this.props;
+
     return (
       <Transition
         in={this.props.in}
@@ -162,29 +155,21 @@ class Toast extends Component {
         onExited={onExited}
         position={position}
       >
-        <div
-          {...toast(type)}
-          {...this.getToastProps()}
-          ref={ref => this.ref = ref}
-          {...isUpdate && updateTransition !== false && updateTransition}
-          className={className}
-        >
-          <div {...container}>
-            <div {...body} className={bodyClassName}>
-              {children}
-            </div>
-            {closeButton !== false && closeButton}
-            {autoClose !== false && (
-              <ProgressBar
-                delay={autoClose}
-                isRunning={this.state.isRunning}
-                closeToast={closeToast}
-                hide={hideProgressBar}
-                type={type}
-                className={progressClassName}
-              />
-            )}
+        <div {...toast(type)} {...this.getToastProps()} className={className}>
+          <div {...body} className={bodyClassName}>
+            {children}
           </div>
+          {closeButton !== false && closeButton}
+          {autoClose !== false && (
+            <ProgressBar
+              delay={autoClose}
+              isRunning={this.state.isRunning}
+              closeToast={closeToast}
+              hide={hideProgressBar}
+              type={type}
+              className={progressClassName}
+            />
+          )}
         </div>
       </Transition>
     );

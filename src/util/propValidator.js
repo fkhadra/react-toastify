@@ -43,18 +43,3 @@ export const falseOrElement = withRequired((props, propName, componentName) => {
 
   return null;
 });
-
-export function updateTransition(props, propName, componentName) {
-  const prop = props[propName];
-
-  if (
-    prop !== false &&
-    typeof prop !== "string" &&
-    Object.prototype.toString.call(prop).slice(8, -1) !== "Object"
-  ) {
-    return new Error(`${componentName} expect ${propName} 
-    to be a string, a glamor object or equal to false. ${prop} given.`);
-  }
-
-  return null;
-}
