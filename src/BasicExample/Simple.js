@@ -76,7 +76,6 @@ class Simple extends Component {
     const container = `
       <ToastContainer 
           position="${this.props.position}"
-          type="${this.props.type}"
           autoClose={${this.props.autoClose === false
             ? false
             : this.props.delay}}
