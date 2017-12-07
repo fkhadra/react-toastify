@@ -12,7 +12,6 @@ const rule = isDefault => css({
   border: "none",
   cursor: "pointer",
   opacity: isDefault ? "0.3" : "0.7",
-  padding: "5px",
   transition: ".3s ease",
   alignSelf: "flex-start",
   ":hover, :focus": {

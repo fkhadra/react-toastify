@@ -260,7 +260,7 @@ class ToastContainer extends Component {
       id: toastId,
       type: options.type,
       closeToast: closeToast,
-      isUpdate: typeof this.collection[toastId] !== "undefined",
+      updateId: options.updateId,
       position: options.position || this.props.position,
       transition: options.transition || this.props.transition,
       className: options.className || this.props.toastClassName,
@@ -318,7 +318,7 @@ class ToastContainer extends Component {
     });
 
     this.setState({
-      toast: toastOptions.isUpdate
+      toast: toastOptions.updateId !== null
         ? [...this.state.toast]
         : [...this.state.toast, toastId]
     });

@@ -38,16 +38,6 @@ const body = css({
   flex: 1
 });
 
-const container = css({
-  position: "absolute",
-  top: 0,
-  left: 0,
-  bottom: 0,
-  width: "100%",
-  transform: "none",
-  display: "flex"
-});
-
 class Toast extends Component {
   static propTypes = {
     closeButton: falseOrElement.isRequired,
@@ -71,7 +61,7 @@ class Toast extends Component {
       PropTypes.string,
       PropTypes.object
     ]),
-    isUpdate: PropTypes.bool
+    updateId: PropTypes.number
   };
 
   static defaultProps = {
@@ -83,7 +73,7 @@ class Toast extends Component {
     className: "",
     bodyClassName: "",
     progressClassName: "",
-    isUpdate: false
+    updateId: null
   };
 
   state = {
@@ -144,7 +134,8 @@ class Toast extends Component {
       onExited,
       className,
       bodyClassName,
-      progressClassName
+      progressClassName,
+      updateId
     } = this.props;
 
     return (
@@ -162,6 +153,7 @@ class Toast extends Component {
           {closeButton !== false && closeButton}
           {autoClose !== false && (
             <ProgressBar
+              key={`pb-${updateId}`}
               delay={autoClose}
               isRunning={this.state.isRunning}
               closeToast={closeToast}
