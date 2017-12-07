@@ -1,27 +1,27 @@
 /* eslint-env jest */
 import React from 'react';
-import { falseOrElement, falseOrNumber, objectValues } from './../util/propValidator';
+import { falseOrElement, falseOrDelay, objectValues } from './../util/propValidator';
 
 const ValidReactElement = () => <div>Hello</div>;
 
 describe('Custom PropTypes', () => {
-  describe('falseOrNumber', () => {
+  describe('falseOrDelay', () => {
     it('Can be false or int', () => {
       const props = { autoClose: false };
-      expect(falseOrNumber(props, 'autoClose', 'TestComponent')).toBe(null);
+      expect(falseOrDelay(props, 'autoClose', 'TestComponent')).toBe(null);
       props.autoClose = 1000;
-      expect(falseOrNumber(props, 'autoClose', 'TestComponent')).toBe(null);
+      expect(falseOrDelay(props, 'autoClose', 'TestComponent')).toBe(null);
     });
 
     it('Should return an Error if int is <= 0 or prop equal to true', () => {
       const props = { autoClose: true };
-      expect(falseOrNumber(props, 'autoClose', 'TestComponent')).toBeInstanceOf(Error);
+      expect(falseOrDelay(props, 'autoClose', 'TestComponent')).toBeInstanceOf(Error);
 
       props.autoClose = -1;
-      expect(falseOrNumber(props, 'autoClose', 'TestComponent')).toBeInstanceOf(Error);
+      expect(falseOrDelay(props, 'autoClose', 'TestComponent')).toBeInstanceOf(Error);
 
       props.autoClose = 0;
-      expect(falseOrNumber(props, 'autoClose', 'TestComponent')).toBeInstanceOf(Error);
+      expect(falseOrDelay(props, 'autoClose', 'TestComponent')).toBeInstanceOf(Error);
     });
   });
 
@@ -45,7 +45,7 @@ describe('Custom PropTypes', () => {
     it('Should return an Error if the prop is required but undefined', () => {
       const props = {};
 
-      expect(falseOrNumber.isRequired(props, 'autoClose', 'TestComponent')).toBeInstanceOf(Error);
+      expect(falseOrDelay.isRequired(props, 'autoClose', 'TestComponent')).toBeInstanceOf(Error);
       expect(falseOrElement.isRequired(props, 'closeButton', 'TestComponent')).toBeInstanceOf(Error);
     });
   });

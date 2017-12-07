@@ -10,6 +10,7 @@ const rule = isDefault => css({
   background: "transparent",
   outline: "none",
   border: "none",
+  padding: 0,
   cursor: "pointer",
   opacity: isDefault ? "0.3" : "0.7",
   transition: ".3s ease",

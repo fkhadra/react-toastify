@@ -7,7 +7,7 @@ import { POSITION, TYPE } from "./constant";
 import style from "./style";
 import {
   falseOrElement,
-  falseOrNumber,
+  falseOrDelay,
   objectValues
 } from "./util/propValidator";
 
@@ -41,7 +41,7 @@ const body = css({
 class Toast extends Component {
   static propTypes = {
     closeButton: falseOrElement.isRequired,
-    autoClose: falseOrNumber.isRequired,
+    autoClose: falseOrDelay.isRequired,
     children: PropTypes.node.isRequired,
     closeToast: PropTypes.func.isRequired,
     position: PropTypes.oneOf(objectValues(POSITION)).isRequired,

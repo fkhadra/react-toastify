@@ -10,7 +10,7 @@ import { POSITION, ACTION } from "./constant";
 import style from "./style";
 import EventManager from "./util/EventManager";
 import {
-  falseOrNumber,
+  falseOrDelay,
   falseOrElement,
   isValidDelay,
   objectValues
@@ -97,7 +97,7 @@ class ToastContainer extends Component {
     /**
      * Disable or set autoClose delay
      */
-    autoClose: falseOrNumber,
+    autoClose: falseOrDelay,
 
     /**
      * Disable or set a custom react element for the close button

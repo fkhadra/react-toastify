@@ -22,7 +22,7 @@ function withRequired(fn) {
   return fn;
 }
 
-export const falseOrNumber = withRequired((props, propName, componentName) => {
+export const falseOrDelay = withRequired((props, propName, componentName) => {
   const prop = props[propName];
 
   if (prop !== false && !isValidDelay(prop)) {
