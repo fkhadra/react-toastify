@@ -53,16 +53,17 @@ $ yarn add react-toastify
 
 ## Features
 
-- Easy to setup for real
+- Easy to setup for real, you can make it works in less than 10sec !
 - Super easy to customize
 - Can display a react component inside the toast !
 - Don't rely on `findDOMNode` or any DOM hack
 - Has ```onOpen``` and ```onClose``` hooks. Both can access the props passed to the react component rendered inside the toast
 - Can remove a toast programmatically
 - Define behavior per toast
-- Use glamor for styling
+- Use glamor for styling 💅
 - Pause toast when the browser is not visible thanks to visibility api
 - Fancy progress bar to display the remaining time
+- Possibility to update a toast
 
 ## Migrate from v2 to v3
 
@@ -351,7 +352,7 @@ toast.update(this.toastId, {
 
 #### Reset option or inherit from ToastContainer
 
-If you want the update toast to inherit from the `ToastContainer` you can reset an option by passing null. 
+If you want to inherit props from the `ToastContainer`, you can reset an option by passing null. 
 It's particulary usefull when you remove the `closeButton` from a toast and you want it back during the update:
 
 ```js
