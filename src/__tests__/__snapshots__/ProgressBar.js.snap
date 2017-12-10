@@ -1,14 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ProgressBar Should be able to hide the progress bar 1`] = `
-.css-1qjrtm2,
-[data-css-1qjrtm2] {
+.css-qkhwto,
+[data-css-qkhwto] {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 0;
   height: 5px;
-  z-index: 999;
+  z-index: 9999;
   opacity: 0;
   animation: track-progress_1pd4w4j linear 1;
   animation-play-state: running;
@@ -24,20 +24,20 @@ exports[`ProgressBar Should be able to hide the progress bar 1`] = `
 
 <div
   className=""
-  data-css-1qjrtm2=""
+  data-css-qkhwto=""
   onAnimationEnd={[Function]}
 />
 `;
 
 exports[`ProgressBar Should be able to pause animation 1`] = `
-.css-8xcq52,
-[data-css-8xcq52] {
+.css-1tcv8a9,
+[data-css-1tcv8a9] {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 0;
   height: 5px;
-  z-index: 999;
+  z-index: 9999;
   opacity: 0.7;
   animation: track-progress_1pd4w4j linear 1;
   animation-play-state: paused;
@@ -53,7 +53,7 @@ exports[`ProgressBar Should be able to pause animation 1`] = `
 
 <div
   className=""
-  data-css-8xcq52=""
+  data-css-1tcv8a9=""
   onAnimationEnd={[Function]}
 />
 `;
