@@ -44,7 +44,7 @@ function emitEvent(content, options) {
 }
 
 const toaster = Object.assign(
-  (content, options) => emitEvent(content, mergeOptions(options, TYPE.DEFAULT)),
+  (content, options) => emitEvent(content, mergeOptions(options, (options && options.type) || TYPE.DEFAULT)),
   {
     success: (content, options) => emitEvent(content, mergeOptions(options, TYPE.SUCCESS)),
     info: (content, options) => emitEvent(content, mergeOptions(options, TYPE.INFO)),
