@@ -55,6 +55,19 @@ describe('toastify', () => {
       expect(id).toBe(updateId);
     });
 
+    it("Should be able to update the same toast many times", () => {
+      mount(<ToastContainer />);
+      const id = toaster('hello');
+      jest.runAllTimers();
+      
+      toaster.update(id);
+      jest.runAllTimers();
+
+      const updateId = toaster.update(id);
+      jest.runAllTimers();
+      expect(id).toBe(updateId);
+    });
+
     it("Should be able to replace content when updating an existing toast", () => {
       const component = mount(<ToastContainer />);
       const id = toaster('hello');
@@ -76,7 +89,8 @@ describe('toastify', () => {
 
   describe("isActive function", () => {
     it("toast.isActive should return false until the container is mounted", () => {
-      expect(toaster.isActive()).toBe(false);
+      const isActive = toaster.isActive();
+      expect(isActive).toBe(false);
     });
     
     it("Should be able to tell if a toast is active based on the id as soon as the container is mounted", () => {
