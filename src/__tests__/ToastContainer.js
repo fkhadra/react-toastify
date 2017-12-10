@@ -19,7 +19,7 @@ function getToastProps(component) {
   const collection = component.instance().collection;
   const toast = collection[Object.keys(collection)[0]];
 
-  return toast.content.props;
+  return toast.options;
 }
 
 describe("ToastContainer", () => {
@@ -37,7 +37,6 @@ describe("ToastContainer", () => {
   it(`Should always pass down to Toast the props: 
     -autoClose
     -closeButton
-    -children
     -position
     -pauseOnHover
     -transition
@@ -52,7 +51,6 @@ describe("ToastContainer", () => {
     [
       "autoClose",
       "closeButton",
-      "children",
       "position",
       "closeToast",
       "transition",
@@ -112,10 +110,23 @@ describe("ToastContainer", () => {
 
     toaster("hello", desiredProps);
     jest.runAllTimers();
-
     const props = getToastProps(component);
 
     expect(props).toMatchObject(desiredProps);
+  });
+
+  it("Should pass closeToast function and type when using a custom CloseButton", () => {
+    const component = mount(<ToastContainer />);
+    const CloseBtn = () => <div>x</div>;
+    const Msg = () => <div>Plop</div>;
+
+    toaster(<Msg />, {
+      closeButton: CloseBtn
+    });
+    jest.runAllTimers();
+
+    const props = getToastProps(component);
+    expect(Object.keys(props.closeButton.props)).toMatchObject(['closeToast', 'type']);
   });
 
   it("Should be able to disable the close button", () => {
@@ -156,40 +167,51 @@ describe("ToastContainer", () => {
     expect(props).toHaveProperty("closeToast");
   });
 
+  it("Should update state when document visibility change", () => {
+    let trigger;
+    let event;
+    document.addEventListener = (evt, cb) => {
+      trigger = cb;
+      event = evt;
+    };
+
+    const component = mount(<ToastContainer />);
+    expect(event).toBe("visibilitychange");
+    expect(component.state().isDocumentHidden).toBe(false);
+    trigger();
+    expect(component.state().isDocumentHidden).toBe(true);
+  });
+
   describe("closeToast function", () => {
-    it("Should remove toast when closeToast is called by the close button", () => {
+    it("Should remove toast when closeToast is called", () => {
       const component = mount(<ToastContainer />);
       const Msg = () => <div>Plop</div>;
 
       toaster(<Msg />);
       jest.runAllTimers();
 
-      const props = getToastProps(component);
+      let props = getToastProps(component);
+
+      //ensure that the toast is present
+      expect(component.state().toast).toHaveLength(1);
+
+      // close the toast with the function passed to the close button
+      props.closeToast();
+      jest.runAllTimers();
+
+      expect(component.state().toast).toHaveLength(0);
+
+      //do the same but with the closeButton this time
+      toaster(<Msg />);
+      jest.runAllTimers();
+
+      props = getToastProps(component);
 
       //ensure that the toast is present
       expect(component.state().toast).toHaveLength(1);
 
       // close the toast with the function passed to the close button
       props.closeButton.props.closeToast();
-      jest.runAllTimers();
-
-      expect(component.state().toast).toHaveLength(0);
-    });
-
-    it("Should remove toast when closeToast is called by the children", () => {
-      const component = mount(<ToastContainer />);
-      const Msg = () => <div>Plop</div>;
-
-      toaster(<Msg />);
-      jest.runAllTimers();
-
-      const props = getToastProps(component);
-
-      //ensure that the toast is present
-      expect(component.state().toast).toHaveLength(1);
-
-      // close the toast with the function passed to the close button
-      props.children.props.closeToast();
       jest.runAllTimers();
 
       expect(component.state().toast).toHaveLength(0);

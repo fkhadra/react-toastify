@@ -1,8 +1,6 @@
 import * as React from "react";
 import Transition from "react-transition-group/Transition";
 
-export let toast: Toast;
-
 type ToastType = "info" | "success" | "warning" | "error" | "default";
 
 interface styleProps {
@@ -14,16 +12,7 @@ interface styleProps {
   colorError?: string,
   colorProgressDefault?: string,
   mobile?: string,
-}
-
-interface Toast {
-  success(content: React.ReactNode, options?: ToastOptions): number;
-  info(content: React.ReactNode, options?: ToastOptions): number;
-  warn(content: React.ReactNode, options?: ToastOptions): number;
-  error(content: React.ReactNode, options?: ToastOptions): number;
-  isActive(toastId: number): boolean;
-  dismiss(toastId: number): void;
-  (content: React.ReactNode, options?: ToastOptions): number;
+  zIndex?: string | number,
 }
 
 interface CommonOptions {
@@ -45,12 +34,29 @@ interface ToastOptions extends CommonOptions {
   type?: ToastType;
 }
 
+interface UpdateOptions extends ToastOptions {
+  render?: React.ReactNode
+}
+
 interface ToastContainerProps extends CommonOptions {
   newestOnTop?: boolean;
   style?: object;
   toastClassName?: string | object;
 }
 
+interface Toast {
+  success(content: React.ReactNode, options?: ToastOptions): number;
+  info(content: React.ReactNode, options?: ToastOptions): number;
+  warn(content: React.ReactNode, options?: ToastOptions): number;
+  error(content: React.ReactNode, options?: ToastOptions): number;
+  isActive(toastId: number): boolean;
+  dismiss(toastId: number): void;
+  update(toastId: number, options?: UpdateOptions): number;
+  (content: React.ReactNode, options?: ToastOptions): number;
+}
+
 export class ToastContainer extends React.Component<ToastContainerProps> {}
 
 export function style(props: styleProps): void;
+
+export let toast: Toast;

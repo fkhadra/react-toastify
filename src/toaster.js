@@ -1,9 +1,3 @@
-/*
-* TODO: Add validation here :
-*   - Validate type
-*   - Maybe autoClose
-*   - Maybe closeButton as well
-* */
 import EventManager from './util/EventManager';
 import { POSITION, TYPE, ACTION } from './constant';
 
@@ -18,7 +12,8 @@ const defaultOptions = {
   className: null,
   bodyClassName: null,
   progressClassName: null,
-  transition: null
+  transition: null,
+  updateId: null
 };
 
 let container = null;
@@ -29,8 +24,8 @@ let toastId = 0;
  * Merge provided options with the defaults settings and generate the toastId
  * @param {*} options
  */
-function mergeOptions(options) {
-  return Object.assign({}, defaultOptions, options, { toastId: ++toastId });
+function mergeOptions(options, type) {
+  return Object.assign({}, defaultOptions, options, { type: type, toastId: ++toastId });
 }
 
 /**
@@ -49,15 +44,29 @@ function emitEvent(content, options) {
 }
 
 const toaster = Object.assign(
-  (content, options) => emitEvent(content, mergeOptions(options)),
+  (content, options) => emitEvent(content, mergeOptions(options, (options && options.type) || TYPE.DEFAULT)),
   {
-    success: (content, options) => emitEvent(content, Object.assign(mergeOptions(options), { type: TYPE.SUCCESS })),
-    info: (content, options) => emitEvent(content, Object.assign(mergeOptions(options), { type: TYPE.INFO })),
-    warn: (content, options) => emitEvent(content, Object.assign(mergeOptions(options), { type: TYPE.WARNING })),
-    warning: (content, options) => emitEvent(content, Object.assign(mergeOptions(options), { type: TYPE.WARNING })),
-    error: (content, options) => emitEvent(content, Object.assign(mergeOptions(options), { type: TYPE.ERROR })),
+    success: (content, options) => emitEvent(content, mergeOptions(options, TYPE.SUCCESS)),
+    info: (content, options) => emitEvent(content, mergeOptions(options, TYPE.INFO)),
+    warn: (content, options) => emitEvent(content, mergeOptions(options, TYPE.WARNING)),
+    warning: (content, options) => emitEvent(content, mergeOptions(options, TYPE.WARNING)),
+    error: (content, options) => emitEvent(content, mergeOptions(options, TYPE.ERROR)),
     dismiss: (id = null) => container && EventManager.emit(ACTION.CLEAR, id),
-    isActive: () => false
+    isActive: () => false,
+    update(id, options){
+      if(container && typeof container.collection[id] !== 'undefined') {
+        const {options: oldOptions, content: oldContent } =  container.collection[id];
+        const updateId = oldOptions.updateId !== null ? oldOptions.updateId + 1 : 1;
+         
+        const nextOptions = Object.assign({}, oldOptions, options, { toastId: id, updateId: updateId });
+        const content = typeof nextOptions.render !== "undefined" ? nextOptions.render : oldContent;
+        delete nextOptions.render;
+        
+        return emitEvent(content, nextOptions);        
+      }
+
+      return false;
+    }
   },
   {
     POSITION,

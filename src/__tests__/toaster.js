@@ -43,6 +43,37 @@ describe('toastify', () => {
     expect(component.state('toast').length).toBe(0);
   });
 
+  describe("update function", () => {
+    it("Should be able to update an existing toast", () => {
+      mount(<ToastContainer />);
+      const id = toaster('hello');
+  
+      jest.runAllTimers();
+      
+      const updateId = toaster.update(id);
+      jest.runAllTimers();
+      expect(id).toBe(updateId);
+    });
+
+    it("Should be able to replace content when updating an existing toast", () => {
+      const component = mount(<ToastContainer />);
+      const id = toaster('hello');
+  
+      jest.runAllTimers();
+      
+      const updateId = toaster.update(id, {
+        render: "Update"
+      });
+      jest.runAllTimers();
+      expect(component.html()).toMatch(/Update/)
+      expect(id).toBe(updateId);
+    });
+
+    it("Should update a toast only if it exist and if the container is mounted", () => {
+      expect(toaster.update(0)).toBe(false);
+    });
+  });
+
   describe("isActive function", () => {
     it("toast.isActive should return false until the container is mounted", () => {
       expect(toaster.isActive()).toBe(false);
@@ -74,6 +105,7 @@ describe('toastify', () => {
   it("Should be able to use syntaxic sugar for different notification type", () => {
     const component = mount(<ToastContainer />);
 
+    toaster('plop');
     toaster.success("plop");
     toaster.error("plop");
     toaster.warning("plop");
@@ -82,11 +114,11 @@ describe('toastify', () => {
     jest.runAllTimers();
 
     // Remove default types as there is no shortcut for that one
-    const expectedTypes = Object.keys(TYPE).map(k => TYPE[k]).filter(v => v !== "default").sort();
+    const expectedTypes = Object.keys(TYPE).map(k => TYPE[k]).sort();
 
     // Array unique since warn and warning use the same type
     const typesToMatch = [...new Set(Object.keys(component.instance().collection)
-      .map(k => component.instance().collection[k].content.props.type))].sort();
+      .map(k => component.instance().collection[k].options.type))].sort();
 
     expect(expectedTypes).toEqual(typesToMatch);
   });

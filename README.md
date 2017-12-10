@@ -3,10 +3,6 @@
 ![React toastify](https://user-images.githubusercontent.com/5574267/28753331-1380a2f0-7534-11e7-8456-0b32e959db07.gif "React toastify")
 
 
-<a target='_blank' rel='nofollow' href='https://app.codesponsor.io/link/qxxWZzh3YmHPKmwHHm79SuG4/fkhadra/react-toastify'>
-  <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/qxxWZzh3YmHPKmwHHm79SuG4/fkhadra/react-toastify.svg' />
-</a>
-
 🎉 React-Toastify allow you to add notification to your app with ease. No bullshit !
 
 * [Demo](#demo)
@@ -20,13 +16,18 @@
   + [Render a component](#render-a-component)
   + [Remove a toast programmatically](#remove-a-toast-programmatically)
   + [Prevent duplicate](#prevent-duplicate)
+  + [Update a toast](#update-a-toast)
+    - [Basic example](#basic-example)
+    - [Update the content](#update-the-content)
+    - [ :sparkles: Apply a transition](#apply-a-transition)
+    - [Reset option or inherit from ToastContainer](#reset-option-or-inherit-from-ToastContainer)
   + [Define hook](#define-hook)
   + [Set a custom close button or simply remove it](#set-a-custom-close-button-or-simply-remove-it)
     - [Override the default one](#override-the-default-one)
     - [Define it per toast](#define-it-per-toast)
     - [Remove it](#remove-it)
   + [Add an undo option to a toast](#add-an-undo-option-to-a-toast)
-  + [ :fire: Define a custom enter and exit transition :fire: ](#define-a-custom-enter-and-exit-transition)
+  + [ :sparkles: Define a custom enter and exit transition](#define-a-custom-enter-and-exit-transition)
   + [Le style](#le-style)
     - [Replace default style](#replace-default-style)
     - [Style with className](#style-with-classname)
@@ -40,11 +41,11 @@
 * [License](#license)
 
 ## Demo
-   
-[A demo is worth thousand word](https://fkhadra.github.io/react-toastify/)   
-   
-## Installation 
-   
+
+[A demo is worth thousand word](https://fkhadra.github.io/react-toastify/)
+
+## Installation
+
 ```
 $ npm install --save react-toastify
 $ yarn add react-toastify
@@ -52,20 +53,21 @@ $ yarn add react-toastify
 
 ## Features
 
-- Easy to setup for real
+- Easy to setup for real, you can make it works in less than 10sec !
 - Super easy to customize
 - Can display a react component inside the toast !
 - Don't rely on `findDOMNode` or any DOM hack
 - Has ```onOpen``` and ```onClose``` hooks. Both can access the props passed to the react component rendered inside the toast
 - Can remove a toast programmatically
 - Define behavior per toast
-- Use glamor for styling
+- Use glamor for styling 💅
 - Pause toast when the browser is not visible thanks to visibility api
 - Fancy progress bar to display the remaining time
+- Possibility to update a toast
 
 ## Migrate from v2 to v3
 
-The v3 rely on glamor for styling. Using css classes is still fine but 
+The v3 rely on glamor for styling. Using css classes is still fine but
 you may need to replace your css classes by a glamor rule in some case.
 
 No more css file to import !
@@ -74,7 +76,7 @@ A style helper has been added to mimic the old sass variables.
 
 ## Usage
 
-### One component to rule them all 
+### One component to rule them all
 
 By default all toasts will inherits ToastContainer's props. **Props defined on toast supersede ToastContainer's props.**
 
@@ -147,8 +149,8 @@ For convenience, toast expose a POSITION property to avoid any typo.
 
 ```js
   import React from 'react';
-  import { ToastContainer } from 'react-toastify'; 
-  
+  import { ToastContainer } from 'react-toastify';
+
   // close toast after 8 seconds
   const App = () => (
     <ToastContainer autoClose={8000} />
@@ -159,8 +161,8 @@ For convenience, toast expose a POSITION property to avoid any typo.
 
 ```js
   import React from 'react';
-  import { ToastContainer } from 'react-toastify'; 
-  
+  import { ToastContainer } from 'react-toastify';
+
   class App extends Component {
     closeAfter15 = () => toast("YOLO", { autoClose: 15000 });
 
@@ -278,6 +280,107 @@ To prevent duplicates, you can check if a given toast is active by calling `toas
   }
 ```
 
+### Update a toast
+
+When you update a toast, the toast options and the content are inherited but don't worry you can update them.
+
+![update-without-transition](https://user-images.githubusercontent.com/5574267/33761953-1ce2e0ea-dc0b-11e7-8967-a63c1185ce0e.gif)
+
+#### Basic example 
+
+```js
+import React, { Component } from 'react';
+import { toast } from 'react-toastify';
+
+class Update extends Component {
+  toastId = null;
+
+  notify = () => this.toastId = toast("Hello", { autoClose: false });
+
+  update = () => toast.update(this.toastId, { type: toast.TYPE.INFO, autoClose: 5000 });
+  
+  render(){
+      return (
+        <div>
+          <button onClick={this.notify}>Notify</button>
+          <button onClick={this.update}>Update</button>
+        </div>
+      )
+  }
+}
+```
+
+#### Update the content
+
+If you want to change the content it's straightforward as well. You can render any valid element including a react component. Pass your value to a `render` option as follow:
+
+```js
+ // With a string
+ toast.update(this.toastId, { 
+    render: "New content"
+    type: toast.TYPE.INFO,
+    autoClose: 5000 
+  });
+ 
+// Or with a component
+toast.update(this.toastId, { 
+    render: <MyComponent />
+    type: toast.TYPE.INFO,
+    autoClose: 5000 
+  });
+
+
+```
+
+#### Apply a transition
+
+By default, when you update a toast, there is no transition applied. You can easily change this behavior by taking advantage of the `className` option. Lets rotate the toast on update:
+
+![update-with-transition](https://user-images.githubusercontent.com/5574267/33761952-1cc9d55a-dc0b-11e7-9a05-29186ea1c1f0.gif)
+
+```js
+toast.update(this.toastId, {
+  render: "New Content",
+  type: toast.TYPE.INFO,
+  //Here the magic
+  className: css({
+    transform: "rotateY(360deg)",
+    transition: "transform 0.6s"
+  })
+})
+```
+
+#### Reset option or inherit from ToastContainer
+
+If you want to inherit props from the `ToastContainer`, you can reset an option by passing null. 
+It's particulary usefull when you remove the `closeButton` from a toast and you want it back during the update:
+
+```js
+class Update extends Component {
+  toastId = null;
+
+  notify = () => this.toastId = toast("Hello", { 
+      autoClose: false,
+      closeButton: false // Remove the closeButton 
+    });
+
+  update = () => toast.update(this.toastId, { 
+      type: toast.TYPE.INFO,
+      autoClose: 5000,
+      closeButton: null // The closeButton defined on ToastContainer will be used
+    });
+  
+  render(){
+      return (
+        <div>
+          <button onClick={this.notify}>Notify</button>
+          <button onClick={this.update}>Update</button>
+        </div>
+      )
+  }
+}
+```
+
 ### Define hook
 
 You can define two hooks on toast. Hooks are really useful when the toast are not used only to display messages.
@@ -391,7 +494,7 @@ See it in action:
 ```javascript
 const ToastUndo = ({ id, undo, closeToast }) => {
   function handleClick(){
-    undo(id); 
+    undo(id);
     closeToast();
   }
 
@@ -407,7 +510,7 @@ const ToastUndo = ({ id, undo, closeToast }) => {
 class App extends Component {
   state = {
     collection: data,
-    // Buffer 
+    // Buffer
     toRemove: []
   };
 
@@ -417,16 +520,16 @@ class App extends Component {
       toRemove: this.state.toRemove.filter(v => v !== id)
     });
   }
-    
-  // Remove definetly 
+
+  // Remove definetly
   cleanCollection = () => this.setState({
     // Return element which are not included in toRemove
     collection: this.state.collection.filter(v => !this.state.toRemove.includes(v.id)),
     //Cleanup the buffer
     toRemove: []
   });
-  
-   // Remove row from render process 
+
+   // Remove row from render process
    // then display the toast with undo action available
   removeRow = e => {
     const id = e.target.dataset.rowId;
@@ -482,7 +585,7 @@ class App extends Component {
 
 ### Define a custom enter and exit transition
 
-The toast rely on `react-transition-group` for the enter and exit transition. 
+The toast rely on `react-transition-group` for the enter and exit transition.
 
 ![toastify_custom_trans](https://user-images.githubusercontent.com/5574267/31049179-0d52e14c-a62e-11e7-9abd-b0d169a0fadc.gif)
 
@@ -537,7 +640,7 @@ import { toast } from 'react-toastify';
 import Transition from 'react-transition-group/Transition';
 import './style.css';
 
-// Any transition created with react-transition-group/Transition will work ! 
+// Any transition created with react-transition-group/Transition will work !
 const ZoomInAndOut = ({ children, position, ...props }) => (
   <Transition
     {...props}
@@ -560,7 +663,7 @@ class App extends Component {
       autoClose: 5000
     });
   };
-    
+
   render(){
     return <button onClick={this.notify}>Notify</button>;
   }
@@ -574,7 +677,7 @@ class App extends Component {
 render(){
   return(
   {/*Component*/}
-    <ToastContainer 
+    <ToastContainer
       transition={ZoomInAndOut}
     />
   {/*Component*/}
@@ -598,6 +701,7 @@ style({
   colorError: "#e74c3c",
   colorProgressDefault: "linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55)",
   mobile: "only screen and (max-width : 480px)",
+  zIndex: 9999,
 });
 ```
 
@@ -628,21 +732,21 @@ will be injected last ⚠️
         })
       });
     };
-    
+
     render(){
       return <button onClick={this.notify}>Notify</button>;
     }
   }
 ```
 
-You could define your style gloablly:
+You could define your style globally:
 
 
 ```javascript
   render(){
     return(
       {/*Component*/}
-      <ToastContainer 
+      <ToastContainer
         toastClassName="dark-toast"
         progressClassName={css({
           height: "2px"
@@ -660,9 +764,9 @@ On mobile the toast will take all the width available.
 ![react toastiy mobile](https://user-images.githubusercontent.com/5574267/28754040-ae7195ea-753d-11e7-86e1-f23c5e6bc531.gif)
 
 ## Api
-  
+
 ### ToastContainer
-   
+
 | Props             | Type           | Default   | Description                                                     |
 | ----------------- | -------------- | --------- | --------------------------------------------------------------- |
 | position          | string         | top-right | One of top-right, top-center, top-left, bottom-right, bottom-center, bottom-left                                   |
@@ -678,14 +782,14 @@ On mobile the toast will take all the width available.
 | toastClassName    | string\|glamor rule         | -         | Add optional classes to the toast                               |
 | bodyClassName     | string\|glamor rule         | -         | Add optional classes to the toast body                          |
 | progressClassName | string\|glamor rule         | -         | Add optional classes to the progress bar                        |
-      
+
 
 ### toast
-   
-All the method of toast return a **toastId** except `dismiss` and `isActive`. 
-The **toastId** can be used to remove a toast programmatically or to check if the toast is displayed. 
 
-   
+All the method of toast return a **toastId** except `dismiss` and `isActive`.
+The **toastId** can be used to remove a toast programmatically or to check if the toast is displayed.
+
+
 | Parameter | Type    | Required      | Description                                                   |
 | --------- | ------- | ------------- | ------------------------------------------------------------- |
 | content   | string or React Element | ✓                                                             | Element that will be displayed |
@@ -705,7 +809,8 @@ The **toastId** can be used to remove a toast programmatically or to check if th
     - `className`: same as ToastContainer toastClassName
     - `bodyClassName`: same as ToastContainer
     - `progressClassName`: same as ToastContainer
-    
+    - `render`: string or React Element, only available when calling update
+
 :warning:️ *Toast options supersede ToastContainer props* :warning:
 
 ```javascript
@@ -713,7 +818,7 @@ const Img = ({ src }) => <div><img width={48} src={src} /></div>;
 const options = {
     onOpen: props => console.log(props.foo),
     onClose: props => console.log(props.foo),
-    autoClose: 6000, 
+    autoClose: 6000,
     closeButton: <FontAwesomeCloseButton />,
     type: toast.TYPE.INFO,
     hideProgressBar: false,
@@ -730,6 +835,10 @@ toast.error(<Img />, options) // add type: 'error' to options
 toast.dismiss() // Remove all toasts !
 toast.dismiss(toastId) // Remove given toast
 toast.isActive(toastId) //Check if a toast is displayed or not
+toast.update(toastId, {
+  type: toast.TYPE.INFO,
+  render: <Img foo={bar}/>
+});
 ```
 
 ## Browser Support
@@ -739,6 +848,12 @@ toast.isActive(toastId) //Check if a toast is displayed or not
 IE 11+ ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ |
 
 ## Release Notes
+
+### V3.1.0
+
+- Add ability to update an existing toast 
+- Allow to define the zIndex via the style helper
+- Get rid of all inline style
 
 ### V3.0.0
 
@@ -757,7 +872,7 @@ IE 11+ ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ |
 
 ### V2.1.7
 
-- Can now use [sass variable default](http://sass-lang.com/documentation/file.SASS_REFERENCE.html#Variable_Defaults___default) thanks to [vikpe](https://github.com/vikpe) 
+- Can now use [sass variable default](http://sass-lang.com/documentation/file.SASS_REFERENCE.html#Variable_Defaults___default) thanks to [vikpe](https://github.com/vikpe)
 ### V2.1.5
 
 - Test suites improved
@@ -799,7 +914,7 @@ IE 11+ ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ |
 
 This version may introduce breaking changes due to redesign. My apologies.
 
-But, it brings a lots of new and exciting features ! 
+But, it brings a lots of new and exciting features !
 
 #### New Features
 
@@ -820,7 +935,7 @@ But, it brings a lots of new and exciting features !
 
 #### New Features
 
-- Toast can now be positioned individually ! 
+- Toast can now be positioned individually !
 
 ### v1.6.0
 
@@ -834,11 +949,11 @@ For more details check [issue #4](https://github.com/fkhadra/react-toastify/issu
 #### Others
 
 - Added --no-idents flag to cssnano to avoid animation name collision with others libs.
-- Tests are no longer transpiled 
+- Tests are no longer transpiled
 
 ### v1.5.0
 
-- That version does not bring any features but it brings tests made with the amazing jest and aslo Travis CI integration. 
+- That version does not bring any features but it brings tests made with the amazing jest and aslo Travis CI integration.
 
 ### v1.4.3
 
@@ -850,7 +965,7 @@ For more details check [issue #4](https://github.com/fkhadra/react-toastify/issu
 
 #### Bug fix
 
-- Fixed the test to check if the toast can be rendered  
+- Fixed the test to check if the toast can be rendered
 
 ### v1.4.0
 
@@ -858,7 +973,7 @@ For more details check [issue #4](https://github.com/fkhadra/react-toastify/issu
 - Internal rewrite of components. The implementation wasn't bad but it wasn't good either. A better props validation has been added has well.
 - Removed useless dependencies. I was using the Object.values polyfill when a one line forEach can do the same is my case.
 - Now I believe it's even easier to style the components. The sass sources files are now included when you install the package via yarn or npm
-- The default close button has been replaced. 
+- The default close button has been replaced.
 
 #### New Features
 
@@ -913,8 +1028,8 @@ make sense to keep both way to pass props. Use the react way instead
 
 ## Contribute
 
-Show your 😻 and support by giving a ⭐. Any suggestions and pull request are welcome ! 
-   
+Show your ❤️ and support by giving a ⭐. Any suggestions and pull request are welcome !
+
 ## License
-   
+
 Licensed under MIT
