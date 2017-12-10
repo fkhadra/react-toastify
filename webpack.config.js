@@ -28,7 +28,8 @@ module.exports = {
     'react',
     'react-dom',
     'prop-types',
-    'react-transition-group'
+    'react-transition-group',
+    'glamor'
   ],
   plugins: [
     new webpack.LoaderOptionsPlugin({

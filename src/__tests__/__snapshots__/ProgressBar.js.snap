@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProgressBar Should be able to hide the progress bar 1`] = `
+.css-qkhwto,
+[data-css-qkhwto] {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 5px;
+  z-index: 9999;
+  opacity: 0;
+  animation: track-progress_1pd4w4j linear 1;
+  animation-play-state: running;
+  animation-duration: 5000ms;
+  background-color: rgba(255,255,255,.7);
+  background: -webkit-linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55);
+  background: -moz-linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55);
+  background: linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55);
+  -webkit-animation: track-progress_1pd4w4j linear 1;
+  -webkit-animation-play-state: running;
+  -webkit-animation-duration: 5000ms;
+}
+
+<div
+  className=""
+  data-css-qkhwto=""
+  onAnimationEnd={[Function]}
+/>
+`;
+
+exports[`ProgressBar Should be able to pause animation 1`] = `
+.css-1tcv8a9,
+[data-css-1tcv8a9] {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 5px;
+  z-index: 9999;
+  opacity: 0.7;
+  animation: track-progress_1pd4w4j linear 1;
+  animation-play-state: paused;
+  animation-duration: 5000ms;
+  background-color: rgba(255,255,255,.7);
+  background: -webkit-linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55);
+  background: -moz-linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55);
+  background: linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55);
+  -webkit-animation: track-progress_1pd4w4j linear 1;
+  -webkit-animation-play-state: paused;
+  -webkit-animation-duration: 5000ms;
+}
+
+<div
+  className=""
+  data-css-1tcv8a9=""
+  onAnimationEnd={[Function]}
+/>
+`;

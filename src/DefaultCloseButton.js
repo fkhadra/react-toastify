@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 import { css } from "glamor";
 
 const rule = isDefault => css({
-  padding: 0,
   color: isDefault ? "#000" : "#fff",
   fontWeight: "bold",
   fontSize: "14px",
   background: "transparent",
   outline: "none",
   border: "none",
+  padding: 0,
   cursor: "pointer",
   opacity: isDefault ? "0.3" : "0.7",
   transition: ".3s ease",

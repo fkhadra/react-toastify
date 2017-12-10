@@ -10,35 +10,26 @@ const trackProgress = css.keyframes('track-progress', {
   "100%": { width: 0 }
 });
 
-const progress = type => css({
+const progress = (type, isRunning, hide, delay) => css({
   position: "absolute",
   bottom: 0,
   left: 0,
   width: 0,
   height: "5px",
-  zIndex: 999,
-  opacity: 0.7,
+  zIndex: style.zIndex,
+  opacity: hide ? 0: 0.7,
   animation: `${trackProgress} linear 1`,
+  animationPlayState: isRunning ? 'running' : 'paused',
+  animationDuration: `${delay}ms`,
   backgroundColor: "rgba(255,255,255,.7)",
   ...type === "default" ? { background: style.colorProgressDefault } : {}
 });
 
 function ProgressBar({ delay, isRunning, closeToast, type, hide, className }) {
-  const style = {
-    animationDuration: `${delay}ms`,
-    animationPlayState: isRunning ? 'running' : 'paused'
-  };
-  style.WebkitAnimationPlayState = style.animationPlayState;
-
-  if (hide) {
-    style.opacity = 0;
-  }
-
   return (
     <div
-      {...progress(type)}
+      {...progress(type, isRunning, hide, delay)}
       className={className}
-      style={style}
       onAnimationEnd={closeToast}
     />
   );

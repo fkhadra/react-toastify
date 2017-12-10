@@ -5,28 +5,33 @@ import { css } from "glamor";
 import ProgressBar from "./ProgressBar";
 import { POSITION, TYPE } from "./constant";
 import style from "./style";
-import objectValues from "./util/objectValues";
-import { falseOrElement, falseOrNumber } from "./util/propValidator";
+import {
+  falseOrElement,
+  falseOrDelay,
+  objectValues
+} from "./util/propValidator";
 
-const toast = type => css({
-  position: "relative",
-  minHeight: "48px",
-  marginBottom: "1rem",
-  padding: "8px",
-  borderRadius: "1px",
-  boxShadow: "0 1px 10px 0 rgba(0, 0, 0, .1), 0 2px 15px 0 rgba(0, 0, 0, .05)",
-  display: "flex",
-  justifyContent: "space-between",
-  maxHeight: "800px",
-  overflow: "hidden",
-  fontFamily: "sans-serif",
-  cursor: "pointer",
-  background: style[`color${type.charAt(0).toUpperCase()}${type.slice(1)}`],
-  ...type === "default" ? { color: "#aaa" } : {},
-  [`@media ${style.mobile}`]: {
-    marginBottom: 0  
-  }
-});
+const toast = type =>
+  css({
+    position: "relative",
+    minHeight: "48px",
+    marginBottom: "1rem",
+    padding: "8px",
+    borderRadius: "1px",
+    boxShadow:
+      "0 1px 10px 0 rgba(0, 0, 0, .1), 0 2px 15px 0 rgba(0, 0, 0, .05)",
+    display: "flex",
+    justifyContent: "space-between",
+    maxHeight: "800px",
+    overflow: "hidden",
+    fontFamily: "sans-serif",
+    cursor: "pointer",
+    background: style[`color${type.charAt(0).toUpperCase()}${type.slice(1)}`],
+    ...(type === "default" ? { color: "#aaa" } : {}),
+    [`@media ${style.mobile}`]: {
+      marginBottom: 0
+    }
+  });
 
 const body = css({
   margin: "auto 0",
@@ -36,13 +41,14 @@ const body = css({
 class Toast extends Component {
   static propTypes = {
     closeButton: falseOrElement.isRequired,
-    autoClose: falseOrNumber.isRequired,
+    autoClose: falseOrDelay.isRequired,
     children: PropTypes.node.isRequired,
     closeToast: PropTypes.func.isRequired,
     position: PropTypes.oneOf(objectValues(POSITION)).isRequired,
     pauseOnHover: PropTypes.bool.isRequired,
     closeOnClick: PropTypes.bool.isRequired,
     transition: PropTypes.func.isRequired,
+    isDocumentHidden: PropTypes.bool.isRequired,
     in: PropTypes.bool,
     onExited: PropTypes.func,
     hideProgressBar: PropTypes.bool,
@@ -51,7 +57,11 @@ class Toast extends Component {
     type: PropTypes.oneOf(objectValues(TYPE)),
     className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     bodyClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    progressClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+    progressClassName: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.object
+    ]),
+    updateId: PropTypes.number
   };
 
   static defaultProps = {
@@ -62,24 +72,29 @@ class Toast extends Component {
     onClose: null,
     className: "",
     bodyClassName: "",
-    progressClassName: ""
+    progressClassName: "",
+    updateId: null
   };
 
   state = {
     isRunning: true
   };
-  
+
   componentDidMount() {
     this.props.onOpen !== null && this.props.onOpen(this.getChildrenProps());
-    document.addEventListener("visibilitychange", this.handleVisibility);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.isDocumentHidden !== nextProps.isDocumentHidden) {
+      this.setState({
+        isRunning: !nextProps.isDocumentHidden
+      });
+    }
   }
 
   componentWillUnmount() {
     this.props.onClose !== null && this.props.onClose(this.getChildrenProps());
-    document.removeEventListener("visibilitychange", this.handleVisibility);
   }
-
-  handleVisibility = () => this.setState({ isRunning: !document.hidden });
 
   getChildrenProps() {
     return this.props.children.props;
@@ -119,11 +134,18 @@ class Toast extends Component {
       onExited,
       className,
       bodyClassName,
-      progressClassName
+      progressClassName,
+      updateId
     } = this.props;
 
     return (
-      <Transition in={this.props.in} appear unmountOnExit onExited={onExited} position={position}>
+      <Transition
+        in={this.props.in}
+        appear
+        unmountOnExit
+        onExited={onExited}
+        position={position}
+      >
         <div {...toast(type)} {...this.getToastProps()} className={className}>
           <div {...body} className={bodyClassName}>
             {children}
@@ -131,6 +153,7 @@ class Toast extends Component {
           {closeButton !== false && closeButton}
           {autoClose !== false && (
             <ProgressBar
+              key={`pb-${updateId}`}
               delay={autoClose}
               isRunning={this.state.isRunning}
               closeToast={closeToast}
