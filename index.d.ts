@@ -50,7 +50,7 @@ interface Toast {
   warn(content: React.ReactNode, options?: ToastOptions): number;
   error(content: React.ReactNode, options?: ToastOptions): number;
   isActive(toastId: number): boolean;
-  dismiss(toastId: number): void;
+  dismiss(toastId?: number): void;
   update(toastId: number, options?: UpdateOptions): number;
   (content: React.ReactNode, options?: ToastOptions): number;
 }

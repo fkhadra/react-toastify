@@ -16,21 +16,6 @@ import {
   objectValues
 } from "./util/propValidator";
 
-const container = disablePointer =>
-  css({
-    zIndex: style.zIndex,
-    position: "fixed",
-    padding: "4px",
-    width: style.width,
-    boxSizing: "border-box",
-    color: "#fff",
-    ...(disablePointer ? { pointerEvents: "none" } : {}),
-    [`@media ${style.mobile}`]: {
-      width: "100vw",
-      padding: 0
-    }
-  });
-
 const toastPosition = pos => {
   let rule;
   const marginLeft = `-${parseInt(style.width, 10) / 2}px`;
@@ -86,6 +71,24 @@ const toastPosition = pos => {
     })
   );
 };
+
+const container = (disablePointer, position) =>
+  css(
+    {
+      zIndex: style.zIndex,
+      position: "fixed",
+      padding: "4px",
+      width: style.width,
+      boxSizing: "border-box",
+      color: "#fff",
+      ...(disablePointer ? { pointerEvents: "none" } : {}),
+      [`@media ${style.mobile}`]: {
+        width: "100vw",
+        padding: 0
+      }
+    },
+    toastPosition(position)
+  );
 
 class ToastContainer extends Component {
   static propTypes = {
@@ -318,9 +321,10 @@ class ToastContainer extends Component {
     });
 
     this.setState({
-      toast: toastOptions.updateId !== null
-        ? [...this.state.toast]
-        : [...this.state.toast, toastId]
+      toast:
+        toastOptions.updateId !== null
+          ? [...this.state.toast]
+          : [...this.state.toast, toastId]
     });
   }
 
@@ -368,9 +372,10 @@ class ToastContainer extends Component {
 
       return (
         <TransitionGroup
-          {...container(disablePointer)}
-          {...toastPosition(position)}
-          {...className !== null && { className }}
+          {...(typeof className !== "string"
+            ? css(container(disablePointer, position), className)
+            : container(disablePointer, position))}
+          {...typeof className === "string" && { className }}
           {...style !== null && { style }}
           key={`container-${position}`}
         >
