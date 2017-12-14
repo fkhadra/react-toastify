@@ -107,7 +107,8 @@ class Toast extends Component {
       toastProps.onMouseEnter = this.pauseToast;
       toastProps.onMouseLeave = this.playToast;
     }
-
+    typeof this.props.className === "string" &&
+      (toastProps.className = this.props.className);
     this.props.closeOnClick && (toastProps.onClick = this.props.closeToast);
 
     return toastProps;
@@ -146,8 +147,20 @@ class Toast extends Component {
         onExited={onExited}
         position={position}
       >
-        <div {...toast(type)} {...this.getToastProps()} className={className}>
-          <div {...body} className={bodyClassName}>
+        <div
+          {...(typeof className !== "string"
+            ? css(toast(type), className)
+            : toast(type))}
+          {...this.getToastProps()}
+        >
+          <div
+            {...(typeof bodyClassName !== "string"
+              ? css(body, bodyClassName)
+              : body)}
+            {...typeof bodyClassName === "string" && {
+              className: bodyClassName
+            }}
+          >
             {children}
           </div>
           {closeButton !== false && closeButton}

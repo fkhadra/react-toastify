@@ -1,6 +1,8 @@
 /* eslint-env jest */
 import React from 'react';
 import { shallow, mount } from 'enzyme';
+import toJson from "enzyme-to-json";
+import { css } from "glamor";
 
 import Toast from './../Toast';
 import DefaultCloseButton from './../DefaultCloseButton';
@@ -35,6 +37,21 @@ describe('Toast', () => {
     
     expect(component.find('.container-class')).toHaveLength(1);
     expect(component.find('.body-class')).toHaveLength(1);
+  });
+
+  it("Should allow glamor rule as className", () => {
+    const component = shallow(
+      <Toast
+        {...REQUIRED_PROPS}
+        autoClose={false}
+        className={css({ background: "red" })}
+        bodyClassName={css({color: "blue" })}
+      >
+        FooBar
+      </Toast>
+    );
+
+    expect(toJson(component)).toMatchSnapshot();
   });
 
   it('Should not render ProgressBar if autoClose prop is set to false', () => {

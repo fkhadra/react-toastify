@@ -1,5 +1,31 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`ProgressBar Should allow glamor rule as className 1`] = `
+.css-1pf9yof,
+[data-css-1pf9yof] {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 5px;
+  z-index: 9999;
+  opacity: 0.7;
+  animation: track-progress_1pd4w4j linear 1;
+  animation-play-state: running;
+  animation-duration: 5000ms;
+  background-color: rgba(255,255,255,.7);
+  background: red;
+  -webkit-animation: track-progress_1pd4w4j linear 1;
+  -webkit-animation-play-state: running;
+  -webkit-animation-duration: 5000ms;
+}
+
+<div
+  data-css-1pf9yof=""
+  onAnimationEnd={[Function]}
+/>
+`;
+
 exports[`ProgressBar Should be able to hide the progress bar 1`] = `
 .css-qkhwto,
 [data-css-qkhwto] {

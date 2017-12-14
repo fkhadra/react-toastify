@@ -132,7 +132,7 @@ For convenience, toast expose a POSITION property to avoid any typo.
     toast("Custom Style Notification !", {
       position: toast.POSITION.BOTTOM_RIGHT,
       className: css({
-        backgroundColor: "black"
+        background: "black"
       })
     });
   };
@@ -721,7 +721,7 @@ will be injected last ⚠️
     notify = () => {
       toast("Dark style notification with default type progress bar",{
         className: css({
-          backgroundColor: "black"
+          background: "black"
         }),
         bodyClassName: "grow-font-size"
       });
@@ -848,6 +848,9 @@ toast.update(toastId, {
 IE 11+ ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ |
 
 ## Release Notes
+
+- Fix [issue #103](https://github.com/fkhadra/react-toastify/issues/103) for real...
+- Fix [issue #104](https://github.com/fkhadra/react-toastify/issues/104) Incorrect TS definition for `toast.dismiss`
 
 ### V3.1.1
 
