@@ -132,7 +132,7 @@ For convenience, toast expose a POSITION property to avoid any typo.
     toast("Custom Style Notification !", {
       position: toast.POSITION.BOTTOM_RIGHT,
       className: css({
-        background: "black"
+        backgroundColor: "black"
       })
     });
   };
@@ -721,14 +721,14 @@ will be injected last ⚠️
     notify = () => {
       toast("Dark style notification with default type progress bar",{
         className: css({
-          background: "black"
+          backgroundColor: "black"
         }),
         bodyClassName: "grow-font-size"
       });
 
       toast("Fancy progress bar.",{
         progressClassName: css({
-          background: "repeating-radial-gradient(red, yellow 10%, green 15%)"
+          background: "repeating-radial-gradient(circle at center, red 0, blue, green 30px)"
         })
       });
     };
@@ -848,6 +848,10 @@ toast.update(toastId, {
 IE 11+ ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ |
 
 ## Release Notes
+
+### V3.1.1
+
+- Fix [issue #103](https://github.com/fkhadra/react-toastify/issues/103)
 
 ### V3.1.0
 
