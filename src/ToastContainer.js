@@ -247,7 +247,8 @@ class ToastContainer extends Component {
     return (
       isValidElement(content) ||
       typeof content === 'string' ||
-      typeof content === 'number'
+      typeof content === 'number' ||
+      this.isFunction(content)
     );
   }
 
@@ -310,6 +311,8 @@ class ToastContainer extends Component {
       content = cloneElement(content, {
         closeToast
       });
+    } else if (this.isFunction(content)) {
+      content = content({ closeToast });
     }
 
     this.collection = Object.assign({}, this.collection, {

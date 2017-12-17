@@ -75,14 +75,15 @@ describe('ToastContainer', () => {
     expect(component.state().toast).toHaveLength(0);
   });
 
-  it('Should be able to render a react element, a string or a number without crashing', () => {
+  it('Should be able to render a react element, a string, a number, a render props without crashing', () => {
     const component = mount(<ToastContainer />);
     toaster('coucou');
     toaster(123);
     toaster(<div>plop</div>);
+    toaster(() => <div>plop</div>);
     jest.runAllTimers();
 
-    expect(component.state().toast).toHaveLength(3);
+    expect(component.state().toast).toHaveLength(4);
   });
 
   it('Should be able to display new toast on top', () => {
