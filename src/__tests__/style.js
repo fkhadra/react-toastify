@@ -1,8 +1,8 @@
 import style, { defineStyle } from "./../style";
 
-const defaultValues = {...style};
+const defaultValues = { ...style };
 
-afterEach(()=> defineStyle(defaultValues));
+afterEach(() => defineStyle(defaultValues));
 
 describe("style", () => {
   it("Should be able to mutate style", () => {

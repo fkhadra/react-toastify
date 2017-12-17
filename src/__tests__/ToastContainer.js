@@ -86,6 +86,7 @@ describe("ToastContainer", () => {
   });
 
   it("Should be able to display new toast on top", () => {
+    /*eslint no-extend-native: 0 */
     Array.prototype.reverse = jest.fn(Array.prototype.reverse);
     mount(<ToastContainer newestOnTop />);
     toaster("hello");
@@ -128,7 +129,10 @@ describe("ToastContainer", () => {
     jest.runAllTimers();
 
     const props = getToastProps(component);
-    expect(Object.keys(props.closeButton.props)).toMatchObject(['closeToast', 'type']);
+    expect(Object.keys(props.closeButton.props)).toMatchObject([
+      "closeToast",
+      "type"
+    ]);
   });
 
   it("Should be able to disable the close button", () => {
