@@ -1,14 +1,14 @@
 /* eslint-env jest */
-import React from "react";
-import { shallow, mount } from "enzyme";
-import toJson from "enzyme-to-json";
-import { css } from "glamor";
+import React from 'react';
+import { shallow, mount } from 'enzyme';
+import toJson from 'enzyme-to-json';
+import { css } from 'glamor';
 
-import Toast from "./../Toast";
-import DefaultCloseButton from "./../DefaultCloseButton";
-import DefaultTransition from "./../DefaultTransition";
-import ProgressBar from "./../ProgressBar";
-import { POSITION } from "./../constant";
+import Toast from './../Toast';
+import DefaultCloseButton from './../DefaultCloseButton';
+import DefaultTransition from './../DefaultTransition';
+import ProgressBar from './../ProgressBar';
+import { POSITION } from './../constant';
 
 const REQUIRED_PROPS = {
   closeButton: <DefaultCloseButton />,
@@ -22,8 +22,8 @@ const REQUIRED_PROPS = {
   isDocumentHidden: false
 };
 
-describe("Toast", () => {
-  it("Should merge container and body className", () => {
+describe('Toast', () => {
+  it('Should merge container and body className', () => {
     const component = shallow(
       <Toast
         {...REQUIRED_PROPS}
@@ -35,17 +35,17 @@ describe("Toast", () => {
       </Toast>
     );
 
-    expect(component.find(".container-class")).toHaveLength(1);
-    expect(component.find(".body-class")).toHaveLength(1);
+    expect(component.find('.container-class')).toHaveLength(1);
+    expect(component.find('.body-class')).toHaveLength(1);
   });
 
-  it("Should allow glamor rule as className", () => {
+  it('Should allow glamor rule as className', () => {
     const component = shallow(
       <Toast
         {...REQUIRED_PROPS}
         autoClose={false}
-        className={css({ background: "red" })}
-        bodyClassName={css({ color: "blue" })}
+        className={css({ background: 'red' })}
+        bodyClassName={css({ color: 'blue' })}
       >
         FooBar
       </Toast>
@@ -54,7 +54,7 @@ describe("Toast", () => {
     expect(toJson(component)).toMatchSnapshot();
   });
 
-  it("Should not render ProgressBar if autoClose prop is set to false", () => {
+  it('Should not render ProgressBar if autoClose prop is set to false', () => {
     const component = shallow(
       <Toast {...REQUIRED_PROPS} autoClose={false}>
         FooBar
@@ -64,7 +64,7 @@ describe("Toast", () => {
     expect(component.children().find(ProgressBar).length).toBe(0);
   });
 
-  it("Should not render closeButton if closeButton prop is set to false", () => {
+  it('Should not render closeButton if closeButton prop is set to false', () => {
     const component = shallow(
       <Toast {...REQUIRED_PROPS} closeButton={false}>
         FooBar
@@ -74,7 +74,7 @@ describe("Toast", () => {
     expect(component.children().find(DefaultCloseButton).length).toBe(0);
   });
 
-  it("Can call onOpen callback when component mount", () => {
+  it('Can call onOpen callback when component mount', () => {
     const onOpen = jest.fn();
     mount(
       <Toast {...REQUIRED_PROPS} onOpen={onOpen}>
@@ -85,7 +85,7 @@ describe("Toast", () => {
     expect(onOpen).toHaveBeenCalled();
   });
 
-  it("Can call onClose callback when component will unmount", () => {
+  it('Can call onClose callback when component will unmount', () => {
     const onClose = jest.fn();
     const component = mount(
       <Toast {...REQUIRED_PROPS} onClose={onClose}>
@@ -97,62 +97,62 @@ describe("Toast", () => {
     expect(onClose).toHaveBeenCalled();
   });
 
-  it("Can pause toast delay on mouse enter", () => {
+  it('Can pause toast delay on mouse enter', () => {
     const component = shallow(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
 
     expect(component.instance().state.isRunning).toBeTruthy();
     component
-      .find("div")
+      .find('div')
       .first()
-      .simulate("mouseEnter");
+      .simulate('mouseEnter');
     expect(component.instance().state.isRunning).toBeFalsy();
   });
 
-  it("Can keep runing on mouse enter", () => {
+  it('Can keep runing on mouse enter', () => {
     const component = shallow(
       <Toast {...REQUIRED_PROPS} pauseOnHover={false}>
         FooBar
       </Toast>
     );
-    expect(component.state("isRunning")).toBeTruthy();
+    expect(component.state('isRunning')).toBeTruthy();
     component
-      .find("div")
+      .find('div')
       .first()
-      .simulate("mouseEnter");
-    expect(component.state("isRunning")).toBeTruthy();
+      .simulate('mouseEnter');
+    expect(component.state('isRunning')).toBeTruthy();
   });
 
-  it("Should resume toast delay on mouse leave", () => {
+  it('Should resume toast delay on mouse leave', () => {
     const component = shallow(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
 
-    expect(component.state("isRunning")).toBeTruthy();
+    expect(component.state('isRunning')).toBeTruthy();
     component
-      .find("div")
+      .find('div')
       .first()
-      .simulate("mouseEnter");
-    expect(component.state("isRunning")).toBeFalsy();
+      .simulate('mouseEnter');
+    expect(component.state('isRunning')).toBeFalsy();
     component
-      .find("div")
+      .find('div')
       .first()
-      .simulate("mouseLeave");
-    expect(component.state("isRunning")).toBeTruthy();
+      .simulate('mouseLeave');
+    expect(component.state('isRunning')).toBeTruthy();
   });
 
-  it("Should not call setState if autoClose prop is false", () => {
+  it('Should not call setState if autoClose prop is false', () => {
     const component = shallow(
       <Toast {...REQUIRED_PROPS} autoClose={false}>
         FooBar
       </Toast>
     );
-    expect(component.state("isRunning")).toBeTruthy();
-    component.simulate("mouseEnter");
-    expect(component.state("isRunning")).toBeTruthy();
+    expect(component.state('isRunning')).toBeTruthy();
+    component.simulate('mouseEnter');
+    expect(component.state('isRunning')).toBeTruthy();
   });
 
-  it("Should pause Toast when document visibility change", () => {
+  it('Should pause Toast when document visibility change', () => {
     const component = mount(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
-    expect(component.state("isRunning")).toBe(true);
+    expect(component.state('isRunning')).toBe(true);
     component.setProps({ isDocumentHidden: true });
-    expect(component.state("isRunning")).toBe(false);
+    expect(component.state('isRunning')).toBe(false);
   });
 });

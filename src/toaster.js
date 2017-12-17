@@ -1,5 +1,5 @@
-import EventManager from "./util/EventManager";
-import { POSITION, TYPE, ACTION } from "./constant";
+import EventManager from './util/EventManager';
+import { POSITION, TYPE, ACTION } from './constant';
 
 const defaultOptions = {
   type: TYPE.DEFAULT,
@@ -66,7 +66,7 @@ const toaster = Object.assign(
     dismiss: (id = null) => container && EventManager.emit(ACTION.CLEAR, id),
     isActive: () => false,
     update(id, options) {
-      if (container && typeof container.collection[id] !== "undefined") {
+      if (container && typeof container.collection[id] !== 'undefined') {
         const {
           options: oldOptions,
           content: oldContent
@@ -79,7 +79,7 @@ const toaster = Object.assign(
           updateId: updateId
         });
         const content =
-          typeof nextOptions.render !== "undefined"
+          typeof nextOptions.render !== 'undefined'
             ? nextOptions.render
             : oldContent;
         delete nextOptions.render;

@@ -1,20 +1,20 @@
-import React, { Component, isValidElement, cloneElement } from "react";
-import PropTypes from "prop-types";
-import { css } from "glamor";
-import TransitionGroup from "react-transition-group/TransitionGroup";
+import React, { Component, isValidElement, cloneElement } from 'react';
+import PropTypes from 'prop-types';
+import { css } from 'glamor';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
 
-import Toast from "./Toast";
-import DefaultCloseButton from "./DefaultCloseButton";
-import DefaultTransition from "./DefaultTransition";
-import { POSITION, ACTION } from "./constant";
-import style from "./style";
-import EventManager from "./util/EventManager";
+import Toast from './Toast';
+import DefaultCloseButton from './DefaultCloseButton';
+import DefaultTransition from './DefaultTransition';
+import { POSITION, ACTION } from './constant';
+import style from './style';
+import EventManager from './util/EventManager';
 import {
   falseOrDelay,
   falseOrElement,
   isValidDelay,
   objectValues
-} from "./util/propValidator";
+} from './util/propValidator';
 
 const toastPosition = pos => {
   let rule;
@@ -22,41 +22,41 @@ const toastPosition = pos => {
   switch (pos) {
     case POSITION.TOP_LEFT:
       rule = {
-        top: "1em",
-        left: "1em"
+        top: '1em',
+        left: '1em'
       };
       break;
     case POSITION.TOP_CENTER:
       rule = {
-        top: "1em",
-        left: "50%",
+        top: '1em',
+        left: '50%',
         marginLeft: marginLeft
       };
       break;
     case POSITION.TOP_RIGHT:
     default:
       rule = {
-        top: "1em",
-        right: "1em"
+        top: '1em',
+        right: '1em'
       };
       break;
     case POSITION.BOTTOM_LEFT:
       rule = {
-        bottom: "1em",
-        left: "1em"
+        bottom: '1em',
+        left: '1em'
       };
       break;
     case POSITION.BOTTOM_CENTER:
       rule = {
-        bottom: "1em",
-        left: "50%",
+        bottom: '1em',
+        left: '50%',
         marginLeft: marginLeft
       };
       break;
     case POSITION.BOTTOM_RIGHT:
       rule = {
-        bottom: "1em",
-        right: "1em"
+        bottom: '1em',
+        right: '1em'
       };
   }
   return css(
@@ -65,8 +65,8 @@ const toastPosition = pos => {
       [`@media ${style.mobile}`]: {
         left: 0,
         margin: 0,
-        position: "fixed",
-        ...(pos.substring(0, 3) === "top" ? { top: 0 } : { bottom: 0 })
+        position: 'fixed',
+        ...(pos.substring(0, 3) === 'top' ? { top: 0 } : { bottom: 0 })
       }
     })
   );
@@ -76,14 +76,14 @@ const container = (disablePointer, position) =>
   css(
     {
       zIndex: style.zIndex,
-      position: "fixed",
-      padding: "4px",
+      position: 'fixed',
+      padding: '4px',
       width: style.width,
-      boxSizing: "border-box",
-      color: "#fff",
-      ...(disablePointer ? { pointerEvents: "none" } : {}),
+      boxSizing: 'border-box',
+      color: '#fff',
+      ...(disablePointer ? { pointerEvents: 'none' } : {}),
       [`@media ${style.mobile}`]: {
-        width: "100vw",
+        width: '100vw',
         padding: 0
       }
     },
@@ -172,9 +172,9 @@ class ToastContainer extends Component {
     newestOnTop: false,
     className: null,
     style: null,
-    toastClassName: "",
-    bodyClassName: "",
-    progressClassName: ""
+    toastClassName: '',
+    bodyClassName: '',
+    progressClassName: ''
   };
 
   /**
@@ -199,13 +199,13 @@ class ToastContainer extends Component {
     EventManager.on(SHOW, (content, options) => this.show(content, options))
       .on(CLEAR, id => (id !== null ? this.removeToast(id) : this.clear()))
       .emit(MOUNTED, this);
-    document.addEventListener("visibilitychange", this.isDocumentHidden);
+    document.addEventListener('visibilitychange', this.isDocumentHidden);
   }
 
   componentWillUnmount() {
     EventManager.off(ACTION.SHOW);
     EventManager.off(ACTION.CLEAR);
-    document.removeEventListener("visibilitychange", this.isDocumentHidden);
+    document.removeEventListener('visibilitychange', this.isDocumentHidden);
   }
 
   isDocumentHidden = () => this.setState({ isDocumentHidden: document.hidden });
@@ -246,8 +246,8 @@ class ToastContainer extends Component {
   canBeRendered(content) {
     return (
       isValidElement(content) ||
-      typeof content === "string" ||
-      typeof content === "number"
+      typeof content === 'string' ||
+      typeof content === 'number'
     );
   }
 
@@ -289,7 +289,7 @@ class ToastContainer extends Component {
           : options.autoClose
       ),
       hideProgressBar:
-        typeof options.hideProgressBar === "boolean"
+        typeof options.hideProgressBar === 'boolean'
           ? options.hideProgressBar
           : this.props.hideProgressBar
     };
@@ -304,8 +304,8 @@ class ToastContainer extends Component {
      */
     if (
       isValidElement(content) &&
-      typeof content.type !== "string" &&
-      typeof content.type !== "number"
+      typeof content.type !== 'string' &&
+      typeof content.type !== 'number'
     ) {
       content = cloneElement(content, {
         closeToast
@@ -372,10 +372,10 @@ class ToastContainer extends Component {
 
       return (
         <TransitionGroup
-          {...(typeof className !== "string"
+          {...(typeof className !== 'string'
             ? css(container(disablePointer, position), className)
             : container(disablePointer, position))}
-          {...typeof className === "string" && { className }}
+          {...typeof className === 'string' && { className }}
           {...style !== null && { style }}
           key={`container-${position}`}
         >
