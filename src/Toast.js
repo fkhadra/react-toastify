@@ -24,7 +24,7 @@ const toast = type =>
     justifyContent: 'space-between',
     maxHeight: '800px',
     overflow: 'hidden',
-    fontFamily: 'sans-serif',
+    fontFamily: style.fontFamily,
     cursor: 'pointer',
     background: style[`color${type.charAt(0).toUpperCase()}${type.slice(1)}`],
     ...(type === 'default' ? { color: '#aaa' } : {}),

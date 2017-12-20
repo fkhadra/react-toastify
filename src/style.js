@@ -8,16 +8,14 @@ const style = {
   colorProgressDefault:
     'linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55)',
   mobile: 'only screen and (max-width : 480px)',
+  fontFamily: 'sans-serif',
   zIndex: 9999
 };
 
 export function defineStyle(props) {
-  Object.keys(props).forEach(k => {
-    const val = props[k];
-    if (style.hasOwnProperty(k)) {
-      style[k] = val;
-    }
-  });
+  for (let prop in props) {
+    style[prop] = props[prop];
+  }
 }
 
 export default style;
