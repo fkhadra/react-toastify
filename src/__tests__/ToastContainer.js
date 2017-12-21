@@ -1,14 +1,14 @@
 /* eslint-env jest */
-import React from "react";
-import { mount } from "enzyme";
-import toJson from "enzyme-to-json";
-import { css } from "glamor";
+import React from 'react';
+import { mount } from 'enzyme';
+import toJson from 'enzyme-to-json';
+import { css } from 'glamor';
 
-import ToastContainer from "./../ToastContainer";
-import toaster from "./../toaster";
+import ToastContainer from './../ToastContainer';
+import toaster from './../toaster';
 
-import { ACTION } from "./../constant";
-import EventManager from "./../util/EventManager";
+import { ACTION } from './../constant';
+import EventManager from './../util/EventManager';
 
 jest.useFakeTimers();
 
@@ -24,8 +24,8 @@ function getToastProps(component) {
   return toast.options;
 }
 
-describe("ToastContainer", () => {
-  it("Should bind event when mounted and unbind them when unmounted", () => {
+describe('ToastContainer', () => {
+  it('Should bind event when mounted and unbind them when unmounted', () => {
     const component = mount(<ToastContainer />);
 
     expect(EventManager.eventList.has(ACTION.SHOW)).toBeTruthy();
@@ -45,26 +45,26 @@ describe("ToastContainer", () => {
     -closeToast`, () => {
     const component = mount(<ToastContainer />);
     // Create a toast
-    toaster("coucou");
+    toaster('coucou');
     jest.runAllTimers();
 
     const props = getToastProps(component);
 
     [
-      "autoClose",
-      "closeButton",
-      "position",
-      "closeToast",
-      "transition",
-      "pauseOnHover"
+      'autoClose',
+      'closeButton',
+      'position',
+      'closeToast',
+      'transition',
+      'pauseOnHover'
     ].forEach(key => expect(hasProp(props, key)).toBeTruthy());
   });
 
-  it("Should clear all toast when clear is called without id", () => {
+  it('Should clear all toast when clear is called without id', () => {
     const component = mount(<ToastContainer />);
 
-    toaster("coucou");
-    toaster("coucou");
+    toaster('coucou');
+    toaster('coucou');
     jest.runAllTimers();
 
     expect(component.state().toast).toHaveLength(2);
@@ -75,27 +75,29 @@ describe("ToastContainer", () => {
     expect(component.state().toast).toHaveLength(0);
   });
 
-  it("Should be able to render a react element, a string or a number without crashing", () => {
+  it('Should be able to render a react element, a string, a number, a render props without crashing', () => {
     const component = mount(<ToastContainer />);
-    toaster("coucou");
+    toaster('coucou');
     toaster(123);
     toaster(<div>plop</div>);
+    toaster(() => <div>plop</div>);
     jest.runAllTimers();
 
-    expect(component.state().toast).toHaveLength(3);
+    expect(component.state().toast).toHaveLength(4);
   });
 
-  it("Should be able to display new toast on top", () => {
+  it('Should be able to display new toast on top', () => {
+    /*eslint no-extend-native: 0 */
     Array.prototype.reverse = jest.fn(Array.prototype.reverse);
     mount(<ToastContainer newestOnTop />);
-    toaster("hello");
+    toaster('hello');
     toaster(123);
     jest.runAllTimers();
 
     expect(Array.prototype.reverse).toHaveBeenCalled();
   });
 
-  it("Toast options should supersede ToastContainer props", () => {
+  it('Toast options should supersede ToastContainer props', () => {
     const component = mount(<ToastContainer />);
     const CloseBtn = () => <div>Close</div>;
     const fn = () => {};
@@ -106,18 +108,18 @@ describe("ToastContainer", () => {
       onClose: fn,
       autoClose: false,
       hideProgressBar: true,
-      position: "top-left",
+      position: 'top-left',
       closeButton: <CloseBtn />
     };
 
-    toaster("hello", desiredProps);
+    toaster('hello', desiredProps);
     jest.runAllTimers();
     const props = getToastProps(component);
 
     expect(props).toMatchObject(desiredProps);
   });
 
-  it("Should pass closeToast function and type when using a custom CloseButton", () => {
+  it('Should pass closeToast function and type when using a custom CloseButton', () => {
     const component = mount(<ToastContainer />);
     const CloseBtn = () => <div>x</div>;
     const Msg = () => <div>Plop</div>;
@@ -128,46 +130,49 @@ describe("ToastContainer", () => {
     jest.runAllTimers();
 
     const props = getToastProps(component);
-    expect(Object.keys(props.closeButton.props)).toMatchObject(['closeToast', 'type']);
+    expect(Object.keys(props.closeButton.props)).toMatchObject([
+      'closeToast',
+      'type'
+    ]);
   });
 
-  it("Should be able to disable the close button", () => {
+  it('Should be able to disable the close button', () => {
     let component = mount(<ToastContainer />);
-    toaster("hello");
+    toaster('hello');
     jest.runAllTimers();
     // ensure that close button is present by default
     expect(component.html()).toMatch(/✖/);
     component.unmount();
 
     component = mount(<ToastContainer closeButton={false} />);
-    toaster("hello");
+    toaster('hello');
     jest.runAllTimers();
 
     expect(component.html()).not.toMatch(/toastify__close/);
   });
 
-  it("Should merge className and style", () => {
+  it('Should merge className and style', () => {
     const component = mount(
-      <ToastContainer className="foo" style={{ background: "red" }} />
+      <ToastContainer className="foo" style={{ background: 'red' }} />
     );
-    toaster("hello");
+    toaster('hello');
     jest.runAllTimers();
 
     expect(component.html()).toMatch(/class="foo"/);
     expect(component.html()).toMatch(/style="background: red;"/);
   });
 
-  it("Should allow glamor rule as className", () => {
+  it('Should allow glamor rule as className', () => {
     const component = mount(
-      <ToastContainer className={css({ background: "red" })} />
+      <ToastContainer className={css({ background: 'red' })} />
     );
-    toaster("hello");
+    toaster('hello');
     jest.runAllTimers();
 
     expect(toJson(component)).toMatchSnapshot();
   });
 
-  it("Should pass a closeToast function when displaying a react component", () => {
+  it('Should pass a closeToast function when displaying a react component', () => {
     const component = mount(<ToastContainer />);
     const Msg = () => <div>Plop</div>;
 
@@ -176,10 +181,10 @@ describe("ToastContainer", () => {
 
     const props = getToastProps(component);
 
-    expect(props).toHaveProperty("closeToast");
+    expect(props).toHaveProperty('closeToast');
   });
 
-  it("Should update state when document visibility change", () => {
+  it('Should update state when document visibility change', () => {
     let trigger;
     let event;
     document.addEventListener = (evt, cb) => {
@@ -188,14 +193,14 @@ describe("ToastContainer", () => {
     };
 
     const component = mount(<ToastContainer />);
-    expect(event).toBe("visibilitychange");
+    expect(event).toBe('visibilitychange');
     expect(component.state().isDocumentHidden).toBe(false);
     trigger();
     expect(component.state().isDocumentHidden).toBe(true);
   });
 
-  describe("closeToast function", () => {
-    it("Should remove toast when closeToast is called", () => {
+  describe('closeToast function', () => {
+    it('Should remove toast when closeToast is called', () => {
       const component = mount(<ToastContainer />);
       const Msg = () => <div>Plop</div>;
 
@@ -230,12 +235,12 @@ describe("ToastContainer", () => {
     });
   });
 
-  it("Should include only the style needed for a given position", () => {
+  it('Should include only the style needed for a given position', () => {
     Object.keys(toaster.POSITION).forEach(k => {
       const component = mount(
         <ToastContainer position={toaster.POSITION[k]} />
       );
-      const id = toaster("test");
+      const id = toaster('test');
       jest.runAllTimers();
       expect(component.instance().collection[id].position).toBe(
         toaster.POSITION[k]

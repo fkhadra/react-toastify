@@ -1,40 +1,40 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { css } from "glamor";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { css } from 'glamor';
 
-import ProgressBar from "./ProgressBar";
-import { POSITION, TYPE } from "./constant";
-import style from "./style";
+import ProgressBar from './ProgressBar';
+import { POSITION, TYPE } from './constant';
+import style from './style';
 import {
   falseOrElement,
   falseOrDelay,
   objectValues
-} from "./util/propValidator";
+} from './util/propValidator';
 
 const toast = type =>
   css({
-    position: "relative",
-    minHeight: "48px",
-    marginBottom: "1rem",
-    padding: "8px",
-    borderRadius: "1px",
+    position: 'relative',
+    minHeight: '48px',
+    marginBottom: '1rem',
+    padding: '8px',
+    borderRadius: '1px',
     boxShadow:
-      "0 1px 10px 0 rgba(0, 0, 0, .1), 0 2px 15px 0 rgba(0, 0, 0, .05)",
-    display: "flex",
-    justifyContent: "space-between",
-    maxHeight: "800px",
-    overflow: "hidden",
-    fontFamily: "sans-serif",
-    cursor: "pointer",
+      '0 1px 10px 0 rgba(0, 0, 0, .1), 0 2px 15px 0 rgba(0, 0, 0, .05)',
+    display: 'flex',
+    justifyContent: 'space-between',
+    maxHeight: '800px',
+    overflow: 'hidden',
+    fontFamily: style.fontFamily,
+    cursor: 'pointer',
     background: style[`color${type.charAt(0).toUpperCase()}${type.slice(1)}`],
-    ...(type === "default" ? { color: "#aaa" } : {}),
+    ...(type === 'default' ? { color: '#aaa' } : {}),
     [`@media ${style.mobile}`]: {
       marginBottom: 0
     }
   });
 
 const body = css({
-  margin: "auto 0",
+  margin: 'auto 0',
   flex: 1
 });
 
@@ -70,9 +70,9 @@ class Toast extends Component {
     hideProgressBar: false,
     onOpen: null,
     onClose: null,
-    className: "",
-    bodyClassName: "",
-    progressClassName: "",
+    className: '',
+    bodyClassName: '',
+    progressClassName: '',
     updateId: null
   };
 
@@ -107,7 +107,7 @@ class Toast extends Component {
       toastProps.onMouseEnter = this.pauseToast;
       toastProps.onMouseLeave = this.playToast;
     }
-    typeof this.props.className === "string" &&
+    typeof this.props.className === 'string' &&
       (toastProps.className = this.props.className);
     this.props.closeOnClick && (toastProps.onClick = this.props.closeToast);
 
@@ -148,16 +148,16 @@ class Toast extends Component {
         position={position}
       >
         <div
-          {...(typeof className !== "string"
+          {...(typeof className !== 'string'
             ? css(toast(type), className)
             : toast(type))}
           {...this.getToastProps()}
         >
           <div
-            {...(typeof bodyClassName !== "string"
+            {...(typeof bodyClassName !== 'string'
               ? css(body, bodyClassName)
               : body)}
-            {...typeof bodyClassName === "string" && {
+            {...typeof bodyClassName === 'string' && {
               className: bodyClassName
             }}
           >

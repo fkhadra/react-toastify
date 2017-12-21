@@ -3,47 +3,46 @@ import EventManager from './../util/EventManager';
 
 jest.useFakeTimers();
 
-describe("EventManager", () => {
-  it("Should be able to bind an event", () => {
-    EventManager.on("foo", () => {});
+describe('EventManager', () => {
+  it('Should be able to bind an event', () => {
+    EventManager.on('foo', () => {});
 
-    expect(EventManager.eventList.has("foo")).toBe(true);
+    expect(EventManager.eventList.has('foo')).toBe(true);
   });
 
-  it("Should be able to emit event", () => {
+  it('Should be able to emit event', () => {
     const cb = jest.fn();
-    
-    EventManager.on("foo", cb);
+
+    EventManager.on('foo', cb);
     expect(cb).not.toHaveBeenCalled();
 
-    EventManager.emit("foo");
+    EventManager.emit('foo');
     jest.runAllTimers();
     expect(cb).toHaveBeenCalled();
   });
 
-  it("Should return false when trying to call unbound event", () => {
+  it('Should return false when trying to call unbound event', () => {
     // silence warning
     console.warn = () => {};
-    const id = EventManager.emit("bar");
+    const id = EventManager.emit('bar');
     jest.runAllTimers();
     expect(id).toBe(false);
   });
 
-  it("Should remove the given event", () => {
-    EventManager.on("foo", () => {});
+  it('Should remove the given event', () => {
+    EventManager.on('foo', () => {});
     expect(EventManager.eventList.size).toBe(1);
-    
-    EventManager.off("foo");
+
+    EventManager.off('foo');
     expect(EventManager.eventList.size).toBe(0);
   });
-  
-  it("Should not remove event if none is passed to off", () => {
-    EventManager.on("foo", () => {});
-    EventManager.on("foobar", () => {});
+
+  it('Should not remove event if none is passed to off', () => {
+    EventManager.on('foo', () => {});
+    EventManager.on('foobar', () => {});
     expect(EventManager.eventList.size).toBe(2);
-    
+
     EventManager.off();
     expect(EventManager.eventList.size).toBe(2);
   });
-
 });

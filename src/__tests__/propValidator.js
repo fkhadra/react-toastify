@@ -1,6 +1,10 @@
 /* eslint-env jest */
 import React from 'react';
-import { falseOrElement, falseOrDelay, objectValues } from './../util/propValidator';
+import {
+  falseOrElement,
+  falseOrDelay,
+  objectValues
+} from './../util/propValidator';
 
 const ValidReactElement = () => <div>Hello</div>;
 
@@ -15,13 +19,19 @@ describe('Custom PropTypes', () => {
 
     it('Should return an Error if int is <= 0 or prop equal to true', () => {
       const props = { autoClose: true };
-      expect(falseOrDelay(props, 'autoClose', 'TestComponent')).toBeInstanceOf(Error);
+      expect(falseOrDelay(props, 'autoClose', 'TestComponent')).toBeInstanceOf(
+        Error
+      );
 
       props.autoClose = -1;
-      expect(falseOrDelay(props, 'autoClose', 'TestComponent')).toBeInstanceOf(Error);
+      expect(falseOrDelay(props, 'autoClose', 'TestComponent')).toBeInstanceOf(
+        Error
+      );
 
       props.autoClose = 0;
-      expect(falseOrDelay(props, 'autoClose', 'TestComponent')).toBeInstanceOf(Error);
+      expect(falseOrDelay(props, 'autoClose', 'TestComponent')).toBeInstanceOf(
+        Error
+      );
     });
   });
 
@@ -35,23 +45,31 @@ describe('Custom PropTypes', () => {
 
     it('Should return an Error if prop equal true or not a valid react element', () => {
       const props = { closeButton: true };
-      expect(falseOrElement(props, 'closeButton', 'TestComponent')).toBeInstanceOf(Error);
+      expect(
+        falseOrElement(props, 'closeButton', 'TestComponent')
+      ).toBeInstanceOf(Error);
 
       props.closeButton = 'coucou';
-      expect(falseOrElement(props, 'closeButton', 'TestComponent')).toBeInstanceOf(Error);
+      expect(
+        falseOrElement(props, 'closeButton', 'TestComponent')
+      ).toBeInstanceOf(Error);
     });
   });
   describe('Can be set as Required', () => {
     it('Should return an Error if the prop is required but undefined', () => {
       const props = {};
 
-      expect(falseOrDelay.isRequired(props, 'autoClose', 'TestComponent')).toBeInstanceOf(Error);
-      expect(falseOrElement.isRequired(props, 'closeButton', 'TestComponent')).toBeInstanceOf(Error);
+      expect(
+        falseOrDelay.isRequired(props, 'autoClose', 'TestComponent')
+      ).toBeInstanceOf(Error);
+      expect(
+        falseOrElement.isRequired(props, 'closeButton', 'TestComponent')
+      ).toBeInstanceOf(Error);
     });
   });
   describe('ObjectValues', () => {
     it('Should return the values contained in an Object', () => {
-      expect(objectValues({a:1, b:3})).toMatchObject([1, 3]);
-    })
+      expect(objectValues({ a: 1, b: 3 })).toMatchObject([1, 3]);
+    });
   });
 });

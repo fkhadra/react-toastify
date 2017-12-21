@@ -25,7 +25,10 @@ let toastId = 0;
  * @param {*} options
  */
 function mergeOptions(options, type) {
-  return Object.assign({}, defaultOptions, options, { type: type, toastId: ++toastId });
+  return Object.assign({}, defaultOptions, options, {
+    type: type,
+    toastId: ++toastId
+  });
 }
 
 /**
@@ -44,25 +47,44 @@ function emitEvent(content, options) {
 }
 
 const toaster = Object.assign(
-  (content, options) => emitEvent(content, mergeOptions(options, (options && options.type) || TYPE.DEFAULT)),
+  (content, options) =>
+    emitEvent(
+      content,
+      mergeOptions(options, (options && options.type) || TYPE.DEFAULT)
+    ),
   {
-    success: (content, options) => emitEvent(content, mergeOptions(options, TYPE.SUCCESS)),
-    info: (content, options) => emitEvent(content, mergeOptions(options, TYPE.INFO)),
-    warn: (content, options) => emitEvent(content, mergeOptions(options, TYPE.WARNING)),
-    warning: (content, options) => emitEvent(content, mergeOptions(options, TYPE.WARNING)),
-    error: (content, options) => emitEvent(content, mergeOptions(options, TYPE.ERROR)),
+    success: (content, options) =>
+      emitEvent(content, mergeOptions(options, TYPE.SUCCESS)),
+    info: (content, options) =>
+      emitEvent(content, mergeOptions(options, TYPE.INFO)),
+    warn: (content, options) =>
+      emitEvent(content, mergeOptions(options, TYPE.WARNING)),
+    warning: (content, options) =>
+      emitEvent(content, mergeOptions(options, TYPE.WARNING)),
+    error: (content, options) =>
+      emitEvent(content, mergeOptions(options, TYPE.ERROR)),
     dismiss: (id = null) => container && EventManager.emit(ACTION.CLEAR, id),
     isActive: () => false,
-    update(id, options){
-      if(container && typeof container.collection[id] !== 'undefined') {
-        const {options: oldOptions, content: oldContent } =  container.collection[id];
-        const updateId = oldOptions.updateId !== null ? oldOptions.updateId + 1 : 1;
-         
-        const nextOptions = Object.assign({}, oldOptions, options, { toastId: id, updateId: updateId });
-        const content = typeof nextOptions.render !== "undefined" ? nextOptions.render : oldContent;
+    update(id, options) {
+      if (container && typeof container.collection[id] !== 'undefined') {
+        const {
+          options: oldOptions,
+          content: oldContent
+        } = container.collection[id];
+        const updateId =
+          oldOptions.updateId !== null ? oldOptions.updateId + 1 : 1;
+
+        const nextOptions = Object.assign({}, oldOptions, options, {
+          toastId: id,
+          updateId: updateId
+        });
+        const content =
+          typeof nextOptions.render !== 'undefined'
+            ? nextOptions.render
+            : oldContent;
         delete nextOptions.render;
-        
-        return emitEvent(content, nextOptions);        
+
+        return emitEvent(content, nextOptions);
       }
 
       return false;

@@ -222,6 +222,12 @@ const App = () => (
 );
 ```
 
+Use could also render a component using a function. More or less like a "render props":
+
+```js
+toast(({ closeToast }) => <div>Functional swag 😎</div>);
+```
+
 ### Remove a toast programmatically
 
 An id is returned each time you display a toast, use it to remove a given toast programmatically by calling ```toast.dismiss(id)```
@@ -689,6 +695,8 @@ render(){
 
 #### Replace default style
 
+You could use the style helper to replace the variable listed below:
+
 ```javascript
 import { style } from "react-toastify";
 
@@ -701,7 +709,34 @@ style({
   colorError: "#e74c3c",
   colorProgressDefault: "linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55)",
   mobile: "only screen and (max-width : 480px)",
+  fontFamily: "sans-serif",
   zIndex: 9999,
+  TOP_LEFT: {
+    top: '1em',
+    left: '1em'
+  },
+  TOP_CENTER: {
+    top: '1em',
+    marginLeft: `-${320/2}px`,
+    left: '50%'
+  },
+  TOP_RIGHT: {
+    top: '1em',
+    right: '1em'
+  },
+  BOTTOM_LEFT: {
+    bottom: '1em',
+    left: '1em'
+  },
+  BOTTOM_CENTER: {
+    bottom: '1em',
+    marginLeft: `-${320/2}px`,
+    left: '50%'
+  },
+  BOTTOM_RIGHT: {
+    bottom: '1em',
+    right: '1em'
+  }
 });
 ```
 
@@ -828,6 +863,7 @@ const options = {
 };
 
 const toastId = toast(<Img foo={bar}/>, options) // default, type: 'default'
+toast(({ closeToast }) => <div>Render props like</div>, options);
 toast.success("Hello", options) // add type: 'success' to options
 toast.info("World", options) // add type: 'info' to options
 toast.warn(<Img />, options) // add type: 'warning' to options
@@ -851,6 +887,12 @@ IE 11+ ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ |
 
 - Fix [issue #103](https://github.com/fkhadra/react-toastify/issues/103) for real...
 - Fix [issue #104](https://github.com/fkhadra/react-toastify/issues/104) Incorrect TS definition for `toast.dismiss`
+
+### V3.2.0
+
+- Allow "render props" rendering. Relate to [issue #106](https://github.com/fkhadra/react-toastify/issues/106)
+- Can set fontFamily via the style helper. Relate to [issue #107](https://github.com/fkhadra/react-toastify/issues/107)
+- Can override position default values via style helper. Realte to [issue #108](https://github.com/fkhadra/react-toastify/issues/108)
 
 ### V3.1.1
 
