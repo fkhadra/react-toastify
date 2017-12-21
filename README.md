@@ -695,6 +695,8 @@ render(){
 
 #### Replace default style
 
+You could use the style helper to replace the variable listed below:
+
 ```javascript
 import { style } from "react-toastify";
 
@@ -709,6 +711,32 @@ style({
   mobile: "only screen and (max-width : 480px)",
   fontFamily: "sans-serif",
   zIndex: 9999,
+  TOP_LEFT: {
+    top: '1em',
+    left: '1em'
+  },
+  TOP_CENTER: {
+    top: '1em',
+    marginLeft: `-${320/2}px`,
+    left: '50%'
+  },
+  TOP_RIGHT: {
+    top: '1em',
+    right: '1em'
+  },
+  BOTTOM_LEFT: {
+    bottom: '1em',
+    left: '1em'
+  },
+  BOTTOM_CENTER: {
+    bottom: '1em',
+    marginLeft: `-${320/2}px`,
+    left: '50%'
+  },
+  BOTTOM_RIGHT: {
+    bottom: '1em',
+    right: '1em'
+  }
 });
 ```
 
@@ -860,10 +888,11 @@ IE 11+ ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ |
 - Fix [issue #103](https://github.com/fkhadra/react-toastify/issues/103) for real...
 - Fix [issue #104](https://github.com/fkhadra/react-toastify/issues/104) Incorrect TS definition for `toast.dismiss`
 
-### V3.1.2
+### V3.2.0
 
-- Allow "render props" rendering
-- Can set fontFamily via the style helper
+- Allow "render props" rendering. Relate to [issue #106](https://github.com/fkhadra/react-toastify/issues/106)
+- Can set fontFamily via the style helper. Relate to [issue #107](https://github.com/fkhadra/react-toastify/issues/107)
+- Can override position default values via style helper. Realte to [issue #108](https://github.com/fkhadra/react-toastify/issues/108)
 
 ### V3.1.1
 

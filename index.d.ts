@@ -1,18 +1,24 @@
-import * as React from "react";
-import Transition from "react-transition-group/Transition";
+import * as React from 'react';
+import Transition from 'react-transition-group/Transition';
 
-type ToastType = "info" | "success" | "warning" | "error" | "default";
+type ToastType = 'info' | 'success' | 'warning' | 'error' | 'default';
 
 interface styleProps {
-  width?: string,
-  colorDefault?: string,
-  colorInfo?: string,
-  colorSuccess?: string,
-  colorWarning?: string,
-  colorError?: string,
-  colorProgressDefault?: string,
-  mobile?: string,
-  zIndex?: string | number,
+  width?: string;
+  colorDefault?: string;
+  colorInfo?: string;
+  colorSuccess?: string;
+  colorWarning?: string;
+  colorError?: string;
+  colorProgressDefault?: string;
+  mobile?: string;
+  zIndex?: string | number;
+  TOP_LEFT?: object;
+  TOP_CENTER?: object;
+  TOP_RIGHT?: object;
+  BOTTOM_LEFT?: object;
+  BOTTOM_CENTER?: object;
+  BOTTOM_RIGHT?: object;
 }
 
 interface CommonOptions {
@@ -35,7 +41,7 @@ interface ToastOptions extends CommonOptions {
 }
 
 interface UpdateOptions extends ToastOptions {
-  render?: React.ReactNode
+  render?: React.ReactNode;
 }
 
 interface ToastContainerProps extends CommonOptions {

@@ -17,50 +17,22 @@ import {
 } from './util/propValidator';
 
 const toastPosition = pos => {
-  let rule;
-  const marginLeft = `-${parseInt(style.width, 10) / 2}px`;
-  switch (pos) {
-    case POSITION.TOP_LEFT:
-      rule = {
-        top: '1em',
-        left: '1em'
-      };
-      break;
-    case POSITION.TOP_CENTER:
-      rule = {
-        top: '1em',
-        left: '50%',
-        marginLeft: marginLeft
-      };
-      break;
-    case POSITION.TOP_RIGHT:
-    default:
-      rule = {
-        top: '1em',
-        right: '1em'
-      };
-      break;
-    case POSITION.BOTTOM_LEFT:
-      rule = {
-        bottom: '1em',
-        left: '1em'
-      };
-      break;
-    case POSITION.BOTTOM_CENTER:
-      rule = {
-        bottom: '1em',
-        left: '50%',
-        marginLeft: marginLeft
-      };
-      break;
-    case POSITION.BOTTOM_RIGHT:
-      rule = {
-        bottom: '1em',
-        right: '1em'
-      };
+  const positionKey = pos.toUpperCase().replace('-', '_');
+  const positionRule =
+    typeof POSITION[positionKey] !== 'undefined'
+      ? style[positionKey]
+      : style.TOP_RIGHT;
+
+  /** define margin for center toast based on toast witdh */
+  if (
+    positionKey.indexOf('CENTER') !== -1 &&
+    typeof positionRule.marginLeft === 'undefined'
+  ) {
+    positionRule.marginLeft = `-${parseInt(style.width, 10) / 2}px`;
   }
+
   return css(
-    rule,
+    positionRule,
     css({
       [`@media ${style.mobile}`]: {
         left: 0,
