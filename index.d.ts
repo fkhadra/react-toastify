@@ -3,6 +3,8 @@ import Transition from 'react-transition-group/Transition';
 
 type ToastType = 'info' | 'success' | 'warning' | 'error' | 'default';
 
+type ToastContent = React.ReactNode | () => void;
+
 interface styleProps {
   width?: string;
   colorDefault?: string;
@@ -41,7 +43,7 @@ interface ToastOptions extends CommonOptions {
 }
 
 interface UpdateOptions extends ToastOptions {
-  render?: React.ReactNode;
+  render?: ToastContent;
 }
 
 interface ToastContainerProps extends CommonOptions {
@@ -51,14 +53,14 @@ interface ToastContainerProps extends CommonOptions {
 }
 
 interface Toast {
-  success(content: React.ReactNode, options?: ToastOptions): number;
-  info(content: React.ReactNode, options?: ToastOptions): number;
-  warn(content: React.ReactNode, options?: ToastOptions): number;
-  error(content: React.ReactNode, options?: ToastOptions): number;
+  success(content: ToastContent, options?: ToastOptions): number;
+  info(content: ToastContent, options?: ToastOptions): number;
+  warn(content: ToastContent, options?: ToastOptions): number;
+  error(content: ToastContent, options?: ToastOptions): number;
   isActive(toastId: number): boolean;
   dismiss(toastId?: number): void;
   update(toastId: number, options?: UpdateOptions): number;
-  (content: React.ReactNode, options?: ToastOptions): number;
+  (content: ToastContent, options?: ToastOptions): number;
 }
 
 export class ToastContainer extends React.Component<ToastContainerProps> {}
