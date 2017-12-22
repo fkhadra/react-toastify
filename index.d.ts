@@ -3,7 +3,7 @@ import Transition from 'react-transition-group/Transition';
 
 type ToastType = 'info' | 'success' | 'warning' | 'error' | 'default';
 
-type ToastContent = React.ReactNode | () => void;
+type ToastContent = React.ReactNode | { (): void };
 
 interface styleProps {
   width?: string;
