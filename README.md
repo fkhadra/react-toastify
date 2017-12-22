@@ -885,14 +885,19 @@ IE 11+ ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ |
 
 ## Release Notes
 
-- Fix [issue #103](https://github.com/fkhadra/react-toastify/issues/103) for real...
-- Fix [issue #104](https://github.com/fkhadra/react-toastify/issues/104) Incorrect TS definition for `toast.dismiss`
+### V3.2.1
+
+- Fix typescript definition. Relate to [issue #110](https://github.com/fkhadra/react-toastify/issues/110)
 
 ### V3.2.0
 
 - Allow "render props" rendering. Relate to [issue #106](https://github.com/fkhadra/react-toastify/issues/106)
 - Can set fontFamily via the style helper. Relate to [issue #107](https://github.com/fkhadra/react-toastify/issues/107)
 - Can override position default values via style helper. Realte to [issue #108](https://github.com/fkhadra/react-toastify/issues/108)
+
+### V3.1.2
+- Fix [issue #103](https://github.com/fkhadra/react-toastify/issues/103) for real...
+- Fix [issue #104](https://github.com/fkhadra/react-toastify/issues/104) Incorrect TS definition for `toast.dismiss`
 
 ### V3.1.1
 
