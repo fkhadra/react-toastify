@@ -885,6 +885,10 @@ IE 11+ ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ |
 
 ## Release Notes
 
+### V3.2.2
+
+- Add comment to typescript definition.
+
 ### V3.2.1
 
 - Fix typescript definition. Relate to [issue #110](https://github.com/fkhadra/react-toastify/issues/110)
