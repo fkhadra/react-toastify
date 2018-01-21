@@ -16,7 +16,7 @@ import {
   objectValues
 } from './util/propValidator';
 
-const toastPosition = pos => {
+const getToastPositionStyle = pos => {
   const positionKey = pos.toUpperCase().replace('-', '_');
   const positionRule =
     typeof POSITION[positionKey] !== 'undefined'
@@ -31,20 +31,10 @@ const toastPosition = pos => {
     positionRule.marginLeft = `-${parseInt(defaultStyle.width, 10) / 2}px`;
   }
 
-  return css(
-    positionRule,
-    css({
-      [`@media ${defaultStyle.mobile}`]: {
-        left: 0,
-        margin: 0,
-        position: 'fixed',
-        ...(pos.substring(0, 3) === 'top' ? { top: 0 } : { bottom: 0 })
-      }
-    })
-  );
+  return positionRule;
 };
 
-const container = (disablePointer, position) =>
+const styles = (disablePointer, position) =>
   css(
     {
       zIndex: defaultStyle.zIndex,
@@ -56,10 +46,14 @@ const container = (disablePointer, position) =>
       ...(disablePointer ? { pointerEvents: 'none' } : {}),
       [`@media ${defaultStyle.mobile}`]: {
         width: '100vw',
-        padding: 0
+        padding: 0,
+        left: 0,
+        margin: 0,
+        position: 'fixed',
+        ...(position.substring(0, 3) === 'top' ? { top: 0 } : { bottom: 0 })
       }
     },
-    toastPosition(position)
+    getToastPositionStyle(position)
   );
 
 class ToastContainer extends Component {
@@ -211,6 +205,9 @@ class ToastContainer extends Component {
       : this.props.autoClose;
   }
 
+  /**
+   * Maybe overcomplicated here
+   */
   isFunction(object) {
     return !!(object && object.constructor && object.call && object.apply);
   }
@@ -348,8 +345,8 @@ class ToastContainer extends Component {
       return (
         <TransitionGroup
           {...(typeof className !== 'string'
-            ? css(container(disablePointer, position), className)
-            : container(disablePointer, position))}
+            ? css(styles(disablePointer, position), className)
+            : styles(disablePointer, position))}
           {...typeof className === 'string' && { className }}
           {...style !== null && { style }}
           key={`container-${position}`}
