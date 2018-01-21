@@ -9,15 +9,15 @@ const animate = {
   animationFillMode: 'both'
 };
 
-const animation = pos => {
+const styles = pos => {
   const { enter, exit } = getAnimation(pos);
-  const enterAnimation = css.keyframes('enter', {
+  const enterAnimation = css.keyframes({
     'from, 60%, 75%, 90%, to': {
       animationTimingFunction: 'cubic-bezier(0.215, 0.610, 0.355, 1.000)'
     },
     ...enter
   });
-  const exitAnimation = css.keyframes('exit', exit);
+  const exitAnimation = css.keyframes(exit);
 
   return {
     enter: css({ ...animate, animationName: enterAnimation }),
@@ -26,7 +26,7 @@ const animation = pos => {
 };
 
 function DefaultTransition({ children, position, ...props }) {
-  const { enter, exit } = animation(position);
+  const { enter, exit } = styles(position);
 
   return (
     <Transition

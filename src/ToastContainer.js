@@ -205,9 +205,6 @@ class ToastContainer extends Component {
       : this.props.autoClose;
   }
 
-  /**
-   * Maybe overcomplicated here
-   */
   isFunction(object) {
     return !!(object && object.constructor && object.call && object.apply);
   }

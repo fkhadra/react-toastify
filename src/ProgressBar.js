@@ -5,12 +5,12 @@ import { css } from 'glamor';
 import { TYPE } from './constant';
 import defaultStyle from './defaultStyle';
 
-const trackProgress = css.keyframes('track-progress', {
+const trackProgress = css.keyframes({
   '0%': { width: '100%' },
   '100%': { width: 0 }
 });
 
-const progress = (type, isRunning, hide, delay) =>
+const styles = (type, isRunning, hide, delay) =>
   css({
     position: 'absolute',
     bottom: 0,
@@ -32,8 +32,8 @@ function ProgressBar({ delay, isRunning, closeToast, type, hide, className }) {
   return (
     <div
       {...(typeof className !== 'string'
-        ? css(progress(type, isRunning, hide, delay), className)
-        : progress(type, isRunning, hide, delay))}
+        ? css(styles(type, isRunning, hide, delay), className)
+        : styles(type, isRunning, hide, delay))}
       {...typeof className === 'string' && { className }}
       onAnimationEnd={closeToast}
     />

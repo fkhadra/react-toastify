@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { css } from 'glamor';
 
-const rule = isDefault =>
+const styles = isDefault =>
   css({
     color: isDefault ? '#000' : '#fff',
     fontWeight: 'bold',
@@ -23,7 +23,7 @@ const rule = isDefault =>
 
 function DefaultCloseButton({ closeToast, type }) {
   return (
-    <button {...rule(type === 'default')} type="button" onClick={closeToast}>
+    <button {...styles(type === 'default')} type="button" onClick={closeToast}>
       ✖
     </button>
   );
