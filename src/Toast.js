@@ -4,7 +4,7 @@ import { css } from 'glamor';
 
 import ProgressBar from './ProgressBar';
 import { POSITION, TYPE } from './constant';
-import style from './style';
+import defaultStyle from './defaultStyle';
 import {
   falseOrElement,
   falseOrDelay,
@@ -24,11 +24,12 @@ const toast = type =>
     justifyContent: 'space-between',
     maxHeight: '800px',
     overflow: 'hidden',
-    fontFamily: style.fontFamily,
+    fontFamily: defaultStyle.fontFamily,
     cursor: 'pointer',
-    background: style[`color${type.charAt(0).toUpperCase()}${type.slice(1)}`],
+    background:
+      defaultStyle[`color${type.charAt(0).toUpperCase()}${type.slice(1)}`],
     ...(type === 'default' ? { color: '#aaa' } : {}),
-    [`@media ${style.mobile}`]: {
+    [`@media ${defaultStyle.mobile}`]: {
       marginBottom: 0
     }
   });

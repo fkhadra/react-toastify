@@ -7,7 +7,7 @@ import Toast from './Toast';
 import DefaultCloseButton from './DefaultCloseButton';
 import DefaultTransition from './DefaultTransition';
 import { POSITION, ACTION } from './constant';
-import style from './style';
+import defaultStyle from './defaultStyle';
 import EventManager from './util/EventManager';
 import {
   falseOrDelay,
@@ -20,21 +20,21 @@ const toastPosition = pos => {
   const positionKey = pos.toUpperCase().replace('-', '_');
   const positionRule =
     typeof POSITION[positionKey] !== 'undefined'
-      ? style[positionKey]
-      : style.TOP_RIGHT;
+      ? defaultStyle[positionKey]
+      : defaultStyle.TOP_RIGHT;
 
   /** define margin for center toast based on toast witdh */
   if (
     positionKey.indexOf('CENTER') !== -1 &&
     typeof positionRule.marginLeft === 'undefined'
   ) {
-    positionRule.marginLeft = `-${parseInt(style.width, 10) / 2}px`;
+    positionRule.marginLeft = `-${parseInt(defaultStyle.width, 10) / 2}px`;
   }
 
   return css(
     positionRule,
     css({
-      [`@media ${style.mobile}`]: {
+      [`@media ${defaultStyle.mobile}`]: {
         left: 0,
         margin: 0,
         position: 'fixed',
@@ -47,14 +47,14 @@ const toastPosition = pos => {
 const container = (disablePointer, position) =>
   css(
     {
-      zIndex: style.zIndex,
+      zIndex: defaultStyle.zIndex,
       position: 'fixed',
       padding: '4px',
-      width: style.width,
+      width: defaultStyle.width,
       boxSizing: 'border-box',
       color: '#fff',
       ...(disablePointer ? { pointerEvents: 'none' } : {}),
-      [`@media ${style.mobile}`]: {
+      [`@media ${defaultStyle.mobile}`]: {
         width: '100vw',
         padding: 0
       }
