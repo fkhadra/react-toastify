@@ -21,16 +21,26 @@ const styles = isDefault =>
     }
   });
 
-function DefaultCloseButton({ closeToast, type }) {
+function DefaultCloseButton({ closeToast, type, ariaLabel }) {
   return (
-    <button {...styles(type === 'default')} type="button" onClick={closeToast}>
+    <button
+      {...styles(type === 'default')}
+      type="button"
+      onClick={closeToast}
+      aria-label={ariaLabel}
+    >
       ✖
     </button>
   );
 }
 
 DefaultCloseButton.propTypes = {
-  closeToast: PropTypes.func
+  closeToast: PropTypes.func,
+  arialLabel: PropTypes.string
+};
+
+DefaultCloseButton.defaultProps = {
+  ariaLabel: 'close'
 };
 
 export default DefaultCloseButton;

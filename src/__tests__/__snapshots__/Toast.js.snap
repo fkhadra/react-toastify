@@ -55,7 +55,9 @@ exports[`Toast Should allow glamor rule as className 1`] = `
     >
       FooBar
     </div>
-    <DefaultCloseButton />
+    <DefaultCloseButton
+      ariaLabel="close"
+    />
   </div>
 </DefaultTransition>
 `;
