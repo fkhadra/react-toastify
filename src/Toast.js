@@ -63,7 +63,8 @@ class Toast extends Component {
       PropTypes.string,
       PropTypes.object
     ]),
-    updateId: PropTypes.number
+    updateId: PropTypes.number,
+    ariaLabel: PropTypes.string
   };
 
   static defaultProps = {
@@ -75,7 +76,8 @@ class Toast extends Component {
     className: '',
     bodyClassName: '',
     progressClassName: '',
-    updateId: null
+    updateId: null,
+    role: 'alert'
   };
 
   state = {
@@ -138,7 +140,8 @@ class Toast extends Component {
       className,
       bodyClassName,
       progressClassName,
-      updateId
+      updateId,
+      role
     } = this.props;
 
     return (
@@ -156,6 +159,7 @@ class Toast extends Component {
           {...this.getToastProps()}
         >
           <div
+            {...this.props.in && { role: role }}
             {...(typeof bodyClassName !== 'string'
               ? css(styles.body, bodyClassName)
               : styles.body)}

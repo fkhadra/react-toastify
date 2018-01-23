@@ -33,7 +33,6 @@ function DefaultTransition({ children, position, ...props }) {
       {...props}
       timeout={750}
       onEnter={node => node.classList.add(enter)}
-      onEntered={node => node.classList.remove(enter)}
       onExit={node => node.classList.add(exit)}
     >
       {children}

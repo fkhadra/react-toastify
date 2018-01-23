@@ -52,6 +52,7 @@ exports[`Toast Should allow glamor rule as className 1`] = `
   >
     <div
       data-css-6qy7r3=""
+      role="alert"
     >
       FooBar
     </div>
