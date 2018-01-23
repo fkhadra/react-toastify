@@ -27,14 +27,20 @@ const styles = pos => {
 
 function DefaultTransition({ children, position, ...props }) {
   const { enter, exit } = styles(position);
+  const onEnter = node => node.classList.add(enter);
+  const onExit = node => {
+    node.classList.add(exit);
+    node.style.transition = 'padding 0.75s, height 0.75s, maringBottom 0.75s';
+
+    requestAnimationFrame(() => {
+      node.style.padding = 0;
+      node.style.height = 0;
+      node.style.marginBottom = 0;
+    });
+  };
 
   return (
-    <Transition
-      {...props}
-      timeout={750}
-      onEnter={node => node.classList.add(enter)}
-      onExit={node => node.classList.add(exit)}
-    >
+    <Transition {...props} timeout={750} onEnter={onEnter} onExit={onExit}>
       {children}
     </Transition>
   );

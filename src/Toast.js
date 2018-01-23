@@ -15,7 +15,7 @@ const styles = {
   container: type =>
     css({
       position: 'relative',
-      minHeight: '48px',
+      height: '48px',
       marginBottom: '1rem',
       padding: '8px',
       borderRadius: '1px',
