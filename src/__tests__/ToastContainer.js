@@ -131,6 +131,7 @@ describe('ToastContainer', () => {
 
     const props = getToastProps(component);
     expect(Object.keys(props.closeButton.props)).toMatchObject([
+      'ariaLabel',
       'closeToast',
       'type'
     ]);
