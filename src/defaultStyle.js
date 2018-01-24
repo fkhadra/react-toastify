@@ -1,4 +1,4 @@
-const style = {
+const defaultStyle = {
   width: '320px',
   colorDefault: '#fff',
   colorInfo: '#3498db',
@@ -38,8 +38,8 @@ const style = {
 
 export function defineStyle(props) {
   for (let prop in props) {
-    style[prop] = props[prop];
+    defaultStyle[prop] = props[prop];
   }
 }
 
-export default style;
+export default defaultStyle;

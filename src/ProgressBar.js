@@ -3,35 +3,37 @@ import PropTypes from 'prop-types';
 import { css } from 'glamor';
 
 import { TYPE } from './constant';
-import style from './style';
+import defaultStyle from './defaultStyle';
 
-const trackProgress = css.keyframes('track-progress', {
+const trackProgress = css.keyframes({
   '0%': { width: '100%' },
   '100%': { width: 0 }
 });
 
-const progress = (type, isRunning, hide, delay) =>
+const styles = (type, isRunning, hide, delay) =>
   css({
     position: 'absolute',
     bottom: 0,
     left: 0,
     width: 0,
     height: '5px',
-    zIndex: style.zIndex,
+    zIndex: defaultStyle.zIndex,
     opacity: hide ? 0 : 0.7,
     animation: `${trackProgress} linear 1`,
     animationPlayState: isRunning ? 'running' : 'paused',
     animationDuration: `${delay}ms`,
     backgroundColor: 'rgba(255,255,255,.7)',
-    ...(type === 'default' ? { background: style.colorProgressDefault } : {})
+    ...(type === 'default'
+      ? { background: defaultStyle.colorProgressDefault }
+      : {})
   });
 
 function ProgressBar({ delay, isRunning, closeToast, type, hide, className }) {
   return (
     <div
       {...(typeof className !== 'string'
-        ? css(progress(type, isRunning, hide, delay), className)
-        : progress(type, isRunning, hide, delay))}
+        ? css(styles(type, isRunning, hide, delay), className)
+        : styles(type, isRunning, hide, delay))}
       {...typeof className === 'string' && { className }}
       onAnimationEnd={closeToast}
     />

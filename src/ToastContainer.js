@@ -7,7 +7,7 @@ import Toast from './Toast';
 import DefaultCloseButton from './DefaultCloseButton';
 import DefaultTransition from './DefaultTransition';
 import { POSITION, ACTION } from './constant';
-import style from './style';
+import defaultStyle from './defaultStyle';
 import EventManager from './util/EventManager';
 import {
   falseOrDelay,
@@ -16,50 +16,44 @@ import {
   objectValues
 } from './util/propValidator';
 
-const toastPosition = pos => {
+const getToastPositionStyle = pos => {
   const positionKey = pos.toUpperCase().replace('-', '_');
   const positionRule =
     typeof POSITION[positionKey] !== 'undefined'
-      ? style[positionKey]
-      : style.TOP_RIGHT;
+      ? defaultStyle[positionKey]
+      : defaultStyle.TOP_RIGHT;
 
   /** define margin for center toast based on toast witdh */
   if (
     positionKey.indexOf('CENTER') !== -1 &&
     typeof positionRule.marginLeft === 'undefined'
   ) {
-    positionRule.marginLeft = `-${parseInt(style.width, 10) / 2}px`;
+    positionRule.marginLeft = `-${parseInt(defaultStyle.width, 10) / 2}px`;
   }
 
-  return css(
-    positionRule,
-    css({
-      [`@media ${style.mobile}`]: {
-        left: 0,
-        margin: 0,
-        position: 'fixed',
-        ...(pos.substring(0, 3) === 'top' ? { top: 0 } : { bottom: 0 })
-      }
-    })
-  );
+  return positionRule;
 };
 
-const container = (disablePointer, position) =>
+const styles = (disablePointer, position) =>
   css(
     {
-      zIndex: style.zIndex,
+      zIndex: defaultStyle.zIndex,
       position: 'fixed',
       padding: '4px',
-      width: style.width,
+      width: defaultStyle.width,
       boxSizing: 'border-box',
       color: '#fff',
       ...(disablePointer ? { pointerEvents: 'none' } : {}),
-      [`@media ${style.mobile}`]: {
+      [`@media ${defaultStyle.mobile}`]: {
         width: '100vw',
-        padding: 0
+        padding: 0,
+        left: 0,
+        margin: 0,
+        position: 'fixed',
+        ...(position.substring(0, 3) === 'top' ? { top: 0 } : { bottom: 0 })
       }
     },
-    toastPosition(position)
+    getToastPositionStyle(position)
   );
 
 class ToastContainer extends Component {
@@ -348,8 +342,8 @@ class ToastContainer extends Component {
       return (
         <TransitionGroup
           {...(typeof className !== 'string'
-            ? css(container(disablePointer, position), className)
-            : container(disablePointer, position))}
+            ? css(styles(disablePointer, position), className)
+            : styles(disablePointer, position))}
           {...typeof className === 'string' && { className }}
           {...style !== null && { style }}
           key={`container-${position}`}

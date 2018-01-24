@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ProgressBar Should allow glamor rule as className 1`] = `
-.css-1pf9yof,
-[data-css-1pf9yof] {
+.css-11myqvn,
+[data-css-11myqvn] {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -10,25 +10,25 @@ exports[`ProgressBar Should allow glamor rule as className 1`] = `
   height: 5px;
   z-index: 9999;
   opacity: 0.7;
-  animation: track-progress_1pd4w4j linear 1;
+  animation: animation_91emau linear 1;
   animation-play-state: running;
   animation-duration: 5000ms;
   background-color: rgba(255,255,255,.7);
   background: red;
-  -webkit-animation: track-progress_1pd4w4j linear 1;
+  -webkit-animation: animation_91emau linear 1;
   -webkit-animation-play-state: running;
   -webkit-animation-duration: 5000ms;
 }
 
 <div
-  data-css-1pf9yof=""
+  data-css-11myqvn=""
   onAnimationEnd={[Function]}
 />
 `;
 
 exports[`ProgressBar Should be able to hide the progress bar 1`] = `
-.css-qkhwto,
-[data-css-qkhwto] {
+.css-7lq92a,
+[data-css-7lq92a] {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -36,28 +36,28 @@ exports[`ProgressBar Should be able to hide the progress bar 1`] = `
   height: 5px;
   z-index: 9999;
   opacity: 0;
-  animation: track-progress_1pd4w4j linear 1;
+  animation: animation_91emau linear 1;
   animation-play-state: running;
   animation-duration: 5000ms;
   background-color: rgba(255,255,255,.7);
   background: -webkit-linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55);
   background: -moz-linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55);
   background: linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55);
-  -webkit-animation: track-progress_1pd4w4j linear 1;
+  -webkit-animation: animation_91emau linear 1;
   -webkit-animation-play-state: running;
   -webkit-animation-duration: 5000ms;
 }
 
 <div
   className=""
-  data-css-qkhwto=""
+  data-css-7lq92a=""
   onAnimationEnd={[Function]}
 />
 `;
 
 exports[`ProgressBar Should be able to pause animation 1`] = `
-.css-1tcv8a9,
-[data-css-1tcv8a9] {
+.css-9z8rkz,
+[data-css-9z8rkz] {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -65,21 +65,21 @@ exports[`ProgressBar Should be able to pause animation 1`] = `
   height: 5px;
   z-index: 9999;
   opacity: 0.7;
-  animation: track-progress_1pd4w4j linear 1;
+  animation: animation_91emau linear 1;
   animation-play-state: paused;
   animation-duration: 5000ms;
   background-color: rgba(255,255,255,.7);
   background: -webkit-linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55);
   background: -moz-linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55);
   background: linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55);
-  -webkit-animation: track-progress_1pd4w4j linear 1;
+  -webkit-animation: animation_91emau linear 1;
   -webkit-animation-play-state: paused;
   -webkit-animation-duration: 5000ms;
 }
 
 <div
   className=""
-  data-css-1tcv8a9=""
+  data-css-9z8rkz=""
   onAnimationEnd={[Function]}
 />
 `;

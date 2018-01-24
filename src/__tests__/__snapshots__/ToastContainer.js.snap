@@ -14,7 +14,11 @@ exports[`ToastContainer Should allow glamor rule as className 1`] = `
       "data-glamor-0": "",
     }
   }
-  closeButton={<DefaultCloseButton />}
+  closeButton={
+    <DefaultCloseButton
+      ariaLabel="close"
+    />
+  }
   closeOnClick={true}
   hideProgressBar={false}
   newestOnTop={false}

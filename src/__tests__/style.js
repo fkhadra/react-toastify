@@ -1,15 +1,15 @@
-import style, { defineStyle } from './../style';
+import defaultStyle, { defineStyle } from './../defaultStyle';
 
-const defaultValues = { ...style };
+const defaultValues = { ...defaultStyle };
 
 afterEach(() => defineStyle(defaultValues));
 
 describe('style', () => {
   it('Should be able to mutate style', () => {
-    expect(style.width).toBe('320px');
+    expect(defaultStyle.width).toBe('320px');
     defineStyle({
       width: '100px'
     });
-    expect(style.width).toBe('100px');
+    expect(defaultStyle.width).toBe('100px');
   });
 });

@@ -4,39 +4,41 @@ import { css } from 'glamor';
 
 import ProgressBar from './ProgressBar';
 import { POSITION, TYPE } from './constant';
-import style from './style';
+import defaultStyle from './defaultStyle';
 import {
   falseOrElement,
   falseOrDelay,
   objectValues
 } from './util/propValidator';
 
-const toast = type =>
-  css({
-    position: 'relative',
-    minHeight: '48px',
-    marginBottom: '1rem',
-    padding: '8px',
-    borderRadius: '1px',
-    boxShadow:
-      '0 1px 10px 0 rgba(0, 0, 0, .1), 0 2px 15px 0 rgba(0, 0, 0, .05)',
-    display: 'flex',
-    justifyContent: 'space-between',
-    maxHeight: '800px',
-    overflow: 'hidden',
-    fontFamily: style.fontFamily,
-    cursor: 'pointer',
-    background: style[`color${type.charAt(0).toUpperCase()}${type.slice(1)}`],
-    ...(type === 'default' ? { color: '#aaa' } : {}),
-    [`@media ${style.mobile}`]: {
-      marginBottom: 0
-    }
-  });
-
-const body = css({
-  margin: 'auto 0',
-  flex: 1
-});
+const styles = {
+  container: type =>
+    css({
+      position: 'relative',
+      height: '48px',
+      marginBottom: '1rem',
+      padding: '8px',
+      borderRadius: '1px',
+      boxShadow:
+        '0 1px 10px 0 rgba(0, 0, 0, .1), 0 2px 15px 0 rgba(0, 0, 0, .05)',
+      display: 'flex',
+      justifyContent: 'space-between',
+      maxHeight: '800px',
+      overflow: 'hidden',
+      fontFamily: defaultStyle.fontFamily,
+      cursor: 'pointer',
+      background:
+        defaultStyle[`color${type.charAt(0).toUpperCase()}${type.slice(1)}`],
+      ...(type === 'default' ? { color: '#aaa' } : {}),
+      [`@media ${defaultStyle.mobile}`]: {
+        marginBottom: 0
+      }
+    }),
+  body: css({
+    margin: 'auto 0',
+    flex: 1
+  })
+};
 
 class Toast extends Component {
   static propTypes = {
@@ -61,7 +63,8 @@ class Toast extends Component {
       PropTypes.string,
       PropTypes.object
     ]),
-    updateId: PropTypes.number
+    updateId: PropTypes.number,
+    ariaLabel: PropTypes.string
   };
 
   static defaultProps = {
@@ -73,7 +76,8 @@ class Toast extends Component {
     className: '',
     bodyClassName: '',
     progressClassName: '',
-    updateId: null
+    updateId: null,
+    role: 'alert'
   };
 
   state = {
@@ -136,7 +140,8 @@ class Toast extends Component {
       className,
       bodyClassName,
       progressClassName,
-      updateId
+      updateId,
+      role
     } = this.props;
 
     return (
@@ -149,14 +154,15 @@ class Toast extends Component {
       >
         <div
           {...(typeof className !== 'string'
-            ? css(toast(type), className)
-            : toast(type))}
+            ? css(styles.container(type), className)
+            : styles.container(type))}
           {...this.getToastProps()}
         >
           <div
+            {...this.props.in && { role: role }}
             {...(typeof bodyClassName !== 'string'
-              ? css(body, bodyClassName)
-              : body)}
+              ? css(styles.body, bodyClassName)
+              : styles.body)}
             {...typeof bodyClassName === 'string' && {
               className: bodyClassName
             }}

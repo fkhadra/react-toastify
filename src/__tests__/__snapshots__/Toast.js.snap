@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Toast Should allow glamor rule as className 1`] = `
-.css-zhwiot,
-[data-css-zhwiot] {
+.css-9u6a76,
+[data-css-9u6a76] {
   position: relative;
-  min-height: 48px;
+  height: 48px;
   margin-bottom: 1rem;
   padding: 8px;
   border-radius: 1px;
@@ -34,8 +34,8 @@ exports[`Toast Should allow glamor rule as className 1`] = `
 }
 
 @media only screen and (max-width : 480px) {
-  .css-zhwiot,
-  [data-css-zhwiot] {
+  .css-9u6a76,
+  [data-css-9u6a76] {
     margin-bottom: 0;
   }
 }
@@ -47,15 +47,18 @@ exports[`Toast Should allow glamor rule as className 1`] = `
   unmountOnExit={true}
 >
   <div
-    data-css-zhwiot=""
+    data-css-9u6a76=""
     onClick={[Function]}
   >
     <div
       data-css-6qy7r3=""
+      role="alert"
     >
       FooBar
     </div>
-    <DefaultCloseButton />
+    <DefaultCloseButton
+      ariaLabel="close"
+    />
   </div>
 </DefaultTransition>
 `;
