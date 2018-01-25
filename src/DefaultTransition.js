@@ -29,13 +29,16 @@ function DefaultTransition({ children, position, ...props }) {
   const { enter, exit } = styles(position);
   const onEnter = node => node.classList.add(enter);
   const onExit = node => {
-    node.classList.add(exit);
+    const height = node.getBoundingClientRect().height;
     node.style.transition = 'padding 0.75s, height 0.75s, maringBottom 0.75s';
+    node.style.minHeight = 0;
+    node.style.height = height >= 48 ? height + 'px' : '48px';
 
     requestAnimationFrame(() => {
       node.style.padding = 0;
       node.style.height = 0;
       node.style.marginBottom = 0;
+      requestAnimationFrame(() => node.classList.add(exit));
     });
   };
 
