@@ -885,6 +885,11 @@ IE 11+ ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ |
 
 ## Release Notes
 
+### V3.3.1
+
+- Fix height [issue #124](https://github.com/fkhadra/react-toastify/issues/124)
+- Update typescript definition
+
 ### V3.3.0
 
 - Better accessibility, relate to [issue #121](https://github.com/fkhadra/react-toastify/issues/121)

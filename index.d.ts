@@ -260,6 +260,71 @@ interface Toast {
    * Display a toast without a specific type.
    */
   (content: ToastContent, options?: ToastOptions): number;
+
+  /**
+   * Helper to set notification type
+   */
+  TYPE: {
+    /**
+     * Set notification type to 'info'
+     */
+    INFO: string;
+
+    /**
+     * Set notification type to 'success'
+     */
+    SUCCESS: string;
+
+    /**
+     * Set notification type to 'warning'
+     */
+    WARNING: string;
+
+    /**
+     * Set notification type to 'error'
+     */
+    ERROR: string;
+
+    /**
+     * Set notification type to 'default'
+     */
+    DEFAULT: string;
+  };
+
+  /**
+   * Helper to set position
+   */
+  POSITION: {
+    /**
+     * Set the position to 'top-left'
+     */
+    TOP_LEFT: string;
+
+    /**
+     * Set the position to 'top-right'
+     */
+    TOP_RIGHT: string;
+
+    /**
+     * Set the position to 'top-center'
+     */
+    TOP_CENTER: string;
+
+    /**
+     * Set the position to 'bottom-left'
+     */
+    BOTTOM_LEFT: string;
+
+    /**
+     * Set the position to 'bottom-right'
+     */
+    BOTTOM_RIGHT: string;
+
+    /**
+     * Set the position to 'bottom-center'
+     */
+    BOTTOM_CENTER: string;
+  }
 }
 
 export class ToastContainer extends React.Component<ToastContainerProps> {}
