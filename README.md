@@ -161,7 +161,7 @@ For convenience, toast expose a POSITION property to avoid any typo.
 
 ```js
   import React from 'react';
-  import { ToastContainer } from 'react-toastify';
+  import { ToastContainer, toast } from 'react-toastify';
 
   class App extends Component {
     closeAfter15 = () => toast("YOLO", { autoClose: 15000 });
