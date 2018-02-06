@@ -742,7 +742,7 @@ style({
 
 #### Style with className
 
-All className like props can be a css class or a glamor rule.
+All className like props can be a css class or a glamor rule, or a css-in-js object.
 
 ⚠️ Use a glamor rule rather than a css class when you want to override a property cause glamor stylesheet
 will be injected last ⚠️
@@ -755,13 +755,16 @@ will be injected last ⚠️
   class Style extends Component {
     notify = () => {
       toast("Dark style notification with default type progress bar",{
-        className: css({
+        // css-in-js
+        className: {
           background: "black"
-        }),
+        },
+        // css class
         bodyClassName: "grow-font-size"
       });
 
       toast("Fancy progress bar.",{
+        // glamor rule
         progressClassName: css({
           background: "repeating-radial-gradient(circle at center, red 0, blue, green 30px)"
         })
@@ -782,6 +785,9 @@ You could define your style globally:
     return(
       {/*Component*/}
       <ToastContainer
+        className={{
+          color: "black"
+        }}
         toastClassName="dark-toast"
         progressClassName={css({
           height: "2px"
