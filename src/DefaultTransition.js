@@ -28,6 +28,7 @@ const styles = pos => {
 function DefaultTransition({ children, position, ...props }) {
   const { enter, exit } = styles(position);
   const onEnter = node => node.classList.add(enter);
+  const onEntered = node => node.classList.remove(enter);
   const onExit = node => {
     const height = node.getBoundingClientRect().height;
     node.style.transition = 'padding 0.75s, height 0.75s, maringBottom 0.75s';
@@ -43,7 +44,13 @@ function DefaultTransition({ children, position, ...props }) {
   };
 
   return (
-    <Transition {...props} timeout={750} onEnter={onEnter} onExit={onExit}>
+    <Transition
+      {...props}
+      timeout={750}
+      onEnter={onEnter}
+      onEntered={onEntered}
+      onExit={onExit}
+    >
       {children}
     </Transition>
   );

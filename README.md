@@ -891,6 +891,10 @@ IE 11+ ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ |
 
 ## Release Notes
 
+### V3.3.3
+
+- Clean animation on entered. This was preventing any update transition to works.
+
 ### V3.3.1
 
 - Fix height [issue #124](https://github.com/fkhadra/react-toastify/issues/124)
