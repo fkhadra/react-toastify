@@ -890,6 +890,9 @@ toast.update(toastId, {
 IE 11+ ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ |
 
 ## Release Notes
+### V3.3.4
+
+- `toast.update` run now at the end of the call stack. For more details, check [issue #135](https://github.com/fkhadra/react-toastify/issues/135)
 
 ### V3.3.3
 
