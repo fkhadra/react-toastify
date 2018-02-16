@@ -45,45 +45,49 @@ describe('toastify', () => {
 
   describe('update function', () => {
     it('Should be able to update an existing toast', () => {
-      mount(<ToastContainer />);
-      const id = toaster('hello');
-
-      jest.runAllTimers();
-
-      const updateId = toaster.update(id);
-      jest.runAllTimers();
-      expect(id).toBe(updateId);
-    });
-
-    it('Should be able to update the same toast many times', () => {
-      mount(<ToastContainer />);
-      const id = toaster('hello');
-      jest.runAllTimers();
-
-      toaster.update(id);
-      jest.runAllTimers();
-
-      const updateId = toaster.update(id);
-      jest.runAllTimers();
-      expect(id).toBe(updateId);
-    });
-
-    it('Should be able to replace content when updating an existing toast', () => {
       const component = mount(<ToastContainer />);
       const id = toaster('hello');
 
       jest.runAllTimers();
-
-      const updateId = toaster.update(id, {
-        render: 'Update'
+      expect(component.html()).toMatch(/hello/);
+      toaster.update(id, {
+        render: 'foobar'
       });
       jest.runAllTimers();
-      expect(component.html()).toMatch(/Update/);
-      expect(id).toBe(updateId);
+      expect(component.html()).not.toMatch(/hello/);
+      expect(component.html()).toMatch(/foobar/);
     });
 
+    it('Should be able to update the same toast many times', () => {
+      const component = mount(<ToastContainer />);
+      const id = toaster('hello');
+
+      jest.runAllTimers();
+      expect(component.html()).toMatch(/hello/);
+
+      toaster.update(id, {
+        render: 'foobar'
+      });
+
+      jest.runAllTimers();
+      expect(component.html()).toMatch(/foobar/);
+
+      toaster.update(id, {
+        render: 'plop'
+      });
+
+      jest.runAllTimers();
+      expect(component.html()).toMatch(/plop/);
+    });
     it('Should update a toast only if it exist and if the container is mounted', () => {
-      expect(toaster.update(0)).toBe(false);
+      const component = mount(<ToastContainer />);
+
+      toaster.update(0, {
+        render: 'hello'
+      });
+
+      jest.runAllTimers();
+      expect(component.html()).not.toMatch(/hello/);
     });
   });
 

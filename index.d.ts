@@ -254,7 +254,7 @@ interface Toast {
   /**
    * Update an existing toast. By default, we keep the initial content and options of the toast.
    */
-  update(toastId: number, options?: UpdateOptions): number;
+  update(toastId: number, options?: UpdateOptions): void;
 
   /**
    * Display a toast without a specific type.
