@@ -53,6 +53,12 @@ interface styleProps {
    * Default: 'only screen and (max-width : 480px)'
    */
   mobile?: string;
+  
+  /**
+   * Override the font-family style property.
+   * Default: 'sans-serif'
+   */
+  fontFamily?: string;
 
   /**
    * Set the z-index for the ToastContainer.
