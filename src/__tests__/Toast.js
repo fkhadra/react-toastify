@@ -19,7 +19,8 @@ const REQUIRED_PROPS = {
   position: POSITION.TOP_RIGHT,
   pauseOnHover: true,
   closeOnClick: true,
-  isDocumentHidden: false
+  isDocumentHidden: false,
+  rtl: false
 };
 
 describe('Toast', () => {
@@ -47,6 +48,16 @@ describe('Toast', () => {
         className={css({ background: 'red' })}
         bodyClassName={css({ color: 'blue' })}
       >
+        FooBar
+      </Toast>
+    );
+
+    expect(toJson(component)).toMatchSnapshot();
+  });
+
+  it('Should support Rtl display', () => {
+    const component = shallow(
+      <Toast {...REQUIRED_PROPS} autoClose={false} rtl>
         FooBar
       </Toast>
     );

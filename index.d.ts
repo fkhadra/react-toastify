@@ -8,115 +8,115 @@ type ToastContent = React.ReactNode | { (): void };
 interface styleProps {
   /**
    * Set the default toast width. 
-   * Default: '320px' 
+   * `Default: '320px'` 
    */
   width?: string;
 
   /**
    * Set the toast color when no type is provided. 
-   * Default: '#fff'
+   * `Default: '#fff'`
    */
   colorDefault?: string;
 
   /**
    * Set the toast color when the type is INFO.
-   * Default: '#3498db'
+   * `Default: '#3498db'`
    */
   colorInfo?: string;
 
   /**
    * Set the toast color when the type is SUCCESS. 
-   * Default: '#07bc0c'
+   * `Default: '#07bc0c'`
    */
   colorSuccess?: string;
   
   /**
    * Set the toast color when the type is WARNING. 
-   * Default: '#f1c40f'
+   * `Default: '#f1c40f'`
    */
   colorWarning?: string;
 
   /**
    * Set the toast color when the type is ERROR. 
-   * Default: '#e74c3c'
+   * `Default: '#e74c3c'`
    */
   colorError?: string;
 
   /**
    * Set the progress bar color when no type is provided.
-   * Default: 'linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55)' 
+   * `Default: 'linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55)'`
    */
   colorProgressDefault?: string;
 
   /**
    * Media query to apply mobile style. 
-   * Default: 'only screen and (max-width : 480px)'
+   * `Default: 'only screen and (max-width : 480px)'`
    */
   mobile?: string;
   
   /**
    * Override the font-family style property.
-   * Default: 'sans-serif'
+   * `Default: 'sans-serif'`
    */
   fontFamily?: string;
 
   /**
    * Set the z-index for the ToastContainer.
-   * Default: 9999
+   * `Default: 9999`
    */
   zIndex?: string | number;
   
   /**
    * Override the default position.
-   * Default: {
+   * `Default: {
    *   top: '1em',
    *   left: '1em'
-   * }  
+   * }`  
    */
   TOP_LEFT?: object;
 
   /**
    * Override the default position.
-   * Default: {
+   * `Default: {
    *   top: '1em',
    *   left: '50%'
-   * }  
+   * }`  
    */
   TOP_CENTER?: object;
 
   /**
    * Override the default position.
-   * Default: {
+   * `Default: {
    *   top: '1em',
    *   right: '1em'
-   *}
+   * }`
    */
   TOP_RIGHT?: object;
 
   /**
    * Override the default position.
-   * Default: {
+   * `Default: {
    *   bottom: '1em',
    *   left: '1em'
-   * }  
+   * }`  
    */
   BOTTOM_LEFT?: object;
 
  /**
    * Override the default position.
-   * Default: {
+   * `Default: {
    *   bottom: '1em',
    *   left: '50%'
-   *} 
+   * }` 
    */
   BOTTOM_CENTER?: object;
 
   /**
    * Override the default position.
-   * Default: {
+   * `Default: {
    *   bottom: '1em',
    *   right: '1em'
-   *}  
+   * }`  
    */
   BOTTOM_RIGHT?: object;
 }
@@ -124,23 +124,27 @@ interface styleProps {
 interface CommonOptions {
   /**
    * Pause the timer when the mouse hover the toast.
+   * `Default: true`
    */
   pauseOnHover?: boolean;
 
   /**
    * Remove the toast when clicked.
+   * `Default: true`
    */
   closeOnClick?: boolean;
 
   /**
    * Set the delay in ms to close the toast automatically. 
    * Use `false` to prevent the toast from closing.
+   * `Default: 5000`
    */
   autoClose?: number | false;
 
   /**
    * Set the default position to use.
-   * One of: 'top-right', 'top-center', 'top-left', 'bottom-right', 'bottom-center', 'bottom-left'
+   * `One of: 'top-right', 'top-center', 'top-left', 'bottom-right', 'bottom-center', 'bottom-left'`
+   * `Default: 'top-right'`
    */
   position?: string;
 
@@ -169,7 +173,8 @@ interface CommonOptions {
   bodyClassName?: string | object;
 
   /**
-   * Show or not the progress bar.
+   * Hide or show the progress bar.
+   * `Default: false`
    */
   hideProgressBar?: boolean;
 
@@ -192,7 +197,7 @@ interface ToastOptions extends CommonOptions {
 
   /**
    * Set the toast type.
-   * One of: 'info', 'success', 'warning', 'error', 'default'.
+   * `One of: 'info', 'success', 'warning', 'error', 'default'`
    */
   type?: ToastType;
 }
@@ -208,7 +213,7 @@ interface UpdateOptions extends ToastOptions {
 interface ToastContainerProps extends CommonOptions {
   /**
    * Whether or not to display the newest toast on top.
-   * Default: false
+   * `Default: false`
    */
   newestOnTop?: boolean;
 
@@ -222,6 +227,12 @@ interface ToastContainerProps extends CommonOptions {
    * or a css class name.
    */
   toastClassName?: string | object;
+
+  /**
+   * Support right to left display.
+   * `Default: false`
+   */
+  rtl?: boolean;
 }
 
 interface Toast {
@@ -272,27 +283,27 @@ interface Toast {
    */
   TYPE: {
     /**
-     * Set notification type to 'info'
+     * Set notification type to `'info'`
      */
     INFO: string;
 
     /**
-     * Set notification type to 'success'
+     * Set notification type to `'success'`
      */
     SUCCESS: string;
 
     /**
-     * Set notification type to 'warning'
+     * Set notification type to `'warning'`
      */
     WARNING: string;
 
     /**
-     * Set notification type to 'error'
+     * Set notification type to `'error'`
      */
     ERROR: string;
 
     /**
-     * Set notification type to 'default'
+     * Set notification type to `'default'`
      */
     DEFAULT: string;
   };
@@ -302,32 +313,32 @@ interface Toast {
    */
   POSITION: {
     /**
-     * Set the position to 'top-left'
+     * Set the position to `'top-left'`
      */
     TOP_LEFT: string;
 
     /**
-     * Set the position to 'top-right'
+     * Set the position to `'top-right'`
      */
     TOP_RIGHT: string;
 
     /**
-     * Set the position to 'top-center'
+     * Set the position to `'top-center'`
      */
     TOP_CENTER: string;
 
     /**
-     * Set the position to 'bottom-left'
+     * Set the position to `'bottom-left'`
      */
     BOTTOM_LEFT: string;
 
     /**
-     * Set the position to 'bottom-right'
+     * Set the position to `'bottom-right'`
      */
     BOTTOM_RIGHT: string;
 
     /**
-     * Set the position to 'bottom-center'
+     * Set the position to `'bottom-center'`
      */
     BOTTOM_CENTER: string;
   }

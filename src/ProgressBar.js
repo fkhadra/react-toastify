@@ -10,11 +10,10 @@ const trackProgress = css.keyframes({
   '100%': { width: 0 }
 });
 
-const styles = (type, isRunning, hide, delay) =>
+const styles = (type, isRunning, hide, delay, rtl) =>
   css({
     position: 'absolute',
     bottom: 0,
-    left: 0,
     width: 0,
     height: '5px',
     zIndex: defaultStyle.zIndex,
@@ -24,16 +23,31 @@ const styles = (type, isRunning, hide, delay) =>
     animationDuration: `${delay}ms`,
     backgroundColor: 'rgba(255,255,255,.7)',
     ...(type === 'default'
-      ? { background: defaultStyle.colorProgressDefault }
-      : {})
+      ? {
+          // uumm, ok I was lazy
+          background: rtl
+            ? defaultStyle.colorProgressDefault.replace('to right', 'to left')
+            : defaultStyle.colorProgressDefault
+        }
+      : {}),
+    ...(rtl ? { right: 0 } : { left: 0 })
   });
 
-function ProgressBar({ delay, isRunning, closeToast, type, hide, className }) {
+function ProgressBar({
+  delay,
+  isRunning,
+  closeToast,
+  type,
+  hide,
+  className,
+  rtl
+}) {
   return (
     <div
-      {...(typeof className !== 'string'
-        ? css(styles(type, isRunning, hide, delay), className)
-        : styles(type, isRunning, hide, delay))}
+      {...css(
+        styles(type, isRunning, hide, delay, rtl),
+        typeof className !== 'string' && className
+      )}
       {...typeof className === 'string' && { className }}
       onAnimationEnd={closeToast}
     />
@@ -55,6 +69,11 @@ ProgressBar.propTypes = {
    * Func to close the current toast
    */
   closeToast: PropTypes.func.isRequired,
+
+  /**
+   * Support rtl content
+   */
+  rtl: PropTypes.bool.isRequired,
 
   /**
    * Optional type : info, success ...

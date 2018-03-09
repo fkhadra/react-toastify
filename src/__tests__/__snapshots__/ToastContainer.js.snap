@@ -8,7 +8,7 @@ exports[`ToastContainer Should allow glamor rule as className 1`] = `
 
 <ToastContainer
   autoClose={5000}
-  bodyClassName=""
+  bodyClassName={null}
   className={
     Object {
       "data-glamor-0": "",
@@ -24,9 +24,10 @@ exports[`ToastContainer Should allow glamor rule as className 1`] = `
   newestOnTop={false}
   pauseOnHover={true}
   position="top-right"
-  progressClassName=""
+  progressClassName={null}
+  rtl={false}
   style={null}
-  toastClassName=""
+  toastClassName={null}
   transition={[Function]}
 >
   <div />

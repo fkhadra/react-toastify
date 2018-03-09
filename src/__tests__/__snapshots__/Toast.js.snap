@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Toast Should allow glamor rule as className 1`] = `
-.css-zhwiot,
-[data-css-zhwiot] {
+.css-1qyflue,
+[data-css-1qyflue] {
   position: relative;
   min-height: 48px;
   margin-bottom: 1rem;
@@ -21,6 +21,7 @@ exports[`Toast Should allow glamor rule as className 1`] = `
   cursor: pointer;
   background: red;
   color: #aaa;
+  direction: ltr;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
 }
@@ -34,8 +35,8 @@ exports[`Toast Should allow glamor rule as className 1`] = `
 }
 
 @media only screen and (max-width : 480px) {
-  .css-zhwiot,
-  [data-css-zhwiot] {
+  .css-1qyflue,
+  [data-css-1qyflue] {
     margin-bottom: 0;
   }
 }
@@ -47,11 +48,74 @@ exports[`Toast Should allow glamor rule as className 1`] = `
   unmountOnExit={true}
 >
   <div
-    data-css-zhwiot=""
+    data-css-1qyflue=""
     onClick={[Function]}
   >
     <div
       data-css-6qy7r3=""
+      role="alert"
+    >
+      FooBar
+    </div>
+    <DefaultCloseButton
+      ariaLabel="close"
+    />
+  </div>
+</DefaultTransition>
+`;
+
+exports[`Toast Should support Rtl display 1`] = `
+.css-w74h2a,
+[data-css-w74h2a] {
+  margin: auto 0;
+  flex: 1;
+  -webkit-flex: 1;
+}
+
+.css-1nz94ll,
+[data-css-1nz94ll] {
+  position: relative;
+  min-height: 48px;
+  margin-bottom: 1rem;
+  padding: 8px;
+  border-radius: 1px;
+  box-shadow: 0 1px 10px 0 rgba(0, 0, 0, .1), 0 2px 15px 0 rgba(0, 0, 0, .05);
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  justify-content: space-between;
+  max-height: 800px;
+  overflow: hidden;
+  font-family: sans-serif;
+  cursor: pointer;
+  background: #fff;
+  color: #aaa;
+  direction: rtl;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+}
+
+@media only screen and (max-width : 480px) {
+  .css-1nz94ll,
+  [data-css-1nz94ll] {
+    margin-bottom: 0;
+  }
+}
+
+<DefaultTransition
+  appear={true}
+  in={true}
+  position="top-right"
+  unmountOnExit={true}
+>
+  <div
+    data-css-1nz94ll=""
+    onClick={[Function]}
+  >
+    <div
+      data-css-w74h2a=""
       role="alert"
     >
       FooBar
