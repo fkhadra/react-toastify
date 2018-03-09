@@ -75,9 +75,9 @@ class Toast extends Component {
     hideProgressBar: false,
     onOpen: null,
     onClose: null,
-    className: '',
-    bodyClassName: '',
-    progressClassName: '',
+    className: null,
+    bodyClassName: null,
+    progressClassName: null,
     updateId: null,
     role: 'alert'
   };
@@ -156,16 +156,18 @@ class Toast extends Component {
         position={position}
       >
         <div
-          {...(typeof className !== 'string'
-            ? css(styles.container(type, rtl), className)
-            : styles.container(type, rtl))}
+          {...css(
+            styles.container(type, rtl),
+            typeof className !== 'string' && className
+          )}
           {...this.getToastProps()}
         >
           <div
             {...this.props.in && { role: role }}
-            {...(typeof bodyClassName !== 'string'
-              ? css(styles.body, bodyClassName)
-              : styles.body)}
+            {...css(
+              styles.body,
+              typeof bodyClassName !== 'string' && bodyClassName
+            )}
             {...typeof bodyClassName === 'string' && {
               className: bodyClassName
             }}

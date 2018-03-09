@@ -111,12 +111,10 @@ exports[`Toast Should support Rtl display 1`] = `
   unmountOnExit={true}
 >
   <div
-    className=""
     data-css-1nz94ll=""
     onClick={[Function]}
   >
     <div
-      className=""
       data-css-w74h2a=""
       role="alert"
     >

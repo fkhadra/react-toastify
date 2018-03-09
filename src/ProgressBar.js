@@ -44,9 +44,10 @@ function ProgressBar({
 }) {
   return (
     <div
-      {...(typeof className !== 'string'
-        ? css(styles(type, isRunning, hide, delay, rtl), className)
-        : styles(type, isRunning, hide, delay, rtl))}
+      {...css(
+        styles(type, isRunning, hide, delay, rtl),
+        typeof className !== 'string' && className
+      )}
       {...typeof className === 'string' && { className }}
       onAnimationEnd={closeToast}
     />

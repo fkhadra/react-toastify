@@ -144,9 +144,9 @@ class ToastContainer extends Component {
     newestOnTop: false,
     className: null,
     style: null,
-    toastClassName: '',
-    bodyClassName: '',
-    progressClassName: ''
+    toastClassName: null,
+    bodyClassName: null,
+    progressClassName: null
   };
 
   /**
@@ -348,9 +348,10 @@ class ToastContainer extends Component {
 
       return (
         <TransitionGroup
-          {...(typeof className !== 'string'
-            ? css(styles(disablePointer, position), className)
-            : styles(disablePointer, position))}
+          {...css(
+            styles(disablePointer, position),
+            typeof className !== 'string' && className
+          )}
           {...typeof className === 'string' && { className }}
           {...style !== null && { style }}
           key={`container-${position}`}
