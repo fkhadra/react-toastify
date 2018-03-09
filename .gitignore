@@ -4,3 +4,4 @@ lib/
 .sass-cache/
 npm-debug.log
 coverage/
+yarn-error.log

@@ -12,7 +12,7 @@ import {
 } from './util/propValidator';
 
 const styles = {
-  container: type =>
+  container: (type, rtl) =>
     css({
       position: 'relative',
       minHeight: '48px',
@@ -32,7 +32,8 @@ const styles = {
       ...(type === 'default' ? { color: '#aaa' } : {}),
       [`@media ${defaultStyle.mobile}`]: {
         marginBottom: 0
-      }
+      },
+      direction: rtl ? 'rtl' : 'ltr'
     }),
   body: css({
     margin: 'auto 0',
@@ -51,6 +52,7 @@ class Toast extends Component {
     closeOnClick: PropTypes.bool.isRequired,
     transition: PropTypes.func.isRequired,
     isDocumentHidden: PropTypes.bool.isRequired,
+    rtl: PropTypes.bool.isRequired,
     in: PropTypes.bool,
     onExited: PropTypes.func,
     hideProgressBar: PropTypes.bool,
@@ -141,7 +143,8 @@ class Toast extends Component {
       bodyClassName,
       progressClassName,
       updateId,
-      role
+      role,
+      rtl
     } = this.props;
 
     return (
@@ -154,8 +157,8 @@ class Toast extends Component {
       >
         <div
           {...(typeof className !== 'string'
-            ? css(styles.container(type), className)
-            : styles.container(type))}
+            ? css(styles.container(type, rtl), className)
+            : styles.container(type, rtl))}
           {...this.getToastProps()}
         >
           <div
@@ -173,6 +176,7 @@ class Toast extends Component {
           {autoClose !== false && (
             <ProgressBar
               key={`pb-${updateId}`}
+              rtl={rtl}
               delay={autoClose}
               isRunning={this.state.isRunning}
               closeToast={closeToast}

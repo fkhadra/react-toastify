@@ -25,6 +25,7 @@ exports[`ToastContainer Should allow glamor rule as className 1`] = `
   pauseOnHover={true}
   position="top-right"
   progressClassName=""
+  rtl={false}
   style={null}
   toastClassName=""
   transition={[Function]}
