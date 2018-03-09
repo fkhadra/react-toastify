@@ -24,7 +24,7 @@ const styles = (type, isRunning, hide, delay, rtl) =>
     backgroundColor: 'rgba(255,255,255,.7)',
     ...(type === 'default'
       ? {
-        // uumm, ok I was lazy
+          // uumm, ok I was lazy
           background: rtl
             ? defaultStyle.colorProgressDefault.replace('to right', 'to left')
             : defaultStyle.colorProgressDefault
@@ -68,6 +68,11 @@ ProgressBar.propTypes = {
    * Func to close the current toast
    */
   closeToast: PropTypes.func.isRequired,
+
+  /**
+   * Support rtl content
+   */
+  rtl: PropTypes.bool.isRequired,
 
   /**
    * Optional type : info, success ...

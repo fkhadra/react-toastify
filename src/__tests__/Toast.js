@@ -57,11 +57,7 @@ describe('Toast', () => {
 
   it('Should support Rtl display', () => {
     const component = shallow(
-      <Toast
-        {...REQUIRED_PROPS}
-        autoClose={false}
-        rtl
-      >
+      <Toast {...REQUIRED_PROPS} autoClose={false} rtl>
         FooBar
       </Toast>
     );

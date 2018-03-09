@@ -31,6 +31,7 @@
   + [Le style](#le-style)
     - [Replace default style](#replace-default-style)
     - [Style with className](#style-with-classname)
+    - [Right to left support](#right-to-left-support)
   + [Mobile](#mobile)
 * [Api](#api)
   + [ToastContainer](#toastcontainer)
@@ -55,6 +56,7 @@ $ yarn add react-toastify
 
 - Easy to setup for real, you can make it works in less than 10sec !
 - Super easy to customize
+- Rtl support 
 - Can display a react component inside the toast !
 - Don't rely on `findDOMNode` or any DOM hack
 - Has ```onOpen``` and ```onClose``` hooks. Both can access the props passed to the react component rendered inside the toast
@@ -798,9 +800,23 @@ You could define your style globally:
   }
 ```
 
+#### Right to left support
+
+Your app need to support rtl content? Set the rtl props to `true`:
+
+```javascript
+  render(){
+    return(
+      {/*Component*/}
+      <ToastContainer rtl />
+      {/*Component*/}
+    );
+  }
+```
+
 ### Mobile
 
-On mobile the toast will take all the width available.
+On mobile the toast will take all the available width.
 
 ![react toastiy mobile](https://user-images.githubusercontent.com/5574267/28754040-ae7195ea-753d-11e7-86e1-f23c5e6bc531.gif)
 
@@ -816,6 +832,7 @@ On mobile the toast will take all the width available.
 | transition        | function       | -     | A reference to a valid react-transition-group/Transition component  |
 | hideProgressBar   | bool           | false     | Display or not the progress bar below the toast(remaining time) |
 | pauseOnHover      | bool           | true      | Keep the timer running or not on hover                          |
+| rtl               | bool           | false     | Support right to left content                                   |
 | closeOnClick      | bool           | true      | Dismiss toast on click                                          |
 | newestOnTop       | bool           | false     | Display newest toast on top                                     |
 | className         | string\|glamor rule         | -         | Add optional classes to the container                           |
@@ -890,6 +907,10 @@ toast.update(toastId, {
 IE 11+ ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ |
 
 ## Release Notes
+
+### V3.4.0
+
+- Add `rtl` props to support right to left content.
 
 ### V3.3.5
 

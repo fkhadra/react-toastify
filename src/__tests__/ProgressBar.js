@@ -9,6 +9,7 @@ import ProgressBar from './../ProgressBar';
 const REQUIRED_PROPS = {
   delay: 5000,
   isRunning: true,
+  rtl: false,
   closeToast: jest.fn()
 };
 
