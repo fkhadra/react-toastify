@@ -47,7 +47,7 @@ const styles = (disablePointer, position) =>
       [`@media ${defaultStyle.mobile}`]: {
         width: '100vw',
         padding: 0,
-        left: 0,
+        right: 0,
         margin: 0,
         position: 'fixed',
         ...(position.substring(0, 3) === 'top' ? { top: 0 } : { bottom: 0 })
