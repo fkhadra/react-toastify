@@ -31,7 +31,7 @@ function DefaultTransition({ children, position, ...props }) {
   const onEntered = node => node.classList.remove(enter);
   const onExit = node => {
     const height = node.getBoundingClientRect().height;
-    node.style.transition = 'padding 0.75s, height 0.75s, maringBottom 0.75s';
+    node.style.transition = 'padding 0.75s, height 0.75s, marginBottom 0.75s';
     node.style.minHeight = 0;
     node.style.height = height >= 48 ? height + 'px' : '48px';
 
