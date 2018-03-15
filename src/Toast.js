@@ -15,7 +15,8 @@ const styles = {
   container: (type, rtl) =>
     css({
       position: 'relative',
-      minHeight: '48px',
+      minHeight: '64px',
+      boxSizing: 'border-box',
       marginBottom: '1rem',
       padding: '8px',
       borderRadius: '1px',
