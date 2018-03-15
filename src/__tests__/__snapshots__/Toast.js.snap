@@ -1,10 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Toast Should allow glamor rule as className 1`] = `
-.css-1qyflue,
-[data-css-1qyflue] {
+.css-1d9t8xz,
+[data-css-1d9t8xz] {
   position: relative;
-  min-height: 48px;
+  min-height: 64px;
+  box-sizing: border-box;
   margin-bottom: 1rem;
   padding: 8px;
   border-radius: 1px;
@@ -35,8 +36,8 @@ exports[`Toast Should allow glamor rule as className 1`] = `
 }
 
 @media only screen and (max-width : 480px) {
-  .css-1qyflue,
-  [data-css-1qyflue] {
+  .css-1d9t8xz,
+  [data-css-1d9t8xz] {
     margin-bottom: 0;
   }
 }
@@ -48,7 +49,7 @@ exports[`Toast Should allow glamor rule as className 1`] = `
   unmountOnExit={true}
 >
   <div
-    data-css-1qyflue=""
+    data-css-1d9t8xz=""
     onClick={[Function]}
   >
     <div
@@ -72,10 +73,11 @@ exports[`Toast Should support Rtl display 1`] = `
   -webkit-flex: 1;
 }
 
-.css-1nz94ll,
-[data-css-1nz94ll] {
+.css-3h8hx1,
+[data-css-3h8hx1] {
   position: relative;
-  min-height: 48px;
+  min-height: 64px;
+  box-sizing: border-box;
   margin-bottom: 1rem;
   padding: 8px;
   border-radius: 1px;
@@ -98,8 +100,8 @@ exports[`Toast Should support Rtl display 1`] = `
 }
 
 @media only screen and (max-width : 480px) {
-  .css-1nz94ll,
-  [data-css-1nz94ll] {
+  .css-3h8hx1,
+  [data-css-3h8hx1] {
     margin-bottom: 0;
   }
 }
@@ -111,7 +113,7 @@ exports[`Toast Should support Rtl display 1`] = `
   unmountOnExit={true}
 >
   <div
-    data-css-1nz94ll=""
+    data-css-3h8hx1=""
     onClick={[Function]}
   >
     <div
