@@ -908,6 +908,10 @@ IE 11+ ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ |
 
 ## Release Notes
 
+### V3.4.2
+
+- Fix exit animation bug
+
 ### V3.4.1
 
 - Fix rtl on mobile
