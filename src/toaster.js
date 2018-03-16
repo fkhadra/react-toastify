@@ -1,5 +1,5 @@
-import EventManager from './util/EventManager';
-import { POSITION, TYPE, ACTION } from './constant';
+import EventManager from './utils/EventManager';
+import { POSITION, TYPE, ACTION } from './utils/constant';
 
 const defaultOptions = {
   type: TYPE.DEFAULT,

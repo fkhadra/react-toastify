@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { css } from 'glamor';
 
-import { TYPE } from './constant';
-import defaultStyle from './defaultStyle';
+import { TYPE } from './../utils/constant';
+import defaultStyle from './../utils/defaultStyle';
 
 const trackProgress = css.keyframes({
   '0%': { width: '100%' },

@@ -3,10 +3,10 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import ToastContainer from './../ToastContainer';
+import ToastContainer from './../components/ToastContainer';
 import toaster from './../toaster';
-import EventManager from './../util/EventManager';
-import { ACTION, TYPE } from './../constant';
+import EventManager from './../utils/EventManager';
+import { ACTION, TYPE } from './../utils/constant';
 
 jest.useFakeTimers();
 

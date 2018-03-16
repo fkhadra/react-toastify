@@ -4,11 +4,11 @@ import { shallow, mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { css } from 'glamor';
 
-import Toast from './../Toast';
-import DefaultCloseButton from './../DefaultCloseButton';
-import DefaultTransition from './../DefaultTransition';
-import ProgressBar from './../ProgressBar';
-import { POSITION } from './../constant';
+import Toast from './../components/Toast';
+import DefaultCloseButton from './../components/DefaultCloseButton';
+import DefaultTransition from './../components/DefaultTransition';
+import ProgressBar from './../components/ProgressBar';
+import { POSITION } from './../utils/constant';
 
 const REQUIRED_PROPS = {
   closeButton: <DefaultCloseButton />,

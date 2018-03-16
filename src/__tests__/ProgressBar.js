@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { css } from 'glamor';
 
-import ProgressBar from './../ProgressBar';
+import ProgressBar from './../components/ProgressBar';
 
 const REQUIRED_PROPS = {
   delay: 5000,

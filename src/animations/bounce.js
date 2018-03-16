@@ -1,4 +1,4 @@
-import { POSITION } from './constant';
+import { POSITION } from './../utils/constant';
 
 export default function getAnimation(pos) {
   switch (pos) {

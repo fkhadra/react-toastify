@@ -2,7 +2,7 @@ import React from 'react';
 import Transition from 'react-transition-group/Transition';
 import { css } from 'glamor';
 
-import getAnimation from './animation';
+import getAnimation from './../animations/bounce';
 
 const animate = {
   animationDuration: '0.75s',

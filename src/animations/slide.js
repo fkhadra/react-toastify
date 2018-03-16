@@ -1,4 +1,4 @@
-import { POSITION } from './../constant';
+import { POSITION } from './../utils/constant';
 
 // animation state used by enter:to and exit:from
 const commonState = { transform: 'translate3d(0, 0, 0)' };

@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import EventManager from './../util/EventManager';
+import EventManager from './../utils/EventManager';
 
 jest.useFakeTimers();
 

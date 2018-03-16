@@ -4,11 +4,11 @@ import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { css } from 'glamor';
 
-import ToastContainer from './../ToastContainer';
+import ToastContainer from './../components/ToastContainer';
 import toaster from './../toaster';
 
-import { ACTION } from './../constant';
-import EventManager from './../util/EventManager';
+import { ACTION } from './../utils/constant';
+import EventManager from './../utils/EventManager';
 
 jest.useFakeTimers();
 

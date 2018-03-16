@@ -6,15 +6,15 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 import Toast from './Toast';
 import DefaultCloseButton from './DefaultCloseButton';
 import DefaultTransition from './DefaultTransition';
-import { POSITION, ACTION } from './constant';
-import defaultStyle from './defaultStyle';
-import EventManager from './util/EventManager';
+import { POSITION, ACTION } from './../utils/constant';
+import defaultStyle from './../utils/defaultStyle';
+import EventManager from './../utils/EventManager';
 import {
   falseOrDelay,
   falseOrElement,
   isValidDelay,
   objectValues
-} from './util/propValidator';
+} from './../utils/propValidator';
 
 const getToastPositionStyle = pos => {
   const positionKey = pos.toUpperCase().replace('-', '_');
