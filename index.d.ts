@@ -274,6 +274,11 @@ interface Toast {
   update(toastId: number, options?: UpdateOptions): void;
 
   /**
+   * Listen for change when a toast is added or removed. The number of toast displayed is passed as paran to the callback
+   */
+  onChange(callback: ((count?: number) => void)): void;
+
+  /**
    * Display a toast without a specific type.
    */
   (content: ToastContent, options?: ToastOptions): number;

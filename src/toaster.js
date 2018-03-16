@@ -87,6 +87,11 @@ const toaster = Object.assign(
           emitEvent(content, nextOptions);
         }
       }, 0);
+    },
+    onChange(callback) {
+      if (typeof callback === 'function') {
+        EventManager.on(ACTION.ON_CHANGE, callback);
+      }
     }
   },
   {

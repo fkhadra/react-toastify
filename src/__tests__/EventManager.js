@@ -22,8 +22,6 @@ describe('EventManager', () => {
   });
 
   it('Should return false when trying to call unbound event', () => {
-    // silence warning
-    console.warn = () => {};
     const id = EventManager.emit('bar');
     jest.runAllTimers();
     expect(id).toBe(false);
