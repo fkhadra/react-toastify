@@ -908,6 +908,10 @@ IE 11+ ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ |
 
 ## Release Notes
 
+### V3.4.3
+
+- Fix position on mobile
+
 ### V3.4.2
 
 - Fix exit animation bug
