@@ -34,7 +34,7 @@ const getToastPositionStyle = pos => {
   return positionRule;
 };
 
-const styles = (disablePointer, position) =>
+const styles = (disablePointer, position, rtl) =>
   css(
     {
       zIndex: defaultStyle.zIndex,
@@ -47,7 +47,7 @@ const styles = (disablePointer, position) =>
       [`@media ${defaultStyle.mobile}`]: {
         width: '100vw',
         padding: 0,
-        right: 0,
+        ...rtl ? { right: 0} : { left: 0 },
         margin: 0,
         position: 'fixed',
         ...(position.substring(0, 3) === 'top' ? { top: 0 } : { bottom: 0 })
@@ -349,7 +349,7 @@ class ToastContainer extends Component {
       return (
         <TransitionGroup
           {...css(
-            styles(disablePointer, position),
+            styles(disablePointer, position, this.props.rtl),
             typeof className !== 'string' && className
           )}
           {...typeof className === 'string' && { className }}
