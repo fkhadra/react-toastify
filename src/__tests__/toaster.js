@@ -39,21 +39,21 @@ describe('toastify', () => {
   });
 
   describe('onChange event', () => {
-    it("Should be able to track when toast is added or removed", () => {
+    it('Should be able to track when toast is added or removed', () => {
       mount(<ToastContainer />);
       const fn = jest.fn();
       toaster.onChange(fn);
       expect(fn).not.toHaveBeenCalled();
 
       toaster('hello');
-  
+
       jest.runAllTimers();
       expect(fn).toHaveBeenCalled();
     });
 
     it('The callback should receive the number of toast displayed', done => {
       mount(<ToastContainer />);
-      toaster.onChange( count => {
+      toaster.onChange(count => {
         expect(count).toBe(1);
         done();
       });
