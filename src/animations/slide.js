@@ -3,7 +3,7 @@ import { POSITION } from './../utils/constant';
 // animation state used by enter:to and exit:from
 const commonState = { transform: 'translate3d(0, 0, 0)' };
 
-export default function getAnimation(pos) {
+export default function(pos) {
   let animation;
 
   switch (pos) {

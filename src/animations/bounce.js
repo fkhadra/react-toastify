@@ -6,7 +6,7 @@ const timingFunction = {
   }
 };
 
-export default function getAnimation(pos) {
+export default function(pos) {
   let animation;
 
   switch (pos) {
