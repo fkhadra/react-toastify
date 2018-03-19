@@ -13,14 +13,14 @@ export default function(pos) {
       animation = {
         enter: {
           from: {
-            transform: 'translate3d(100%, 0, 0)',
+            transform: 'translate3d(110%, 0, 0)',
             visibility: 'visible'
           }
         },
         exit: {
           to: {
             visibility: 'hidden',
-            transform: 'translate3d(100%, 0, 0)'
+            transform: 'translate3d(110%, 0, 0)'
           }
         }
       };
@@ -30,14 +30,14 @@ export default function(pos) {
       animation = {
         enter: {
           from: {
-            transform: 'translate3d(-100%, 0, 0)',
+            transform: 'translate3d(-110%, 0, 0)',
             visibility: 'visible'
           }
         },
         exit: {
           to: {
             visibility: 'hidden',
-            transform: 'translate3d(-100%, 0, 0)'
+            transform: 'translate3d(-110%, 0, 0)'
           }
         }
       };
@@ -46,14 +46,14 @@ export default function(pos) {
       animation = {
         enter: {
           from: {
-            transform: 'translate3d(0, 100%, 0)',
+            transform: 'translate3d(0, 110%, 0)',
             visibility: 'visible'
           }
         },
         exit: {
           to: {
             visibility: 'hidden',
-            transform: 'translate3d(0, 100%, 0)'
+            transform: 'translate3d(0, 110%, 0)'
           }
         }
       };
@@ -62,14 +62,14 @@ export default function(pos) {
       animation = {
         enter: {
           from: {
-            transform: 'translate3d(0, -100%, 0)',
+            transform: 'translate3d(0, -110%, 0)',
             visibility: 'visible'
           }
         },
         exit: {
           to: {
             visibility: 'hidden',
-            transform: 'translate3d(0, -100%, 0)'
+            transform: 'translate3d(0, -110%, 0)'
           }
         }
       };
