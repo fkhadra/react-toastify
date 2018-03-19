@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { css } from 'glamor';
 
 import ProgressBar from './ProgressBar';
-import { POSITION, TYPE } from './constant';
-import defaultStyle from './defaultStyle';
+import { POSITION, TYPE } from './../utils/constant';
+import defaultStyle from './../utils/defaultStyle';
 import {
   falseOrElement,
   falseOrDelay,
   objectValues
-} from './util/propValidator';
+} from './../utils/propValidator';
 
 const styles = {
   container: (type, rtl) =>

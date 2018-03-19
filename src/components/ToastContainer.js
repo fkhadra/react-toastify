@@ -6,15 +6,15 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 import Toast from './Toast';
 import DefaultCloseButton from './DefaultCloseButton';
 import DefaultTransition from './DefaultTransition';
-import { POSITION, ACTION } from './constant';
-import defaultStyle from './defaultStyle';
-import EventManager from './util/EventManager';
+import { POSITION, ACTION } from './../utils/constant';
+import defaultStyle from './../utils/defaultStyle';
+import EventManager from './../utils/EventManager';
 import {
   falseOrDelay,
   falseOrElement,
   isValidDelay,
   objectValues
-} from './util/propValidator';
+} from './../utils/propValidator';
 
 const getToastPositionStyle = pos => {
   const positionKey = pos.toUpperCase().replace('-', '_');
@@ -185,9 +185,16 @@ class ToastContainer extends Component {
   isToastActive = id => this.state.toast.indexOf(parseInt(id, 10)) !== -1;
 
   removeToast(id) {
-    this.setState({
-      toast: this.state.toast.filter(v => v !== parseInt(id, 10))
-    });
+    this.setState(
+      {
+        toast: this.state.toast.filter(v => v !== parseInt(id, 10))
+      },
+      this.dispatchChange
+    );
+  }
+
+  dispatchChange() {
+    EventManager.emit(ACTION.ON_CHANGE, this.state.toast.length);
   }
 
   makeCloseButton(toastClose, toastId, type) {
@@ -296,12 +303,15 @@ class ToastContainer extends Component {
       }
     });
 
-    this.setState({
-      toast:
-        toastOptions.updateId !== null
-          ? [...this.state.toast]
-          : [...this.state.toast, toastId]
-    });
+    this.setState(
+      {
+        toast:
+          toastOptions.updateId !== null
+            ? [...this.state.toast]
+            : [...this.state.toast, toastId]
+      },
+      this.dispatchChange
+    );
   }
 
   makeToast(content, options) {

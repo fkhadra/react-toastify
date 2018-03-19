@@ -1,5 +1,5 @@
-import EventManager from './util/EventManager';
-import { POSITION, TYPE, ACTION } from './constant';
+import EventManager from './utils/EventManager';
+import { POSITION, TYPE, ACTION } from './utils/constant';
 
 const defaultOptions = {
   type: TYPE.DEFAULT,
@@ -87,6 +87,11 @@ const toaster = Object.assign(
           emitEvent(content, nextOptions);
         }
       }, 0);
+    },
+    onChange(callback) {
+      if (typeof callback === 'function') {
+        EventManager.on(ACTION.ON_CHANGE, callback);
+      }
     }
   },
   {

@@ -2,7 +2,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import DefaultCloseButton from './../DefaultCloseButton';
+import DefaultCloseButton from './../components/DefaultCloseButton';
 
 const closeToast = jest.fn();
 

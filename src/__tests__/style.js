@@ -1,4 +1,4 @@
-import defaultStyle, { defineStyle } from './../defaultStyle';
+import defaultStyle, { defineStyle } from './../utils/defaultStyle';
 
 const defaultValues = { ...defaultStyle };
 

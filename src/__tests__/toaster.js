@@ -3,25 +3,32 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import ToastContainer from './../ToastContainer';
+import ToastContainer from './../components/ToastContainer';
 import toaster from './../toaster';
-import EventManager from './../util/EventManager';
-import { ACTION, TYPE } from './../constant';
+import EventManager from './../utils/EventManager';
+import { ACTION, TYPE } from './../utils/constant';
 
 jest.useFakeTimers();
 
+// Clear all previous event to avoid any clash between tests
+beforeEach(() => {
+  EventManager.off(ACTION.SHOW);
+  EventManager.off(ACTION.CLEAR);
+  EventManager.off(ACTION.ON_CHANGE);
+});
+
 describe('toastify', () => {
   it('Should emit notification only if a container is mounted', () => {
-    const spy = jest.fn();
+    const fn = jest.fn();
 
-    EventManager.on(ACTION.SHOW, spy);
+    EventManager.on(ACTION.SHOW, fn);
     toaster('hello');
-    expect(spy).not.toHaveBeenCalled();
+    expect(fn).not.toHaveBeenCalled();
 
     mount(<ToastContainer />);
     jest.runAllTimers();
 
-    expect(spy).toHaveBeenCalled();
+    expect(fn).toHaveBeenCalled();
   });
 
   it('Should return a new id each time we emit a notification', () => {
@@ -29,6 +36,30 @@ describe('toastify', () => {
     const secondId = toaster('Hello');
 
     expect(firstId).not.toEqual(secondId);
+  });
+
+  describe('onChange event', () => {
+    it('Should be able to track when toast is added or removed', () => {
+      mount(<ToastContainer />);
+      const fn = jest.fn();
+      toaster.onChange(fn);
+      expect(fn).not.toHaveBeenCalled();
+
+      toaster('hello');
+
+      jest.runAllTimers();
+      expect(fn).toHaveBeenCalled();
+    });
+
+    it('The callback should receive the number of toast displayed', done => {
+      mount(<ToastContainer />);
+      toaster.onChange(count => {
+        expect(count).toBe(1);
+        done();
+      });
+      toaster('hello');
+      jest.runAllTimers();
+    });
   });
 
   it('Should be able remove toast programmatically', () => {

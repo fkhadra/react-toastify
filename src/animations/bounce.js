@@ -1,11 +1,19 @@
-import { POSITION } from './constant';
+import { POSITION } from './../utils/constant';
 
-export default function getAnimation(pos) {
+const timingFunction = {
+  'from, 60%, 75%, 90%, to': {
+    animationTimingFunction: 'cubic-bezier(0.215, 0.610, 0.355, 1.000)'
+  }
+};
+
+export default function(pos) {
+  let animation;
+
   switch (pos) {
     case POSITION.TOP_RIGHT:
     case POSITION.BOTTOM_RIGHT:
     default:
-      return {
+      animation = {
         enter: {
           from: {
             opacity: 0,
@@ -36,9 +44,10 @@ export default function getAnimation(pos) {
           }
         }
       };
+      break;
     case POSITION.TOP_LEFT:
     case POSITION.BOTTOM_LEFT:
-      return {
+      animation = {
         enter: {
           '0%': {
             opacity: 0,
@@ -69,8 +78,9 @@ export default function getAnimation(pos) {
           }
         }
       };
+      break;
     case POSITION.BOTTOM_CENTER:
-      return {
+      animation = {
         enter: {
           from: {
             opacity: 0,
@@ -104,8 +114,9 @@ export default function getAnimation(pos) {
           }
         }
       };
+      break;
     case POSITION.TOP_CENTER:
-      return {
+      animation = {
         enter: {
           '0%': {
             opacity: 0,
@@ -139,5 +150,11 @@ export default function getAnimation(pos) {
           }
         }
       };
+      break;
   }
+
+  return {
+    enter: { ...timingFunction, ...animation.enter },
+    exit: animation.exit
+  };
 }
