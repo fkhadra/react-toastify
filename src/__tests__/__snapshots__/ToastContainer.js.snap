@@ -23,6 +23,7 @@ exports[`ToastContainer Should allow glamor rule as className 1`] = `
   hideProgressBar={false}
   newestOnTop={false}
   pauseOnHover={true}
+  pauseOnVisibilityChange={true}
   position="top-right"
   progressClassName={null}
   rtl={false}
