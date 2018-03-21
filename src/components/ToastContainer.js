@@ -47,7 +47,7 @@ const styles = (disablePointer, position, rtl) =>
       [`@media ${defaultStyle.mobile}`]: {
         width: '100vw',
         padding: 0,
-        ...rtl ? { right: 0} : { left: 0 },
+        ...(rtl ? { right: 0 } : { left: 0 }),
         margin: 0,
         position: 'fixed',
         ...(position.substring(0, 3) === 'top' ? { top: 0 } : { bottom: 0 })
@@ -129,13 +129,19 @@ class ToastContainer extends Component {
     /**
      * Support rtl display
      */
-    rtl: PropTypes.bool
+    rtl: PropTypes.bool,
+
+    /**
+     * pause on document visibility change
+     */
+    pauseOnVisibilityChange: PropTypes.bool
   };
 
   static defaultProps = {
     position: POSITION.TOP_RIGHT,
     transition: DefaultTransition,
     rtl: false,
+    pauseOnVisibilityChange: true,
     autoClose: 5000,
     hideProgressBar: false,
     closeButton: <DefaultCloseButton />,
@@ -171,13 +177,17 @@ class ToastContainer extends Component {
     EventManager.on(SHOW, (content, options) => this.show(content, options))
       .on(CLEAR, id => (id !== null ? this.removeToast(id) : this.clear()))
       .emit(MOUNTED, this);
-    document.addEventListener('visibilitychange', this.isDocumentHidden);
+
+    this.props.pauseOnVisibilityChange &&
+      document.addEventListener('visibilitychange', this.isDocumentHidden);
   }
 
   componentWillUnmount() {
     EventManager.off(ACTION.SHOW);
     EventManager.off(ACTION.CLEAR);
-    document.removeEventListener('visibilitychange', this.isDocumentHidden);
+    
+    this.props.pauseOnVisibilityChange &&
+      document.removeEventListener('visibilitychange', this.isDocumentHidden);
   }
 
   isDocumentHidden = () => this.setState({ isDocumentHidden: document.hidden });

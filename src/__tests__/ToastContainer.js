@@ -249,7 +249,6 @@ describe('ToastContainer', () => {
     });
   });
 
-  // This test should be executed after all the others because the execption mess all the rest
   it("Should throw an error if can't render a toast", () => {
     expect(() => {
       mount(<ToastContainer />);
@@ -257,5 +256,14 @@ describe('ToastContainer', () => {
       jest.runAllTimers();
       jest.clearAllTimers();
     }).toThrow(/The element you provided cannot be rendered/);
+  });
+
+  it('Should be able run toast even when document is not visible', () => {
+    document.addEventListener = jest.fn();
+    mount(<ToastContainer pauseOnVisibilityChange={false} />);
+    const ev = new Event('visibilitychange');
+    document.dispatchEvent(ev); 
+    
+    expect(document.addEventListener).not.toHaveBeenCalled();
   });
 });
