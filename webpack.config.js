@@ -1,10 +1,8 @@
 /* eslint-disable */
 const webpack = require('webpack');
 
-const isDev = process.env.NODE_ENV === 'development';
-
 module.exports = {
-  mode: process.env.NODE_ENV || 'development',
+  mode: process.env.NODE_ENV || 'production',
   devtool: 'source-map',
   entry: './src/index.js',
   output: {
@@ -18,11 +16,7 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel-loader',
-        options: {
-          presets: ['env', 'react-app'],
-          sourceMap: true
-        }
+        loader: 'babel-loader'
       }
     ]
   },
