@@ -23,12 +23,7 @@ module.exports = {
             loader: 'style-loader'
           },
           {
-            loader: 'css-loader',
-            options: {
-              modules: true,
-              camelCase: true,
-              sourceMap: true
-            }
+            loader: 'css-loader'
           }
         ]
       }
