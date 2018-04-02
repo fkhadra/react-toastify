@@ -6,17 +6,17 @@ function getProp(prop, value) {
 
 function getType(type) {
   switch (type) {
-    case "default":
+    case 'default':
     default:
-      return 'toast(';
-    case "success":
-    return 'toast.success(';
-    case "error":
-      return 'toast.error(';
-    case "info":
-      return 'toast.info(';
-    case "warning":
-    return 'toast.warn(';
+      return 'toast';
+    case 'success':
+      return 'toast.success';
+    case 'error':
+      return 'toast.error';
+    case 'info':
+      return 'toast.info';
+    case 'warning':
+      return 'toast.warn';
   }
 }
 
@@ -36,16 +36,30 @@ const ToastCode = ({
     <h3>Toast Emitter</h3>
     <div className="code">
       <div>
-        {`${getType(type)}Lorem Ipsum, { `}
+        <span className="code__component">{getType(type)}</span>
+        {`('🦄 Wow so easy!', { `}
       </div>
-      <div>{`position: "${position}"`}</div>
-      <div>{`autoClose: ${disableAutoClose ? false : autoClose}`}</div>
-      <div>{`hideProgressBar: ${hideProgressBar ? 'true' : 'false'}`}</div>
-      <div>{`closeOnClick: ${closeOnClick ? 'true' : 'false'}`}</div>
-      <div>{`pauseOnHover: ${pauseOnHover ? 'true' : 'false'}`}</div>
       <div>
-        {`});`}
+        <span className="code__props">position</span>
+        {`: "${position}"`}
       </div>
+      <div>
+        <span className="code__props">autoClose</span>
+        {`: ${disableAutoClose ? false : autoClose}`}
+      </div>
+      <div>
+        <span className="code__props">hideProgressBar</span>
+        {`: ${hideProgressBar ? 'true' : 'false'}`}
+      </div>
+      <div>
+        <span className="code__props">closeOnClick</span>
+        {`: ${closeOnClick ? 'true' : 'false'}`}
+      </div>
+      <div>
+        <span className="code__props">pauseOnHover</span>
+        {`: ${pauseOnHover ? 'true' : 'false'}`}
+      </div>
+      <div>{`});`}</div>
     </div>
   </div>
 );

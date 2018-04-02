@@ -9,7 +9,6 @@ body {
 }
 
 * {
-    color: #fff;
     box-sizing: border-box;
 }
 
@@ -26,7 +25,7 @@ header {
 }
 
 h3 {
-    color: #222;
+    color: #fff;
 }
 
 header h1 {
@@ -46,6 +45,7 @@ input[type="number"] {
     margin: 0 5px;
     border-radius: 5px;
     border-color: #ac557b;
+    color: #fff;
 }
 
 input[type="radio"] {
@@ -69,7 +69,7 @@ input[type="radio"] {
     font-style: italic;
     background: #222;
     padding: 5px;
-    border-radius: 5px;
+    border-left: 3px solid #a9547e;
 }
 
 .container__options {
@@ -116,6 +116,15 @@ input[type="radio"] {
     font-style: italic;
     border-left: 3px solid #a9547e;
     padding-left: 20px;
+    background: #222;
+}
+
+.code__component {
+    color: #66d9ef;
+}
+
+.code__props {
+    color: #a6e22e;
 }
 
 .code div {
@@ -125,4 +134,32 @@ input[type="radio"] {
 .code div:first-child,
 .code div:last-child {
     margin: 0;
+}
+
+.github-corner:hover .octo-arm {
+    animation: octocat-wave 560ms ease-in-out
+}
+
+@keyframes octocat-wave {
+    0%,
+    100% {
+        transform: rotate(0)
+    }
+    20%,
+    60% {
+        transform: rotate(-25deg)
+    }
+    40%,
+    80% {
+        transform: rotate(10deg)
+    }
+}
+
+@media (max-width:500px) {
+    .github-corner:hover .octo-arm {
+        animation: none
+    }
+    .github-corner .octo-arm {
+        animation: octocat-wave 560ms ease-in-out
+    }
 }

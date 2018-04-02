@@ -57,12 +57,28 @@ class App extends Component {
 
   clearAll = () => toast.dismiss();
 
-  // showToast = () => toast
+  showToast = () =>
+    this.state.type === 'default'
+      ? toast('🦄 Wow so easy !')
+      : toast[this.state.type]('🚀 Wow so easy !');
 
   handleAutoCloseDelay = e =>
     this.setState({
       autoClose: e.target.value > 0 ? parseInt(e.target.value, 10) : 1
     });
+
+  isDefaultProps() {
+    return (
+      this.state.position === 'top-right' &&
+      (this.state.autoClose === 5000 && !this.state.disableAutoClose) &&
+      !this.state.hideProgressBar &&
+      !this.state.newestOnTop &&
+      !this.state.rtl &&
+      this.state.pauseOnVisibilityChange &&
+      this.state.pauseOnHover &&
+      this.state.closeOnClick
+    );
+  }
 
   handleRadio = e =>
     this.setState({
@@ -92,9 +108,11 @@ class App extends Component {
       <main>
         <Header />
         <div className="container">
-            <p>By default, all toasts will inherit ToastContainer's props. Props defined on toast supersede ToastContainer's props.
-              Props marked with * can only be set on the ToastContainer.
-            </p>
+          <p>
+            By default, all toasts will inherit ToastContainer's props. Props
+            defined on toast supersede ToastContainer's props. Props marked with
+            * can only be set on the ToastContainer.
+          </p>
           <section className="container__options">
             <div>
               <h3>Position</h3>
@@ -135,7 +153,7 @@ class App extends Component {
               <ul>{this.renderFlags()}</ul>
               <ul className="container__actions">
                 <li>
-                  <button className="btn">
+                  <button className="btn" onClick={this.showToast}>
                     <span role="img" aria-label="show alert">
                       🚀
                     </span>{' '}
@@ -162,11 +180,17 @@ class App extends Component {
             </div>
           </section>
           <section>
-            <ContainerCode {...this.state} />
+            <ContainerCode
+              {...this.state}
+              isDefaultProps={this.isDefaultProps()}
+            />
             <ToastCode {...this.state} />
           </section>
         </div>
-        <ToastContainer />
+        <ToastContainer
+          {...this.state}
+          autoClose={this.state.disableAutoClose ? false : this.state.autoClose}
+        />
       </main>
     );
   }
