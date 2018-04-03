@@ -20,7 +20,7 @@
     "index.d.ts"
   ],
   "scripts": {
-    "start": "webpack-dev-server --config ./webpack.config.dev.js",
+    "start": "npm run sass && webpack-dev-server --config ./webpack.config.dev.js",
     "test": "jest",
     "test:coverage": "jest --coverage && cat ./coverage/lcov.info | coveralls",
     "lint": "eslint src/",
@@ -47,6 +47,7 @@
   },
   "homepage": "https://github.com/fkhadra/react-toastify#readme",
   "dependencies": {
+    "classnames": "^2.2.5",
     "glamor": "^2.20.40",
     "prop-types": "^15.6.0",
     "react-transition-group": "^2.2.1"
