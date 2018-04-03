@@ -73,7 +73,7 @@ ProgressBar.propTypes = {
 
 ProgressBar.defaultProps = {
   type: TYPE.DEFAULT,
-  hide: false,
+  hide: false
 };
 
 export default ProgressBar;

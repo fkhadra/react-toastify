@@ -155,22 +155,19 @@ interface CommonOptions {
   closeButton?: React.ReactNode | false;
 
   /**
-   * An optional css class to set for the progress bar. It can be a glamor rule
-   * or a css class name.
+   * An optional css class to set for the progress bar.
    */
-  progressClassName?: string | object;
+  progressClassName?: string;
 
   /**
-   * An optional css class to set. It can be a glamor rule
-   * or a css class name.
+   * An optional css class to set.
    */
-  className?: string | object;
+  className?: string;
 
   /**
-   * An optional css class to set for the toast content. It can be a glamor rule
-   * or a css class name.
+   * An optional css class to set for the toast content.
    */
-  bodyClassName?: string | object;
+  bodyClassName?: string;
 
   /**
    * Hide or show the progress bar.
@@ -223,10 +220,9 @@ interface ToastContainerProps extends CommonOptions {
   style?: object;
 
   /**
-   * An optional css class to set. It can be a glamor rule
-   * or a css class name.
+   * An optional css class to set. 
    */
-  toastClassName?: string | object;
+  toastClassName?: string;
 
   /**
    * Support right to left display.

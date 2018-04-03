@@ -55,7 +55,7 @@ class ToastContainer extends Component {
     /**
      * An optional className
      */
-    className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    className: PropTypes.string,
 
     /**
      * An optional style
@@ -65,20 +65,17 @@ class ToastContainer extends Component {
     /**
      * An optional className for the toast
      */
-    toastClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    toastClassName: PropTypes.string,
 
     /**
      * An optional className for the toast body
      */
-    bodyClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    bodyClassName: PropTypes.string,
 
     /**
      * An optional className for the toast progress bar
      */
-    progressClassName: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.object
-    ]),
+    progressClassName: PropTypes.string,
 
     /**
      * Define enter and exit transition using react-transition-group
