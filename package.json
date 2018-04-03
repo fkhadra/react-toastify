@@ -31,7 +31,10 @@
     "build:es": "npm run clean:es && cross-env NODE_ENV=production babel --ignore=__tests__ src -d lib",
     "build:umd": "npm run clean:umd && cross-env NODE_ENV=production webpack",
     "clean:es": "rimraf lib/*",
-    "clean:umd": "rimraf dist/*"
+    "clean:umd": "rimraf dist/*",
+    "sass": "node-sass scss/main.scss dist/ReactToastify.css",
+    "postsass": "postcss --use autoprefixer -m -b 'last 2 versions' dist/ReactToastify.css -o dist/ReactToastify.css",
+    "style": "npm run sass && cssnano dist/ReactToastify.css dist/ReactToastify.min.css --no-zindex --no-reduceIdents"
   },
   "repository": {
     "type": "git",
@@ -71,6 +74,8 @@
     "coveralls": "^3.0.0",
     "cross-env": "^5.1.4",
     "css-loader": "^0.28.11",
+    "cssnano": "^3.10.0",
+    "cssnano-cli": "^1.0.5",
     "enzyme": "^3.0.0",
     "enzyme-adapter-react-16": "^1.0.0",
     "enzyme-to-json": "^3.2.2",
@@ -84,6 +89,9 @@
     "jest": "^21.2.1",
     "jest-cli": "^21.2.1",
     "jest-glamor-react": "^3.2.2",
+    "node-sass": "^4.8.3",
+    "postcss": "^6.0.21",
+    "postcss-cli": "^5.0.0",
     "prettier": "^1.9.2",
     "raf": "^3.3.2",
     "react": "^16.0.0",
