@@ -1,0 +1,197 @@
+@mixin timing-function {
+    animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+}
+
+@keyframes #{$rt-namespace}__bounceInRight {
+    from,
+    60%,
+    75%,
+    90%,
+    to {
+        @include timing-function;
+    }
+    from {
+        opacity: 0;
+        transform: translate3d(3000px, 0, 0);
+    }
+    60% {
+        opacity: 1;
+        transform: translate3d(-25px, 0, 0);
+    }
+    75% {
+        transform: translate3d(10px, 0, 0);
+    }
+    90% {
+        transform: translate3d(-5px, 0, 0);
+    }
+    to {
+        transform: none;
+    }
+}
+
+@keyframes #{$rt-namespace}__bounceOutRight {
+    20% {
+        opacity: 1;
+        transform: translate3d(-20px, 0, 0);
+    }
+    to {
+        opacity: 0;
+        transform: translate3d(2000px, 0, 0);
+    }
+}
+
+@keyframes #{$rt-namespace}__bounceInLeft {
+    from,
+    60%,
+    75%,
+    90%,
+    to {
+        @include timing-function;
+    }
+    0% {
+        opacity: 0;
+        transform: translate3d(-3000px, 0, 0);
+    }
+    60% {
+        opacity: 1;
+        transform: translate3d(25px, 0, 0);
+    }
+    75% {
+        transform: translate3d(-10px, 0, 0);
+    }
+    90% {
+        transform: translate3d(5px, 0, 0);
+    }
+    to {
+        transform: none;
+    }
+}
+
+@keyframes #{$rt-namespace}__bounceOutLeft {
+    20% {
+        opacity: 1;
+        transform: translate3d(20px, 0, 0);
+    }
+    to {
+        opacity: 0;
+        transform: translate3d(-2000px, 0, 0);
+    }
+}
+
+@keyframes #{$rt-namespace}__bounceInUp {
+    from,
+    60%,
+    75%,
+    90%,
+    to {
+        @include timing-function;
+    }
+    from {
+        opacity: 0;
+        transform: translate3d(0, 3000px, 0);
+    }
+    60% {
+        opacity: 1;
+        transform: translate3d(0, -20px, 0);
+    }
+    75% {
+        transform: translate3d(0, 10px, 0);
+    }
+    90% {
+        transform: translate3d(0, -5px, 0);
+    }
+    to {
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes #{$rt-namespace}__bounceOutUp {
+    20% {
+        transform: translate3d(0, -10px, 0);
+    }
+    40%,
+    45% {
+        opacity: 1;
+        transform: translate3d(0, 20px, 0);
+    }
+    to {
+        opacity: 0;
+        transform: translate3d(0, -2000px, 0);
+    }
+}
+
+@keyframes #{$rt-namespace}__bounceInDown {
+    from,
+    60%,
+    75%,
+    90%,
+    to {
+        @include timing-function;
+    }
+    0% {
+        opacity: 0;
+        transform: translate3d(0, -3000px, 0);
+    }
+    60% {
+        opacity: 1;
+        transform: translate3d(0, 25px, 0);
+    }
+    75% {
+        transform: translate3d(0, -10px, 0);
+    }
+    90% {
+        transform: translate3d(0, 5px, 0);
+    }
+    to {
+        transform: none;
+    }
+}
+
+@keyframes #{$rt-namespace}__bounceOutDown {
+    20% {
+        transform: translate3d(0, 10px, 0);
+    }
+    40%,
+    45% {
+        opacity: 1;
+        transform: translate3d(0, -20px, 0);
+    }
+    to {
+        opacity: 0;
+        transform: translate3d(0, 2000px, 0);
+    }
+}
+
+.#{$rt-namespace}__bounce-enter {
+    &--top-left,
+    &--bottom-left {
+        animation-name: #{$rt-namespace}__bounceInLeft;
+    }
+    &--top-right,
+    &--bottom-right {
+        animation-name: #{$rt-namespace}__bounceInRight;
+    }
+    &--top-center {
+        animation-name: #{$rt-namespace}__bounceInDown;
+    }
+    &--bottom-center {
+        animation-name: #{$rt-namespace}__bounceInUp;
+    }
+}
+
+.#{$rt-namespace}__bounce-exit {
+    &--top-left,
+    &--bottom-left {
+        animation-name: #{$rt-namespace}__bounceOutLeft;
+    }
+    &--top-right,
+    &--bottom-right {
+        animation-name: #{$rt-namespace}__bounceOutRight;
+    }
+    &--top-center {
+        animation-name: #{$rt-namespace}__bounceOutUp;
+    }
+    &--bottom-center {
+        animation-name: #{$rt-namespace}__bounceOutDown;
+    }
+}

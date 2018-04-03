@@ -1,4 +1,4 @@
-@keyframes #{$rt-namespace}__track-progress {
+@keyframes #{$rt-namespace}__trackProgress {
   0%{
     width: 100%;
   }
@@ -15,7 +15,7 @@
   height: 5px;
   z-index: $rt-z-index;
   opacity: 0.7;
-  animation: #{$rt-namespace}__track-progress linear 1;
+  animation: #{$rt-namespace}__trackProgress linear 1;
   background-color: rgba(255,255,255,.7);
 
   &--rtl {

@@ -4,8 +4,8 @@ import { css } from 'glamor';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 
 import Toast from './Toast';
-import DefaultCloseButton from './DefaultCloseButton';
-import DefaultTransition from './DefaultTransition';
+import CloseButton from './CloseButton';
+import { Bounce } from './Transitions';
 import { POSITION, ACTION } from './../utils/constant';
 import defaultStyle from './../utils/defaultStyle';
 import EventManager from './../utils/EventManager';
@@ -139,12 +139,12 @@ class ToastContainer extends Component {
 
   static defaultProps = {
     position: POSITION.TOP_RIGHT,
-    transition: DefaultTransition,
+    transition: Bounce,
     rtl: false,
     pauseOnVisibilityChange: true,
     autoClose: 5000,
     hideProgressBar: false,
-    closeButton: <DefaultCloseButton />,
+    closeButton: <CloseButton />,
     pauseOnHover: true,
     closeOnClick: true,
     newestOnTop: false,
