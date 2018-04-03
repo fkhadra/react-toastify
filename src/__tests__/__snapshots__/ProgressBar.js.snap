@@ -1,85 +1,46 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ProgressBar Should allow glamor rule as className 1`] = `
-.css-de8zyl,
-[data-css-de8zyl] {
-  position: absolute;
-  bottom: 0;
-  width: 0;
-  height: 5px;
-  z-index: 9999;
-  opacity: 0.7;
-  animation: animation_91emau linear 1;
-  animation-play-state: running;
-  animation-duration: 5000ms;
-  background-color: rgba(255,255,255,.7);
-  background: red;
-  left: 0;
-  -webkit-animation: animation_91emau linear 1;
-  -webkit-animation-play-state: running;
-  -webkit-animation-duration: 5000ms;
-}
-
 <div
-  data-css-de8zyl=""
+  className="Toastify__progress-bar Toastify__progress-bar--default"
   onAnimationEnd={[Function]}
+  style={
+    Object {
+      "WebkitAnimationPlayState": "running",
+      "animationDuration": "5000ms",
+      "animationPlayState": "running",
+      "opacity": 1,
+    }
+  }
 />
 `;
 
 exports[`ProgressBar Should be able to hide the progress bar 1`] = `
-.css-1pnfg55,
-[data-css-1pnfg55] {
-  position: absolute;
-  bottom: 0;
-  width: 0;
-  height: 5px;
-  z-index: 9999;
-  opacity: 0;
-  animation: animation_91emau linear 1;
-  animation-play-state: running;
-  animation-duration: 5000ms;
-  background-color: rgba(255,255,255,.7);
-  background: -webkit-linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55);
-  background: -moz-linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55);
-  background: linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55);
-  left: 0;
-  -webkit-animation: animation_91emau linear 1;
-  -webkit-animation-play-state: running;
-  -webkit-animation-duration: 5000ms;
-}
-
 <div
-  className=""
-  data-css-1pnfg55=""
+  className="Toastify__progress-bar Toastify__progress-bar--default"
   onAnimationEnd={[Function]}
+  style={
+    Object {
+      "WebkitAnimationPlayState": "running",
+      "animationDuration": "5000ms",
+      "animationPlayState": "running",
+      "opacity": 0,
+    }
+  }
 />
 `;
 
 exports[`ProgressBar Should be able to pause animation 1`] = `
-.css-efhk71,
-[data-css-efhk71] {
-  position: absolute;
-  bottom: 0;
-  width: 0;
-  height: 5px;
-  z-index: 9999;
-  opacity: 0.7;
-  animation: animation_91emau linear 1;
-  animation-play-state: paused;
-  animation-duration: 5000ms;
-  background-color: rgba(255,255,255,.7);
-  background: -webkit-linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55);
-  background: -moz-linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55);
-  background: linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55);
-  left: 0;
-  -webkit-animation: animation_91emau linear 1;
-  -webkit-animation-play-state: paused;
-  -webkit-animation-duration: 5000ms;
-}
-
 <div
-  className=""
-  data-css-efhk71=""
+  className="Toastify__progress-bar Toastify__progress-bar--default"
   onAnimationEnd={[Function]}
+  style={
+    Object {
+      "WebkitAnimationPlayState": "paused",
+      "animationDuration": "5000ms",
+      "animationPlayState": "paused",
+      "opacity": 1,
+    }
+  }
 />
 `;

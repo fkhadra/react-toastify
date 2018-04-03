@@ -48,7 +48,6 @@
   "homepage": "https://github.com/fkhadra/react-toastify#readme",
   "dependencies": {
     "classnames": "^2.2.5",
-    "glamor": "^2.20.40",
     "prop-types": "^15.6.0",
     "react-transition-group": "^2.2.1"
   },

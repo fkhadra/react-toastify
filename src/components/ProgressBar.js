@@ -21,11 +21,11 @@ function ProgressBar({
   style.WebkitAnimationPlayState = style.animationPlayState;
 
   const classNames = cx(
-    'react-toastify__progress-bar',
-    `react-toastify__progress-bar--${type}`,
+    'Toastify__progress-bar',
+    `Toastify__progress-bar--${type}`,
     className,
     {
-      'react-toastify__progress-bar--rtl': rtl
+      'Toastify__progress-bar--rtl': rtl
     }
   );
 

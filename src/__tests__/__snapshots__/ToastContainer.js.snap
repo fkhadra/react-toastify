@@ -15,7 +15,7 @@ exports[`ToastContainer Should allow glamor rule as className 1`] = `
     }
   }
   closeButton={
-    <DefaultCloseButton
+    <CloseButton
       ariaLabel="close"
     />
   }

@@ -1,46 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { css } from 'glamor';
+import cx from 'classnames';
 
 import ProgressBar from './ProgressBar';
 import { POSITION, TYPE } from './../utils/constant';
-import defaultStyle from './../utils/defaultStyle';
 import {
   falseOrElement,
   falseOrDelay,
   objectValues
 } from './../utils/propValidator';
-
-const styles = {
-  container: (type, rtl) =>
-    css({
-      position: 'relative',
-      minHeight: '64px',
-      boxSizing: 'border-box',
-      marginBottom: '1rem',
-      padding: '8px',
-      borderRadius: '1px',
-      boxShadow:
-        '0 1px 10px 0 rgba(0, 0, 0, .1), 0 2px 15px 0 rgba(0, 0, 0, .05)',
-      display: 'flex',
-      justifyContent: 'space-between',
-      maxHeight: '800px',
-      overflow: 'hidden',
-      fontFamily: defaultStyle.fontFamily,
-      cursor: 'pointer',
-      background:
-        defaultStyle[`color${type.charAt(0).toUpperCase()}${type.slice(1)}`],
-      ...(type === 'default' ? { color: '#aaa' } : {}),
-      [`@media ${defaultStyle.mobile}`]: {
-        marginBottom: 0
-      },
-      direction: rtl ? 'rtl' : 'ltr'
-    }),
-  body: css({
-    margin: 'auto 0',
-    flex: 1
-  })
-};
 
 class Toast extends Component {
   static propTypes = {
@@ -60,12 +28,9 @@ class Toast extends Component {
     onOpen: PropTypes.func,
     onClose: PropTypes.func,
     type: PropTypes.oneOf(objectValues(TYPE)),
-    className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    bodyClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    progressClassName: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.object
-    ]),
+    className: PropTypes.string,
+    bodyClassName: PropTypes.string,
+    progressClassName: PropTypes.string,
     updateId: PropTypes.number,
     ariaLabel: PropTypes.string
   };
@@ -148,6 +113,17 @@ class Toast extends Component {
       rtl
     } = this.props;
 
+    const toastClassname = cx(
+      'Toastify__toast',
+      `Toastify__toast--${type}`,
+      className,
+      {
+        'Toastify__toast--rtl': rtl
+      }
+    );
+
+    const bodyClassname = cx('Toastify__toast-body', bodyClassName);
+
     return (
       <Transition
         in={this.props.in}
@@ -157,21 +133,12 @@ class Toast extends Component {
         position={position}
       >
         <div
-          {...css(
-            styles.container(type, rtl),
-            typeof className !== 'string' && className
-          )}
+          className={toastClassname}
           {...this.getToastProps()}
         >
           <div
             {...this.props.in && { role: role }}
-            {...css(
-              styles.body,
-              typeof bodyClassName !== 'string' && bodyClassName
-            )}
-            {...typeof bodyClassName === 'string' && {
-              className: bodyClassName
-            }}
+            className={bodyClassname}
           >
             {children}
           </div>
