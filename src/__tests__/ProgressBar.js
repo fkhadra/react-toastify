@@ -2,7 +2,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { css } from 'glamor';
 
 import ProgressBar from './../components/ProgressBar';
 
@@ -21,14 +20,6 @@ describe('ProgressBar', () => {
     expect(component.find('.test')).toHaveLength(1);
   });
 
-  it('Should allow glamor rule as className', () => {
-    const component = shallow(
-      <ProgressBar {...REQUIRED_PROPS} className={css({ background: 'red' })} />
-    );
-
-    expect(toJson(component)).toMatchSnapshot();
-  });
-
   it('Should call closeToast function when animation end', () => {
     const component = shallow(<ProgressBar {...REQUIRED_PROPS} />);
 
@@ -39,13 +30,13 @@ describe('ProgressBar', () => {
 
   it('Should be able to hide the progress bar', () => {
     const component = shallow(<ProgressBar {...REQUIRED_PROPS} hide />);
-    expect(toJson(component)).toMatchSnapshot();
+    expect(component).toMatchSnapshot();
   });
 
   it('Should be able to pause animation', () => {
     const component = shallow(
       <ProgressBar {...REQUIRED_PROPS} isRunning={false} />
     );
-    expect(toJson(component)).toMatchSnapshot();
+    expect(component).toMatchSnapshot();
   });
 });

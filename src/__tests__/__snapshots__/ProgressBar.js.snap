@@ -1,46 +1,135 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ProgressBar Should allow glamor rule as className 1`] = `
-<div
-  className="Toastify__progress-bar Toastify__progress-bar--default"
-  onAnimationEnd={[Function]}
-  style={
-    Object {
-      "WebkitAnimationPlayState": "running",
-      "animationDuration": "5000ms",
-      "animationPlayState": "running",
-      "opacity": 1,
-    }
-  }
-/>
-`;
-
 exports[`ProgressBar Should be able to hide the progress bar 1`] = `
-<div
-  className="Toastify__progress-bar Toastify__progress-bar--default"
-  onAnimationEnd={[Function]}
-  style={
+ShallowWrapper {
+  "length": 1,
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <ProgressBar
+    closeToast={[Function]}
+    delay={5000}
+    hide={true}
+    isRunning={true}
+    rtl={false}
+    type="default"
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": null,
+    "nodeType": "host",
+    "props": Object {
+      "className": "Toastify__progress-bar Toastify__progress-bar--default",
+      "onAnimationEnd": [Function],
+      "style": Object {
+        "WebkitAnimationPlayState": "running",
+        "animationDuration": "5000ms",
+        "animationPlayState": "running",
+        "opacity": 0,
+      },
+    },
+    "ref": null,
+    "rendered": null,
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
     Object {
-      "WebkitAnimationPlayState": "running",
-      "animationDuration": "5000ms",
-      "animationPlayState": "running",
-      "opacity": 0,
-    }
-  }
-/>
+      "instance": null,
+      "key": null,
+      "nodeType": "host",
+      "props": Object {
+        "className": "Toastify__progress-bar Toastify__progress-bar--default",
+        "onAnimationEnd": [Function],
+        "style": Object {
+          "WebkitAnimationPlayState": "running",
+          "animationDuration": "5000ms",
+          "animationPlayState": "running",
+          "opacity": 0,
+        },
+      },
+      "ref": null,
+      "rendered": null,
+      "type": "div",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+      },
+    },
+  },
+}
 `;
 
 exports[`ProgressBar Should be able to pause animation 1`] = `
-<div
-  className="Toastify__progress-bar Toastify__progress-bar--default"
-  onAnimationEnd={[Function]}
-  style={
+ShallowWrapper {
+  "length": 1,
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <ProgressBar
+    closeToast={[Function]}
+    delay={5000}
+    hide={false}
+    isRunning={false}
+    rtl={false}
+    type="default"
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": null,
+    "nodeType": "host",
+    "props": Object {
+      "className": "Toastify__progress-bar Toastify__progress-bar--default",
+      "onAnimationEnd": [Function],
+      "style": Object {
+        "WebkitAnimationPlayState": "paused",
+        "animationDuration": "5000ms",
+        "animationPlayState": "paused",
+        "opacity": 1,
+      },
+    },
+    "ref": null,
+    "rendered": null,
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
     Object {
-      "WebkitAnimationPlayState": "paused",
-      "animationDuration": "5000ms",
-      "animationPlayState": "paused",
-      "opacity": 1,
-    }
-  }
-/>
+      "instance": null,
+      "key": null,
+      "nodeType": "host",
+      "props": Object {
+        "className": "Toastify__progress-bar Toastify__progress-bar--default",
+        "onAnimationEnd": [Function],
+        "style": Object {
+          "WebkitAnimationPlayState": "paused",
+          "animationDuration": "5000ms",
+          "animationPlayState": "paused",
+          "opacity": 1,
+        },
+      },
+      "ref": null,
+      "rendered": null,
+      "type": "div",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+      },
+    },
+  },
+}
 `;
