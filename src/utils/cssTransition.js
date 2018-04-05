@@ -7,7 +7,7 @@ export default function({
   duration = 750,
   appendPosition = false
 }) {
-  return function Animation({ children, position, ...props }) {
+  return function Animation({ children, position, disableExitTransition, ...props }) {
     const enterClassName = appendPosition ? `${enter}--${position}` : enter;
     const exitClassName = appendPosition ? `${exit}--${position}` : exit;
 
@@ -29,10 +29,10 @@ export default function({
     return (
       <Transition
         {...props}
-        timeout={duration}
+        timeout={disableExitTransition ? 0 : duration}
         onEnter={onEnter}
         onEntered={onEntered}
-        onExit={onExit}
+        onExit={disableExitTransition ? () => {} : onExit}
       >
         {children}
       </Transition>
