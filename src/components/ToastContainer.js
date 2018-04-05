@@ -1,13 +1,12 @@
 import React, { Component, isValidElement, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import { css } from 'glamor';
+import cx from 'classnames';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 
 import Toast from './Toast';
-import DefaultCloseButton from './DefaultCloseButton';
-import DefaultTransition from './DefaultTransition';
+import CloseButton from './CloseButton';
+import { Bounce } from './Transitions';
 import { POSITION, ACTION } from './../utils/constant';
-import defaultStyle from './../utils/defaultStyle';
 import EventManager from './../utils/EventManager';
 import {
   falseOrDelay,
@@ -15,46 +14,6 @@ import {
   isValidDelay,
   objectValues
 } from './../utils/propValidator';
-
-const getToastPositionStyle = pos => {
-  const positionKey = pos.toUpperCase().replace('-', '_');
-  const positionRule =
-    typeof POSITION[positionKey] !== 'undefined'
-      ? defaultStyle[positionKey]
-      : defaultStyle.TOP_RIGHT;
-
-  /** define margin for center toast based on toast witdh */
-  if (
-    positionKey.indexOf('CENTER') !== -1 &&
-    typeof positionRule.marginLeft === 'undefined'
-  ) {
-    positionRule.marginLeft = `-${parseInt(defaultStyle.width, 10) / 2}px`;
-  }
-
-  return positionRule;
-};
-
-const styles = (disablePointer, position, rtl) =>
-  css(
-    {
-      zIndex: defaultStyle.zIndex,
-      position: 'fixed',
-      padding: '4px',
-      width: defaultStyle.width,
-      boxSizing: 'border-box',
-      color: '#fff',
-      ...(disablePointer ? { pointerEvents: 'none' } : {}),
-      [`@media ${defaultStyle.mobile}`]: {
-        width: '100vw',
-        padding: 0,
-        ...(rtl ? { right: 0 } : { left: 0 }),
-        margin: 0,
-        position: 'fixed',
-        ...(position.substring(0, 3) === 'top' ? { top: 0 } : { bottom: 0 })
-      }
-    },
-    getToastPositionStyle(position)
-  );
 
 class ToastContainer extends Component {
   static propTypes = {
@@ -96,7 +55,7 @@ class ToastContainer extends Component {
     /**
      * An optional className
      */
-    className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    className: PropTypes.string,
 
     /**
      * An optional style
@@ -106,20 +65,17 @@ class ToastContainer extends Component {
     /**
      * An optional className for the toast
      */
-    toastClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    toastClassName: PropTypes.string,
 
     /**
      * An optional className for the toast body
      */
-    bodyClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    bodyClassName: PropTypes.string,
 
     /**
      * An optional className for the toast progress bar
      */
-    progressClassName: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.object
-    ]),
+    progressClassName: PropTypes.string,
 
     /**
      * Define enter and exit transition using react-transition-group
@@ -139,12 +95,12 @@ class ToastContainer extends Component {
 
   static defaultProps = {
     position: POSITION.TOP_RIGHT,
-    transition: DefaultTransition,
+    transition: Bounce,
     rtl: false,
     pauseOnVisibilityChange: true,
     autoClose: 5000,
     hideProgressBar: false,
-    closeButton: <DefaultCloseButton />,
+    closeButton: <CloseButton />,
     pauseOnHover: true,
     closeOnClick: true,
     newestOnTop: false,
@@ -185,7 +141,7 @@ class ToastContainer extends Component {
   componentWillUnmount() {
     EventManager.off(ACTION.SHOW);
     EventManager.off(ACTION.CLEAR);
-    
+
     this.props.pauseOnVisibilityChange &&
       document.removeEventListener('visibilitychange', this.isDocumentHidden);
   }
@@ -365,17 +321,20 @@ class ToastContainer extends Component {
       const disablePointer =
         toastToRender[position].length === 1 &&
         toastToRender[position][0] === null;
+      const props = {
+        className: cx(
+          'Toastify__toast-container',
+          `Toastify__toast-container--${position}`,
+          this.props.className,
+          { 'Toastify__toast-container--rtl': this.props.rtl }
+        ),
+        style: disablePointer
+          ? { ...this.props.style, pointerEvents: 'none' }
+          : { ...this.props.style }
+      };
 
       return (
-        <TransitionGroup
-          {...css(
-            styles(disablePointer, position, this.props.rtl),
-            typeof className !== 'string' && className
-          )}
-          {...typeof className === 'string' && { className }}
-          {...style !== null && { style }}
-          key={`container-${position}`}
-        >
+        <TransitionGroup {...props} key={`container-${position}`}>
           {toastToRender[position]}
         </TransitionGroup>
       );

@@ -1,8 +1,6 @@
 /* eslint-env jest */
 import React from 'react';
 import { mount } from 'enzyme';
-import toJson from 'enzyme-to-json';
-import { css } from 'glamor';
 
 import ToastContainer from './../components/ToastContainer';
 import toaster from './../toaster';
@@ -159,19 +157,10 @@ describe('ToastContainer', () => {
     toaster('hello');
     jest.runAllTimers();
 
-    expect(component.html()).toMatch(/class="foo"/);
+    expect(component.html()).toMatch(/class=".+foo"/);
     expect(component.html()).toMatch(/style="background: red;"/);
   });
 
-  it('Should allow glamor rule as className', () => {
-    const component = mount(
-      <ToastContainer className={css({ background: 'red' })} />
-    );
-    toaster('hello');
-    jest.runAllTimers();
-
-    expect(toJson(component)).toMatchSnapshot();
-  });
 
   it('Should pass a closeToast function when displaying a react component', () => {
     const component = mount(<ToastContainer />);

@@ -1,0 +1,45 @@
+.#{$rt-namespace}__toast {
+    position: relative;
+    min-height: $rt-toast-min-height;
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+    padding: 8px;
+    border-radius: 1px;
+    box-shadow: 0 1px 10px 0 rgba(0, 0, 0, .1), 0 2px 15px 0 rgba(0, 0, 0, .05);
+    display: flex;
+    justify-content: space-between;
+    max-height: $rt-toast-max-height;
+    overflow: hidden;
+    font-family: $rt-font-family;
+    cursor: pointer;
+    direction: ltr;
+    &--rtl {
+        direction: rtl;
+    }
+    &--default {
+        background: $rt-color-default;
+        color: #aaa;
+    }
+    &--info {
+        background: $rt-color-info;
+    }
+    &--success {
+        background: $rt-color-success;
+    }
+    &--warning {
+        background: $rt-color-warning;
+    }
+    &--error {
+        background: $rt-color-error;
+    }
+    &-body {
+        margin: auto 0;
+        flex: 1;
+    }
+}
+
+@media #{$rt-mobile} {
+  .#{$rt-namespace}__toast{
+    margin-bottom: 0;  
+  }
+}

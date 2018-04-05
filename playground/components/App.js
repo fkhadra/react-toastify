@@ -7,6 +7,7 @@ import ContainerCode from './ContainerCode';
 import ToastCode from './ToastCode';
 
 import { ToastContainer, toast } from './../../src/index';
+import './../../dist/ReactToastify.css';
 
 const flags = [
   {

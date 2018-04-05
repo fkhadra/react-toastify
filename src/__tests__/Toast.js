@@ -1,18 +1,16 @@
 /* eslint-env jest */
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import toJson from 'enzyme-to-json';
-import { css } from 'glamor';
 
 import Toast from './../components/Toast';
-import DefaultCloseButton from './../components/DefaultCloseButton';
-import DefaultTransition from './../components/DefaultTransition';
+import CloseButton from './../components/CloseButton';
+import { Bounce } from './../components/Transitions';
 import ProgressBar from './../components/ProgressBar';
 import { POSITION } from './../utils/constant';
 
 const REQUIRED_PROPS = {
-  closeButton: <DefaultCloseButton />,
-  transition: DefaultTransition,
+  closeButton: <CloseButton />,
+  transition: Bounce,
   in: true,
   autoClose: 5000,
   closeToast: () => {},
@@ -40,21 +38,6 @@ describe('Toast', () => {
     expect(component.find('.body-class')).toHaveLength(1);
   });
 
-  it('Should allow glamor rule as className', () => {
-    const component = shallow(
-      <Toast
-        {...REQUIRED_PROPS}
-        autoClose={false}
-        className={css({ background: 'red' })}
-        bodyClassName={css({ color: 'blue' })}
-      >
-        FooBar
-      </Toast>
-    );
-
-    expect(toJson(component)).toMatchSnapshot();
-  });
-
   it('Should support Rtl display', () => {
     const component = shallow(
       <Toast {...REQUIRED_PROPS} autoClose={false} rtl>
@@ -62,7 +45,7 @@ describe('Toast', () => {
       </Toast>
     );
 
-    expect(toJson(component)).toMatchSnapshot();
+    expect(component).toMatchSnapshot();
   });
 
   it('Should not render ProgressBar if autoClose prop is set to false', () => {
@@ -82,7 +65,7 @@ describe('Toast', () => {
       </Toast>
     );
 
-    expect(component.children().find(DefaultCloseButton).length).toBe(0);
+    expect(component.children().find(CloseButton).length).toBe(0);
   });
 
   it('Can call onOpen callback when component mount', () => {
