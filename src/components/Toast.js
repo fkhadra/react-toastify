@@ -105,7 +105,7 @@ class Toast extends Component {
     }
     typeof this.props.className === 'string' &&
       (toastProps.className = this.props.className);
-    //this.props.closeOnClick && (toastProps.onClick = this.props.closeToast);
+    this.props.closeOnClick && (toastProps.onClick = this.props.closeToast);
 
     return toastProps;
   }
@@ -140,14 +140,14 @@ class Toast extends Component {
     if (this.isDragged) {
       this.isDragged = false;
 
-      if(this.ref.style.opacity <= 0 ){
+      if(this.ref.style.opacity <= 0.3 ){
         this.setState({
           disableExitTransition: true
         }, this.props.closeToast);
         return;
       }
       
-      this.ref.style.transition = 'transform 0.3s, opacity 0.3s';
+      this.ref.style.transition = 'transform 0.2s, opacity 0.2s';
       this.ref.style.transform = 'translateX(0)';
       this.ref.style.opacity = 1;
 

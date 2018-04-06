@@ -38,6 +38,7 @@ module.exports = {
     host: 'localhost',
     port: process.env.PORT || 8888,
     historyApiFallback: true,
-    open: true
+    open: true,
+    host: '0.0.0.0'
   }
 };

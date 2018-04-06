@@ -47,6 +47,8 @@ ShallowWrapper {
       "children": <div
         className="Toastify__toast Toastify__toast--default Toastify__toast--rtl"
         onClick={[Function]}
+        onMouseDown={[Function]}
+        onTouchStart={[Function]}
       >
         <div
           className="Toastify__toast-body"
@@ -83,8 +85,10 @@ ShallowWrapper {
         ],
         "className": "Toastify__toast Toastify__toast--default Toastify__toast--rtl",
         "onClick": [Function],
+        "onMouseDown": [Function],
+        "onTouchStart": [Function],
       },
-      "ref": null,
+      "ref": [Function],
       "rendered": Array [
         Object {
           "instance": null,
@@ -126,6 +130,8 @@ ShallowWrapper {
         "children": <div
           className="Toastify__toast Toastify__toast--default Toastify__toast--rtl"
           onClick={[Function]}
+          onMouseDown={[Function]}
+          onTouchStart={[Function]}
         >
           <div
             className="Toastify__toast-body"
@@ -162,8 +168,10 @@ ShallowWrapper {
           ],
           "className": "Toastify__toast Toastify__toast--default Toastify__toast--rtl",
           "onClick": [Function],
+          "onMouseDown": [Function],
+          "onTouchStart": [Function],
         },
-        "ref": null,
+        "ref": [Function],
         "rendered": Array [
           Object {
             "instance": null,
