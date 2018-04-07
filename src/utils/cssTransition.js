@@ -1,13 +1,15 @@
 import React from 'react';
 import Transition from 'react-transition-group/Transition';
 
+const noop = () => {};
+
 export default function({
   enter,
   exit,
   duration = 750,
   appendPosition = false
 }) {
-  return function Animation({ children, position, disableExitTransition, ...props }) {
+  return function Animation({ children, position, preventExitTransition, ...props }) {
     const enterClassName = appendPosition ? `${enter}--${position}` : enter;
     const exitClassName = appendPosition ? `${exit}--${position}` : exit;
 
@@ -25,14 +27,14 @@ export default function({
       node.style.animationFillMode = 'both';
       node.style.animationDuration = `${duration * 0.001}s`;
     };
-
+    
     return (
       <Transition
         {...props}
-        timeout={disableExitTransition ? 0 : duration}
+        timeout={preventExitTransition ? 0 : duration}
         onEnter={onEnter}
         onEntered={onEntered}
-        onExit={disableExitTransition ? () => {} : onExit}
+        onExit={preventExitTransition ? noop : onExit}
       >
         {children}
       </Transition>

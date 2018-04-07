@@ -10,6 +10,19 @@ import {
   objectValues
 } from './../utils/propValidator';
 
+
+function getX(e) {
+  return e.targetTouches && e.targetTouches.length >= 1
+    ? e.targetTouches[0].clientX
+    : e.clientX;
+}
+
+function getY(e){
+  return e.targetTouches && e.targetTouches.length >= 1
+    ? e.targetTouches[0].clientY
+    : e.clientY;
+}
+
 class Toast extends Component {
   static propTypes = {
     closeButton: falseOrElement.isRequired,
@@ -32,6 +45,8 @@ class Toast extends Component {
     bodyClassName: PropTypes.string,
     progressClassName: PropTypes.string,
     updateId: PropTypes.number,
+    draggable: PropTypes.bool,
+    draggablePercent: PropTypes.number,
     ariaLabel: PropTypes.string
   };
 
@@ -45,31 +60,41 @@ class Toast extends Component {
     bodyClassName: null,
     progressClassName: null,
     updateId: null,
+    draggable: true,
+    draggablePercent: 0.8,
     role: 'alert'
   };
 
   state = {
     isRunning: true,
-    disableExitTransition: false
+    preventExitTransition: false
   };
 
-  isDragged = false;
+  flags = {
+    canCloseOnClick: true,
+    canDrag: false
+  };
 
   position = {
-    start: null,
-    x: null,
-    delta: null
+    start: 0,
+    x: 0,
+    y: 0,
+    deltaX: 0
   };
 
   ref = null;
 
+  removalDistance = -1;
+
   componentDidMount() {
     this.props.onOpen !== null && this.props.onOpen(this.getChildrenProps());
-    document.addEventListener('mousemove', this.onSwipeMove);
-    document.addEventListener('mouseup', this.onSwipeEnd);
+    if (this.props.draggable) {
+      document.addEventListener('mousemove', this.onDragMove);
+      document.addEventListener('mouseup', this.onDragEnd);
 
-    document.addEventListener('touchmove', this.onSwipeMove);
-    document.addEventListener('touchend', this.onSwipeEnd);
+      document.addEventListener('touchmove', this.onDragMove);
+      document.addEventListener('touchend', this.onDragEnd);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -82,6 +107,13 @@ class Toast extends Component {
 
   componentWillUnmount() {
     this.props.onClose !== null && this.props.onClose(this.getChildrenProps());
+    if (this.props.draggable) {
+      document.removeEventListener('mousemove', this.onDragMove);
+      document.removeEventListener('mouseup', this.onDragEnd);
+
+      document.removeEventListener('touchmove', this.onDragMove);
+      document.removeEventListener('touchend', this.onDragEnd);
+    }
   }
 
   pauseToast = () => {
@@ -98,64 +130,81 @@ class Toast extends Component {
 
   getToastProps() {
     const toastProps = {};
+    const { autoClose, pauseOnHover, closeOnClick, closeToast } = this.props;
 
-    if (this.props.autoClose !== false && this.props.pauseOnHover === true) {
+    if (autoClose && pauseOnHover) {
       toastProps.onMouseEnter = this.pauseToast;
       toastProps.onMouseLeave = this.playToast;
     }
-    typeof this.props.className === 'string' &&
-      (toastProps.className = this.props.className);
-    this.props.closeOnClick && (toastProps.onClick = this.props.closeToast);
+
+    // prevent toast from closing when user drags the toast
+    if (closeOnClick) {
+      toastProps.onClick = () => this.flags.canCloseOnClick && closeToast();
+    }
 
     return toastProps;
   }
 
-  getX(e) {
-    if (e.targetTouches && e.targetTouches.length >= 1) {
-      return e.targetTouches[0].clientX;
-    }
-    // mouse event
-    return e.clientX;
-  }
-
-  onSwipeStart = e => {
-    this.isDragged = true;
+  onDragStart = e => {
+    this.flags.canCloseOnClick = true;
+    this.flags.canDrag = true;
     this.ref.style.transition = '';
-    this.position.start = this.getX(e.nativeEvent);
-    this.position.x = this.getX(e.nativeEvent);
+    this.position.start = this.position.x = getX(e.nativeEvent);
+    this.removalDistance = this.ref.offsetWidth * this.props.draggablePercent;
   };
 
-  onSwipeMove = e => {
-    if (this.isDragged) {
-      //this.position.delta = Math.abs(this.position.x - this.getX(e));
-      this.position.x = this.getX(e);
-      this.ref.style.transform = `translateX(${this.position.x -
-        this.position.start}px)`;
-        this.ref.style.opacity = 1- Math.abs((this.position.x -
-          this.position.start) / (this.ref.offsetWidth * 0.8));
+  onDragMove = e => {
+    if (this.flags.canDrag) {
+
+      if (this.state.isRunning) {
+        this.pauseToast();
+      }
+
+      this.position.x = getX(e);
+      this.position.deltaX = this.position.x - this.position.start;
+      //prevent false positif during a toast click
+      this.position.start !== this.position.x &&
+        (this.flags.canCloseOnClick = false);
+
+      this.ref.style.transform = `translateX(${this.position.deltaX}px)`;
+      this.ref.style.opacity =
+        1 - Math.abs(this.position.deltaX / this.removalDistance);
     }
   };
 
-  onSwipeEnd = e => {
-    if (this.isDragged) {
-      this.isDragged = false;
+  onDragEnd = e => {
+    if (this.flags.canDrag) {
+      this.flags.canDrag = false;
 
-      if(this.ref.style.opacity <= 0.3 ){
-        this.setState({
-          disableExitTransition: true
-        }, this.props.closeToast);
+      if (Math.abs(this.position.deltaX) > this.removalDistance) {
+        this.setState(
+          {
+            preventExitTransition: true
+          },
+          this.props.closeToast
+        );
         return;
       }
-      
+
+      this.position.y = getY(e);
       this.ref.style.transition = 'transform 0.2s, opacity 0.2s';
       this.ref.style.transform = 'translateX(0)';
       this.ref.style.opacity = 1;
+    }
+  };
 
-      this.position = {
-        start: null,
-        x: null,
-        delta: null
-      };
+  onDragTransitionEnd = () => {
+    const { top, bottom, left, right } = this.ref.getBoundingClientRect();
+
+    if (
+      this.props.pauseOnHover &&
+      this.position.x >= left &&
+      this.position.x <= right &&
+      this.position.y >= top &&
+      this.position.y <= bottom
+    ) {
+      this.pauseToast();
+    } else {
       this.playToast();
     }
   };
@@ -196,14 +245,15 @@ class Toast extends Component {
         unmountOnExit
         onExited={onExited}
         position={position}
-        disableExitTransition={this.state.disableExitTransition}
+        preventExitTransition={this.state.preventExitTransition}
       >
         <div
           className={toastClassname}
           {...this.getToastProps()}
           ref={ref => (this.ref = ref)}
-          onMouseDown={this.onSwipeStart}
-          onTouchStart={this.onSwipeStart}
+          onMouseDown={this.onDragStart}
+          onTouchStart={this.onDragStart}
+          onTransitionEnd={this.onDragTransitionEnd}
         >
           <div {...this.props.in && { role: role }} className={bodyClassname}>
             {children}
