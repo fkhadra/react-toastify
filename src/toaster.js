@@ -13,7 +13,8 @@ const defaultOptions = {
   bodyClassName: null,
   progressClassName: null,
   transition: null,
-  updateId: null
+  updateId: null,
+  draggable: null
 };
 
 let container = null;

@@ -10,6 +10,20 @@ import {
   objectValues
 } from './../utils/propValidator';
 
+function getX(e) {
+  return e.targetTouches && e.targetTouches.length >= 1
+    ? e.targetTouches[0].clientX
+    : e.clientX;
+}
+
+function getY(e) {
+  return e.targetTouches && e.targetTouches.length >= 1
+    ? e.targetTouches[0].clientY
+    : e.clientY;
+}
+
+const noop = () => {};
+
 class Toast extends Component {
   static propTypes = {
     closeButton: falseOrElement.isRequired,
@@ -22,9 +36,11 @@ class Toast extends Component {
     transition: PropTypes.func.isRequired,
     isDocumentHidden: PropTypes.bool.isRequired,
     rtl: PropTypes.bool.isRequired,
+    hideProgressBar: PropTypes.bool.isRequired,
+    draggable: PropTypes.bool.isRequired,
+    draggablePercent: PropTypes.number.isRequired,
     in: PropTypes.bool,
     onExited: PropTypes.func,
-    hideProgressBar: PropTypes.bool,
     onOpen: PropTypes.func,
     onClose: PropTypes.func,
     type: PropTypes.oneOf(objectValues(TYPE)),
@@ -38,9 +54,8 @@ class Toast extends Component {
   static defaultProps = {
     type: TYPE.DEFAULT,
     in: true,
-    hideProgressBar: false,
-    onOpen: null,
-    onClose: null,
+    onOpen: noop,
+    onClose: noop,
     className: null,
     bodyClassName: null,
     progressClassName: null,
@@ -49,11 +64,47 @@ class Toast extends Component {
   };
 
   state = {
-    isRunning: true
+    isRunning: true,
+    preventExitTransition: false
   };
 
+  flag = {
+    canCloseOnClick: true,
+    canDrag: false
+  };
+
+  drag = {
+    start: 0,
+    x: 0,
+    y: 0,
+    deltaX: 0,
+    removalDistance: 0
+  };
+
+  ref = null;
+
   componentDidMount() {
-    this.props.onOpen !== null && this.props.onOpen(this.getChildrenProps());
+    this.props.onOpen(this.props.children.props);
+
+    if (this.props.draggable) {
+      document.addEventListener('mousemove', this.onDragMove);
+      document.addEventListener('mouseup', this.onDragEnd);
+
+      document.addEventListener('touchmove', this.onDragMove);
+      document.addEventListener('touchend', this.onDragEnd);
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.onClose(this.props.children.props);
+
+    if (this.props.draggable) {
+      document.removeEventListener('mousemove', this.onDragMove);
+      document.removeEventListener('mouseup', this.onDragEnd);
+
+      document.removeEventListener('touchmove', this.onDragMove);
+      document.removeEventListener('touchend', this.onDragEnd);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -64,28 +115,6 @@ class Toast extends Component {
     }
   }
 
-  componentWillUnmount() {
-    this.props.onClose !== null && this.props.onClose(this.getChildrenProps());
-  }
-
-  getChildrenProps() {
-    return this.props.children.props;
-  }
-
-  getToastProps() {
-    const toastProps = {};
-
-    if (this.props.autoClose !== false && this.props.pauseOnHover === true) {
-      toastProps.onMouseEnter = this.pauseToast;
-      toastProps.onMouseLeave = this.playToast;
-    }
-    typeof this.props.className === 'string' &&
-      (toastProps.className = this.props.className);
-    this.props.closeOnClick && (toastProps.onClick = this.props.closeToast);
-
-    return toastProps;
-  }
-
   pauseToast = () => {
     this.setState({ isRunning: false });
   };
@@ -94,11 +123,79 @@ class Toast extends Component {
     this.setState({ isRunning: true });
   };
 
+  onDragStart = e => {
+    this.flag.canCloseOnClick = true;
+    this.flag.canDrag = true;
+
+    this.ref.style.transition = '';
+
+    this.drag.start = this.drag.x = getX(e.nativeEvent);
+    this.drag.removalDistance =
+      this.ref.offsetWidth * this.props.draggablePercent;
+  };
+
+  onDragMove = e => {
+    if (this.flag.canDrag) {
+      if (this.state.isRunning) {
+        this.pauseToast();
+      }
+
+      this.drag.x = getX(e);
+      this.drag.deltaX = this.drag.x - this.drag.start;
+
+      // prevent false positif during a toast click
+      this.drag.start !== this.drag.x && (this.flag.canCloseOnClick = false);
+
+      this.ref.style.transform = `translateX(${this.drag.deltaX}px)`;
+      this.ref.style.opacity =
+        1 - Math.abs(this.drag.deltaX / this.drag.removalDistance);
+    }
+  };
+
+  onDragEnd = e => {
+    if (this.flag.canDrag) {
+      this.flag.canDrag = false;
+
+      if (Math.abs(this.drag.deltaX) > this.drag.removalDistance) {
+        this.setState(
+          {
+            preventExitTransition: true
+          },
+          this.props.closeToast
+        );
+        return;
+      }
+
+      this.drag.y = getY(e);
+      this.ref.style.transition = 'transform 0.2s, opacity 0.2s';
+      this.ref.style.transform = 'translateX(0)';
+      this.ref.style.opacity = 1;
+    }
+  };
+
+  onDragTransitionEnd = () => {
+    const { top, bottom, left, right } = this.ref.getBoundingClientRect();
+
+    if (
+      this.props.pauseOnHover &&
+      this.drag.x >= left &&
+      this.drag.x <= right &&
+      this.drag.y >= top &&
+      this.drag.y <= bottom
+    ) {
+      this.pauseToast();
+    } else {
+      this.playToast();
+    }
+  };
+
   render() {
     const {
       closeButton,
       children,
       autoClose,
+      pauseOnHover,
+      closeOnClick,
       type,
       hideProgressBar,
       closeToast,
@@ -113,16 +210,21 @@ class Toast extends Component {
       rtl
     } = this.props;
 
-    const toastClassname = cx(
-      'Toastify__toast',
-      `Toastify__toast--${type}`,
-      className,
-      {
+    const toastProps = {
+      className: cx('Toastify__toast', `Toastify__toast--${type}`, className, {
         'Toastify__toast--rtl': rtl
-      }
-    );
+      })
+    };
 
-    const bodyClassname = cx('Toastify__toast-body', bodyClassName);
+    if (autoClose && pauseOnHover) {
+      toastProps.onMouseEnter = this.pauseToast;
+      toastProps.onMouseLeave = this.playToast;
+    }
+
+    // prevent toast from closing when user drags the toast
+    if (closeOnClick) {
+      toastProps.onClick = () => this.flag.canCloseOnClick && closeToast();
+    }
 
     return (
       <Transition
@@ -131,14 +233,18 @@ class Toast extends Component {
         unmountOnExit
         onExited={onExited}
         position={position}
+        preventExitTransition={this.state.preventExitTransition}
       >
         <div
-          className={toastClassname}
-          {...this.getToastProps()}
+          {...toastProps}
+          ref={ref => (this.ref = ref)}
+          onMouseDown={this.onDragStart}
+          onTouchStart={this.onDragStart}
+          onTransitionEnd={this.onDragTransitionEnd}
         >
           <div
             {...this.props.in && { role: role }}
-            className={bodyClassname}
+            className={cx('Toastify__toast-body', bodyClassName)}
           >
             {children}
           </div>

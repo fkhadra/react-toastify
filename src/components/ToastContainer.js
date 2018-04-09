@@ -88,6 +88,16 @@ class ToastContainer extends Component {
     rtl: PropTypes.bool,
 
     /**
+     * Allow toast to be draggable
+     */
+    draggable: PropTypes.bool,
+
+    /**
+     * The percentage of the toast's width it takes for a drag to dismiss a toast
+     */
+    draggablePercent: PropTypes.bool,
+
+    /**
      * pause on document visibility change
      */
     pauseOnVisibilityChange: PropTypes.bool
@@ -104,6 +114,8 @@ class ToastContainer extends Component {
     pauseOnHover: true,
     closeOnClick: true,
     newestOnTop: false,
+    draggable: true,
+    draggablePercent: 0.8,
     className: null,
     style: null,
     toastClassName: null,
@@ -224,6 +236,12 @@ class ToastContainer extends Component {
         options.pauseOnHover !== null
           ? options.pauseOnHover
           : this.props.pauseOnHover,
+      draggable:
+        options.draggable !== null ? options.draggable : this.props.draggable,
+      draggablePercent:
+        options.draggable !== null
+          ? options.draggablePercent
+          : this.props.draggablePercent,
       closeOnClick:
         options.closeOnClick !== null
           ? options.closeOnClick
