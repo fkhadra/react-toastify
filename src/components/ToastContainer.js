@@ -196,16 +196,12 @@ class ToastContainer extends Component {
       : this.props.autoClose;
   }
 
-  isFunction(object) {
-    return !!(object && object.constructor && object.call && object.apply);
-  }
-
   canBeRendered(content) {
     return (
       isValidElement(content) ||
       typeof content === 'string' ||
       typeof content === 'number' ||
-      this.isFunction(content)
+      typeof content === 'function'
     );
   }
 
@@ -259,14 +255,13 @@ class ToastContainer extends Component {
           : this.props.hideProgressBar
     };
 
-    this.isFunction(options.onOpen) && (toastOptions.onOpen = options.onOpen);
+    typeof options.onOpen === 'function' &&
+      (toastOptions.onOpen = options.onOpen);
 
-    this.isFunction(options.onClose) &&
+    typeof options.onClose === 'function' &&
       (toastOptions.onClose = options.onClose);
 
-    /**
-     * add closeToast function to react component only
-     */
+    // add closeToast function to react component only
     if (
       isValidElement(content) &&
       typeof content.type !== 'string' &&
@@ -275,17 +270,18 @@ class ToastContainer extends Component {
       content = cloneElement(content, {
         closeToast
       });
-    } else if (this.isFunction(content)) {
+    } else if (typeof content === 'function') {
       content = content({ closeToast });
     }
 
-    this.collection = Object.assign({}, this.collection, {
+    this.collection = {
+      ...this.collection,
       [toastId]: {
         position: toastOptions.position,
         options: toastOptions,
         content: content
       }
-    });
+    };
 
     this.setState(
       {
@@ -321,16 +317,17 @@ class ToastContainer extends Component {
       ? Object.keys(this.collection).reverse()
       : Object.keys(this.collection);
 
+    // group toast by position
     collection.forEach(toastId => {
-      const item = this.collection[toastId];
-      toastToRender[item.position] || (toastToRender[item.position] = []);
+      const toast = this.collection[toastId];
+      toastToRender[toast.position] || (toastToRender[toast.position] = []);
 
       if (this.state.toast.indexOf(parseInt(toastId, 10)) !== -1) {
-        toastToRender[item.position].push(
-          this.makeToast(item.content, item.options)
+        toastToRender[toast.position].push(
+          this.makeToast(toast.content, toast.options)
         );
       } else {
-        toastToRender[item.position].push(null);
+        toastToRender[toast.position].push(null);
         delete this.collection[toastId];
       }
     });
@@ -343,12 +340,12 @@ class ToastContainer extends Component {
         className: cx(
           'Toastify__toast-container',
           `Toastify__toast-container--${position}`,
-          this.props.className,
+          className,
           { 'Toastify__toast-container--rtl': this.props.rtl }
         ),
         style: disablePointer
-          ? { ...this.props.style, pointerEvents: 'none' }
-          : { ...this.props.style }
+          ? { ...style, pointerEvents: 'none' }
+          : { ...style }
       };
 
       return (
