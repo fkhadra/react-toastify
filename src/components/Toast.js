@@ -73,19 +73,19 @@ class Toast extends Component {
     canDrag: false
   };
 
-  position = {
+  drag = {
     start: 0,
     x: 0,
     y: 0,
-    deltaX: 0
+    deltaX: 0,
+    removalDistance: 0
   };
 
   ref = null;
 
-  removalDistance = -1;
-
   componentDidMount() {
-    this.props.onOpen(this.getChildrenProps());
+    this.props.onOpen(this.props.children.props);
+
     if (this.props.draggable) {
       document.addEventListener('mousemove', this.onDragMove);
       document.addEventListener('mouseup', this.onDragEnd);
@@ -96,7 +96,8 @@ class Toast extends Component {
   }
 
   componentWillUnmount() {
-    this.props.onClose(this.getChildrenProps());
+    this.props.onClose(this.props.children.props);
+
     if (this.props.draggable) {
       document.removeEventListener('mousemove', this.onDragMove);
       document.removeEventListener('mouseup', this.onDragEnd);
@@ -122,16 +123,15 @@ class Toast extends Component {
     this.setState({ isRunning: true });
   };
 
-  getChildrenProps() {
-    return this.props.children.props;
-  }
-
   onDragStart = e => {
     this.flag.canCloseOnClick = true;
     this.flag.canDrag = true;
+
     this.ref.style.transition = '';
-    this.position.start = this.position.x = getX(e.nativeEvent);
-    this.removalDistance = this.ref.offsetWidth * this.props.draggablePercent;
+
+    this.drag.start = this.drag.x = getX(e.nativeEvent);
+    this.drag.removalDistance =
+      this.ref.offsetWidth * this.props.draggablePercent;
   };
 
   onDragMove = e => {
@@ -140,16 +140,15 @@ class Toast extends Component {
         this.pauseToast();
       }
 
-      this.position.x = getX(e);
-      this.position.deltaX = this.position.x - this.position.start;
+      this.drag.x = getX(e);
+      this.drag.deltaX = this.drag.x - this.drag.start;
 
       // prevent false positif during a toast click
-      this.position.start !== this.position.x &&
-        (this.flag.canCloseOnClick = false);
+      this.drag.start !== this.drag.x && (this.flag.canCloseOnClick = false);
 
-      this.ref.style.transform = `translateX(${this.position.deltaX}px)`;
+      this.ref.style.transform = `translateX(${this.drag.deltaX}px)`;
       this.ref.style.opacity =
-        1 - Math.abs(this.position.deltaX / this.removalDistance);
+        1 - Math.abs(this.drag.deltaX / this.drag.removalDistance);
     }
   };
 
@@ -157,7 +156,7 @@ class Toast extends Component {
     if (this.flag.canDrag) {
       this.flag.canDrag = false;
 
-      if (Math.abs(this.position.deltaX) > this.removalDistance) {
+      if (Math.abs(this.drag.deltaX) > this.drag.removalDistance) {
         this.setState(
           {
             preventExitTransition: true
@@ -167,7 +166,7 @@ class Toast extends Component {
         return;
       }
 
-      this.position.y = getY(e);
+      this.drag.y = getY(e);
       this.ref.style.transition = 'transform 0.2s, opacity 0.2s';
       this.ref.style.transform = 'translateX(0)';
       this.ref.style.opacity = 1;
@@ -179,10 +178,10 @@ class Toast extends Component {
 
     if (
       this.props.pauseOnHover &&
-      this.position.x >= left &&
-      this.position.x <= right &&
-      this.position.y >= top &&
-      this.position.y <= bottom
+      this.drag.x >= left &&
+      this.drag.x <= right &&
+      this.drag.y >= top &&
+      this.drag.y <= bottom
     ) {
       this.pauseToast();
     } else {
@@ -190,28 +189,13 @@ class Toast extends Component {
     }
   };
 
-  getToastProps() {
-    const toastProps = {};
-    const { autoClose, pauseOnHover, closeOnClick, closeToast } = this.props;
-
-    if (autoClose && pauseOnHover) {
-      toastProps.onMouseEnter = this.pauseToast;
-      toastProps.onMouseLeave = this.playToast;
-    }
-
-    // prevent toast from closing when user drags the toast
-    if (closeOnClick) {
-      toastProps.onClick = () => this.flag.canCloseOnClick && closeToast();
-    }
-
-    return toastProps;
-  }
-
   render() {
     const {
       closeButton,
       children,
       autoClose,
+      pauseOnHover,
+      closeOnClick,
       type,
       hideProgressBar,
       closeToast,
@@ -226,15 +210,21 @@ class Toast extends Component {
       rtl
     } = this.props;
 
-    const toastClassname = cx(
-      'Toastify__toast',
-      `Toastify__toast--${type}`,
-      className,
-      {
+    const toastProps = {
+      className: cx('Toastify__toast', `Toastify__toast--${type}`, className, {
         'Toastify__toast--rtl': rtl
-      }
-    );
-    const bodyClassname = cx('Toastify__toast-body', bodyClassName);
+      })
+    };
+
+    if (autoClose && pauseOnHover) {
+      toastProps.onMouseEnter = this.pauseToast;
+      toastProps.onMouseLeave = this.playToast;
+    }
+
+    // prevent toast from closing when user drags the toast
+    if (closeOnClick) {
+      toastProps.onClick = () => this.flag.canCloseOnClick && closeToast();
+    }
 
     return (
       <Transition
@@ -246,14 +236,16 @@ class Toast extends Component {
         preventExitTransition={this.state.preventExitTransition}
       >
         <div
-          className={toastClassname}
-          {...this.getToastProps()}
+          {...toastProps}
           ref={ref => (this.ref = ref)}
           onMouseDown={this.onDragStart}
           onTouchStart={this.onDragStart}
           onTransitionEnd={this.onDragTransitionEnd}
         >
-          <div {...this.props.in && { role: role }} className={bodyClassname}>
+          <div
+            {...this.props.in && { role: role }}
+            className={cx('Toastify__toast-body', bodyClassName)}
+          >
             {children}
           </div>
           {closeButton !== false && closeButton}
