@@ -18,7 +18,6 @@ function ProgressBar({
     animationPlayState: isRunning ? 'running' : 'paused',
     opacity: hide ? 0 : 1
   };
-  style.WebkitAnimationPlayState = style.animationPlayState;
 
   const classNames = cx(
     'Toastify__progress-bar',
