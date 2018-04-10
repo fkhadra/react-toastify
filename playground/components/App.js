@@ -6,7 +6,14 @@ import Checkbox from './Checkbox';
 import ContainerCode from './ContainerCode';
 import ToastCode from './ToastCode';
 
-import { ToastContainer, toast } from './../../src/index';
+import {
+  ToastContainer,
+  toast,
+  Bounce,
+  Slide,
+  Flip,
+  Zoom
+} from './../../src/index';
 import './../../dist/ReactToastify.css';
 
 const flags = [
@@ -37,8 +44,19 @@ const flags = [
   {
     id: 'pauseOnVisibilityChange',
     label: 'Pause toast on visibility change*'
+  },
+  {
+    id: 'draggable',
+    label: 'Allow to drag and close the toast'
   }
 ];
+
+const transitions = {
+  bounce: Bounce,
+  slide: Slide,
+  zoom: Zoom,
+  flip: Flip
+};
 
 class App extends Component {
   state = App.getDefaultState();
@@ -77,11 +95,12 @@ class App extends Component {
       !this.state.rtl &&
       this.state.pauseOnVisibilityChange &&
       this.state.pauseOnHover &&
-      this.state.closeOnClick
+      this.state.closeOnClick &&
+      this.state.draggable
     );
   }
 
-  handleRadio = e =>
+  handleRadioOrSelect = e =>
     this.setState({
       [e.target.name]: e.target.value
     });
@@ -122,7 +141,7 @@ class App extends Component {
                   options={toast.POSITION}
                   name="position"
                   checked={this.state.position}
-                  onChange={this.handleRadio}
+                  onChange={this.handleRadioOrSelect}
                 />
               </ul>
             </div>
@@ -133,12 +152,13 @@ class App extends Component {
                   options={toast.TYPE}
                   name="type"
                   checked={this.state.type}
-                  onChange={this.handleRadio}
+                  onChange={this.handleRadioOrSelect}
                 />
               </ul>
             </div>
             <div>
               <h3>Options</h3>
+              <div>
               <label htmlFor="autoClose">
                 Delay
                 <input
@@ -151,6 +171,22 @@ class App extends Component {
                 />
                 ms
               </label>
+              <label htmlFor="transition">
+                Transition
+                <select
+                  name="transition"
+                  id="transition"
+                  onChange={this.handleRadioOrSelect}
+                  value={this.state.transition}
+                >
+                  {Object.keys(transitions).map(k => (
+                    <option key={k} value={k}>
+                      {k}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              </div>
               <ul>{this.renderFlags()}</ul>
               <ul className="container__actions">
                 <li>
@@ -190,6 +226,7 @@ class App extends Component {
         </div>
         <ToastContainer
           {...this.state}
+          transition={transitions[this.state.transition]}
           autoClose={this.state.disableAutoClose ? false : this.state.autoClose}
         />
       </main>

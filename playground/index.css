@@ -46,10 +46,37 @@ input[type="number"] {
     border-radius: 5px;
     border-color: #ac557b;
     color: #fff;
+    width: 100px;
 }
 
 input[type="radio"] {
     margin-right: 8px;
+}
+
+select {
+    padding: 8px;
+    padding: 8px;
+    background-color: transparent;
+    box-shadow: none;
+    border: 1px solid;
+    border-top-color: currentcolor;
+    border-right-color: currentcolor;
+    border-bottom-color: currentcolor;
+    border-left-color: currentcolor;
+    border-top-color: currentcolor;
+    border-right-color: currentcolor;
+    border-bottom-color: currentcolor;
+    border-left-color: currentcolor;
+    margin: 0 5px;
+    border-radius: 5px;
+    border-color: #ac557b;
+    color: #fff;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+label{
+    margin-right: 10px;
 }
 
 .container {
