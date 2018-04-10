@@ -64,6 +64,7 @@ class App extends Component {
   static getDefaultState() {
     return {
       ...ToastContainer.defaultProps,
+      transition: 'bounce',
       type: 'default',
       disableAutoClose: false
     };
@@ -131,7 +132,8 @@ class App extends Component {
           <p>
             By default, all toasts will inherit ToastContainer's props. Props
             defined on toast supersede ToastContainer's props. Props marked with
-            * can only be set on the ToastContainer.
+            * can only be set on the ToastContainer. The demo is not exhaustive,
+            check the repo for more!
           </p>
           <section className="container__options">
             <div>
@@ -159,33 +161,33 @@ class App extends Component {
             <div>
               <h3>Options</h3>
               <div>
-              <label htmlFor="autoClose">
-                Delay
-                <input
-                  type="number"
-                  name="autoClose"
-                  id="autoClose"
-                  value={this.state.autoClose}
-                  onChange={this.handleAutoCloseDelay}
-                  disabled={this.state.disableAutoClose}
-                />
-                ms
-              </label>
-              <label htmlFor="transition">
-                Transition
-                <select
-                  name="transition"
-                  id="transition"
-                  onChange={this.handleRadioOrSelect}
-                  value={this.state.transition}
-                >
-                  {Object.keys(transitions).map(k => (
-                    <option key={k} value={k}>
-                      {k}
-                    </option>
-                  ))}
-                </select>
-              </label>
+                <label htmlFor="autoClose">
+                  Delay
+                  <input
+                    type="number"
+                    name="autoClose"
+                    id="autoClose"
+                    value={this.state.autoClose}
+                    onChange={this.handleAutoCloseDelay}
+                    disabled={this.state.disableAutoClose}
+                  />
+                  ms
+                </label>
+                <label htmlFor="transition">
+                  Transition
+                  <select
+                    name="transition"
+                    id="transition"
+                    onChange={this.handleRadioOrSelect}
+                    value={this.state.transition}
+                  >
+                    {Object.keys(transitions).map(k => (
+                      <option key={k} value={k}>
+                        {k}
+                      </option>
+                    ))}
+                  </select>
+                </label>
               </div>
               <ul>{this.renderFlags()}</ul>
               <ul className="container__actions">

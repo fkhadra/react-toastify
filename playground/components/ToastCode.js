@@ -1,9 +1,5 @@
 import React from 'react';
 
-function getProp(prop, value) {
-  return value ? prop : `${prop}={false}`;
-}
-
 function getType(type) {
   switch (type) {
     case 'default':
@@ -30,7 +26,8 @@ const ToastCode = ({
   pauseOnHover,
   rtl,
   pauseOnVisibilityChange,
-  type
+  type,
+  draggable
 }) => (
   <div>
     <h3>Toast Emitter</h3>
@@ -58,6 +55,10 @@ const ToastCode = ({
       <div>
         <span className="code__props">pauseOnHover</span>
         {`: ${pauseOnHover ? 'true' : 'false'}`}
+      </div>
+      <div>
+        <span className="code__props">draggable</span>
+        {`: ${draggable ? 'true' : 'false'}`}
       </div>
       <div>{`});`}</div>
     </div>
