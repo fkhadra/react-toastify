@@ -168,7 +168,7 @@ For convenience, toast expose a POSITION property to avoid any typo.
   class App extends Component {
     closeAfter15 = () => toast("YOLO", { autoClose: 15000 });
 
-    closeAfter7 = () => toast("7 Kingdoms", { autoClose: 15000 })
+    closeAfter7 = () => toast("7 Kingdoms", { autoClose: 7000 });
 
     render(){
       return (
