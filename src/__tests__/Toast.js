@@ -3,22 +3,15 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 
 import Toast from './../components/Toast';
+import ToastContainer from './../components/ToastContainer';
 import CloseButton from './../components/CloseButton';
-import { Bounce } from './../components/Transitions';
 import ProgressBar from './../components/ProgressBar';
-import { POSITION } from './../utils/constant';
 
 const REQUIRED_PROPS = {
-  closeButton: <CloseButton />,
-  transition: Bounce,
-  in: true,
-  autoClose: 5000,
+  ...ToastContainer.defaultProps,
   closeToast: () => {},
-  position: POSITION.TOP_RIGHT,
-  pauseOnHover: true,
-  closeOnClick: true,
   isDocumentHidden: false,
-  rtl: false
+  type: 'default'
 };
 
 describe('Toast', () => {
@@ -148,5 +141,105 @@ describe('Toast', () => {
     expect(component.state('isRunning')).toBe(true);
     component.setProps({ isDocumentHidden: true });
     expect(component.state('isRunning')).toBe(false);
+  });
+
+  describe('Drag event', () => {
+    it('Should handle drag start on mousedown', () => {
+      const events = {};
+      document.addEventListener = (ev, cb) => (events[ev] = cb);
+      const component = mount(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+      expect(component.instance().flag.canDrag).toBe(false);
+      component.simulate('mousedown');
+      expect(component.instance().flag.canDrag).toBe(true);
+
+      events.mouseup({
+        targetTouches: {},
+        clientX: 100
+      });
+
+      expect(component.instance().flag.canDrag).toBe(false);
+    });
+
+    it('Should handle drag start on touchstart', () => {
+      const events = {};
+      document.addEventListener = (ev, cb) => (events[ev] = cb);
+      const component = mount(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+      expect(component.instance().flag.canDrag).toBe(false);
+      component.simulate('touchstart');
+      expect(component.instance().flag.canDrag).toBe(true);
+
+      events.touchend({
+        targetTouches: [
+          {
+            clientX: 100
+          }
+        ]
+      });
+
+      expect(component.instance().flag.canDrag).toBe(false);
+    });
+
+    it('Should pause toast duration on drag move', () => {
+      const events = {};
+      document.addEventListener = (ev, cb) => (events[ev] = cb);
+      const component = mount(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+
+      expect(component.state('isRunning')).toBe(true);
+
+      // to set flags
+      component.simulate('mousedown');
+
+      events.mousemove({
+        targetTouches: {},
+        clientX: 100
+      });
+
+      expect(component.state('isRunning')).toBe(false);
+    });
+
+    it('Should disable exit transition when removed while draging', () => {
+      const events = {};
+      document.addEventListener = (ev, cb) => (events[ev] = cb);
+      const component = mount(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+
+      expect(component.state('preventExitTransition')).toBe(false);
+
+      // to set flags
+      component.simulate('mousedown');
+
+      // trigger toast removal
+      component.instance().drag.deltaX = 1;
+      component.instance().drag.removalDistance = 0;
+
+      events.mouseup({
+        targetTouches: {},
+        clientX: 100
+      });
+
+      expect(component.state('preventExitTransition')).toBe(true);
+    });
+
+    it('Should prevent the timer from running on drag end if the mouse hover the toast', () => {
+      const component = mount(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+
+      expect(component.state('isRunning')).toBe(true);
+
+      // simulate transition end
+      component.instance().onDragTransitionEnd();
+
+      expect(component.state('isRunning')).toBe(false);
+    });
+
+    it('Should resume the timer on drag end if the mouse is not hovering the toast', () => {
+      const component = mount(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+
+      expect(component.state('isRunning')).toBe(true);
+
+      // simulate transition end
+      component.instance().drag.x = -1;
+      component.instance().onDragTransitionEnd();
+
+      expect(component.state('isRunning')).toBe(true);
+    });
   });
 });

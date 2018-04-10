@@ -95,7 +95,7 @@ class ToastContainer extends Component {
     /**
      * The percentage of the toast's width it takes for a drag to dismiss a toast
      */
-    draggablePercent: PropTypes.bool,
+    draggablePercent: PropTypes.number,
 
     /**
      * pause on document visibility change

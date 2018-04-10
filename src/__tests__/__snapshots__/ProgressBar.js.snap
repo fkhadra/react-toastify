@@ -27,7 +27,6 @@ ShallowWrapper {
       "className": "Toastify__progress-bar Toastify__progress-bar--default",
       "onAnimationEnd": [Function],
       "style": Object {
-        "WebkitAnimationPlayState": "running",
         "animationDuration": "5000ms",
         "animationPlayState": "running",
         "opacity": 0,
@@ -46,7 +45,6 @@ ShallowWrapper {
         "className": "Toastify__progress-bar Toastify__progress-bar--default",
         "onAnimationEnd": [Function],
         "style": Object {
-          "WebkitAnimationPlayState": "running",
           "animationDuration": "5000ms",
           "animationPlayState": "running",
           "opacity": 0,
@@ -94,7 +92,6 @@ ShallowWrapper {
       "className": "Toastify__progress-bar Toastify__progress-bar--default",
       "onAnimationEnd": [Function],
       "style": Object {
-        "WebkitAnimationPlayState": "paused",
         "animationDuration": "5000ms",
         "animationPlayState": "paused",
         "opacity": 1,
@@ -113,7 +110,6 @@ ShallowWrapper {
         "className": "Toastify__progress-bar Toastify__progress-bar--default",
         "onAnimationEnd": [Function],
         "style": Object {
-          "WebkitAnimationPlayState": "paused",
           "animationDuration": "5000ms",
           "animationPlayState": "paused",
           "opacity": 1,

@@ -15,16 +15,22 @@ ShallowWrapper {
     }
     closeOnClick={true}
     closeToast={[Function]}
+    draggable={true}
+    draggablePercent={0.8}
     hideProgressBar={false}
     in={true}
     isDocumentHidden={false}
-    onClose={null}
-    onOpen={null}
+    newestOnTop={false}
+    onClose={[Function]}
+    onOpen={[Function]}
     pauseOnHover={true}
+    pauseOnVisibilityChange={true}
     position="top-right"
     progressClassName={null}
     role="alert"
     rtl={true}
+    style={null}
+    toastClassName={null}
     transition={[Function]}
     type="default"
     updateId={null}
@@ -49,6 +55,7 @@ ShallowWrapper {
         onClick={[Function]}
         onMouseDown={[Function]}
         onTouchStart={[Function]}
+        onTransitionEnd={[Function]}
       >
         <div
           className="Toastify__toast-body"
@@ -63,6 +70,7 @@ ShallowWrapper {
       "in": true,
       "onExited": undefined,
       "position": "top-right",
+      "preventExitTransition": false,
       "unmountOnExit": true,
     },
     "ref": null,
@@ -87,6 +95,7 @@ ShallowWrapper {
         "onClick": [Function],
         "onMouseDown": [Function],
         "onTouchStart": [Function],
+        "onTransitionEnd": [Function],
       },
       "ref": [Function],
       "rendered": Array [
@@ -132,6 +141,7 @@ ShallowWrapper {
           onClick={[Function]}
           onMouseDown={[Function]}
           onTouchStart={[Function]}
+          onTransitionEnd={[Function]}
         >
           <div
             className="Toastify__toast-body"
@@ -146,6 +156,7 @@ ShallowWrapper {
         "in": true,
         "onExited": undefined,
         "position": "top-right",
+        "preventExitTransition": false,
         "unmountOnExit": true,
       },
       "ref": null,
@@ -170,6 +181,7 @@ ShallowWrapper {
           "onClick": [Function],
           "onMouseDown": [Function],
           "onTouchStart": [Function],
+          "onTransitionEnd": [Function],
         },
         "ref": [Function],
         "rendered": Array [
