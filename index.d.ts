@@ -66,17 +66,17 @@ interface CommonOptions {
   /**
    * An optional css class to set for the progress bar.
    */
-  progressClassName?: string;
+  progressClassName?: string | object;
 
   /**
    * An optional css class to set.
    */
-  className?: string;
+  className?: string | object;
 
   /**
    * An optional css class to set for the toast content.
    */
-  bodyClassName?: string;
+  bodyClassName?: string | object;
 
   /**
    * Hide or show the progress bar.
@@ -143,7 +143,7 @@ interface ToastContainerProps extends CommonOptions {
   /**
    * An optional css class for the toast.
    */
-  toastClassName?: string;
+  toastClassName?: string | object;
 
   /**
    * Support right to left display.

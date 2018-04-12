@@ -44,9 +44,9 @@ class Toast extends Component {
     onOpen: PropTypes.func,
     onClose: PropTypes.func,
     type: PropTypes.oneOf(objectValues(TYPE)),
-    className: PropTypes.string,
-    bodyClassName: PropTypes.string,
-    progressClassName: PropTypes.string,
+    className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    bodyClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    progressClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     updateId: PropTypes.number,
     ariaLabel: PropTypes.string
   };
