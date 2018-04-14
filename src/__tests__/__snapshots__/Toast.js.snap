@@ -16,7 +16,7 @@ ShallowWrapper {
     closeOnClick={true}
     closeToast={[Function]}
     draggable={true}
-    draggablePercent={0.8}
+    draggablePercent={80}
     hideProgressBar={false}
     in={true}
     isDocumentHidden={false}

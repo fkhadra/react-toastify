@@ -131,7 +131,7 @@ class Toast extends Component {
 
     this.drag.start = this.drag.x = getX(e.nativeEvent);
     this.drag.removalDistance =
-      this.ref.offsetWidth * this.props.draggablePercent;
+      this.ref.offsetWidth * ( this.props.draggablePercent / 100 );
   };
 
   onDragMove = e => {

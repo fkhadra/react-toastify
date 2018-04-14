@@ -115,7 +115,7 @@ class ToastContainer extends Component {
     closeOnClick: true,
     newestOnTop: false,
     draggable: true,
-    draggablePercent: 0.8,
+    draggablePercent: 80,
     className: null,
     style: null,
     toastClassName: null,
