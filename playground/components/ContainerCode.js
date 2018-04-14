@@ -24,7 +24,8 @@ const ContainerCode = ({
   pauseOnHover,
   rtl,
   pauseOnVisibilityChange,
-  isDefaultProps
+  isDefaultProps,
+  draggable
 }) => (
   <div>
     <h3>Toast Container</h3>
@@ -46,6 +47,7 @@ const ContainerCode = ({
       {getProp('closeOnClick', closeOnClick)}
       {getProp('rtl', rtl)}
       {getProp('pauseOnVisibilityChange', pauseOnVisibilityChange)}
+      {getProp('draggable', draggable)}
       {!disableAutoClose ? getProp('pauseOnHover', pauseOnHover) : ''}
       <div>
         <span>{`/>`}</span>

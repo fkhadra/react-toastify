@@ -64,31 +64,31 @@ $ yarn add react-toastify
 
 ## Features
 
-- Easy to setup for real, you can make it works in less than 10sec !
+- Easy to setup for real, you can make it works in less than 10sec!
 - Super easy to customize
-- Rtl support
-- Draggable 👌 
-- Can display a react component inside the toast !
+- RTL support
+- Draggable 👌
+- Can display a react component inside the toast!
 - Don't rely on `findDOMNode` or any DOM hack
 - Has ```onOpen``` and ```onClose``` hooks. Both can access the props passed to the react component rendered inside the toast
 - Can remove a toast programmatically
 - Define behavior per toast
-- Pause toast when the browser is not visible thanks to visibility api
+- Pause toast when the browser is not visible thanks to visibility API
 - Fancy progress bar to display the remaining time
 - Possibility to update a toast
 
 ## Migrate from v3 to v4
 
-Glamor has been drop to switch back to scss due to user's feedback. You can read more about that choice if you take a look to the issues history.
+Glamor has been dropped to switch back to scss due to user's feedback. You can read more about that choice if you take a look at the issues history.
 - Passing glamor rule to className is still working 😎. 
-- The css file need to be imported now.
-- You may use galmorous or any other css-in-js library that rely on glamor. (Haven't been tested)
+- The css file needs to be imported now.
+- You may use glamorous or any other css-in-js library that relies on glamor. (Haven't been tested)
 
 ## Usage
 
 ### One component to rule them all
 
-By default all toasts will inherits ToastContainer's props. **Props defined on toast supersede ToastContainer's props.**
+The toasts inherit ToastContainer's props. **Props defined on toast supersede ToastContainer's props.**
 
 ```javascript
   import React, { Component } from 'react';
@@ -113,7 +113,7 @@ By default all toasts will inherits ToastContainer's props. **Props defined on t
 
 ### Positioning toast
 
-By default all the toasts will be positionned on the top right of your browser. If a position is set on a toast, the one defined on ToastContainer will be replaced.
+By default, all the toasts will be positionned on the top right of your browser. If a position is set on a toast, the one defined on ToastContainer will be replaced.
 
 The following values are allowed: **top-right, top-center, top-left, bottom-right, bottom-center, bottom-left**
 

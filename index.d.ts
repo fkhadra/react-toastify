@@ -97,7 +97,7 @@ interface CommonOptions {
 
   /**
    * The percentage of the toast's width it takes for a drag to dismiss a toast
-   * `Default: 0.8`
+   * `Default: 80`
    */
   draggablePercent?: number;
 }
@@ -277,6 +277,6 @@ export class ToastContainer extends React.Component<ToastContainerProps> {}
 /**
  * Helper to build custom entrance and exit transition
  */
-export function cssTranstion(props: cssTransitionProps): () => void;
+export function cssTranstion(props: cssTransitionProps): React.ReactNode;
 
 export let toast: Toast;

@@ -17,6 +17,7 @@
     "lib",
     "dist",
     "src",
+    "scss",
     "index.d.ts"
   ],
   "scripts": {
