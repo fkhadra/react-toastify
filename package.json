@@ -28,7 +28,7 @@
     "lint:fix": "eslint --fix src/",
     "prettier-all": "prettier --single-quote --write 'src/**/*.js'",
     "prebuild": "npm run test",
-    "build": "npm run build:es && npm run build:umd",
+    "build": "npm run build:es && npm run build:umd && npm run style",
     "build:es": "npm run clean:es && cross-env NODE_ENV=production babel --ignore=__tests__ src -d lib",
     "build:umd": "npm run clean:umd && cross-env NODE_ENV=production webpack",
     "clean:es": "rimraf lib/*",
