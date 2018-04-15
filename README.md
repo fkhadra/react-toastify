@@ -33,7 +33,7 @@
     - [Ease your life with the cssTransition helper](#ease-your-life-with-the-csstransition-helper)
       * [Handle transition based on the toast position](#handle-transition-based-on-the-toast-position)
     - [Create a transition from scratch](#create-a-transition-from-scratch)
-  + [Drag to remove](#drag-to-remove)
+  + [Swipe to remove](#swipe-to-remove)
     - [Define the width percentage to remove the toast](#define-the-width-percentage-to-remove-the-toast)
     - [Disable it](#disable-it)
   + [Le style](#le-style)
@@ -67,7 +67,7 @@ $ yarn add react-toastify
 - Easy to setup for real, you can make it works in less than 10sec!
 - Super easy to customize
 - RTL support
-- Draggable 👌
+- Swipe to close 👌
 - Can display a react component inside the toast!
 - Don't rely on `findDOMNode` or any DOM hack
 - Has ```onOpen``` and ```onClose``` hooks. Both can access the props passed to the react component rendered inside the toast
@@ -77,11 +77,14 @@ $ yarn add react-toastify
 - Fancy progress bar to display the remaining time
 - Possibility to update a toast
 
-## Migrate from v3 to v4
+## From v3 to v4
 
 Glamor has been dropped to switch back to scss due to user's feedback. You can read more about that choice if you take a look at the issues history.
 - Passing glamor rule to className is still working 😎. 
-- The css file needs to be imported now.
+- A css file needs to be imported now.
+- Toast are now draggable, you can swipe to close
+- New built-in transition added
+- Playground for contributor
 - You may use glamorous or any other css-in-js library that relies on glamor. (Haven't been tested)
 
 ## Usage
@@ -666,7 +669,7 @@ You get the idea...
 
 ### Define a custom enter and exit transition
 
-The toast relies on `react-transition-group` for the enter and exit transition. Any transition built with react-transition-group/Transition should work !
+The toast relies on `react-transition-group` for the enter and exit transition. Any transition built with react-transition-group should work !
 
 ![toastify_custom_trans](https://user-images.githubusercontent.com/5574267/31049179-0d52e14c-a62e-11e7-9abd-b0d169a0fadc.gif)
 
@@ -731,6 +734,35 @@ const Zoom = cssTransition({
   exit: 'zoomOut',
   // default to 750ms, can be omitted
   duration = 750,
+});
+
+class App extends Component {
+  notify = () => {
+    toast("ZoomIn and ZoomOut", {
+      transition: Zoom,
+      autoClose: 5000
+    });
+  };
+
+  render(){
+    return <button onClick={this.notify}>Notify</button>;
+  }
+}
+```
+
+##### Different duration for enter and exit
+
+If you want the transition duration to be different between the enter and exit transition pass an array:
+
+```js
+import React, { Component } from 'react';
+import { toast, cssTransition } from 'react-toastify';
+import './style.css';
+
+const Zoom = cssTransition({
+  enter: 'zoomIn',
+  exit: 'zoomOut',
+  duration: [500, 800]
 });
 
 class App extends Component {
@@ -817,9 +849,9 @@ class App extends Component {
 
 ```
 
-### Drag to remove
+### Swipe to remove
 
-You can drag the toast to remove it:
+You can swipe the toast to remove it:
 
 ![drag](https://user-images.githubusercontent.com/5574267/38770523-9438ff7c-4014-11e8-93a5-acd7dbdae52b.gif)
 
@@ -1012,7 +1044,7 @@ toast.update(toastId, {
 |----------------|--------|----------|---------|------------------------------------------------------------------------------------------------------------|
 | enter          | string | ✓        | -       | The class name that will be used when the toast enter                                                      |
 | exit           | string | ✓        | -       | The class name that will be used when the toast exit                                                       |
-| duration       | number | ✘        | 750     | The transition duration in ms.                                                                             |
+| duration       | number\| Array<number> | ✘        | 750     | The transition duration in ms.                                                                             |
 | appendPosition | bool   | ✘        | false   | Append or not the position  to the class name: `yourClassName--top-right`, `yourClassName--bottom-left`... |
 
 ```js
@@ -1022,6 +1054,13 @@ const Zoom = cssTransition({
   enter: 'zoomIn',
   exit: 'zoomOut',
   duration: 750,  
+  appendPosition: false
+});
+
+const Zoom = cssTransition({
+  enter: 'zoomIn',
+  exit: 'zoomOut',
+  duration: [500, 600],  
   appendPosition: false
 });
 ```

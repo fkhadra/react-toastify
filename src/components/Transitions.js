@@ -9,6 +9,7 @@ const Bounce = cssTransition({
 const Slide = cssTransition({
   enter: 'Toastify__slide-enter',
   exit: 'Toastify__slide-exit',
+  duration: [450, 750],
   appendPosition: true
 });
 

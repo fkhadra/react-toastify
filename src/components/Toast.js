@@ -46,7 +46,10 @@ class Toast extends Component {
     type: PropTypes.oneOf(objectValues(TYPE)),
     className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     bodyClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    progressClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    progressClassName: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.object
+    ]),
     updateId: PropTypes.number,
     ariaLabel: PropTypes.string
   };
@@ -131,7 +134,7 @@ class Toast extends Component {
 
     this.drag.start = this.drag.x = getX(e.nativeEvent);
     this.drag.removalDistance =
-      this.ref.offsetWidth * ( this.props.draggablePercent / 100 );
+      this.ref.offsetWidth * (this.props.draggablePercent / 100);
   };
 
   onDragMove = e => {

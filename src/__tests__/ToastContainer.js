@@ -161,7 +161,6 @@ describe('ToastContainer', () => {
     expect(component.html()).toMatch(/style="background: red;"/);
   });
 
-
   it('Should pass a closeToast function when displaying a react component', () => {
     const component = mount(<ToastContainer />);
     const Msg = () => <div>Plop</div>;
@@ -251,8 +250,8 @@ describe('ToastContainer', () => {
     document.addEventListener = jest.fn();
     mount(<ToastContainer pauseOnVisibilityChange={false} />);
     const ev = new Event('visibilitychange');
-    document.dispatchEvent(ev); 
-    
+    document.dispatchEvent(ev);
+
     expect(document.addEventListener).not.toHaveBeenCalled();
   });
 });

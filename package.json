@@ -57,9 +57,6 @@
     "setupFiles": [
       "raf/polyfill",
       "<rootDir>/setupTests.js"
-    ],
-    "snapshotSerializers": [
-      "jest-glamor-react"
     ]
   },
   "devDependencies": {

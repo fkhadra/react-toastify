@@ -20,7 +20,7 @@ interface cssTransitionProps {
    * Define the duration of the transition in ms
    * `Default: 750`
    */
-  duration?: number;
+  duration?: number | Array<number>;
 
   /**
    * Append current toast position to the classname.
