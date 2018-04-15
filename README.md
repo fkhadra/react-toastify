@@ -8,7 +8,7 @@
 * [Demo](#demo)
 * [Installation](#installation)
 * [Features](#features)
-* [Migrate from v2 to v3](#migrate-from-v2-to-v3)
+* [Migrate from v3 to v4](#migrate-from-v3-to-v4)
 * [Usage](#usage)
   + [One component to rule them all](#one-component-to-rule-them-all)
   + [Positioning toast](#positioning-toast)
@@ -19,23 +19,33 @@
   + [Update a toast](#update-a-toast)
     - [Basic example](#basic-example)
     - [Update the content](#update-the-content)
-    - [ :sparkles: Apply a transition](#apply-a-transition)
-    - [Reset option or inherit from ToastContainer](#reset-option-or-inherit-from-ToastContainer)
-  + [Define hook](#define-hook)
+    - [Apply a transition](#apply-a-transition)
+    - [Reset option or inherit from ToastContainer](#reset-option-or-inherit-from-toastcontainer)
+  + [Define callback](#define-callback)
+  + [Listen for change](#listen-for-change)
   + [Set a custom close button or simply remove it](#set-a-custom-close-button-or-simply-remove-it)
     - [Override the default one](#override-the-default-one)
     - [Define it per toast](#define-it-per-toast)
     - [Remove it](#remove-it)
-  + [Add an undo option to a toast](#add-an-undo-option-to-a-toast)
-  + [ :sparkles: Define a custom enter and exit transition](#define-a-custom-enter-and-exit-transition)
+  + [Add an undo option to a toast like google drive](#add-an-undo-option-to-a-toast-like-google-drive)
+  + [Replace the default transition](#replace-the-default-transition)
+  + [Define a custom enter and exit transition](#define-a-custom-enter-and-exit-transition)
+    - [Ease your life with the cssTransition helper](#ease-your-life-with-the-csstransition-helper)
+      * [Handle transition based on the toast position](#handle-transition-based-on-the-toast-position)
+    - [Create a transition from scratch](#create-a-transition-from-scratch)
+  + [Swipe to remove](#swipe-to-remove)
+    - [Define the width percentage to remove the toast](#define-the-width-percentage-to-remove-the-toast)
+    - [Disable it](#disable-it)
   + [Le style](#le-style)
-    - [Replace default style](#replace-default-style)
-    - [Style with className](#style-with-classname)
+    - [style with css classes](#style-with-css-classes)
+    - [style with glamor](#style-with-glamor)
+    - [Define style globally](#define-style-globally)
     - [Right to left support](#right-to-left-support)
   + [Mobile](#mobile)
 * [Api](#api)
   + [ToastContainer](#toastcontainer)
   + [toast](#toast)
+  + [cssTransition](#csstransition)
 * [Browser Support](#browser-support)
 * [Release Notes](#release-notes)
 * [Contribute](#contribute)
@@ -54,37 +64,41 @@ $ yarn add react-toastify
 
 ## Features
 
-- Easy to setup for real, you can make it works in less than 10sec !
+- Easy to setup for real, you can make it works in less than 10sec!
 - Super easy to customize
-- Rtl support 
-- Can display a react component inside the toast !
+- RTL support
+- Swipe to close 👌
+- Can display a react component inside the toast!
 - Don't rely on `findDOMNode` or any DOM hack
 - Has ```onOpen``` and ```onClose``` hooks. Both can access the props passed to the react component rendered inside the toast
 - Can remove a toast programmatically
 - Define behavior per toast
-- Use glamor for styling 💅
-- Pause toast when the browser is not visible thanks to visibility api
+- Pause toast when the browser is not visible thanks to visibility API
 - Fancy progress bar to display the remaining time
 - Possibility to update a toast
 
-## Migrate from v2 to v3
+## From v3 to v4
 
-The v3 rely on glamor for styling. Using css classes is still fine but
-you may need to replace your css classes by a glamor rule in some case.
-
-No more css file to import !
-
-A style helper has been added to mimic the old sass variables.
+Glamor has been dropped to switch back to scss due to user's feedback. You can read more about that choice if you take a look at the issues history.
+- Passing glamor rule to className is still working 😎. 
+- A css file needs to be imported now.
+- Toast are now draggable, you can swipe to close
+- New built-in transition added
+- Playground for contributor
+- You may use glamorous or any other css-in-js library that relies on glamor. (Haven't been tested)
 
 ## Usage
 
 ### One component to rule them all
 
-By default all toasts will inherits ToastContainer's props. **Props defined on toast supersede ToastContainer's props.**
+The toasts inherit ToastContainer's props. **Props defined on toast supersede ToastContainer's props.**
 
 ```javascript
   import React, { Component } from 'react';
   import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
+  // minified version is also included
+  // import 'react-toastify/dist/ReactToastify.min.css';
 
   class App extends Component {
     notify = () => toast("Wow so easy !");
@@ -102,7 +116,7 @@ By default all toasts will inherits ToastContainer's props. **Props defined on t
 
 ### Positioning toast
 
-By default all the toasts will be positionned on the top right of your browser. If a position is set on a toast, the one defined on ToastContainer will be replaced.
+By default, all the toasts will be positionned on the top right of your browser. If a position is set on a toast, the one defined on ToastContainer will be replaced.
 
 The following values are allowed: **top-right, top-center, top-left, bottom-right, bottom-center, bottom-left**
 
@@ -114,28 +128,30 @@ For convenience, toast expose a POSITION property to avoid any typo.
 
   import React, { Component } from 'react';
   import { toast } from 'react-toastify';
-  import { css } from 'glamor';
 
   class Position extends Component {
     notify = () => {
-      toast("Default Notification !");
+    toast("Default Notification !");
+
     toast.success("Success Notification !", {
       position: toast.POSITION.TOP_CENTER
     });
+
     toast.error("Error Notification !", {
       position: toast.POSITION.TOP_LEFT
     });
+    
     toast.warn("Warning Notification !", {
       position: toast.POSITION.BOTTOM_LEFT
     });
+
     toast.info("Info Notification !", {
       position: toast.POSITION.BOTTOM_CENTER
     });
-    toast("Custom Style Notification !", {
+
+    toast("Custom Style Notification with css class!", {
       position: toast.POSITION.BOTTOM_RIGHT,
-      className: css({
-        background: "black"
-      })
+      className: 'foo-bar'
     });
   };
 
@@ -168,7 +184,7 @@ For convenience, toast expose a POSITION property to avoid any typo.
   class App extends Component {
     closeAfter15 = () => toast("YOLO", { autoClose: 15000 });
 
-    closeAfter7 = () => toast("7 Kingdoms", { autoClose: 15000 })
+    closeAfter7 = () => toast("7 Kingdoms", { autoClose: 7000 });
 
     render(){
       return (
@@ -185,19 +201,15 @@ For convenience, toast expose a POSITION property to avoid any typo.
 - Disable it by default
 
 ```js
-  {/* Some components */}
     <ToastContainer autoClose={false} />
-  {/* Some components */}
 ```
 
 - Disable it per toast
 
 ```js
-  {/* Some components */}
     toast("hello", {
       autoClose: false
     })
-  {/* Some components */}
 ```
 
 ### Render a component
@@ -224,7 +236,7 @@ const App = () => (
 );
 ```
 
-Use could also render a component using a function. More or less like a "render props":
+You can also render a component using a function. More or less like a "render props":
 
 ```js
 toast(({ closeToast }) => <div>Functional swag 😎</div>);
@@ -342,11 +354,20 @@ toast.update(this.toastId, {
 
 #### Apply a transition
 
-By default, when you update a toast, there is no transition applied. You can easily change this behavior by taking advantage of the `className` option. Lets rotate the toast on update:
+By default, when you update a toast, there is no transition applied. If you want to apply a transition, it can be done via the `className` or the `transition` option:
 
 ![update-with-transition](https://user-images.githubusercontent.com/5574267/33761952-1cc9d55a-dc0b-11e7-9a05-29186ea1c1f0.gif)
 
 ```js
+// with css
+toast.update(this.toastId, {
+  render: "New Content",
+  type: toast.TYPE.INFO,
+  //Here the magic
+  className: 'rotateY animated'
+})
+
+// with glamor
 toast.update(this.toastId, {
   render: "New Content",
   type: toast.TYPE.INFO,
@@ -356,6 +377,15 @@ toast.update(this.toastId, {
     transition: "transform 0.6s"
   })
 })
+
+// with transition
+toast.update(this.toastId, {
+  render: "New Content",
+  type: toast.TYPE.INFO,
+  //Here the magic
+  transition: Rotate
+})
+
 ```
 
 #### Reset option or inherit from ToastContainer
@@ -389,9 +419,9 @@ class Update extends Component {
 }
 ```
 
-### Define hook
+### Define callback
 
-You can define two hooks on toast. Hooks are really useful when the toast are not used only to display messages.
+You can define two callback on toast. They are really useful when the toast are not used only to display messages.
 
 - onOpen is called inside componentDidMount
 - onClose is called inside componentWillUnmount
@@ -410,6 +440,16 @@ You can define two hooks on toast. Hooks are really useful when the toast are no
       return <button onClick={this.notify}>Notify</button>;
     }
   }
+```
+
+### Listen for change
+
+If you want to know when a toast is displayed or removed, `toast` expose a `onChange` method:
+
+```js
+toast.onChange( numberOfToastDisplayed => {
+  // Do whatever you want
+});
 ```
 
 ### Set a custom close button or simply remove it
@@ -472,28 +512,24 @@ You need to call it in order to close the toast.** ⚠️
 
 #### Remove it
 
-Sometimes you don't want to display a close button. It can be removed globally or per toast. Simply pass
+Sometimes you don't want to display a close button. It can be removed globally or per toast. Pass
 `false` to `closeButton` props:
 
 - remove it by default
 
 ```js
-  {/* Some components */}
     <ToastContainer closeButton={false} />
-  {/* Some components */}
 ```
 
 - remove it per toast
 
 ```js
-  {/* Some components */}
     toast("hello", {
       closeButton: false
     })
-  {/* Some components */}
 ```
 
-### Add an undo option to a toast
+### Add an undo option to a toast like google drive
 
 See it in action:
 
@@ -591,13 +627,54 @@ class App extends Component {
 }
 ```
 
+### Replace the default transition
+
+There is 4 built-in transition provided:
+
+<details>
+  <summary>Bounce</summary>
+  <img src ="https://user-images.githubusercontent.com/5574267/38770379-985f49c8-4012-11e8-9db1-5d4d1f26a3d5.gif" />
+</details>
+
+<details>
+  <summary>Slide</summary>
+  <img src ="https://user-images.githubusercontent.com/5574267/38770381-98a81d24-4012-11e8-8011-1190f3fb17c3.gif" />
+</details>
+
+<details>
+  <summary>Zoom</summary>
+  <img src ="https://user-images.githubusercontent.com/5574267/38770382-98c16342-4012-11e8-9abf-3cf3d3eabd8c.gif" />
+</details>
+<details>
+  <summary>Flip</summary>
+  <img src ="https://user-images.githubusercontent.com/5574267/38770380-9877dde4-4012-11e8-9485-0dc43346ce30.gif" />
+</details>
+
+Bounce is used by default but you can replace it by your own transition or by one of the list above:
+ 
+
+```js
+import { Slide, Zoom, Flip, Bounce } from 'react-toastify';
+
+  <ToastContainer
+    transition={Slide}
+  />
+//...
+  <ToastContainer
+    transition={YourCustomTransition}
+  />
+    
+```
+You get the idea...
+
 ### Define a custom enter and exit transition
 
-The toast rely on `react-transition-group` for the enter and exit transition.
+The toast relies on `react-transition-group` for the enter and exit transition. Any transition built with react-transition-group should work !
 
 ![toastify_custom_trans](https://user-images.githubusercontent.com/5574267/31049179-0d52e14c-a62e-11e7-9abd-b0d169a0fadc.gif)
 
-I'll use the zoom animation from animate.css. Of course, you could create the animation using glamor.
+
+I'll use the zoom animation from animate.css. Of course, you could create your own animation.
 
 ```css
 /* style.css*/
@@ -635,12 +712,106 @@ I'll use the zoom animation from animate.css. Of course, you could create the an
   animation-name: zoomOut;
 }
 
-.animate{
+/* Not needed with the cssTransition helper */
+
+.animate {
   animation-duration: 800ms;
 }
 ```
 
-- Create a transition and apply it
+#### Ease your life with the cssTransition helper
+
+The easiest way to roll your own transition is by using the `cssTransition` helper. Doing so you don't need to deal with `react-transition-group`. You only need to provide the `enter` and the `exit` class name, the transition `duration` is set
+to `750ms` by default but it can be overridden: 
+   
+```js
+import React, { Component } from 'react';
+import { toast, cssTransition } from 'react-toastify';
+import './style.css';
+
+const Zoom = cssTransition({
+  enter: 'zoomIn',
+  exit: 'zoomOut',
+  // default to 750ms, can be omitted
+  duration = 750,
+});
+
+class App extends Component {
+  notify = () => {
+    toast("ZoomIn and ZoomOut", {
+      transition: Zoom,
+      autoClose: 5000
+    });
+  };
+
+  render(){
+    return <button onClick={this.notify}>Notify</button>;
+  }
+}
+```
+
+##### Different duration for enter and exit
+
+If you want the transition duration to be different between the enter and exit transition pass an array:
+
+```js
+import React, { Component } from 'react';
+import { toast, cssTransition } from 'react-toastify';
+import './style.css';
+
+const Zoom = cssTransition({
+  enter: 'zoomIn',
+  exit: 'zoomOut',
+  duration: [500, 800]
+});
+
+class App extends Component {
+  notify = () => {
+    toast("ZoomIn and ZoomOut", {
+      transition: Zoom,
+      autoClose: 5000
+    });
+  };
+
+  render(){
+    return <button onClick={this.notify}>Notify</button>;
+  }
+}
+```
+
+##### Handle transition based on the toast position
+
+Some transitions are based on the toast position. This is the case for the default one. If you pass `appendPosition` to the `cssTransition` helper as shown below, the current position will be appended to the `enter` and `exit` class name:
+
+```js
+import React, { Component } from 'react';
+import { toast, cssTransition } from 'react-toastify';
+import './style.css';
+
+const Zoom = cssTransition({
+  // zoomIn will become zoomIn--top-right or zoomIn--top-left and so on
+  enter: 'zoomIn',
+  // zoomIn will become zoomOut--top-right or zoomOut--top-left and so on
+  exit: 'zoomOut',
+  // default to false
+  appendPosition: true
+});
+
+class App extends Component {
+  notify = () => {
+    toast("ZoomIn and ZoomOut", {
+      transition: Zoom,
+      autoClose: 5000
+    });
+  };
+
+  render(){
+    return <button onClick={this.notify}>Notify</button>;
+  }
+}
+```
+
+#### Create a transition from scratch 
 
 ```js
 import React, { Component } from 'react';
@@ -648,7 +819,6 @@ import { toast } from 'react-toastify';
 import Transition from 'react-transition-group/Transition';
 import './style.css';
 
-// Any transition created with react-transition-group/Transition will work !
 const ZoomInAndOut = ({ children, position, ...props }) => (
   <Transition
     {...props}
@@ -679,125 +849,87 @@ class App extends Component {
 
 ```
 
-- Or pass your transition to the ToastContainer to replace the default one.
+### Swipe to remove
+
+You can swipe the toast to remove it:
+
+![drag](https://user-images.githubusercontent.com/5574267/38770523-9438ff7c-4014-11e8-93a5-acd7dbdae52b.gif)
+
+#### Define the width percentage to remove the toast
+
+You need to drag 80% of the toast width to remove it. This can be changed to fit your need:
+
+- Replace the default one:
 
 ```js
-render(){
-  return(
-  {/*Component*/}
-    <ToastContainer
-      transition={ZoomInAndOut}
-    />
-  {/*Component*/}
-  );
-}
-```
+<ToastContainer draggablePercent={60}>
+``` 
+
+- Replace per toast:
+
+```js
+toast('Hello', {
+  draggablePercent: 60
+});
+``` 
+
+#### Disable it
+
+- Disable by default for all toast:
+
+```js
+<ToastContainer draggable={false}>
+``` 
+
+- Disable per toast:
+
+```js
+toast('Hello', {
+  draggable: false
+});
+``` 
+
 
 ### Le style
 
-#### Replace default style
-
-You could use the style helper to replace the variable listed below:
+#### style with css classes
 
 ```javascript
-import { style } from "react-toastify";
-
-style({
-  width: "320px",
-  colorDefault: "#fff",
-  colorInfo: "#3498db",
-  colorSuccess: "#07bc0c",
-  colorWarning: "#f1c40f",
-  colorError: "#e74c3c",
-  colorProgressDefault: "linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55)",
-  mobile: "only screen and (max-width : 480px)",
-  fontFamily: "sans-serif",
-  zIndex: 9999,
-  TOP_LEFT: {
-    top: '1em',
-    left: '1em'
-  },
-  TOP_CENTER: {
-    top: '1em',
-    marginLeft: `-${320/2}px`,
-    left: '50%'
-  },
-  TOP_RIGHT: {
-    top: '1em',
-    right: '1em'
-  },
-  BOTTOM_LEFT: {
-    bottom: '1em',
-    left: '1em'
-  },
-  BOTTOM_CENTER: {
-    bottom: '1em',
-    marginLeft: `-${320/2}px`,
-    left: '50%'
-  },
-  BOTTOM_RIGHT: {
-    bottom: '1em',
-    right: '1em'
-  }
+toast("Custom style",{
+  className: 'black-background',
+  bodyClassName: "grow-font-size",
+  progressClassName: 'fancy-progress-bar' 
 });
 ```
 
-#### Style with className
-
-All className like props can be a css class or a glamor rule, or a css-in-js object.
-
-⚠️ Use a glamor rule rather than a css class when you want to override a property cause glamor stylesheet
-will be injected last ⚠️
+#### style with glamor
 
 ```javascript
-  import React, { Component } from 'react';
-  import { toast } from 'react-toastify';
-  import { css } from 'glamor';
+import { css } from 'glamor';
 
-  class Style extends Component {
-    notify = () => {
-      toast("Dark style notification with default type progress bar",{
-        // css-in-js
-        className: {
-          background: "black"
-        },
-        // css class
-        bodyClassName: "grow-font-size"
-      });
-
-      toast("Fancy progress bar.",{
-        // glamor rule
-        progressClassName: css({
-          background: "repeating-radial-gradient(circle at center, red 0, blue, green 30px)"
-        })
-      });
-    };
-
-    render(){
-      return <button onClick={this.notify}>Notify</button>;
-    }
-  }
+toast("Custom style",{
+  className: css({
+    background: 'black'
+  }),
+  bodyClassName: css({
+    fontSize: '60px'
+  }),
+  progressClassName: css({
+    background: "repeating-radial-gradient(circle at center, red 0, blue, green 30px)"
+  })
+});
 ```
 
-You could define your style globally:
+#### Define style globally
 
-
-```javascript
-  render(){
-    return(
-      {/*Component*/}
-      <ToastContainer
-        className={{
-          color: "black"
-        }}
-        toastClassName="dark-toast"
-        progressClassName={css({
-          height: "2px"
-        })}
-      />
-      {/*Component*/}
-    );
-  }
+```js
+<ToastContainer
+  className='toast-container'
+  toastClassName="dark-toast"
+  progressClassName={css({
+    height: "2px"
+  })}
+/>
 ```
 
 #### Right to left support
@@ -824,22 +956,25 @@ On mobile the toast will take all the available width.
 
 ### ToastContainer
 
-| Props             | Type           | Default   | Description                                                     |
-| ----------------- | -------------- | --------- | --------------------------------------------------------------- |
-| position          | string         | top-right | One of top-right, top-center, top-left, bottom-right, bottom-center, bottom-left                                   |
-| autoClose         | false or int   | 5000      | Delay in ms to close the toast. If set to false, the notification need to be closed manualy |
-| closeButton       | React Element or false     | -                                                               | A React Component to replace the default close button or `false` to hide the button |
-| transition        | function       | -     | A reference to a valid react-transition-group/Transition component  |
-| hideProgressBar   | bool           | false     | Display or not the progress bar below the toast(remaining time) |
-| pauseOnHover      | bool           | true      | Keep the timer running or not on hover                          |
-| rtl               | bool           | false     | Support right to left content                                   |
-| closeOnClick      | bool           | true      | Dismiss toast on click                                          |
-| newestOnTop       | bool           | false     | Display newest toast on top                                     |
-| className         | string\|glamor rule         | -         | Add optional classes to the container                           |
-| style             | object         | -         | Add optional inline style to the container                      |
-| toastClassName    | string\|glamor rule         | -         | Add optional classes to the toast                               |
-| bodyClassName     | string\|glamor rule         | -         | Add optional classes to the toast body                          |
-| progressClassName | string\|glamor rule         | -         | Add optional classes to the progress bar                        |
+| Props                   | Type                   | Default   | Description                                                                                         |
+|-------------------------|------------------------|-----------|-----------------------------------------------------------------------------------------------------|
+| position                | string                 | top-right | One of top-right, top-center, top-left, bottom-right, bottom-center, bottom-left                    |
+| autoClose               | false or number        | 5000      | Delay in ms to close the toast. If set to false, the notification need to be closed manualy         |
+| closeButton             | React Element or false | -         | A React Component to replace the default close button or `false` to hide the button                 |
+| transition              | function               | -         | A reference to a valid react-transition-group/Transition component                                  |
+| hideProgressBar         | bool                   | false     | Display or not the progress bar below the toast(remaining time)                                     |
+| pauseOnHover            | bool                   | true      | Keep the timer running or not on hover                                                              |
+| rtl                     | bool                   | false     | Support right to left content                                                                       |
+| closeOnClick            | bool                   | true      | Dismiss toast on click                                                                              |
+| newestOnTop             | bool                   | false     | Display newest toast on top                                                                         |
+| className               | string\|object         | -         | Add optional classes to the container                                                               |
+| style                   | object                 | -         | Add optional inline style to the container                                                          |
+| toastClassName          | string\|object         | -         | Add optional classes to the toast                                                                   |
+| bodyClassName           | string\|object         | -         | Add optional classes to the toast body                                                              |
+| progressClassName       | string\|object         | -         | Add optional classes to the progress bar                                                            |
+| pauseOnVisibilityChange | bool                   | true      | Pause on document visibility change(reducing the window for instance)                               |
+| draggable               | bool                   | true      | Allow toast to be draggable                                                                         |
+| draggablePercent        | number                 | 80        | The percentage of the toast's width it takes for a drag to dismiss a toast(value between 0 and 100) |
 
 
 ### toast
@@ -851,7 +986,7 @@ The **toastId** can be used to remove a toast programmatically or to check if th
 | Parameter | Type    | Required      | Description                                                   |
 | --------- | ------- | ------------- | ------------------------------------------------------------- |
 | content   | string or React Element | ✓                                                             | Element that will be displayed |
-| options   | object  | ✘             | Possible keys : autoClose, type, closeButton, hideProgressBar |  |
+| options   | object  | ✘             | Options listed below |  |
 
 - Available options :
     - `type`: Kind of notification. One of "default", "success", "info", "warning", "error". You can use `toast.TYPE.SUCCESS` and so on to avoid any typo.
@@ -867,6 +1002,8 @@ The **toastId** can be used to remove a toast programmatically or to check if th
     - `className`: same as ToastContainer toastClassName
     - `bodyClassName`: same as ToastContainer
     - `progressClassName`: same as ToastContainer
+    - `draggable`: same as ToastContainer
+    - `draggablePercent`: same as ToastContainer
     - `render`: string or React Element, only available when calling update
 
 :warning:️ *Toast options supersede ToastContainer props* :warning:
@@ -882,7 +1019,8 @@ const options = {
     hideProgressBar: false,
     position: toast.POSITION.TOP_LEFT,
     pauseOnHover: true,
-    transition: MyCustomTransition
+    transition: MyCustomTransition,
+    // and so on ...
 };
 
 const toastId = toast(<Img foo={bar}/>, options) // default, type: 'default'
@@ -900,6 +1038,33 @@ toast.update(toastId, {
 });
 ```
 
+### cssTransition
+
+| Parameter      | Type   | Required | Default | Description                                                                                                |
+|----------------|--------|----------|---------|------------------------------------------------------------------------------------------------------------|
+| enter          | string | ✓        | -       | The class name that will be used when the toast enter                                                      |
+| exit           | string | ✓        | -       | The class name that will be used when the toast exit                                                       |
+| duration       | number\| Array<number> | ✘        | 750     | The transition duration in ms.                                                                             |
+| appendPosition | bool   | ✘        | false   | Append or not the position  to the class name: `yourClassName--top-right`, `yourClassName--bottom-left`... |
+
+```js
+import { cssTransition } from 'react-toastify';
+
+const Zoom = cssTransition({
+  enter: 'zoomIn',
+  exit: 'zoomOut',
+  duration: 750,  
+  appendPosition: false
+});
+
+const Zoom = cssTransition({
+  enter: 'zoomIn',
+  exit: 'zoomOut',
+  duration: [500, 600],  
+  appendPosition: false
+});
+```
+
 ## Browser Support
 
 ![IE](https://cloud.githubusercontent.com/assets/398893/3528325/20373e76-078e-11e4-8e3a-1cb86cf506f0.png) | ![Chrome](https://cloud.githubusercontent.com/assets/398893/3528328/23bc7bc4-078e-11e4-8752-ba2809bf5cce.png) | ![Firefox](https://cloud.githubusercontent.com/assets/398893/3528329/26283ab0-078e-11e4-84d4-db2cf1009953.png) | ![Opera](https://cloud.githubusercontent.com/assets/398893/3528330/27ec9fa8-078e-11e4-95cb-709fd11dac16.png) | ![Safari](https://cloud.githubusercontent.com/assets/398893/3528331/29df8618-078e-11e4-8e3e-ed8ac738693f.png) | ![Edge](https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png)
@@ -907,6 +1072,14 @@ toast.update(toastId, {
 IE 11+ ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ |
 
 ## Release Notes
+
+### V4.0.0
+
+- Switch back to css
+- Added built-in transition
+- Added playground for contributor
+- Upgrade to webpack 4
+- Draggable 👌
 
 ### V3.4.3
 
@@ -1148,6 +1321,12 @@ make sense to keep both way to pass props. Use the react way instead
 ## Contribute
 
 Show your ❤️ and support by giving a ⭐. Any suggestions and pull request are welcome !
+
+Try the playground:
+
+```js
+npm start
+```
 
 ## License
 

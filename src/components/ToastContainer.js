@@ -1,60 +1,19 @@
 import React, { Component, isValidElement, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import { css } from 'glamor';
+import cx from 'classnames';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 
 import Toast from './Toast';
-import DefaultCloseButton from './DefaultCloseButton';
-import DefaultTransition from './DefaultTransition';
-import { POSITION, ACTION } from './constant';
-import defaultStyle from './defaultStyle';
-import EventManager from './util/EventManager';
+import CloseButton from './CloseButton';
+import { Bounce } from './Transitions';
+import { POSITION, ACTION } from './../utils/constant';
+import EventManager from './../utils/EventManager';
 import {
   falseOrDelay,
   falseOrElement,
   isValidDelay,
   objectValues
-} from './util/propValidator';
-
-const getToastPositionStyle = pos => {
-  const positionKey = pos.toUpperCase().replace('-', '_');
-  const positionRule =
-    typeof POSITION[positionKey] !== 'undefined'
-      ? defaultStyle[positionKey]
-      : defaultStyle.TOP_RIGHT;
-
-  /** define margin for center toast based on toast witdh */
-  if (
-    positionKey.indexOf('CENTER') !== -1 &&
-    typeof positionRule.marginLeft === 'undefined'
-  ) {
-    positionRule.marginLeft = `-${parseInt(defaultStyle.width, 10) / 2}px`;
-  }
-
-  return positionRule;
-};
-
-const styles = (disablePointer, position, rtl) =>
-  css(
-    {
-      zIndex: defaultStyle.zIndex,
-      position: 'fixed',
-      padding: '4px',
-      width: defaultStyle.width,
-      boxSizing: 'border-box',
-      color: '#fff',
-      ...(disablePointer ? { pointerEvents: 'none' } : {}),
-      [`@media ${defaultStyle.mobile}`]: {
-        width: '100vw',
-        padding: 0,
-        ...rtl ? { right: 0} : { left: 0 },
-        margin: 0,
-        position: 'fixed',
-        ...(position.substring(0, 3) === 'top' ? { top: 0 } : { bottom: 0 })
-      }
-    },
-    getToastPositionStyle(position)
-  );
+} from './../utils/propValidator';
 
 class ToastContainer extends Component {
   static propTypes = {
@@ -129,19 +88,37 @@ class ToastContainer extends Component {
     /**
      * Support rtl display
      */
-    rtl: PropTypes.bool
+    rtl: PropTypes.bool,
+
+    /**
+     * Allow toast to be draggable
+     */
+    draggable: PropTypes.bool,
+
+    /**
+     * The percentage of the toast's width it takes for a drag to dismiss a toast
+     */
+    draggablePercent: PropTypes.number,
+
+    /**
+     * pause on document visibility change
+     */
+    pauseOnVisibilityChange: PropTypes.bool
   };
 
   static defaultProps = {
     position: POSITION.TOP_RIGHT,
-    transition: DefaultTransition,
+    transition: Bounce,
     rtl: false,
+    pauseOnVisibilityChange: true,
     autoClose: 5000,
     hideProgressBar: false,
-    closeButton: <DefaultCloseButton />,
+    closeButton: <CloseButton />,
     pauseOnHover: true,
     closeOnClick: true,
     newestOnTop: false,
+    draggable: true,
+    draggablePercent: 80,
     className: null,
     style: null,
     toastClassName: null,
@@ -171,13 +148,17 @@ class ToastContainer extends Component {
     EventManager.on(SHOW, (content, options) => this.show(content, options))
       .on(CLEAR, id => (id !== null ? this.removeToast(id) : this.clear()))
       .emit(MOUNTED, this);
-    document.addEventListener('visibilitychange', this.isDocumentHidden);
+
+    this.props.pauseOnVisibilityChange &&
+      document.addEventListener('visibilitychange', this.isDocumentHidden);
   }
 
   componentWillUnmount() {
     EventManager.off(ACTION.SHOW);
     EventManager.off(ACTION.CLEAR);
-    document.removeEventListener('visibilitychange', this.isDocumentHidden);
+
+    this.props.pauseOnVisibilityChange &&
+      document.removeEventListener('visibilitychange', this.isDocumentHidden);
   }
 
   isDocumentHidden = () => this.setState({ isDocumentHidden: document.hidden });
@@ -185,9 +166,16 @@ class ToastContainer extends Component {
   isToastActive = id => this.state.toast.indexOf(parseInt(id, 10)) !== -1;
 
   removeToast(id) {
-    this.setState({
-      toast: this.state.toast.filter(v => v !== parseInt(id, 10))
-    });
+    this.setState(
+      {
+        toast: this.state.toast.filter(v => v !== parseInt(id, 10))
+      },
+      this.dispatchChange
+    );
+  }
+
+  dispatchChange() {
+    EventManager.emit(ACTION.ON_CHANGE, this.state.toast.length);
   }
 
   makeCloseButton(toastClose, toastId, type) {
@@ -211,16 +199,12 @@ class ToastContainer extends Component {
       : this.props.autoClose;
   }
 
-  isFunction(object) {
-    return !!(object && object.constructor && object.call && object.apply);
-  }
-
   canBeRendered(content) {
     return (
       isValidElement(content) ||
       typeof content === 'string' ||
       typeof content === 'number' ||
-      this.isFunction(content)
+      typeof content === 'function'
     );
   }
 
@@ -251,6 +235,12 @@ class ToastContainer extends Component {
         options.pauseOnHover !== null
           ? options.pauseOnHover
           : this.props.pauseOnHover,
+      draggable:
+        options.draggable !== null ? options.draggable : this.props.draggable,
+      draggablePercent:
+        options.draggable !== null
+          ? options.draggablePercent
+          : this.props.draggablePercent,
       closeOnClick:
         options.closeOnClick !== null
           ? options.closeOnClick
@@ -268,14 +258,13 @@ class ToastContainer extends Component {
           : this.props.hideProgressBar
     };
 
-    this.isFunction(options.onOpen) && (toastOptions.onOpen = options.onOpen);
+    typeof options.onOpen === 'function' &&
+      (toastOptions.onOpen = options.onOpen);
 
-    this.isFunction(options.onClose) &&
+    typeof options.onClose === 'function' &&
       (toastOptions.onClose = options.onClose);
 
-    /**
-     * add closeToast function to react component only
-     */
+    // add closeToast function to react component only
     if (
       isValidElement(content) &&
       typeof content.type !== 'string' &&
@@ -284,24 +273,28 @@ class ToastContainer extends Component {
       content = cloneElement(content, {
         closeToast
       });
-    } else if (this.isFunction(content)) {
+    } else if (typeof content === 'function') {
       content = content({ closeToast });
     }
 
-    this.collection = Object.assign({}, this.collection, {
+    this.collection = {
+      ...this.collection,
       [toastId]: {
         position: toastOptions.position,
         options: toastOptions,
         content: content
       }
-    });
+    };
 
-    this.setState({
-      toast:
-        toastOptions.updateId !== null
-          ? [...this.state.toast]
-          : [...this.state.toast, toastId]
-    });
+    this.setState(
+      {
+        toast:
+          toastOptions.updateId !== null
+            ? [...this.state.toast]
+            : [...this.state.toast, toastId]
+      },
+      this.dispatchChange
+    );
   }
 
   makeToast(content, options) {
@@ -327,16 +320,17 @@ class ToastContainer extends Component {
       ? Object.keys(this.collection).reverse()
       : Object.keys(this.collection);
 
+    // group toast by position
     collection.forEach(toastId => {
-      const item = this.collection[toastId];
-      toastToRender[item.position] || (toastToRender[item.position] = []);
+      const toast = this.collection[toastId];
+      toastToRender[toast.position] || (toastToRender[toast.position] = []);
 
       if (this.state.toast.indexOf(parseInt(toastId, 10)) !== -1) {
-        toastToRender[item.position].push(
-          this.makeToast(item.content, item.options)
+        toastToRender[toast.position].push(
+          this.makeToast(toast.content, toast.options)
         );
       } else {
-        toastToRender[item.position].push(null);
+        toastToRender[toast.position].push(null);
         delete this.collection[toastId];
       }
     });
@@ -345,17 +339,20 @@ class ToastContainer extends Component {
       const disablePointer =
         toastToRender[position].length === 1 &&
         toastToRender[position][0] === null;
+      const props = {
+        className: cx(
+          'Toastify__toast-container',
+          `Toastify__toast-container--${position}`,
+          className,
+          { 'Toastify__toast-container--rtl': this.props.rtl }
+        ),
+        style: disablePointer
+          ? { ...style, pointerEvents: 'none' }
+          : { ...style }
+      };
 
       return (
-        <TransitionGroup
-          {...css(
-            styles(disablePointer, position, this.props.rtl),
-            typeof className !== 'string' && className
-          )}
-          {...typeof className === 'string' && { className }}
-          {...style !== null && { style }}
-          key={`container-${position}`}
-        >
+        <TransitionGroup {...props} key={`container-${position}`}>
           {toastToRender[position]}
         </TransitionGroup>
       );

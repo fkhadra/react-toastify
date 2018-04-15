@@ -2,13 +2,13 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import DefaultCloseButton from './../DefaultCloseButton';
+import CloseButton from './../components/CloseButton';
 
 const closeToast = jest.fn();
 
-describe('DefaultCloseButton', () => {
+describe('CloseButton', () => {
   it('Should call closeToast on click', () => {
-    const component = shallow(<DefaultCloseButton closeToast={closeToast} />);
+    const component = shallow(<CloseButton closeToast={closeToast} />);
 
     expect(closeToast).not.toHaveBeenCalled();
     component.simulate('click');

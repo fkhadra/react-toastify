@@ -1,6 +1,6 @@
 {
   "name": "react-toastify",
-  "version": "3.4.3",
+  "version": "4.0.0-rc.0",
   "description": "React notification made easy",
   "keywords": [
     "react",
@@ -13,14 +13,29 @@
   ],
   "main": "lib/index.js",
   "typings": "./index.d.ts",
+  "files": [
+    "lib",
+    "dist",
+    "src",
+    "scss",
+    "index.d.ts"
+  ],
   "scripts": {
+    "start": "npm run sass && webpack-dev-server --config ./webpack.config.dev.js",
     "test": "jest",
     "test:coverage": "jest --coverage && cat ./coverage/lcov.info | coveralls",
     "lint": "eslint src/",
     "lint:fix": "eslint --fix src/",
     "prettier-all": "prettier --single-quote --write 'src/**/*.js'",
     "prebuild": "npm run test",
-    "build": "NODE_ENV=production ./scripts/build.sh"
+    "build": "npm run build:es && npm run build:umd",
+    "build:es": "npm run clean:es && cross-env NODE_ENV=production babel --ignore=__tests__ src -d lib",
+    "build:umd": "npm run clean:umd && cross-env NODE_ENV=production webpack",
+    "clean:es": "rimraf lib/*",
+    "clean:umd": "rimraf dist/*",
+    "sass": "node-sass scss/main.scss dist/ReactToastify.css",
+    "postsass": "postcss --use autoprefixer -m -b 'last 2 versions' dist/ReactToastify.css -o dist/ReactToastify.css",
+    "style": "npm run sass && cssnano dist/ReactToastify.css dist/ReactToastify.min.css --no-zindex --no-reduceIdents"
   },
   "repository": {
     "type": "git",
@@ -33,7 +48,7 @@
   },
   "homepage": "https://github.com/fkhadra/react-toastify#readme",
   "dependencies": {
-    "glamor": "^2.20.40",
+    "classnames": "^2.2.5",
     "prop-types": "^15.6.0",
     "react-transition-group": "^2.2.1"
   },
@@ -42,9 +57,6 @@
     "setupFiles": [
       "raf/polyfill",
       "<rootDir>/setupTests.js"
-    ],
-    "snapshotSerializers": [
-      "jest-glamor-react"
     ]
   },
   "devDependencies": {
@@ -58,6 +70,10 @@
     "babel-preset-env": "^1.6.0",
     "babel-preset-react-app": "^3.0.3",
     "coveralls": "^3.0.0",
+    "cross-env": "^5.1.4",
+    "css-loader": "^0.28.11",
+    "cssnano": "^3.10.0",
+    "cssnano-cli": "^1.0.5",
     "enzyme": "^3.0.0",
     "enzyme-adapter-react-16": "^1.0.0",
     "enzyme-to-json": "^3.2.2",
@@ -67,15 +83,23 @@
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.4.0",
+    "html-webpack-plugin": "^3.1.0",
     "jest": "^21.2.1",
     "jest-cli": "^21.2.1",
     "jest-glamor-react": "^3.2.2",
+    "node-sass": "^4.8.3",
+    "postcss": "^6.0.21",
+    "postcss-cli": "^5.0.0",
     "prettier": "^1.9.2",
     "raf": "^3.3.2",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-test-renderer": "^16.0.0",
-    "webpack": "^3.6.0"
+    "rimraf": "^2.6.2",
+    "style-loader": "^0.20.3",
+    "webpack": "^4.2.0",
+    "webpack-cli": "^2.0.13",
+    "webpack-dev-server": "^3.1.1"
   },
   "peerDependencies": {
     "react": ">=15.0.0",

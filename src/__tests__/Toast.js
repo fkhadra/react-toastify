@@ -1,26 +1,17 @@
 /* eslint-env jest */
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import toJson from 'enzyme-to-json';
-import { css } from 'glamor';
 
-import Toast from './../Toast';
-import DefaultCloseButton from './../DefaultCloseButton';
-import DefaultTransition from './../DefaultTransition';
-import ProgressBar from './../ProgressBar';
-import { POSITION } from './../constant';
+import Toast from './../components/Toast';
+import ToastContainer from './../components/ToastContainer';
+import CloseButton from './../components/CloseButton';
+import ProgressBar from './../components/ProgressBar';
 
 const REQUIRED_PROPS = {
-  closeButton: <DefaultCloseButton />,
-  transition: DefaultTransition,
-  in: true,
-  autoClose: 5000,
+  ...ToastContainer.defaultProps,
   closeToast: () => {},
-  position: POSITION.TOP_RIGHT,
-  pauseOnHover: true,
-  closeOnClick: true,
   isDocumentHidden: false,
-  rtl: false
+  type: 'default'
 };
 
 describe('Toast', () => {
@@ -40,21 +31,6 @@ describe('Toast', () => {
     expect(component.find('.body-class')).toHaveLength(1);
   });
 
-  it('Should allow glamor rule as className', () => {
-    const component = shallow(
-      <Toast
-        {...REQUIRED_PROPS}
-        autoClose={false}
-        className={css({ background: 'red' })}
-        bodyClassName={css({ color: 'blue' })}
-      >
-        FooBar
-      </Toast>
-    );
-
-    expect(toJson(component)).toMatchSnapshot();
-  });
-
   it('Should support Rtl display', () => {
     const component = shallow(
       <Toast {...REQUIRED_PROPS} autoClose={false} rtl>
@@ -62,7 +38,7 @@ describe('Toast', () => {
       </Toast>
     );
 
-    expect(toJson(component)).toMatchSnapshot();
+    expect(component).toMatchSnapshot();
   });
 
   it('Should not render ProgressBar if autoClose prop is set to false', () => {
@@ -82,7 +58,7 @@ describe('Toast', () => {
       </Toast>
     );
 
-    expect(component.children().find(DefaultCloseButton).length).toBe(0);
+    expect(component.children().find(CloseButton).length).toBe(0);
   });
 
   it('Can call onOpen callback when component mount', () => {
@@ -165,5 +141,105 @@ describe('Toast', () => {
     expect(component.state('isRunning')).toBe(true);
     component.setProps({ isDocumentHidden: true });
     expect(component.state('isRunning')).toBe(false);
+  });
+
+  describe('Drag event', () => {
+    it('Should handle drag start on mousedown', () => {
+      const events = {};
+      document.addEventListener = (ev, cb) => (events[ev] = cb);
+      const component = mount(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+      expect(component.instance().flag.canDrag).toBe(false);
+      component.simulate('mousedown');
+      expect(component.instance().flag.canDrag).toBe(true);
+
+      events.mouseup({
+        targetTouches: {},
+        clientX: 100
+      });
+
+      expect(component.instance().flag.canDrag).toBe(false);
+    });
+
+    it('Should handle drag start on touchstart', () => {
+      const events = {};
+      document.addEventListener = (ev, cb) => (events[ev] = cb);
+      const component = mount(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+      expect(component.instance().flag.canDrag).toBe(false);
+      component.simulate('touchstart');
+      expect(component.instance().flag.canDrag).toBe(true);
+
+      events.touchend({
+        targetTouches: [
+          {
+            clientX: 100
+          }
+        ]
+      });
+
+      expect(component.instance().flag.canDrag).toBe(false);
+    });
+
+    it('Should pause toast duration on drag move', () => {
+      const events = {};
+      document.addEventListener = (ev, cb) => (events[ev] = cb);
+      const component = mount(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+
+      expect(component.state('isRunning')).toBe(true);
+
+      // to set flags
+      component.simulate('mousedown');
+
+      events.mousemove({
+        targetTouches: {},
+        clientX: 100
+      });
+
+      expect(component.state('isRunning')).toBe(false);
+    });
+
+    it('Should disable exit transition when removed while draging', () => {
+      const events = {};
+      document.addEventListener = (ev, cb) => (events[ev] = cb);
+      const component = mount(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+
+      expect(component.state('preventExitTransition')).toBe(false);
+
+      // to set flags
+      component.simulate('mousedown');
+
+      // trigger toast removal
+      component.instance().drag.deltaX = 1;
+      component.instance().drag.removalDistance = 0;
+
+      events.mouseup({
+        targetTouches: {},
+        clientX: 100
+      });
+
+      expect(component.state('preventExitTransition')).toBe(true);
+    });
+
+    it('Should prevent the timer from running on drag end if the mouse hover the toast', () => {
+      const component = mount(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+
+      expect(component.state('isRunning')).toBe(true);
+
+      // simulate transition end
+      component.instance().onDragTransitionEnd();
+
+      expect(component.state('isRunning')).toBe(false);
+    });
+
+    it('Should resume the timer on drag end if the mouse is not hovering the toast', () => {
+      const component = mount(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+
+      expect(component.state('isRunning')).toBe(true);
+
+      // simulate transition end
+      component.instance().drag.x = -1;
+      component.instance().onDragTransitionEnd();
+
+      expect(component.state('isRunning')).toBe(true);
+    });
   });
 });

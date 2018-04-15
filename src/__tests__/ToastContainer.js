@@ -1,14 +1,12 @@
 /* eslint-env jest */
 import React from 'react';
 import { mount } from 'enzyme';
-import toJson from 'enzyme-to-json';
-import { css } from 'glamor';
 
-import ToastContainer from './../ToastContainer';
+import ToastContainer from './../components/ToastContainer';
 import toaster from './../toaster';
 
-import { ACTION } from './../constant';
-import EventManager from './../util/EventManager';
+import { ACTION } from './../utils/constant';
+import EventManager from './../utils/EventManager';
 
 jest.useFakeTimers();
 
@@ -159,18 +157,8 @@ describe('ToastContainer', () => {
     toaster('hello');
     jest.runAllTimers();
 
-    expect(component.html()).toMatch(/class="foo"/);
+    expect(component.html()).toMatch(/class=".+foo"/);
     expect(component.html()).toMatch(/style="background: red;"/);
-  });
-
-  it('Should allow glamor rule as className', () => {
-    const component = mount(
-      <ToastContainer className={css({ background: 'red' })} />
-    );
-    toaster('hello');
-    jest.runAllTimers();
-
-    expect(toJson(component)).toMatchSnapshot();
   });
 
   it('Should pass a closeToast function when displaying a react component', () => {
@@ -249,7 +237,6 @@ describe('ToastContainer', () => {
     });
   });
 
-  // This test should be executed after all the others because the execption mess all the rest
   it("Should throw an error if can't render a toast", () => {
     expect(() => {
       mount(<ToastContainer />);
@@ -257,5 +244,14 @@ describe('ToastContainer', () => {
       jest.runAllTimers();
       jest.clearAllTimers();
     }).toThrow(/The element you provided cannot be rendered/);
+  });
+
+  it('Should be able run toast even when document is not visible', () => {
+    document.addEventListener = jest.fn();
+    mount(<ToastContainer pauseOnVisibilityChange={false} />);
+    const ev = new Event('visibilitychange');
+    document.dispatchEvent(ev);
+
+    expect(document.addEventListener).not.toHaveBeenCalled();
   });
 });

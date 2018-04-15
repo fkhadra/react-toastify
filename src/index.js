@@ -1,5 +1,14 @@
-import ToastContainer from './ToastContainer';
+import ToastContainer from './components/ToastContainer';
+import { Bounce, Slide, Zoom, Flip } from './components/Transitions';
 import toaster from './toaster';
-import { defineStyle } from './defaultStyle';
+import cssTransition from './utils/cssTransition';
 
-export { ToastContainer, toaster as toast, defineStyle as style };
+export {
+  ToastContainer,
+  toaster as toast,
+  cssTransition,
+  Bounce,
+  Slide,
+  Zoom,
+  Flip
+};

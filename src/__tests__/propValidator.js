@@ -4,7 +4,7 @@ import {
   falseOrElement,
   falseOrDelay,
   objectValues
-} from './../util/propValidator';
+} from './../utils/propValidator';
 
 const ValidReactElement = () => <div>Hello</div>;
 

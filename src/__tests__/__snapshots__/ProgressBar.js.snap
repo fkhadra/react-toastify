@@ -1,85 +1,131 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ProgressBar Should allow glamor rule as className 1`] = `
-.css-de8zyl,
-[data-css-de8zyl] {
-  position: absolute;
-  bottom: 0;
-  width: 0;
-  height: 5px;
-  z-index: 9999;
-  opacity: 0.7;
-  animation: animation_91emau linear 1;
-  animation-play-state: running;
-  animation-duration: 5000ms;
-  background-color: rgba(255,255,255,.7);
-  background: red;
-  left: 0;
-  -webkit-animation: animation_91emau linear 1;
-  -webkit-animation-play-state: running;
-  -webkit-animation-duration: 5000ms;
-}
-
-<div
-  data-css-de8zyl=""
-  onAnimationEnd={[Function]}
-/>
-`;
-
 exports[`ProgressBar Should be able to hide the progress bar 1`] = `
-.css-1pnfg55,
-[data-css-1pnfg55] {
-  position: absolute;
-  bottom: 0;
-  width: 0;
-  height: 5px;
-  z-index: 9999;
-  opacity: 0;
-  animation: animation_91emau linear 1;
-  animation-play-state: running;
-  animation-duration: 5000ms;
-  background-color: rgba(255,255,255,.7);
-  background: -webkit-linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55);
-  background: -moz-linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55);
-  background: linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55);
-  left: 0;
-  -webkit-animation: animation_91emau linear 1;
-  -webkit-animation-play-state: running;
-  -webkit-animation-duration: 5000ms;
+ShallowWrapper {
+  "length": 1,
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <ProgressBar
+    closeToast={[Function]}
+    delay={5000}
+    hide={true}
+    isRunning={true}
+    rtl={false}
+    type="default"
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": null,
+    "nodeType": "host",
+    "props": Object {
+      "className": "Toastify__progress-bar Toastify__progress-bar--default",
+      "onAnimationEnd": [Function],
+      "style": Object {
+        "animationDuration": "5000ms",
+        "animationPlayState": "running",
+        "opacity": 0,
+      },
+    },
+    "ref": null,
+    "rendered": null,
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": null,
+      "nodeType": "host",
+      "props": Object {
+        "className": "Toastify__progress-bar Toastify__progress-bar--default",
+        "onAnimationEnd": [Function],
+        "style": Object {
+          "animationDuration": "5000ms",
+          "animationPlayState": "running",
+          "opacity": 0,
+        },
+      },
+      "ref": null,
+      "rendered": null,
+      "type": "div",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+      },
+    },
+  },
 }
-
-<div
-  className=""
-  data-css-1pnfg55=""
-  onAnimationEnd={[Function]}
-/>
 `;
 
 exports[`ProgressBar Should be able to pause animation 1`] = `
-.css-efhk71,
-[data-css-efhk71] {
-  position: absolute;
-  bottom: 0;
-  width: 0;
-  height: 5px;
-  z-index: 9999;
-  opacity: 0.7;
-  animation: animation_91emau linear 1;
-  animation-play-state: paused;
-  animation-duration: 5000ms;
-  background-color: rgba(255,255,255,.7);
-  background: -webkit-linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55);
-  background: -moz-linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55);
-  background: linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55);
-  left: 0;
-  -webkit-animation: animation_91emau linear 1;
-  -webkit-animation-play-state: paused;
-  -webkit-animation-duration: 5000ms;
+ShallowWrapper {
+  "length": 1,
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <ProgressBar
+    closeToast={[Function]}
+    delay={5000}
+    hide={false}
+    isRunning={false}
+    rtl={false}
+    type="default"
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": null,
+    "nodeType": "host",
+    "props": Object {
+      "className": "Toastify__progress-bar Toastify__progress-bar--default",
+      "onAnimationEnd": [Function],
+      "style": Object {
+        "animationDuration": "5000ms",
+        "animationPlayState": "paused",
+        "opacity": 1,
+      },
+    },
+    "ref": null,
+    "rendered": null,
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": null,
+      "nodeType": "host",
+      "props": Object {
+        "className": "Toastify__progress-bar Toastify__progress-bar--default",
+        "onAnimationEnd": [Function],
+        "style": Object {
+          "animationDuration": "5000ms",
+          "animationPlayState": "paused",
+          "opacity": 1,
+        },
+      },
+      "ref": null,
+      "rendered": null,
+      "type": "div",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+      },
+    },
+  },
 }
-
-<div
-  className=""
-  data-css-efhk71=""
-  onAnimationEnd={[Function]}
-/>
 `;

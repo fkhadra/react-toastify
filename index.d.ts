@@ -5,121 +5,30 @@ type ToastType = 'info' | 'success' | 'warning' | 'error' | 'default';
 
 type ToastContent = React.ReactNode | { (): void };
 
-interface styleProps {
+interface cssTransitionProps {
   /**
-   * Set the default toast width. 
-   * `Default: '320px'` 
+   * Css class to apply when toast enter
    */
-  width?: string;
+  enter: string;
 
   /**
-   * Set the toast color when no type is provided. 
-   * `Default: '#fff'`
+   * Css class to apply when toast leave
    */
-  colorDefault?: string;
+  exit: string;
 
   /**
-   * Set the toast color when the type is INFO.
-   * `Default: '#3498db'`
+   * Define the duration of the transition in ms
+   * `Default: 750`
    */
-  colorInfo?: string;
+  duration?: number | Array<number>;
 
   /**
-   * Set the toast color when the type is SUCCESS. 
-   * `Default: '#07bc0c'`
+   * Append current toast position to the classname.
+   * For instance `myclass--top-center`...
+   * `Default: false`
    */
-  colorSuccess?: string;
-  
-  /**
-   * Set the toast color when the type is WARNING. 
-   * `Default: '#f1c40f'`
-   */
-  colorWarning?: string;
-
-  /**
-   * Set the toast color when the type is ERROR. 
-   * `Default: '#e74c3c'`
-   */
-  colorError?: string;
-
-  /**
-   * Set the progress bar color when no type is provided.
-   * `Default: 'linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55)'`
-   */
-  colorProgressDefault?: string;
-
-  /**
-   * Media query to apply mobile style. 
-   * `Default: 'only screen and (max-width : 480px)'`
-   */
-  mobile?: string;
-  
-  /**
-   * Override the font-family style property.
-   * `Default: 'sans-serif'`
-   */
-  fontFamily?: string;
-
-  /**
-   * Set the z-index for the ToastContainer.
-   * `Default: 9999`
-   */
-  zIndex?: string | number;
-  
-  /**
-   * Override the default position.
-   * `Default: {
-   *   top: '1em',
-   *   left: '1em'
-   * }`  
-   */
-  TOP_LEFT?: object;
-
-  /**
-   * Override the default position.
-   * `Default: {
-   *   top: '1em',
-   *   left: '50%'
-   * }`  
-   */
-  TOP_CENTER?: object;
-
-  /**
-   * Override the default position.
-   * `Default: {
-   *   top: '1em',
-   *   right: '1em'
-   * }`
-   */
-  TOP_RIGHT?: object;
-
-  /**
-   * Override the default position.
-   * `Default: {
-   *   bottom: '1em',
-   *   left: '1em'
-   * }`  
-   */
-  BOTTOM_LEFT?: object;
-
- /**
-   * Override the default position.
-   * `Default: {
-   *   bottom: '1em',
-   *   left: '50%'
-   * }` 
-   */
-  BOTTOM_CENTER?: object;
-
-  /**
-   * Override the default position.
-   * `Default: {
-   *   bottom: '1em',
-   *   right: '1em'
-   * }`  
-   */
-  BOTTOM_RIGHT?: object;
-}
+  appendPosition?: boolean;
+};
 
 interface CommonOptions {
   /**
@@ -135,7 +44,7 @@ interface CommonOptions {
   closeOnClick?: boolean;
 
   /**
-   * Set the delay in ms to close the toast automatically. 
+   * Set the delay in ms to close the toast automatically.
    * Use `false` to prevent the toast from closing.
    * `Default: 5000`
    */
@@ -149,26 +58,23 @@ interface CommonOptions {
   position?: string;
 
   /**
-   * Pass a custom close button. 
+   * Pass a custom close button.
    * To remove the close button pass `false`
    */
   closeButton?: React.ReactNode | false;
 
   /**
-   * An optional css class to set for the progress bar. It can be a glamor rule
-   * or a css class name.
+   * An optional css class to set for the progress bar.
    */
   progressClassName?: string | object;
 
   /**
-   * An optional css class to set. It can be a glamor rule
-   * or a css class name.
+   * An optional css class to set.
    */
   className?: string | object;
 
   /**
-   * An optional css class to set for the toast content. It can be a glamor rule
-   * or a css class name.
+   * An optional css class to set for the toast content.
    */
   bodyClassName?: string | object;
 
@@ -182,6 +88,18 @@ interface CommonOptions {
    * Pass a custom transition built with react-transition-group.
    */
   transition?: Transition;
+
+  /**
+   * Allow toast to be draggable
+   * `Default: true`
+   */
+  draggable?: boolean;
+
+  /**
+   * The percentage of the toast's width it takes for a drag to dismiss a toast
+   * `Default: 80`
+   */
+  draggablePercent?: number;
 }
 
 interface ToastOptions extends CommonOptions {
@@ -204,7 +122,7 @@ interface ToastOptions extends CommonOptions {
 
 interface UpdateOptions extends ToastOptions {
   /**
-   * Used to update a toast. 
+   * Used to update a toast.
    * Pass any valid ReactNode(string, number, component)
    */
   render?: ToastContent;
@@ -223,8 +141,7 @@ interface ToastContainerProps extends CommonOptions {
   style?: object;
 
   /**
-   * An optional css class to set. It can be a glamor rule
-   * or a css class name.
+   * An optional css class for the toast.
    */
   toastClassName?: string | object;
 
@@ -233,6 +150,12 @@ interface ToastContainerProps extends CommonOptions {
    * `Default: false`
    */
   rtl?: boolean;
+
+  /**
+   * Pause toast's timer on document visibility change
+   * `Default: true`
+   */
+  pauseOnVisibilityChange?: boolean;
 }
 
 interface Toast {
@@ -258,7 +181,7 @@ interface Toast {
 
   /**
    * Check if a toast is active by passing the `toastId`.
-   * Each time you display a toast you receive a `toastId`. 
+   * Each time you display a toast you receive a `toastId`.
    */
   isActive(toastId: number): boolean;
 
@@ -272,6 +195,11 @@ interface Toast {
    * Update an existing toast. By default, we keep the initial content and options of the toast.
    */
   update(toastId: number, options?: UpdateOptions): void;
+
+  /**
+   * Listen for change when a toast is added or removed. The number of toast displayed is passed as paran to the callback
+   */
+  onChange(callback: ((count?: number) => void)): void;
 
   /**
    * Display a toast without a specific type.
@@ -341,14 +269,14 @@ interface Toast {
      * Set the position to `'bottom-center'`
      */
     BOTTOM_CENTER: string;
-  }
+  };
 }
 
 export class ToastContainer extends React.Component<ToastContainerProps> {}
 
 /**
- * Helper to override the global style.
+ * Helper to build custom entrance and exit transition
  */
-export function style(props: styleProps): void;
+export function cssTranstion(props: cssTransitionProps): React.ReactNode;
 
 export let toast: Toast;
