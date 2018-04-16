@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Transition from 'react-transition-group/Transition';
 
 type ToastType = 'info' | 'success' | 'warning' | 'error' | 'default';
 
@@ -87,7 +86,7 @@ interface CommonOptions {
   /**
    * Pass a custom transition built with react-transition-group.
    */
-  transition?: Transition;
+  transition?: React.ComponentType;
 
   /**
    * Allow toast to be draggable
@@ -277,6 +276,26 @@ export class ToastContainer extends React.Component<ToastContainerProps> {}
 /**
  * Helper to build custom entrance and exit transition
  */
-export function cssTranstion(props: cssTransitionProps): React.ReactNode;
+export function cssTranstion(props: cssTransitionProps): React.ComponentType;
 
-export let toast: Toast;
+export const toast: Toast;
+
+/**
+ * Built-in entrance and exit transition
+ */
+export const Slide: React.ComponentType;
+
+/**
+ * Built-in entrance and exit transition
+ */
+export const Bounce: React.ComponentType;
+
+/**
+ * Built-in entrance and exit transition
+ */
+export const Flip: React.ComponentType;
+
+/**
+ * Built-in entrance and exit transition
+ */
+export const Zoom: React.ComponentType;
