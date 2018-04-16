@@ -28,7 +28,7 @@ interface cssTransitionProps {
    * `Default: false`
    */
   appendPosition?: boolean;
-};
+}
 
 interface CommonOptions {
   /**
