@@ -276,7 +276,7 @@ export class ToastContainer extends React.Component<ToastContainerProps> {}
 /**
  * Helper to build custom entrance and exit transition
  */
-export function cssTranstion(props: cssTransitionProps): React.ComponentType;
+export function cssTransition(props: cssTransitionProps): React.ComponentType;
 
 export const toast: Toast;
 
