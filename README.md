@@ -8,7 +8,7 @@
 * [Demo](#demo)
 * [Installation](#installation)
 * [Features](#features)
-* [Migrate from v3 to v4](#migrate-from-v3-to-v4)
+* [Migrate from v3 to v4](#from-v3-to-v4)
 * [Usage](#usage)
   + [One component to rule them all](#one-component-to-rule-them-all)
   + [Positioning toast](#positioning-toast)
