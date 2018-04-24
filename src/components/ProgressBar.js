@@ -22,10 +22,10 @@ function ProgressBar({
   const classNames = cx(
     'Toastify__progress-bar',
     `Toastify__progress-bar--${type}`,
-    className,
     {
       'Toastify__progress-bar--rtl': rtl
-    }
+    },
+    className
   );
 
   return (

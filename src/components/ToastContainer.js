@@ -343,8 +343,8 @@ class ToastContainer extends Component {
         className: cx(
           'Toastify__toast-container',
           `Toastify__toast-container--${position}`,
-          className,
-          { 'Toastify__toast-container--rtl': this.props.rtl }
+          { 'Toastify__toast-container--rtl': this.props.rtl },
+          className
         ),
         style: disablePointer
           ? { ...style, pointerEvents: 'none' }
