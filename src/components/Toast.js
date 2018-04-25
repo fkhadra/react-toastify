@@ -214,9 +214,14 @@ class Toast extends Component {
     } = this.props;
 
     const toastProps = {
-      className: cx('Toastify__toast', `Toastify__toast--${type}`, className, {
-        'Toastify__toast--rtl': rtl
-      })
+      className: cx(
+        'Toastify__toast',
+        `Toastify__toast--${type}`,
+        {
+          'Toastify__toast--rtl': rtl
+        },
+        className
+      )
     };
 
     if (autoClose && pauseOnHover) {
