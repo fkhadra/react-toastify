@@ -21,7 +21,7 @@ ShallowWrapper {
   },
   Symbol(enzyme.__node__): Object {
     "instance": null,
-    "key": undefined,
+    "key": null,
     "nodeType": "host",
     "props": Object {
       "className": "Toastify__progress-bar Toastify__progress-bar--default",
@@ -39,7 +39,7 @@ ShallowWrapper {
   Symbol(enzyme.__nodes__): Array [
     Object {
       "instance": null,
-      "key": undefined,
+      "key": null,
       "nodeType": "host",
       "props": Object {
         "className": "Toastify__progress-bar Toastify__progress-bar--default",
@@ -86,7 +86,7 @@ ShallowWrapper {
   },
   Symbol(enzyme.__node__): Object {
     "instance": null,
-    "key": undefined,
+    "key": null,
     "nodeType": "host",
     "props": Object {
       "className": "Toastify__progress-bar Toastify__progress-bar--default",
@@ -104,7 +104,7 @@ ShallowWrapper {
   Symbol(enzyme.__nodes__): Array [
     Object {
       "instance": null,
-      "key": undefined,
+      "key": null,
       "nodeType": "host",
       "props": Object {
         "className": "Toastify__progress-bar Toastify__progress-bar--default",
