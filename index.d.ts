@@ -271,7 +271,7 @@ interface Toast {
   };
 }
 
-export class ToastContainer extends React.Component<ToastContainerProps> {}
+export class ToastContainer extends React.Component<ToastContainerProps, any> {}
 
 /**
  * Helper to build custom entrance and exit transition

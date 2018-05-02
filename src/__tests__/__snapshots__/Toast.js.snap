@@ -46,7 +46,7 @@ ShallowWrapper {
   },
   Symbol(enzyme.__node__): Object {
     "instance": null,
-    "key": null,
+    "key": undefined,
     "nodeType": "function",
     "props": Object {
       "appear": true,
@@ -76,7 +76,7 @@ ShallowWrapper {
     "ref": null,
     "rendered": Object {
       "instance": null,
-      "key": null,
+      "key": undefined,
       "nodeType": "host",
       "props": Object {
         "children": Array [
@@ -101,7 +101,7 @@ ShallowWrapper {
       "rendered": Array [
         Object {
           "instance": null,
-          "key": null,
+          "key": undefined,
           "nodeType": "host",
           "props": Object {
             "children": "FooBar",
@@ -114,7 +114,7 @@ ShallowWrapper {
         },
         Object {
           "instance": null,
-          "key": null,
+          "key": undefined,
           "nodeType": "function",
           "props": Object {
             "ariaLabel": "close",
@@ -132,7 +132,7 @@ ShallowWrapper {
   Symbol(enzyme.__nodes__): Array [
     Object {
       "instance": null,
-      "key": null,
+      "key": undefined,
       "nodeType": "function",
       "props": Object {
         "appear": true,
@@ -162,7 +162,7 @@ ShallowWrapper {
       "ref": null,
       "rendered": Object {
         "instance": null,
-        "key": null,
+        "key": undefined,
         "nodeType": "host",
         "props": Object {
           "children": Array [
@@ -187,7 +187,7 @@ ShallowWrapper {
         "rendered": Array [
           Object {
             "instance": null,
-            "key": null,
+            "key": undefined,
             "nodeType": "host",
             "props": Object {
               "children": "FooBar",
@@ -200,7 +200,7 @@ ShallowWrapper {
           },
           Object {
             "instance": null,
-            "key": null,
+            "key": undefined,
             "nodeType": "function",
             "props": Object {
               "ariaLabel": "close",
