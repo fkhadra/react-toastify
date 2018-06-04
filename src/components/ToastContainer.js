@@ -360,7 +360,7 @@ class ToastContainer extends Component {
   }
 
   render() {
-    return <div>{this.renderToast()}</div>;
+    return <div className="Toastify">{this.renderToast()}</div>;
   }
 }
 
