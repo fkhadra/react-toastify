@@ -22,7 +22,7 @@ function getY(e) {
     : e.clientY;
 }
 
-const noop = () => {};
+const noop = () => { };
 
 class Toast extends Component {
   static propTypes = {
@@ -88,33 +88,48 @@ class Toast extends Component {
 
   componentDidMount() {
     this.props.onOpen(this.props.children.props);
-
     if (this.props.draggable) {
-      document.addEventListener('mousemove', this.onDragMove);
-      document.addEventListener('mouseup', this.onDragEnd);
-
-      document.addEventListener('touchmove', this.onDragMove);
-      document.addEventListener('touchend', this.onDragEnd);
+      this.bindDragEvents();
     }
+  }
+
+  bindDragEvents() {
+    document.addEventListener('mousemove', this.onDragMove);
+    document.addEventListener('mouseup', this.onDragEnd);
+
+    document.addEventListener('touchmove', this.onDragMove);
+    document.addEventListener('touchend', this.onDragEnd);
+  }
+
+  unbindDragEvents() {
+    document.removeEventListener('mousemove', this.onDragMove);
+    document.removeEventListener('mouseup', this.onDragEnd);
+
+    document.removeEventListener('touchmove', this.onDragMove);
+    document.removeEventListener('touchend', this.onDragEnd);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.draggable !== this.props.draggable) {
+      this.props.draggable ? this.bindDragEvents() : this.unbindDragEvents();
+    }
+    
+    if (this.props.isDocumentHidden !== prevProps.isDocumentHidden) {
+      this.setState({
+              isRunning: this.props.isDocumentHidden ? false : true
+            }, () => {
+              console.log('State Change:', this.state.isRunning)
+            });
+    }
+          // this.setState({
+          //   isRunning: !nextProps.isDocumentHidden
+          // });
   }
 
   componentWillUnmount() {
     this.props.onClose(this.props.children.props);
-
     if (this.props.draggable) {
-      document.removeEventListener('mousemove', this.onDragMove);
-      document.removeEventListener('mouseup', this.onDragEnd);
-
-      document.removeEventListener('touchmove', this.onDragMove);
-      document.removeEventListener('touchend', this.onDragEnd);
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.isDocumentHidden !== nextProps.isDocumentHidden) {
-      this.setState({
-        isRunning: !nextProps.isDocumentHidden
-      });
+      this.unbindDragEvents();
     }
   }
 
@@ -267,6 +282,7 @@ class Toast extends Component {
               hide={hideProgressBar}
               type={type}
               className={progressClassName}
+              ref={r => console.log(r)}
             />
           )}
         </div>
