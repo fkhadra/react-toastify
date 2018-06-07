@@ -209,6 +209,16 @@ class ToastContainer extends Component {
     );
   }
 
+  parseClassName(prop){
+    if (typeof prop === 'string') {
+      return prop;
+    } else if(prop !== null && typeof prop === 'object' && 'toString' in prop) {
+      return prop.toString()
+    }
+
+    return null;
+  }
+
   show(content, options) {
     if (!this.canBeRendered(content)) {
       throw new Error(
@@ -225,8 +235,8 @@ class ToastContainer extends Component {
       rtl: this.props.rtl,
       position: options.position || this.props.position,
       transition: options.transition || this.props.transition,
-      className: options.className || this.props.toastClassName,
-      bodyClassName: options.bodyClassName || this.props.bodyClassName,
+      className: this.parseClassName(options.className || this.props.toastClassName),
+      bodyClassName: this.parseClassName(options.bodyClassName || this.props.bodyClassName),
       closeButton: this.makeCloseButton(
         options.closeButton,
         toastId,
@@ -247,7 +257,7 @@ class ToastContainer extends Component {
           ? options.closeOnClick
           : this.props.closeOnClick,
       progressClassName:
-        options.progressClassName || this.props.progressClassName,
+        this.parseClassName(options.progressClassName || this.props.progressClassName),
       autoClose: this.getAutoCloseDelay(
         options.autoClose !== false
           ? parseInt(options.autoClose, 10)
@@ -345,7 +355,7 @@ class ToastContainer extends Component {
           'Toastify__toast-container',
           `Toastify__toast-container--${position}`,
           { 'Toastify__toast-container--rtl': this.props.rtl },
-          className
+          this.parseClassName(className)
         ),
         style: disablePointer
           ? { ...style, pointerEvents: 'none' }
