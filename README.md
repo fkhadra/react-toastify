@@ -69,11 +69,10 @@ $ yarn add react-toastify
 - RTL support
 - Swipe to close 👌
 - Can display a react component inside the toast!
-- Don't rely on `findDOMNode` or any DOM hack
 - Has ```onOpen``` and ```onClose``` hooks. Both can access the props passed to the react component rendered inside the toast
 - Can remove a toast programmatically
 - Define behavior per toast
-- Pause toast when the browser is not visible thanks to visibility API
+- ~~Pause toast when the browser is not visible thanks to visibility API~~ Need to fix it
 - Fancy progress bar to display the remaining time
 - Possibility to update a toast
 
@@ -972,7 +971,6 @@ On mobile the toast will take all the available width.
 | toastClassName          | string\|object         | -         | Add optional classes to the toast                                                                   |
 | bodyClassName           | string\|object         | -         | Add optional classes to the toast body                                                              |
 | progressClassName       | string\|object         | -         | Add optional classes to the progress bar                                                            |
-| pauseOnVisibilityChange | bool                   | true      | Pause on document visibility change(reducing the window for instance)                               |
 | draggable               | bool                   | true      | Allow toast to be draggable                                                                         |
 | draggablePercent        | number                 | 80        | The percentage of the toast's width it takes for a drag to dismiss a toast(value between 0 and 100) |
 
@@ -1072,6 +1070,12 @@ const Zoom = cssTransition({
 IE 11+ ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ |
 
 ## Release Notes
+
+### V4.1.0
+
+- Draggable prop can be updated, more details [here](https://github.com/fkhadra/react-toastify/issues/192)
+- Fix issue when passing glamor className. [More details](https://github.com/fkhadra/react-toastify/issues/191)
+- `pauseOnVisibility` has been disabled until I found a fix. The api is too much unstable 💩.
 
 ### V4.0.0
 
