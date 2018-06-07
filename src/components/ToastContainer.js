@@ -101,6 +101,7 @@ class ToastContainer extends Component {
     draggablePercent: PropTypes.number,
 
     /**
+     * ⚠️ NOT WORKING ATM, has been disabled until I fix it ⚠️
      * pause on document visibility change
      */
     pauseOnVisibilityChange: PropTypes.bool
@@ -149,19 +150,19 @@ class ToastContainer extends Component {
       .on(CLEAR, id => (id !== null ? this.removeToast(id) : this.clear()))
       .emit(MOUNTED, this);
 
-    this.props.pauseOnVisibilityChange &&
-      document.addEventListener('visibilitychange', this.isDocumentHidden);
+    //this.props.pauseOnVisibilityChange &&
+    //  document.addEventListener('visibilitychange', this.isDocumentHidden);
   }
 
   componentWillUnmount() {
     EventManager.off(ACTION.SHOW);
     EventManager.off(ACTION.CLEAR);
 
-    this.props.pauseOnVisibilityChange &&
-      document.removeEventListener('visibilitychange', this.isDocumentHidden);
+    // this.props.pauseOnVisibilityChange &&
+    //   document.removeEventListener('visibilitychange', this.isDocumentHidden);
   }
 
-  isDocumentHidden = () => this.setState({ isDocumentHidden: document.hidden });
+  //isDocumentHidden = () => this.setState({ isDocumentHidden: document.hidden });
 
   isToastActive = id => this.state.toast.indexOf(parseInt(id, 10)) !== -1;
 
@@ -188,9 +189,9 @@ class ToastContainer extends Component {
     return closeButton === false
       ? false
       : cloneElement(closeButton, {
-          closeToast: () => this.removeToast(toastId),
-          type: type
-        });
+        closeToast: () => this.removeToast(toastId),
+        type: type
+      });
   }
 
   getAutoCloseDelay(toastAutoClose) {
@@ -206,6 +207,16 @@ class ToastContainer extends Component {
       typeof content === 'number' ||
       typeof content === 'function'
     );
+  }
+
+  parseClassName(prop){
+    if (typeof prop === 'string') {
+      return prop;
+    } else if(prop !== null && typeof prop === 'object' && 'toString' in prop) {
+      return prop.toString()
+    }
+
+    return null;
   }
 
   show(content, options) {
@@ -224,8 +235,8 @@ class ToastContainer extends Component {
       rtl: this.props.rtl,
       position: options.position || this.props.position,
       transition: options.transition || this.props.transition,
-      className: options.className || this.props.toastClassName,
-      bodyClassName: options.bodyClassName || this.props.bodyClassName,
+      className: this.parseClassName(options.className || this.props.toastClassName),
+      bodyClassName: this.parseClassName(options.bodyClassName || this.props.bodyClassName),
       closeButton: this.makeCloseButton(
         options.closeButton,
         toastId,
@@ -246,7 +257,7 @@ class ToastContainer extends Component {
           ? options.closeOnClick
           : this.props.closeOnClick,
       progressClassName:
-        options.progressClassName || this.props.progressClassName,
+        this.parseClassName(options.progressClassName || this.props.progressClassName),
       autoClose: this.getAutoCloseDelay(
         options.autoClose !== false
           ? parseInt(options.autoClose, 10)
@@ -344,7 +355,7 @@ class ToastContainer extends Component {
           'Toastify__toast-container',
           `Toastify__toast-container--${position}`,
           { 'Toastify__toast-container--rtl': this.props.rtl },
-          className
+          this.parseClassName(className)
         ),
         style: disablePointer
           ? { ...style, pointerEvents: 'none' }

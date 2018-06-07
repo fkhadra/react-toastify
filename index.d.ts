@@ -151,6 +151,7 @@ interface ToastContainerProps extends CommonOptions {
   rtl?: boolean;
 
   /**
+   * ⚠️ NOT WORKING ATM, has been disabled until I fix it ⚠️
    * Pause toast's timer on document visibility change
    * `Default: true`
    */
