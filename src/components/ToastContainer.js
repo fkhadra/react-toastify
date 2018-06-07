@@ -101,6 +101,7 @@ class ToastContainer extends Component {
     draggablePercent: PropTypes.number,
 
     /**
+     * ⚠️ NOT WORKING ATM, has been disabled until I fix it ⚠️
      * pause on document visibility change
      */
     pauseOnVisibilityChange: PropTypes.bool
@@ -149,19 +150,19 @@ class ToastContainer extends Component {
       .on(CLEAR, id => (id !== null ? this.removeToast(id) : this.clear()))
       .emit(MOUNTED, this);
 
-    this.props.pauseOnVisibilityChange &&
-      document.addEventListener('visibilitychange', this.isDocumentHidden);
+    //this.props.pauseOnVisibilityChange &&
+    //  document.addEventListener('visibilitychange', this.isDocumentHidden);
   }
 
   componentWillUnmount() {
     EventManager.off(ACTION.SHOW);
     EventManager.off(ACTION.CLEAR);
 
-    this.props.pauseOnVisibilityChange &&
-      document.removeEventListener('visibilitychange', this.isDocumentHidden);
+    // this.props.pauseOnVisibilityChange &&
+    //   document.removeEventListener('visibilitychange', this.isDocumentHidden);
   }
 
-  isDocumentHidden = () => this.setState({ isDocumentHidden: document.hidden });
+  //isDocumentHidden = () => this.setState({ isDocumentHidden: document.hidden });
 
   isToastActive = id => this.state.toast.indexOf(parseInt(id, 10)) !== -1;
 
@@ -188,9 +189,9 @@ class ToastContainer extends Component {
     return closeButton === false
       ? false
       : cloneElement(closeButton, {
-          closeToast: () => this.removeToast(toastId),
-          type: type
-        });
+        closeToast: () => this.removeToast(toastId),
+        type: type
+      });
   }
 
   getAutoCloseDelay(toastAutoClose) {

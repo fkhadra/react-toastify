@@ -113,17 +113,6 @@ class Toast extends Component {
     if (prevProps.draggable !== this.props.draggable) {
       this.props.draggable ? this.bindDragEvents() : this.unbindDragEvents();
     }
-    
-    if (this.props.isDocumentHidden !== prevProps.isDocumentHidden) {
-      this.setState({
-              isRunning: this.props.isDocumentHidden ? false : true
-            }, () => {
-              console.log('State Change:', this.state.isRunning)
-            });
-    }
-          // this.setState({
-          //   isRunning: !nextProps.isDocumentHidden
-          // });
   }
 
   componentWillUnmount() {
@@ -274,7 +263,7 @@ class Toast extends Component {
           {closeButton !== false && closeButton}
           {autoClose !== false && (
             <ProgressBar
-              key={`pb-${updateId}`}
+              {...updateId ? { key: `pb-${updateId}` } : {}}
               rtl={rtl}
               delay={autoClose}
               isRunning={this.state.isRunning}
@@ -282,7 +271,6 @@ class Toast extends Component {
               hide={hideProgressBar}
               type={type}
               className={progressClassName}
-              ref={r => console.log(r)}
             />
           )}
         </div>
