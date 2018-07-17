@@ -336,7 +336,7 @@ If you want to change the content it's straightforward as well. You can render a
 ```js
  // With a string
  toast.update(this.toastId, { 
-    render: "New content"
+    render: "New content",
     type: toast.TYPE.INFO,
     autoClose: 5000 
   });
