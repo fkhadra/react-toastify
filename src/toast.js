@@ -98,6 +98,7 @@ eventManager
   .on(ACTION.WILL_UNMOUNT, () => {
     container = null;
     toast.isActive = noop;
+    toastId = 0;
   });
 
 export default toast;
