@@ -7,7 +7,7 @@ import Toast from './Toast';
 import CloseButton from './CloseButton';
 import { Bounce } from './Transitions';
 import { POSITION, ACTION } from './../utils/constant';
-import EventManager from './../utils/EventManager';
+import eventManager from './../utils/eventManager';
 import {
   falseOrDelay,
   falseOrElement,
@@ -146,7 +146,7 @@ class ToastContainer extends Component {
 
   componentDidMount() {
     const { SHOW, CLEAR, MOUNTED } = ACTION;
-    EventManager.on(SHOW, (content, options) => this.show(content, options))
+    eventManager.on(SHOW, (content, options) => this.show(content, options))
       .on(CLEAR, id => (id !== null ? this.removeToast(id) : this.clear()))
       .emit(MOUNTED, this);
 
@@ -155,8 +155,7 @@ class ToastContainer extends Component {
   }
 
   componentWillUnmount() {
-    EventManager.off(ACTION.SHOW);
-    EventManager.off(ACTION.CLEAR);
+    eventManager.off(ACTION.SHOW).off(ACTION.CLEAR);
 
     // this.props.pauseOnVisibilityChange &&
     //   document.removeEventListener('visibilitychange', this.isDocumentHidden);
@@ -176,7 +175,7 @@ class ToastContainer extends Component {
   }
 
   dispatchChange() {
-    EventManager.emit(ACTION.ON_CHANGE, this.state.toast.length);
+    eventManager.emit(ACTION.ON_CHANGE, this.state.toast.length);
   }
 
   makeCloseButton(toastClose, toastId, type) {

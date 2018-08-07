@@ -27,11 +27,11 @@ describe('EventManager', () => {
     expect(id).toBe(false);
   });
 
-  it('Should be able to remove all listeners', () => {
+  it('Should be able to remove event', () => {
     eventManager.on('foo', () => {});
     expect(eventManager.list.size).toBe(1);
-
-    eventManager.clear();
+    
+    eventManager.off('foo');
     expect(eventManager.list.size).toBe(0);
   });
 });

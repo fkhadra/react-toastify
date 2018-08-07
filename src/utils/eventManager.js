@@ -2,6 +2,7 @@ const eventManager = {
   list: new Map(),
 
   on(event, callback) {
+    console.log(event)
     this.list.has(event) || this.list.set(event, []);
 
     this.list.get(event).push(callback);
@@ -9,8 +10,9 @@ const eventManager = {
     return this;
   },
 
-  clear() {
-    this.list = new Map();
+  off(event = null) {
+    this.list.delete(event);
+    return this;
   },
 
   emit(event, ...args) {

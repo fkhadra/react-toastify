@@ -1,4 +1,4 @@
-import EventManager from './utils/EventManager';
+import eventManager from './utils/eventManager';
 import { POSITION, TYPE, ACTION } from './utils/constant';
 
 const defaultOptions = {
@@ -26,10 +26,7 @@ let toastId = 0;
  * @param {*} options
  */
 function mergeOptions(options, type) {
-  return Object.assign({}, defaultOptions, options, {
-    type: type,
-    toastId: ++toastId
-  });
+  return { ...defaultOptions, ...options, ...{ type, toastId: ++toastId } };
 }
 
 /**
@@ -39,7 +36,7 @@ function mergeOptions(options, type) {
  */
 function emitEvent(content, options) {
   if (container !== null) {
-    EventManager.emit(ACTION.SHOW, content, options);
+    eventManager.emit(ACTION.SHOW, content, options);
   } else {
     queue.push({ action: ACTION.SHOW, content, options });
   }
@@ -64,7 +61,7 @@ const toaster = Object.assign(
       emitEvent(content, mergeOptions(options, TYPE.WARNING)),
     error: (content, options) =>
       emitEvent(content, mergeOptions(options, TYPE.ERROR)),
-    dismiss: (id = null) => container && EventManager.emit(ACTION.CLEAR, id),
+    dismiss: (id = null) => container && eventManager.emit(ACTION.CLEAR, id),
     isActive: () => false,
     update(id, options) {
       setTimeout(() => {
@@ -91,11 +88,9 @@ const toaster = Object.assign(
     },
     onChange(callback) {
       if (typeof callback === 'function') {
-        EventManager.on(ACTION.ON_CHANGE, callback);
+        eventManager.on(ACTION.ON_CHANGE, callback);
       }
-    }
-  },
-  {
+    },
     POSITION,
     TYPE
   }
@@ -105,13 +100,13 @@ const toaster = Object.assign(
  * Wait until the ToastContainer is mounted to dispatch the toast
  * and attach isActive method
  */
-EventManager.on(ACTION.MOUNTED, containerInstance => {
+eventManager.on(ACTION.MOUNTED, containerInstance => {
   container = containerInstance;
-
+  console.log('ici')
   toaster.isActive = id => container.isToastActive(id);
 
   queue.forEach(item => {
-    EventManager.emit(item.action, item.content, item.options);
+    eventManager.emit(item.action, item.content, item.options);
   });
   queue = [];
 });

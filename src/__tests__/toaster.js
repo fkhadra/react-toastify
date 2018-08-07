@@ -5,29 +5,29 @@ import { mount } from 'enzyme';
 
 import ToastContainer from './../components/ToastContainer';
 import toaster from './../toaster';
-import EventManager from './../utils/EventManager';
+import eventManager from './../utils/eventManager';
 import { ACTION, TYPE } from './../utils/constant';
 
 jest.useFakeTimers();
 
 // Clear all previous event to avoid any clash between tests
 beforeEach(() => {
-  EventManager.off(ACTION.SHOW);
-  EventManager.off(ACTION.CLEAR);
-  EventManager.off(ACTION.ON_CHANGE);
+  eventManager
+    .off(ACTION.SHOW)
+    .off(ACTION.CLEAR)
+    .off(ACTION.ON_CHANGE);
 });
 
 describe('toastify', () => {
   it('Should emit notification only if a container is mounted', () => {
     const fn = jest.fn();
 
-    EventManager.on(ACTION.SHOW, fn);
+    eventManager.on(ACTION.SHOW, fn);
     toaster('hello');
     expect(fn).not.toHaveBeenCalled();
 
     mount(<ToastContainer />);
     jest.runAllTimers();
-
     expect(fn).toHaveBeenCalled();
   });
 

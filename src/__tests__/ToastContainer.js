@@ -6,7 +6,7 @@ import ToastContainer from './../components/ToastContainer';
 import toaster from './../toaster';
 
 import { ACTION } from './../utils/constant';
-import EventManager from './../utils/EventManager';
+import eventManager from './../utils/eventManager';
 
 jest.useFakeTimers();
 
@@ -26,12 +26,12 @@ describe('ToastContainer', () => {
   it('Should bind event when mounted and unbind them when unmounted', () => {
     const component = mount(<ToastContainer />);
 
-    expect(EventManager.eventList.has(ACTION.SHOW)).toBeTruthy();
-    expect(EventManager.eventList.has(ACTION.CLEAR)).toBeTruthy();
+    expect(eventManager.list.has(ACTION.SHOW)).toBeTruthy();
+    expect(eventManager.list.has(ACTION.CLEAR)).toBeTruthy();
 
     component.unmount();
-    expect(EventManager.eventList.has(ACTION.SHOW)).toBeFalsy();
-    expect(EventManager.eventList.has(ACTION.CLEAR)).toBeFalsy();
+    expect(eventManager.list.has(ACTION.SHOW)).toBeFalsy();
+    expect(eventManager.list.has(ACTION.CLEAR)).toBeFalsy();
   });
 
   it(`Should always pass down to Toast the props: 
