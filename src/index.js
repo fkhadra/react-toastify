@@ -1,11 +1,11 @@
 import ToastContainer from './components/ToastContainer';
 import { Bounce, Slide, Zoom, Flip } from './components/Transitions';
-import toaster from './toaster';
+import toast from './toast';
 import cssTransition from './utils/cssTransition';
 
 export {
   ToastContainer,
-  toaster as toast,
+  toast,
   cssTransition,
   Bounce,
   Slide,

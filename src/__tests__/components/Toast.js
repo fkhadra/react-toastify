@@ -2,10 +2,10 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 
-import Toast from './../components/Toast';
-import ToastContainer from './../components/ToastContainer';
-import CloseButton from './../components/CloseButton';
-import ProgressBar from './../components/ProgressBar';
+import Toast from './../../components/Toast';
+import ToastContainer from './../../components/ToastContainer';
+import CloseButton from './../../components/CloseButton';
+import ProgressBar from './../../components/ProgressBar';
 
 const REQUIRED_PROPS = {
   ...ToastContainer.defaultProps,

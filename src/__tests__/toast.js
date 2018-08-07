@@ -4,7 +4,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import ToastContainer from './../components/ToastContainer';
-import toaster from './../toaster';
+import toast from './../toast';
 import eventManager from './../utils/eventManager';
 import { ACTION, TYPE } from './../utils/constant';
 
@@ -23,7 +23,7 @@ describe('toastify', () => {
     const fn = jest.fn();
 
     eventManager.on(ACTION.SHOW, fn);
-    toaster('hello');
+    toast('hello');
     expect(fn).not.toHaveBeenCalled();
 
     mount(<ToastContainer />);
@@ -32,8 +32,8 @@ describe('toastify', () => {
   });
 
   it('Should return a new id each time we emit a notification', () => {
-    const firstId = toaster('Hello');
-    const secondId = toaster('Hello');
+    const firstId = toast('Hello');
+    const secondId = toast('Hello');
 
     expect(firstId).not.toEqual(secondId);
   });
@@ -42,10 +42,10 @@ describe('toastify', () => {
     it('Should be able to track when toast is added or removed', () => {
       mount(<ToastContainer />);
       const fn = jest.fn();
-      toaster.onChange(fn);
+      toast.onChange(fn);
       expect(fn).not.toHaveBeenCalled();
 
-      toaster('hello');
+      toast('hello');
 
       jest.runAllTimers();
       expect(fn).toHaveBeenCalled();
@@ -53,23 +53,23 @@ describe('toastify', () => {
 
     it('The callback should receive the number of toast displayed', done => {
       mount(<ToastContainer />);
-      toaster.onChange(count => {
+      toast.onChange(count => {
         expect(count).toBe(1);
         done();
       });
-      toaster('hello');
+      toast('hello');
       jest.runAllTimers();
     });
   });
 
   it('Should be able remove toast programmatically', () => {
     const component = mount(<ToastContainer />);
-    const id = toaster('hello');
+    const id = toast('hello');
 
     jest.runAllTimers();
     expect(component.state('toast')[0]).toBe(id);
 
-    toaster.dismiss(id);
+    toast.dismiss(id);
     jest.runAllTimers();
     expect(component.state('toast').length).toBe(0);
   });
@@ -77,11 +77,11 @@ describe('toastify', () => {
   describe('update function', () => {
     it('Should be able to update an existing toast', () => {
       const component = mount(<ToastContainer />);
-      const id = toaster('hello');
+      const id = toast('hello');
 
       jest.runAllTimers();
       expect(component.html()).toMatch(/hello/);
-      toaster.update(id, {
+      toast.update(id, {
         render: 'foobar'
       });
       jest.runAllTimers();
@@ -91,19 +91,19 @@ describe('toastify', () => {
 
     it('Should be able to update the same toast many times', () => {
       const component = mount(<ToastContainer />);
-      const id = toaster('hello');
+      const id = toast('hello');
 
       jest.runAllTimers();
       expect(component.html()).toMatch(/hello/);
 
-      toaster.update(id, {
+      toast.update(id, {
         render: 'foobar'
       });
 
       jest.runAllTimers();
       expect(component.html()).toMatch(/foobar/);
 
-      toaster.update(id, {
+      toast.update(id, {
         render: 'plop'
       });
 
@@ -113,7 +113,7 @@ describe('toastify', () => {
     it('Should update a toast only if it exist and if the container is mounted', () => {
       const component = mount(<ToastContainer />);
 
-      toaster.update(0, {
+      toast.update(0, {
         render: 'hello'
       });
 
@@ -124,22 +124,22 @@ describe('toastify', () => {
 
   describe('isActive function', () => {
     it('toast.isActive should return false until the container is mounted', () => {
-      const isActive = toaster.isActive();
+      const isActive = toast.isActive();
       expect(isActive).toBe(false);
     });
 
     it('Should be able to tell if a toast is active based on the id as soon as the container is mounted', () => {
       mount(<ToastContainer />);
-      const id = toaster('hello');
+      const id = toast('hello');
 
       jest.runAllTimers();
-      expect(toaster.isActive(id)).toBe(true);
+      expect(toast.isActive(id)).toBe(true);
     });
   });
 
   it('Can append classNames', () => {
     const component = mount(<ToastContainer />);
-    toaster('hello', {
+    toast('hello', {
       className: 'class1',
       bodyClassName: 'class2',
       progressClassName: 'class3'
@@ -154,12 +154,12 @@ describe('toastify', () => {
   it('Should be able to use syntaxic sugar for different notification type', () => {
     const component = mount(<ToastContainer />);
 
-    toaster('plop');
-    toaster.success('plop');
-    toaster.error('plop');
-    toaster.warning('plop');
-    toaster.info('plop');
-    toaster.warn('plop');
+    toast('plop');
+    toast.success('plop');
+    toast.error('plop');
+    toast.warning('plop');
+    toast.info('plop');
+    toast.warn('plop');
     jest.runAllTimers();
 
     // Remove default types as there is no shortcut for that one

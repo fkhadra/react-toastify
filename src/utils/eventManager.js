@@ -2,7 +2,6 @@ const eventManager = {
   list: new Map(),
 
   on(event, callback) {
-    console.log(event)
     this.list.has(event) || this.list.set(event, []);
 
     this.list.get(event).push(callback);

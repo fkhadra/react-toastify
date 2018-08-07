@@ -1,38 +1,19 @@
 import eventManager from './utils/eventManager';
 import { POSITION, TYPE, ACTION } from './utils/constant';
 
-const defaultOptions = {
-  type: TYPE.DEFAULT,
-  autoClose: null,
-  closeButton: null,
-  hideProgressBar: null,
-  position: null,
-  pauseOnHover: null,
-  closeOnClick: null,
-  className: null,
-  bodyClassName: null,
-  progressClassName: null,
-  transition: null,
-  updateId: null,
-  draggable: null
-};
-
 let container = null;
 let queue = [];
 let toastId = 0;
 
 /**
  * Merge provided options with the defaults settings and generate the toastId
- * @param {*} options
  */
 function mergeOptions(options, type) {
-  return { ...defaultOptions, ...options, ...{ type, toastId: ++toastId } };
+  return { ...options, type, toastId: ++toastId };
 }
 
 /**
  * Dispatch toast. If the container is not mounted, the toast is enqueued
- * @param {*} content
- * @param {*} options
  */
 function emitEvent(content, options) {
   if (container !== null) {
@@ -44,7 +25,7 @@ function emitEvent(content, options) {
   return options.toastId;
 }
 
-const toaster = Object.assign(
+const toast = Object.assign(
   (content, options) =>
     emitEvent(
       content,
@@ -63,20 +44,22 @@ const toaster = Object.assign(
       emitEvent(content, mergeOptions(options, TYPE.ERROR)),
     dismiss: (id = null) => container && eventManager.emit(ACTION.CLEAR, id),
     isActive: () => false,
-    update(id, options) {
+    update(toastId, options) {
       setTimeout(() => {
-        if (container && typeof container.collection[id] !== 'undefined') {
+        if (container && typeof container.collection[toastId] !== 'undefined') {
           const {
             options: oldOptions,
             content: oldContent
-          } = container.collection[id];
-          const updateId =
-            oldOptions.updateId !== null ? oldOptions.updateId + 1 : 1;
+          } = container.collection[toastId];
+          const updateId = oldOptions.updateId ? oldOptions.updateId + 1 : 1;
 
-          const nextOptions = Object.assign({}, oldOptions, options, {
-            toastId: id,
-            updateId: updateId
-          });
+          const nextOptions = {
+            ...oldOptions,
+            ...options,
+            toastId,
+            updateId
+          };
+
           const content =
             typeof nextOptions.render !== 'undefined'
               ? nextOptions.render
@@ -100,16 +83,16 @@ const toaster = Object.assign(
  * Wait until the ToastContainer is mounted to dispatch the toast
  * and attach isActive method
  */
-eventManager.on(ACTION.MOUNTED, containerInstance => {
-  container = containerInstance;
-  
-  toaster.isActive = id => container.isToastActive(id);
+eventManager
+  .on(ACTION.MOUNTED, containerInstance => {
+    container = containerInstance;
+    toast.isActive = id => container.isToastActive(id);
 
-  for (const item of queue) {
-    eventManager.emit(item.action, item.content, item.options);
-  }
-  
-  queue = [];
-});
+    for (const item of queue) {
+      eventManager.emit(item.action, item.content, item.options);
+    }
 
-export default toaster;
+    queue = [];
+  });
+
+export default toast;
