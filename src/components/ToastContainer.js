@@ -145,11 +145,11 @@ class ToastContainer extends Component {
   collection = {};
 
   componentDidMount() {
-    const { SHOW, CLEAR, MOUNTED } = ACTION;
+    const { SHOW, CLEAR, DID_MOUNT } = ACTION;
     eventManager
       .on(SHOW, (content, options) => this.show(content, options))
       .on(CLEAR, id => (id !== null ? this.removeToast(id) : this.clear()))
-      .emit(MOUNTED, this);
+      .emit(DID_MOUNT, this);
 
     //this.props.pauseOnVisibilityChange &&
     //  document.addEventListener('visibilitychange', this.isDocumentHidden);
@@ -158,7 +158,8 @@ class ToastContainer extends Component {
   componentWillUnmount() {
     eventManager
       .off(ACTION.SHOW)
-      .off(ACTION.CLEAR);
+      .off(ACTION.CLEAR)
+      .emit(ACTION.WILL_UNMOUNT);
 
     // this.props.pauseOnVisibilityChange &&
     //   document.removeEventListener('visibilitychange', this.isDocumentHidden);

@@ -4,6 +4,7 @@ import { POSITION, TYPE, ACTION } from './utils/constant';
 let container = null;
 let queue = [];
 let toastId = 0;
+const noop = () => false;
 
 /**
  * Merge provided options with the defaults settings and generate the toastId
@@ -43,7 +44,7 @@ const toast = Object.assign(
     error: (content, options) =>
       emitEvent(content, mergeOptions(options, TYPE.ERROR)),
     dismiss: (id = null) => container && eventManager.emit(ACTION.CLEAR, id),
-    isActive: () => false,
+    isActive: noop,
     update(toastId, options) {
       setTimeout(() => {
         if (container && typeof container.collection[toastId] !== 'undefined') {
@@ -84,7 +85,7 @@ const toast = Object.assign(
  * and attach isActive method
  */
 eventManager
-  .on(ACTION.MOUNTED, containerInstance => {
+  .on(ACTION.DID_MOUNT, containerInstance => {
     container = containerInstance;
     toast.isActive = id => container.isToastActive(id);
 
@@ -93,6 +94,10 @@ eventManager
     }
 
     queue = [];
+  })
+  .on(ACTION.WILL_UNMOUNT, () => {
+    container = null;
+    toast.isActive = noop;
   });
 
 export default toast;
