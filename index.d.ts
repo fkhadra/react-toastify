@@ -2,6 +2,8 @@ import * as React from 'react';
 
 type ToastType = 'info' | 'success' | 'warning' | 'error' | 'default';
 
+type ToastPosition = 'top-right' | 'top-center' | 'top-left' | 'bottom-right' | 'bottom-center' | 'bottom-left';
+
 type ToastContent = React.ReactNode | { (): void };
 
 interface cssTransitionProps {
@@ -54,7 +56,7 @@ interface CommonOptions {
    * `One of: 'top-right', 'top-center', 'top-left', 'bottom-right', 'bottom-center', 'bottom-left'`
    * `Default: 'top-right'`
    */
-  position?: string;
+  position?: ToastPosition;
 
   /**
    * Pass a custom close button.
