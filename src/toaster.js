@@ -102,12 +102,13 @@ const toaster = Object.assign(
  */
 eventManager.on(ACTION.MOUNTED, containerInstance => {
   container = containerInstance;
-  console.log('ici')
+  
   toaster.isActive = id => container.isToastActive(id);
 
-  queue.forEach(item => {
+  for (const item of queue) {
     eventManager.emit(item.action, item.content, item.options);
-  });
+  }
+  
   queue = [];
 });
 

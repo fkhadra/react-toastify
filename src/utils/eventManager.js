@@ -20,9 +20,9 @@ const eventManager = {
       return false;
     }
 
-    this.list
-      .get(event)
-      .forEach(callback => setTimeout(() => callback.call(this, ...args), 0));
+    for (const callback of this.list.get(event)) {
+      setTimeout(() => callback.call(this, ...args), 0)
+    }
 
     return true;
   }

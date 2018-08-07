@@ -331,7 +331,7 @@ class ToastContainer extends Component {
       : Object.keys(this.collection);
 
     // group toast by position
-    collection.forEach(toastId => {
+    for (const toastId of collection) {
       const toast = this.collection[toastId];
       toastToRender[toast.position] || (toastToRender[toast.position] = []);
 
@@ -343,8 +343,8 @@ class ToastContainer extends Component {
         toastToRender[toast.position].push(null);
         delete this.collection[toastId];
       }
-    });
-
+    }
+   
     return Object.keys(toastToRender).map(position => {
       const disablePointer =
         toastToRender[position].length === 1 &&
