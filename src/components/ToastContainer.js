@@ -101,10 +101,9 @@ class ToastContainer extends Component {
     draggablePercent: PropTypes.number,
 
     /**
-     * ⚠️ NOT WORKING ATM, has been disabled until I fix it ⚠️
-     * pause on document visibility change
+     * Pause the toast on focus loss
      */
-    pauseOnVisibilityChange: PropTypes.bool
+    pauseOnFocusLoss: PropTypes.bool
   };
 
   static defaultProps = {
@@ -116,6 +115,7 @@ class ToastContainer extends Component {
     hideProgressBar: false,
     closeButton: <CloseButton />,
     pauseOnHover: true,
+    pauseOnFocusLoss: true,
     closeOnClick: true,
     newestOnTop: false,
     draggable: true,
@@ -131,8 +131,7 @@ class ToastContainer extends Component {
    * Hold toast ids
    */
   state = {
-    toast: [],
-    isDocumentHidden: false
+    toast: []
   };
 
   /**
@@ -145,14 +144,13 @@ class ToastContainer extends Component {
   collection = {};
 
   componentDidMount() {
-    const { SHOW, CLEAR, DID_MOUNT } = ACTION;
     eventManager
-      .on(SHOW, (content, options) => this.show(content, options))
-      .on(CLEAR, id => (id !== null ? this.removeToast(id) : this.clear()))
-      .emit(DID_MOUNT, this);
-
-    //this.props.pauseOnVisibilityChange &&
-    //  document.addEventListener('visibilitychange', this.isDocumentHidden);
+      .on(ACTION.SHOW, (content, options) => this.show(content, options))
+      .on(
+        ACTION.CLEAR,
+        id => (id !== null ? this.removeToast(id) : this.clear())
+      )
+      .emit(ACTION.DID_MOUNT, this);
   }
 
   componentWillUnmount() {
@@ -160,12 +158,7 @@ class ToastContainer extends Component {
       .off(ACTION.SHOW)
       .off(ACTION.CLEAR)
       .emit(ACTION.WILL_UNMOUNT);
-
-    // this.props.pauseOnVisibilityChange &&
-    //   document.removeEventListener('visibilitychange', this.isDocumentHidden);
   }
-
-  //isDocumentHidden = () => this.setState({ isDocumentHidden: document.hidden });
 
   isToastActive = id => this.state.toast.indexOf(parseInt(id, 10)) !== -1;
 
@@ -257,6 +250,10 @@ class ToastContainer extends Component {
         typeof options.pauseOnHover === 'boolean'
           ? options.pauseOnHover
           : this.props.pauseOnHover,
+      pauseOnFocusLoss:
+        typeof options.pauseOnFocusLoss === 'boolean'
+          ? options.pauseOnFocusLoss
+          : this.props.pauseOnFocusLoss,
       draggable:
         typeof options.draggable === 'boolean'
           ? options.draggable
@@ -309,10 +306,9 @@ class ToastContainer extends Component {
 
     this.setState(
       {
-        toast:
-          toastOptions.updateId
-            ? [...this.state.toast]
-            : [...this.state.toast, toastId]
+        toast: toastOptions.updateId
+          ? [...this.state.toast]
+          : [...this.state.toast, toastId]
       },
       this.dispatchChange
     );
