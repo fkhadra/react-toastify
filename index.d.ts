@@ -39,6 +39,12 @@ interface CommonOptions {
   pauseOnHover?: boolean;
 
   /**
+   * Pause the toast when the window loose focus.
+   * `Default: true`
+   */
+  pauseOnFocusLoss?: boolean;
+
+  /**
    * Remove the toast when clicked.
    * `Default: true`
    */
@@ -151,13 +157,6 @@ interface ToastContainerProps extends CommonOptions {
    * `Default: false`
    */
   rtl?: boolean;
-
-  /**
-   * ⚠️ NOT WORKING ATM, has been disabled until I fix it ⚠️
-   * Pause toast's timer on document visibility change
-   * `Default: true`
-   */
-  pauseOnVisibilityChange?: boolean;
 }
 
 interface Toast {
