@@ -110,6 +110,20 @@ describe('toastify', () => {
       jest.runAllTimers();
       expect(component.html()).toMatch(/plop/);
     });
+
+    it('Should be able to update a Toast and keep the same content', () => {
+      const component = mount(<ToastContainer />);
+      const id = toast('hello');
+
+      jest.runAllTimers();
+      expect(component.html()).toMatch(/hello/);
+      toast.update(id, {
+        className: 'foobar'
+      });
+      jest.runAllTimers();
+      expect(component.html()).toMatch(/hello/);
+    });
+
     it('Should update a toast only if it exist and if the container is mounted', () => {
       const component = mount(<ToastContainer />);
 

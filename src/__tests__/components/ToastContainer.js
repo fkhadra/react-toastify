@@ -161,6 +161,25 @@ describe('ToastContainer', () => {
     expect(component.html()).toMatch(/style="background: red;"/);
   });
 
+  // Most of css-in-js use toString to translate to className
+  it('Should support css-in-js rules', () => {
+    const className = {
+      background: 'purple',
+      toString(){
+        return 'random-class-name'
+      }
+    };
+
+    const component = mount(
+      <ToastContainer className={className} style={{ background: 'red' }} />
+    );
+
+    toast('hello');
+    jest.runAllTimers();
+
+    expect(component.html()).toMatch(/class=".+random-class-name"/);
+  })
+
   it('Should pass a closeToast function when displaying a react component', () => {
     const component = mount(<ToastContainer />);
     const Msg = () => <div>Plop</div>;
@@ -172,23 +191,6 @@ describe('ToastContainer', () => {
 
     expect(props).toHaveProperty('closeToast');
   });
-
-  // ⚠️ Disabled until I fix the issue
-  // it('Should update state when document visibility change', () => {
-  //   expect(true).toBe(true);
-  // let trigger;
-  // let event;
-  // document.addEventListener = (evt, cb) => {
-  //   trigger = cb;
-  //   event = evt;
-  // };
-
-  // const component = mount(<ToastContainer />);
-  // expect(event).toBe('visibilitychange');
-  // expect(component.state().isDocumentHidden).toBe(false);
-  // trigger();
-  // expect(component.state().isDocumentHidden).toBe(true);
-  //});
 
   describe('closeToast function', () => {
     it('Should remove toast when closeToast is called', () => {
