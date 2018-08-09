@@ -110,7 +110,6 @@ class ToastContainer extends Component {
     position: POSITION.TOP_RIGHT,
     transition: Bounce,
     rtl: false,
-    pauseOnVisibilityChange: true,
     autoClose: 5000,
     hideProgressBar: false,
     closeButton: <CloseButton />,
@@ -259,7 +258,7 @@ class ToastContainer extends Component {
           ? options.draggable
           : this.props.draggable,
       draggablePercent:
-        typeof options.draggable === 'number' && !isNaN(options.draggable)
+        typeof options.draggablePercent === 'number' && !isNaN(options.draggablePercent)
           ? options.draggablePercent
           : this.props.draggablePercent,
       closeOnClick:
