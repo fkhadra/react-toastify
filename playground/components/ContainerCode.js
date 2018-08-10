@@ -1,7 +1,6 @@
 import React from 'react';
 
 function getProp(prop, value) {
-  const P = () => <span className="code__props">{prop}</span>;
   return value ? (
     <div>
       <span className="code__props">{prop}</span>

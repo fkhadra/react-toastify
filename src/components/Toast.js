@@ -22,7 +22,7 @@ function getY(e) {
     : e.clientY;
 }
 
-const noop = () => {};
+const noop = () => { };
 
 class Toast extends Component {
   static propTypes = {
@@ -101,13 +101,19 @@ class Toast extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.draggable !== this.props.draggable) {
-      this.props.draggable ? this.bindDragEvents() : this.unbindDragEvents();
+      if (this.props.draggable) {
+        this.bindDragEvents();
+      } else {
+        this.unbindDragEvents();
+      }
     }
 
     if (prevProps.pauseOnFocusLoss !== this.props.pauseOnFocusLoss) {
-      this.props.pauseOnFocusLoss
-        ? this.bindFocusEvents()
-        : this.unbindFocusEvents();
+      if (this.props.pauseOnFocusLoss) {
+        this.bindFocusEvents();
+      } else {
+        this.unbindFocusEvents();
+      }
     }
   }
 
