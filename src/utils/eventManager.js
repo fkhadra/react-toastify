@@ -20,7 +20,7 @@ const eventManager = {
     }
 
     for (const callback of this.list.get(event)) {
-      setTimeout(() => callback.call(this, ...args), 0)
+      setTimeout(() => callback.call(this, ...args), 0);
     }
 
     return true;

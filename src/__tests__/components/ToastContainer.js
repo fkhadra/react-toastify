@@ -41,22 +41,22 @@ describe('ToastContainer', () => {
     -pauseOnHover
     -transition
     -closeToast`, () => {
-      const component = mount(<ToastContainer />);
-      // Create a toast
-      toast('coucou');
-      jest.runAllTimers();
+    const component = mount(<ToastContainer />);
+    // Create a toast
+    toast('coucou');
+    jest.runAllTimers();
 
-      const props = getToastProps(component);
+    const props = getToastProps(component);
 
-      [
-        'autoClose',
-        'closeButton',
-        'position',
-        'closeToast',
-        'transition',
-        'pauseOnHover'
-      ].forEach(key => expect(hasProp(props, key)).toBeTruthy());
-    });
+    [
+      'autoClose',
+      'closeButton',
+      'position',
+      'closeToast',
+      'transition',
+      'pauseOnHover'
+    ].forEach(key => expect(hasProp(props, key)).toBeTruthy());
+  });
 
   it('Should clear all toast when clear is called without id', () => {
     const component = mount(<ToastContainer />);
@@ -98,7 +98,7 @@ describe('ToastContainer', () => {
   it('Toast options should supersede ToastContainer props', () => {
     const component = mount(<ToastContainer />);
     const CloseBtn = () => <div>Close</div>;
-    const fn = () => { };
+    const fn = () => {};
     const desiredProps = {
       pauseOnHover: false,
       closeOnClick: false,
@@ -165,8 +165,8 @@ describe('ToastContainer', () => {
   it('Should support css-in-js rules', () => {
     const className = {
       background: 'purple',
-      toString(){
-        return 'random-class-name'
+      toString() {
+        return 'random-class-name';
       }
     };
 
@@ -178,7 +178,7 @@ describe('ToastContainer', () => {
     jest.runAllTimers();
 
     expect(component.html()).toMatch(/class=".+random-class-name"/);
-  })
+  });
 
   it('Should pass a closeToast function when displaying a react component', () => {
     const component = mount(<ToastContainer />);
@@ -230,9 +230,7 @@ describe('ToastContainer', () => {
 
   it('Should include only the style needed for a given position', () => {
     Object.keys(toast.POSITION).forEach(k => {
-      const component = mount(
-        <ToastContainer position={toast.POSITION[k]} />
-      );
+      const component = mount(<ToastContainer position={toast.POSITION[k]} />);
       const id = toast('test');
       jest.runAllTimers();
       expect(component.instance().collection[id].position).toBe(

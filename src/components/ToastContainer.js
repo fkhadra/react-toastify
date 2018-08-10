@@ -184,9 +184,9 @@ class ToastContainer extends Component {
     return closeButton === false
       ? false
       : cloneElement(closeButton, {
-        closeToast: () => this.removeToast(toastId),
-        type: type
-      });
+          closeToast: () => this.removeToast(toastId),
+          type: type
+        });
   }
 
   getAutoCloseDelay(toastAutoClose) {
@@ -258,7 +258,8 @@ class ToastContainer extends Component {
           ? options.draggable
           : this.props.draggable,
       draggablePercent:
-        typeof options.draggablePercent === 'number' && !isNaN(options.draggablePercent)
+        typeof options.draggablePercent === 'number' &&
+        !isNaN(options.draggablePercent)
           ? options.draggablePercent
           : this.props.draggablePercent,
       closeOnClick:

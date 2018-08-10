@@ -9,7 +9,7 @@ import ProgressBar from './../../components/ProgressBar';
 
 const REQUIRED_PROPS = {
   ...ToastContainer.defaultProps,
-  closeToast: () => { },
+  closeToast: () => {},
   type: 'default'
 };
 
@@ -146,7 +146,7 @@ describe('Toast', () => {
 
     ev = new Event('focus');
     window.dispatchEvent(ev);
-    
+
     expect(component.state('isRunning')).toBe(true);
   });
 
@@ -166,7 +166,7 @@ describe('Toast', () => {
 
     document.addEventListener = jest.fn();
     window.addEventListener = jest.fn();
-    
+
     component.setProps({
       draggable: true,
       pauseOnFocusLoss: true

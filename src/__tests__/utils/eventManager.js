@@ -30,7 +30,7 @@ describe('EventManager', () => {
   it('Should be able to remove event', () => {
     eventManager.on('foo', () => {});
     expect(eventManager.list.size).toBe(1);
-    
+
     eventManager.off('foo');
     expect(eventManager.list.size).toBe(0);
   });

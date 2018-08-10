@@ -22,7 +22,7 @@ function getY(e) {
     : e.clientY;
 }
 
-const noop = () => { };
+const noop = () => {};
 
 class Toast extends Component {
   static propTypes = {
@@ -92,7 +92,7 @@ class Toast extends Component {
     if (this.props.draggable) {
       this.bindDragEvents();
     }
-    
+
     // Maybe I could bind the event in the ToastContainer and rely on delegation
     if (this.props.pauseOnFocusLoss) {
       this.bindFocusEvents();
@@ -105,7 +105,9 @@ class Toast extends Component {
     }
 
     if (prevProps.pauseOnFocusLoss !== this.props.pauseOnFocusLoss) {
-      this.props.pauseOnFocusLoss ? this.bindFocusEvents() : this.unbindFocusEvents();
+      this.props.pauseOnFocusLoss
+        ? this.bindFocusEvents()
+        : this.unbindFocusEvents();
     }
   }
 
@@ -148,13 +150,13 @@ class Toast extends Component {
   }
 
   pauseToast = () => {
-    if(this.props.autoClose) {
+    if (this.props.autoClose) {
       this.setState({ isRunning: false });
     }
   };
 
   playToast = () => {
-    if(this.props.autoClose) {
+    if (this.props.autoClose) {
       this.setState({ isRunning: true });
     }
   };
