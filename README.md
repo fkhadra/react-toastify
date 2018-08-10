@@ -5,7 +5,6 @@
 
 🎉 React-Toastify allow you to add notification to your app with ease. No bullshit !
 
-- [React Toastify ![Build Status](https://travis-ci.org/fkhadra/react-toastify) ![npm]() ![npm]() ![license]() ![Coverage Status](https://coveralls.io/github/fkhadra/react-toastify?branch=master)](#react-toastify-build-statushttpstravis-ciorgfkhadrareact-toastify-npm-npm-license-coverage-statushttpscoverallsiogithubfkhadrareact-toastifybranchmaster)
   - [Demo](#demo)
   - [Installation](#installation)
   - [Features](#features)
