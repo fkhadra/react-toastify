@@ -38,12 +38,12 @@ const flags = [
     label: 'Pause delay on hover'
   },
   {
-    id: 'rtl',
-    label: 'Right to left layout*'
+    id: 'pauseOnFocusLoss',
+    label: 'Pause toast when the window loses focus'
   },
   {
-    id: 'pauseOnVisibilityChange',
-    label: 'Pause toast on visibility change*'
+    id: 'rtl',
+    label: 'Right to left layout*'
   },
   {
     id: 'draggable',
@@ -94,7 +94,7 @@ class App extends Component {
       !this.state.hideProgressBar &&
       !this.state.newestOnTop &&
       !this.state.rtl &&
-      this.state.pauseOnVisibilityChange &&
+      this.state.pauseOnFocusLoss &&
       this.state.pauseOnHover &&
       this.state.closeOnClick &&
       this.state.draggable

@@ -23,7 +23,7 @@ const ContainerCode = ({
   closeOnClick,
   pauseOnHover,
   rtl,
-  pauseOnVisibilityChange,
+  pauseOnFocusLoss,
   isDefaultProps,
   draggable
 }) => (
@@ -46,7 +46,7 @@ const ContainerCode = ({
       {getProp('newestOnTop', newestOnTop)}
       {getProp('closeOnClick', closeOnClick)}
       {getProp('rtl', rtl)}
-      {getProp('pauseOnVisibilityChange', pauseOnVisibilityChange)}
+      {getProp('pauseOnFocusLoss', pauseOnFocusLoss)}
       {getProp('draggable', draggable)}
       {!disableAutoClose ? getProp('pauseOnHover', pauseOnHover) : ''}
       <div>

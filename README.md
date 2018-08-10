@@ -5,51 +5,54 @@
 
 🎉 React-Toastify allow you to add notification to your app with ease. No bullshit !
 
-* [Demo](#demo)
-* [Installation](#installation)
-* [Features](#features)
-* [Migrate from v3 to v4](#from-v3-to-v4)
-* [Usage](#usage)
-  + [One component to rule them all](#one-component-to-rule-them-all)
-  + [Positioning toast](#positioning-toast)
-  + [Set autoclose delay or disable it](#set-autoclose-delay-or-disable-it)
-  + [Render a component](#render-a-component)
-  + [Remove a toast programmatically](#remove-a-toast-programmatically)
-  + [Prevent duplicate](#prevent-duplicate)
-  + [Update a toast](#update-a-toast)
-    - [Basic example](#basic-example)
-    - [Update the content](#update-the-content)
-    - [Apply a transition](#apply-a-transition)
-    - [Reset option or inherit from ToastContainer](#reset-option-or-inherit-from-toastcontainer)
-  + [Define callback](#define-callback)
-  + [Listen for change](#listen-for-change)
-  + [Set a custom close button or simply remove it](#set-a-custom-close-button-or-simply-remove-it)
-    - [Override the default one](#override-the-default-one)
-    - [Define it per toast](#define-it-per-toast)
-    - [Remove it](#remove-it)
-  + [Add an undo option to a toast like google drive](#add-an-undo-option-to-a-toast-like-google-drive)
-  + [Replace the default transition](#replace-the-default-transition)
-  + [Define a custom enter and exit transition](#define-a-custom-enter-and-exit-transition)
-    - [Ease your life with the cssTransition helper](#ease-your-life-with-the-csstransition-helper)
-      * [Handle transition based on the toast position](#handle-transition-based-on-the-toast-position)
-    - [Create a transition from scratch](#create-a-transition-from-scratch)
-  + [Swipe to remove](#swipe-to-remove)
-    - [Define the width percentage to remove the toast](#define-the-width-percentage-to-remove-the-toast)
-    - [Disable it](#disable-it)
-  + [Le style](#le-style)
-    - [style with css classes](#style-with-css-classes)
-    - [style with glamor](#style-with-glamor)
-    - [Define style globally](#define-style-globally)
-    - [Right to left support](#right-to-left-support)
-  + [Mobile](#mobile)
-* [Api](#api)
-  + [ToastContainer](#toastcontainer)
-  + [toast](#toast)
-  + [cssTransition](#csstransition)
-* [Browser Support](#browser-support)
-* [Release Notes](#release-notes)
-* [Contribute](#contribute)
-* [License](#license)
+- [React Toastify ![Build Status](https://travis-ci.org/fkhadra/react-toastify) ![npm]() ![npm]() ![license]() ![Coverage Status](https://coveralls.io/github/fkhadra/react-toastify?branch=master)](#react-toastify-build-statushttpstravis-ciorgfkhadrareact-toastify-npm-npm-license-coverage-statushttpscoverallsiogithubfkhadrareact-toastifybranchmaster)
+  - [Demo](#demo)
+  - [Installation](#installation)
+  - [Features](#features)
+  - [From v3 to v4](#from-v3-to-v4)
+  - [Usage](#usage)
+    - [One component to rule them all](#one-component-to-rule-them-all)
+    - [Positioning toast](#positioning-toast)
+    - [Set autoclose delay or disable it](#set-autoclose-delay-or-disable-it)
+    - [Render a component](#render-a-component)
+    - [Remove a toast programmatically](#remove-a-toast-programmatically)
+    - [Pause toast timer when the window loses focus](#pause-toast-timer-when-the-window-loses-focus)
+    - [Prevent duplicate](#prevent-duplicate)
+    - [Update a toast](#update-a-toast)
+      - [Basic example](#basic-example)
+      - [Update the content](#update-the-content)
+      - [Apply a transition](#apply-a-transition)
+      - [Reset option or inherit from ToastContainer](#reset-option-or-inherit-from-toastcontainer)
+    - [Define callback](#define-callback)
+    - [Listen for change](#listen-for-change)
+    - [Set a custom close button or simply remove it](#set-a-custom-close-button-or-simply-remove-it)
+      - [Override the default one](#override-the-default-one)
+      - [Define it per toast](#define-it-per-toast)
+      - [Remove it](#remove-it)
+    - [Add an undo option to a toast like google drive](#add-an-undo-option-to-a-toast-like-google-drive)
+    - [Replace the default transition](#replace-the-default-transition)
+    - [Define a custom enter and exit transition](#define-a-custom-enter-and-exit-transition)
+      - [Ease your life with the cssTransition helper](#ease-your-life-with-the-csstransition-helper)
+        - [Different duration for enter and exit](#different-duration-for-enter-and-exit)
+        - [Handle transition based on the toast position](#handle-transition-based-on-the-toast-position)
+      - [Create a transition from scratch](#create-a-transition-from-scratch)
+    - [Swipe to remove](#swipe-to-remove)
+      - [Define the width percentage to remove the toast](#define-the-width-percentage-to-remove-the-toast)
+      - [Disable it](#disable-it)
+    - [Le style](#le-style)
+      - [style with css classes](#style-with-css-classes)
+      - [style with glamor](#style-with-glamor)
+      - [Define style globally](#define-style-globally)
+      - [Right to left support](#right-to-left-support)
+    - [Mobile](#mobile)
+  - [Api](#api)
+    - [ToastContainer](#toastcontainer)
+    - [toast](#toast)
+    - [cssTransition](#csstransition)
+  - [Browser Support](#browser-support)
+  - [Release Notes](#release-notes)
+  - [Contribute](#contribute)
+  - [License](#license)
 
 ## Demo
 
@@ -72,7 +75,7 @@ $ yarn add react-toastify
 - Has ```onOpen``` and ```onClose``` hooks. Both can access the props passed to the react component rendered inside the toast
 - Can remove a toast programmatically
 - Define behavior per toast
-- ~~Pause toast when the browser is not visible thanks to visibility API~~ Need to fix it
+- Pause toast when window loose focus 👁
 - Fancy progress bar to display the remaining time
 - Possibility to update a toast
 
@@ -84,7 +87,7 @@ Glamor has been dropped to switch back to scss due to user's feedback. You can r
 - Toast are now draggable, you can swipe to close
 - New built-in transition added
 - Playground for contributor
-- You may use glamorous or any other css-in-js library that relies on glamor. (Haven't been tested)
+- You may use glamorous or any other css-in-js library that relies on glamor. (Haven't been fully tested)
 
 ## Usage
 
@@ -270,6 +273,20 @@ Without args, all the displayed toasts will be removed.
       );
     }
   }
+```
+
+### Pause toast timer when the window loses focus
+
+The default behavior is to pause the toast timer whenever the window loses focus. You can opt-out by setting the `pauseOnFocusLoss` props to false:
+
+```js
+// Opt-out for all toast
+<ToastContainer pauseOnFocusLoss={false} />
+
+// Opt-out per toast
+toast('Hello', {
+  pauseOnFocusLoss: false
+})
 ```
 
 ### Prevent duplicate
@@ -963,6 +980,7 @@ On mobile the toast will take all the available width.
 | transition              | function               | -         | A reference to a valid react-transition-group/Transition component                                  |
 | hideProgressBar         | bool                   | false     | Display or not the progress bar below the toast(remaining time)                                     |
 | pauseOnHover            | bool                   | true      | Keep the timer running or not on hover                                                              |
+| pauseOnFocusLoss        | bool                   | true      | Pause the timer when the window loses focus                                                         |
 | rtl                     | bool                   | false     | Support right to left content                                                                       |
 | closeOnClick            | bool                   | true      | Dismiss toast on click                                                                              |
 | newestOnTop             | bool                   | false     | Display newest toast on top                                                                         |
@@ -997,6 +1015,7 @@ The **toastId** can be used to remove a toast programmatically or to check if th
     - `hideProgressBar`: same as ToastContainer.
     - `position`: same as ToastContainer
     - `pauseOnHover`: same as ToastContainer
+    - `pauseOnFocusLoss`: same as ToastContainer
     - `className`: same as ToastContainer toastClassName
     - `bodyClassName`: same as ToastContainer
     - `progressClassName`: same as ToastContainer
@@ -1071,256 +1090,10 @@ IE 11+ ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ |
 
 ## Release Notes
 
-### V4.1.0
+You can find the release note for the latest release [here](https://github.com/fkhadra/react-toastify/releases/latest)
 
-- Draggable prop can be updated, more details [here](https://github.com/fkhadra/react-toastify/issues/192)
-- Fix issue when passing glamor className. [More details](https://github.com/fkhadra/react-toastify/issues/191)
-- `pauseOnVisibility` has been disabled until I found a fix. The api is too much unstable 💩.
 
-### V4.0.0
-
-- Switch back to css
-- Added built-in transition
-- Added playground for contributor
-- Upgrade to webpack 4
-- Draggable 👌
-
-### V3.4.3
-
-- Fix position on mobile
-
-### V3.4.2
-
-- Fix exit animation bug
-
-### V3.4.1
-
-- Fix rtl on mobile
-
-### V3.4.0
-
-- Add `rtl` props to support right to left content.
-
-### V3.3.5
-
-- Add `fontFamily` to typescript definition
-
-### V3.3.4
-
-- `toast.update` run now at the end of the call stack. For more details, check [issue #135](https://github.com/fkhadra/react-toastify/issues/135)
-
-### V3.3.3
-
-- Clean animation on entered. This was preventing any update transition to works.
-
-### V3.3.1
-
-- Fix height [issue #124](https://github.com/fkhadra/react-toastify/issues/124)
-- Update typescript definition
-
-### V3.3.0
-
-- Better accessibility, relate to [issue #121](https://github.com/fkhadra/react-toastify/issues/121)
-- Reviewed exit animation. No more clipping.
-
-### V3.2.2
-
-- Add comment to typescript definition.
-
-### V3.2.1
-
-- Fix typescript definition. Relate to [issue #110](https://github.com/fkhadra/react-toastify/issues/110)
-
-### V3.2.0
-
-- Allow "render props" rendering. Relate to [issue #106](https://github.com/fkhadra/react-toastify/issues/106)
-- Can set fontFamily via the style helper. Relate to [issue #107](https://github.com/fkhadra/react-toastify/issues/107)
-- Can override position default values via style helper. Realte to [issue #108](https://github.com/fkhadra/react-toastify/issues/108)
-
-### V3.1.2
-- Fix [issue #103](https://github.com/fkhadra/react-toastify/issues/103) for real...
-- Fix [issue #104](https://github.com/fkhadra/react-toastify/issues/104) Incorrect TS definition for `toast.dismiss`
-
-### V3.1.1
-
-- Fix [issue #103](https://github.com/fkhadra/react-toastify/issues/103)
-
-### V3.1.0
-
-- Add ability to update an existing toast 
-- Allow to define the zIndex via the style helper
-- Get rid of all inline style
-
-### V3.0.0
-
-- Switched to styled component with glamor
-- Added style helper to replace sass variables
-- Test suite improved
-- Typescript definition improved
-
-### V2.2.1
-
-- Fix [issue #71](https://github.com/fkhadra/react-toastify/issues/71)
-
-### V2.2.0
-
-- Sass variables are now namespaced
-
-### V2.1.7
-
-- Can now use [sass variable default](http://sass-lang.com/documentation/file.SASS_REFERENCE.html#Variable_Defaults___default) thanks to [vikpe](https://github.com/vikpe)
-### V2.1.5
-
-- Test suites improved
-
-### V2.1.4
-
-- Fix broken typescript dependencies
-
-### V2.1.3
-
-- Added typescript definition
-- Toast will pause when page is not visible thanks to page visibility api.
-
-### V2.1.2
-
-- Previous version was breaking compatibility with react < 16
-### V2.1.1
-
-#### Bugfix
-
-- Remove toast from react dom when not displayed. Because of that the `onClose` callback on the toast was never called. Relate to [issue #50](https://github.com/fkhadra/react-toastify/issues/50)
-
-### V2.1.0
-
-#### New Features
-
-- Can set a custom transition when the toat enter and exit the screen :sparkles:
-
-#### Others
-
-- Upgrade to react v16
-- Upgrade to enzyme v3
-- Switched to react-app preset for eslint
-- Upgrade to webpack v3
-- Upgrade to react-transition-group v2
-
-
-### V2.0.0
-
-This version may introduce breaking changes due to redesign. My apologies.
-
-But, it brings a lots of new and exciting features !
-
-#### New Features
-
-- The default design has been reviewed. The component is now usable out of the box without the need to touch the css. Relate to [issue #28](https://github.com/fkhadra/react-toastify/issues/28)
-- The toast timer can keep running on hover. [issue #33](https://github.com/fkhadra/react-toastify/issues/33)
-- Added a possibility to check if a given toast is displayed or not. By using that method we can prevent duplicate. [issue #3](https://github.com/fkhadra/react-toastify/issues/3)
-- Can decide to close the toast on click
-- Can show newest toast on top
-- Can define additionnal className for toast[issue #21](https://github.com/fkhadra/react-toastify/issues/21)
-- Much more mobile ready than the past
-
-#### Bug Fixes
-
-- The space in of left boxes from window & right boxes from window is different.[issue #25](https://github.com/fkhadra/react-toastify/issues/25)
-- Partial support of ie11. I still need to fix the animation but I need a computer with ie11 for that xD [issue #26](https://github.com/fkhadra/react-toastify/issues/26)
-
-### v1.7.0
-
-#### New Features
-
-- Toast can now be positioned individually !
-
-### v1.6.0
-
-#### New Features
-
-- Can now remove a toast programmatically. When you display a toast, the function return a **toastId**. You can use it
-as follow to remove a given toast `toast.dismiss(toastId)`
-- If the container is not mounted, the notification will be added to a queue and dispatched as soon as the container is mounted.
-For more details check [issue #4](https://github.com/fkhadra/react-toastify/issues/4)
-
-#### Others
-
-- Added --no-idents flag to cssnano to avoid animation name collision with others libs.
-- Tests are no longer transpiled
-
-### v1.5.0
-
-- That version does not bring any features but it brings tests made with the amazing jest and aslo Travis CI integration.
-
-### v1.4.3
-
-- React and react-dom are now peer dependencies
-
-### v1.4.2
-
-- Don't try to pass down the props when we render a string like so : `toast(<div>hello</div>)`
-
-#### Bug fix
-
-- Fixed the test to check if the toast can be rendered
-
-### v1.4.0
-
-- React v16 ready : moving to prop-types and react-transition-group
-- Internal rewrite of components. The implementation wasn't bad but it wasn't good either. A better props validation has been added has well.
-- Removed useless dependencies. I was using the Object.values polyfill when a one line forEach can do the same is my case.
-- Now I believe it's even easier to style the components. The sass sources files are now included when you install the package via yarn or npm
-- The default close button has been replaced.
-
-#### New Features
-
-- A progress bar is now visible to track the remaining time before the notification is closed. Of course if you don't like it, you are free to disable it.
-- You can choose to display a close button or not.
-- Event pointer is set to none to avoid losing pointer events on everything beneath the toast container when no toast are displayed
-- The `closeToast` callback is also passed down to your component.
-
-### v1.3.0
-
-- PropTypes package update
-- Dead code elimination
-
-#### New Features
-
-- Possibility to use a custom close button. Check the api docs of ToastContainer and toast.
-
-### v1.2.2
-
-I was storing react component into state which is a bad practice. [What should Go in State](http://web.archive.org/web/20150419023006/http://facebook.github.io/react/docs/interactivity-and-dynamic-uis.html)
-This is no more the case now. The separation of concern between the data and the view is respected.
-
-#### Bug fix
-
-- Was calling cloneElement on undefined which cause your console bleed. See issue [#2](https://github.com/fkhadra/react-toastify/issues/2)
-
-
-### v1.2.1
-
-#### Bug fix
-
-- Added Object.values polyfill otherwise won't work with IE or EDGE. I ♥ IE.
-
-### v1.1.1
-
-#### Bug fix
-
-- OnClose and OnOpen can access all the props passed to the component. Before
-only the props passed using toast options were accessible
-
-#### New Features
-
-- Passing prop using toast option will be removed at the next release. It doesn't
-make sense to keep both way to pass props. Use the react way instead
-
-### v1.1.0
-
-#### New Features
-
-- Added onOpen callback
-- Added onClose callback
+You can browse them all [here](https://github.com/fkhadra/react-toastify/releases)
 
 ## Contribute
 
