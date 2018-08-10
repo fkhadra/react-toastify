@@ -148,11 +148,15 @@ class Toast extends Component {
   }
 
   pauseToast = () => {
-    this.setState({ isRunning: false });
+    if(this.props.autoClose) {
+      this.setState({ isRunning: false });
+    }
   };
 
   playToast = () => {
-    this.setState({ isRunning: true });
+    if(this.props.autoClose) {
+      this.setState({ isRunning: true });
+    }
   };
 
   onDragStart = e => {
@@ -285,8 +289,8 @@ class Toast extends Component {
           >
             {children}
           </div>
-          {closeButton !== false && closeButton}
-          {autoClose !== false && (
+          {closeButton && closeButton}
+          {autoClose && (
             <ProgressBar
               {...(updateId ? { key: `pb-${updateId}` } : {})}
               rtl={rtl}
