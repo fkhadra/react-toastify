@@ -108,7 +108,7 @@ The toasts inherit ToastContainer's props. **Props defined on toast supersede To
     render(){
       return (
         <div>
-        <button onClick={this.notify}>Notify !</button>
+          <button onClick={this.notify}>Notify !</button>
           <ToastContainer />
         </div>
       );
