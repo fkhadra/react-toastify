@@ -19,12 +19,11 @@ ShallowWrapper {
     draggablePercent={80}
     hideProgressBar={false}
     in={true}
-    isDocumentHidden={false}
     newestOnTop={false}
     onClose={[Function]}
     onOpen={[Function]}
+    pauseOnFocusLoss={true}
     pauseOnHover={true}
-    pauseOnVisibilityChange={true}
     position="top-right"
     progressClassName={null}
     role="alert"

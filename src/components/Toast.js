@@ -32,9 +32,9 @@ class Toast extends Component {
     closeToast: PropTypes.func.isRequired,
     position: PropTypes.oneOf(objectValues(POSITION)).isRequired,
     pauseOnHover: PropTypes.bool.isRequired,
+    pauseOnFocusLoss: PropTypes.bool.isRequired,
     closeOnClick: PropTypes.bool.isRequired,
     transition: PropTypes.func.isRequired,
-    isDocumentHidden: PropTypes.bool.isRequired,
     rtl: PropTypes.bool.isRequired,
     hideProgressBar: PropTypes.bool.isRequired,
     draggable: PropTypes.bool.isRequired,
@@ -88,9 +88,55 @@ class Toast extends Component {
 
   componentDidMount() {
     this.props.onOpen(this.props.children.props);
+
     if (this.props.draggable) {
       this.bindDragEvents();
     }
+
+    // Maybe I could bind the event in the ToastContainer and rely on delegation
+    if (this.props.pauseOnFocusLoss) {
+      this.bindFocusEvents();
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.draggable !== this.props.draggable) {
+      if (this.props.draggable) {
+        this.bindDragEvents();
+      } else {
+        this.unbindDragEvents();
+      }
+    }
+
+    if (prevProps.pauseOnFocusLoss !== this.props.pauseOnFocusLoss) {
+      if (this.props.pauseOnFocusLoss) {
+        this.bindFocusEvents();
+      } else {
+        this.unbindFocusEvents();
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    this.props.onClose(this.props.children.props);
+
+    if (this.props.draggable) {
+      this.unbindDragEvents();
+    }
+
+    if (this.props.pauseOnFocusLoss) {
+      this.unbindFocusEvents();
+    }
+  }
+
+  bindFocusEvents() {
+    window.addEventListener('focus', this.playToast);
+    window.addEventListener('blur', this.pauseToast);
+  }
+
+  unbindFocusEvents() {
+    window.removeEventListener('focus', this.playToast);
+    window.removeEventListener('blur', this.pauseToast);
   }
 
   bindDragEvents() {
@@ -109,25 +155,16 @@ class Toast extends Component {
     document.removeEventListener('touchend', this.onDragEnd);
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.draggable !== this.props.draggable) {
-      this.props.draggable ? this.bindDragEvents() : this.unbindDragEvents();
-    }
-  }
-
-  componentWillUnmount() {
-    this.props.onClose(this.props.children.props);
-    if (this.props.draggable) {
-      this.unbindDragEvents();
-    }
-  }
-
   pauseToast = () => {
-    this.setState({ isRunning: false });
+    if (this.props.autoClose) {
+      this.setState({ isRunning: false });
+    }
   };
 
   playToast = () => {
-    this.setState({ isRunning: true });
+    if (this.props.autoClose) {
+      this.setState({ isRunning: true });
+    }
   };
 
   onDragStart = e => {
@@ -260,10 +297,10 @@ class Toast extends Component {
           >
             {children}
           </div>
-          {closeButton !== false && closeButton}
-          {autoClose !== false && (
+          {closeButton && closeButton}
+          {autoClose && (
             <ProgressBar
-              {...updateId ? { key: `pb-${updateId}` } : {}}
+              {...(updateId ? { key: `pb-${updateId}` } : {})}
               rtl={rtl}
               delay={autoClose}
               isRunning={this.state.isRunning}

@@ -41,9 +41,9 @@ export default () => (
     <div>
       <a className="btn" href="https://github.com/fkhadra/react-toastify">
         <span role="img" aria-label="link to github">
-          😸
+          📖
         </span>{' '}
-        View on GitHub
+        Documentation
       </a>
       <a
         className="btn"

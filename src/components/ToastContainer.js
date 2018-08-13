@@ -7,7 +7,7 @@ import Toast from './Toast';
 import CloseButton from './CloseButton';
 import { Bounce } from './Transitions';
 import { POSITION, ACTION } from './../utils/constant';
-import EventManager from './../utils/EventManager';
+import eventManager from './../utils/eventManager';
 import {
   falseOrDelay,
   falseOrElement,
@@ -101,21 +101,20 @@ class ToastContainer extends Component {
     draggablePercent: PropTypes.number,
 
     /**
-     * ⚠️ NOT WORKING ATM, has been disabled until I fix it ⚠️
-     * pause on document visibility change
+     * Pause the toast on focus loss
      */
-    pauseOnVisibilityChange: PropTypes.bool
+    pauseOnFocusLoss: PropTypes.bool
   };
 
   static defaultProps = {
     position: POSITION.TOP_RIGHT,
     transition: Bounce,
     rtl: false,
-    pauseOnVisibilityChange: true,
     autoClose: 5000,
     hideProgressBar: false,
     closeButton: <CloseButton />,
     pauseOnHover: true,
+    pauseOnFocusLoss: true,
     closeOnClick: true,
     newestOnTop: false,
     draggable: true,
@@ -131,8 +130,7 @@ class ToastContainer extends Component {
    * Hold toast ids
    */
   state = {
-    toast: [],
-    isDocumentHidden: false
+    toast: []
   };
 
   /**
@@ -145,24 +143,21 @@ class ToastContainer extends Component {
   collection = {};
 
   componentDidMount() {
-    const { SHOW, CLEAR, MOUNTED } = ACTION;
-    EventManager.on(SHOW, (content, options) => this.show(content, options))
-      .on(CLEAR, id => (id !== null ? this.removeToast(id) : this.clear()))
-      .emit(MOUNTED, this);
-
-    //this.props.pauseOnVisibilityChange &&
-    //  document.addEventListener('visibilitychange', this.isDocumentHidden);
+    eventManager
+      .on(ACTION.SHOW, (content, options) => this.show(content, options))
+      .on(
+        ACTION.CLEAR,
+        id => (id !== null ? this.removeToast(id) : this.clear())
+      )
+      .emit(ACTION.DID_MOUNT, this);
   }
 
   componentWillUnmount() {
-    EventManager.off(ACTION.SHOW);
-    EventManager.off(ACTION.CLEAR);
-
-    // this.props.pauseOnVisibilityChange &&
-    //   document.removeEventListener('visibilitychange', this.isDocumentHidden);
+    eventManager
+      .off(ACTION.SHOW)
+      .off(ACTION.CLEAR)
+      .emit(ACTION.WILL_UNMOUNT);
   }
-
-  //isDocumentHidden = () => this.setState({ isDocumentHidden: document.hidden });
 
   isToastActive = id => this.state.toast.indexOf(parseInt(id, 10)) !== -1;
 
@@ -176,7 +171,7 @@ class ToastContainer extends Component {
   }
 
   dispatchChange() {
-    EventManager.emit(ACTION.ON_CHANGE, this.state.toast.length);
+    eventManager.emit(ACTION.ON_CHANGE, this.state.toast.length);
   }
 
   makeCloseButton(toastClose, toastId, type) {
@@ -189,9 +184,9 @@ class ToastContainer extends Component {
     return closeButton === false
       ? false
       : cloneElement(closeButton, {
-        closeToast: () => this.removeToast(toastId),
-        type: type
-      });
+          closeToast: () => this.removeToast(toastId),
+          type: type
+        });
   }
 
   getAutoCloseDelay(toastAutoClose) {
@@ -209,11 +204,15 @@ class ToastContainer extends Component {
     );
   }
 
-  parseClassName(prop){
+  parseClassName(prop) {
     if (typeof prop === 'string') {
       return prop;
-    } else if(prop !== null && typeof prop === 'object' && 'toString' in prop) {
-      return prop.toString()
+    } else if (
+      prop !== null &&
+      typeof prop === 'object' &&
+      'toString' in prop
+    ) {
+      return prop.toString();
     }
 
     return null;
@@ -235,34 +234,42 @@ class ToastContainer extends Component {
       rtl: this.props.rtl,
       position: options.position || this.props.position,
       transition: options.transition || this.props.transition,
-      className: this.parseClassName(options.className || this.props.toastClassName),
-      bodyClassName: this.parseClassName(options.bodyClassName || this.props.bodyClassName),
+      className: this.parseClassName(
+        options.className || this.props.toastClassName
+      ),
+      bodyClassName: this.parseClassName(
+        options.bodyClassName || this.props.bodyClassName
+      ),
       closeButton: this.makeCloseButton(
         options.closeButton,
         toastId,
         options.type
       ),
       pauseOnHover:
-        options.pauseOnHover !== null
+        typeof options.pauseOnHover === 'boolean'
           ? options.pauseOnHover
           : this.props.pauseOnHover,
+      pauseOnFocusLoss:
+        typeof options.pauseOnFocusLoss === 'boolean'
+          ? options.pauseOnFocusLoss
+          : this.props.pauseOnFocusLoss,
       draggable:
-        options.draggable !== null ? options.draggable : this.props.draggable,
+        typeof options.draggable === 'boolean'
+          ? options.draggable
+          : this.props.draggable,
       draggablePercent:
-        options.draggable !== null
+        typeof options.draggablePercent === 'number' &&
+        !isNaN(options.draggablePercent)
           ? options.draggablePercent
           : this.props.draggablePercent,
       closeOnClick:
-        options.closeOnClick !== null
+        typeof options.closeOnClick === 'boolean'
           ? options.closeOnClick
           : this.props.closeOnClick,
-      progressClassName:
-        this.parseClassName(options.progressClassName || this.props.progressClassName),
-      autoClose: this.getAutoCloseDelay(
-        options.autoClose !== false
-          ? parseInt(options.autoClose, 10)
-          : options.autoClose
+      progressClassName: this.parseClassName(
+        options.progressClassName || this.props.progressClassName
       ),
+      autoClose: this.getAutoCloseDelay(options.autoClose),
       hideProgressBar:
         typeof options.hideProgressBar === 'boolean'
           ? options.hideProgressBar
@@ -299,10 +306,9 @@ class ToastContainer extends Component {
 
     this.setState(
       {
-        toast:
-          toastOptions.updateId !== null
-            ? [...this.state.toast]
-            : [...this.state.toast, toastId]
+        toast: toastOptions.updateId
+          ? [...this.state.toast]
+          : [...this.state.toast, toastId]
       },
       this.dispatchChange
     );
@@ -332,7 +338,7 @@ class ToastContainer extends Component {
       : Object.keys(this.collection);
 
     // group toast by position
-    collection.forEach(toastId => {
+    for (const toastId of collection) {
       const toast = this.collection[toastId];
       toastToRender[toast.position] || (toastToRender[toast.position] = []);
 
@@ -344,7 +350,7 @@ class ToastContainer extends Component {
         toastToRender[toast.position].push(null);
         delete this.collection[toastId];
       }
-    });
+    }
 
     return Object.keys(toastToRender).map(position => {
       const disablePointer =

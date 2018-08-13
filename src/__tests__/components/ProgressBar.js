@@ -2,7 +2,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import ProgressBar from './../components/ProgressBar';
+import ProgressBar from './../../components/ProgressBar';
 
 const REQUIRED_PROPS = {
   delay: 5000,

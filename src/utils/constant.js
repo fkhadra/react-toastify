@@ -15,8 +15,9 @@ export const TYPE = {
   DEFAULT: 'default'
 };
 export const ACTION = {
-  SHOW: 'SHOW_TOAST',
-  CLEAR: 'CLEAR_TOAST',
-  MOUNTED: 'CONTAINER_MOUNTED',
-  ON_CHANGE: 'ON_CHANGE'
+  SHOW: 0,
+  CLEAR: 1,
+  DID_MOUNT: 2,
+  WILL_UNMOUNT: 3,
+  ON_CHANGE: 4
 };

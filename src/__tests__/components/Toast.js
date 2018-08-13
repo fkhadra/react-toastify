@@ -2,15 +2,14 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 
-import Toast from './../components/Toast';
-import ToastContainer from './../components/ToastContainer';
-import CloseButton from './../components/CloseButton';
-import ProgressBar from './../components/ProgressBar';
+import Toast from './../../components/Toast';
+import ToastContainer from './../../components/ToastContainer';
+import CloseButton from './../../components/CloseButton';
+import ProgressBar from './../../components/ProgressBar';
 
 const REQUIRED_PROPS = {
   ...ToastContainer.defaultProps,
   closeToast: () => {},
-  isDocumentHidden: false,
   type: 'default'
 };
 
@@ -136,13 +135,46 @@ describe('Toast', () => {
     expect(component.state('isRunning')).toBeTruthy();
   });
 
-  // ⚠️ Disabled until I fix the issue
-  //it('Should pause Toast when document visibility change', () => {
-    // const component = mount(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
-    // expect(component.state('isRunning')).toBe(true);
-    // component.setProps({ isDocumentHidden: true });
-    // expect(component.state('isRunning')).toBe(false);
-  //});
+  it('Should pause Toast on window blur and resume Toast on focus', () => {
+    const component = mount(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+    expect(component.state('isRunning')).toBe(true);
+
+    let ev = new Event('blur');
+    window.dispatchEvent(ev);
+
+    expect(component.state('isRunning')).toBe(false);
+
+    ev = new Event('focus');
+    window.dispatchEvent(ev);
+
+    expect(component.state('isRunning')).toBe(true);
+  });
+
+  it('Should bind or unbind dom events when `pauseOnFocusLoss` and `draggable` props are updated', () => {
+    const component = mount(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+
+    document.removeEventListener = jest.fn();
+    window.removeEventListener = jest.fn();
+
+    component.setProps({
+      draggable: false,
+      pauseOnFocusLoss: false
+    });
+
+    expect(document.removeEventListener).toHaveBeenCalled();
+    expect(window.removeEventListener).toHaveBeenCalled();
+
+    document.addEventListener = jest.fn();
+    window.addEventListener = jest.fn();
+
+    component.setProps({
+      draggable: true,
+      pauseOnFocusLoss: true
+    });
+
+    expect(document.removeEventListener).toHaveBeenCalled();
+    expect(window.removeEventListener).toHaveBeenCalled();
+  });
 
   describe('Drag event', () => {
     it('Should handle drag start on mousedown', () => {

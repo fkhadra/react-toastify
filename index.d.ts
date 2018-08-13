@@ -2,6 +2,8 @@ import * as React from 'react';
 
 type ToastType = 'info' | 'success' | 'warning' | 'error' | 'default';
 
+type ToastPosition = 'top-right' | 'top-center' | 'top-left' | 'bottom-right' | 'bottom-center' | 'bottom-left';
+
 type ToastContent = React.ReactNode | { (): void };
 
 interface cssTransitionProps {
@@ -37,6 +39,12 @@ interface CommonOptions {
   pauseOnHover?: boolean;
 
   /**
+   * Pause the toast when the window loose focus.
+   * `Default: true`
+   */
+  pauseOnFocusLoss?: boolean;
+
+  /**
    * Remove the toast when clicked.
    * `Default: true`
    */
@@ -54,7 +62,7 @@ interface CommonOptions {
    * `One of: 'top-right', 'top-center', 'top-left', 'bottom-right', 'bottom-center', 'bottom-left'`
    * `Default: 'top-right'`
    */
-  position?: string;
+  position?: ToastPosition;
 
   /**
    * Pass a custom close button.
@@ -149,13 +157,6 @@ interface ToastContainerProps extends CommonOptions {
    * `Default: false`
    */
   rtl?: boolean;
-
-  /**
-   * ⚠️ NOT WORKING ATM, has been disabled until I fix it ⚠️
-   * Pause toast's timer on document visibility change
-   * `Default: true`
-   */
-  pauseOnVisibilityChange?: boolean;
 }
 
 interface Toast {
