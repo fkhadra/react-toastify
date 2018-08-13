@@ -1020,9 +1020,12 @@ The **toastId** can be used to remove a toast programmatically or to check if th
     - `progressClassName`: same as ToastContainer
     - `draggable`: same as ToastContainer
     - `draggablePercent`: same as ToastContainer
+    - `toastId`: optional integer to manually set a toastId
     - `render`: string or React Element, only available when calling update
 
 :warning:️ *Toast options supersede ToastContainer props* :warning:
+
+:warning:️ *Manually setting a toastId can overwrite automatically generated toastIds* :warning:
 
 ```javascript
 const Img = ({ src }) => <div><img width={48} src={src} /></div>;

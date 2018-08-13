@@ -38,6 +38,20 @@ describe('toastify', () => {
     expect(firstId).not.toEqual(secondId);
   });
 
+  it('Should use the provided toastId from options', () => {
+    const toastId = 11;
+    const id = toast('Hello', { toastId });
+
+    expect(id).toEqual(toastId);
+  });
+
+  it('Should not use the provided invalid toastId from options', () => {
+    const toastId = 'myId';
+    const id = toast('Hello', { toastId });
+
+    expect(id).not.toEqual(toastId);
+  });
+
   describe('onChange event', () => {
     it('Should be able to track when toast is added or removed', () => {
       mount(<ToastContainer />);
