@@ -17,7 +17,10 @@ function mergeOptions(options, type) {
  * Generate the toastId either automatically or by provided toastId
  */
 function generateToastId(options) {
-  if (options === Object(options) && options.toastId === parseInt(options.toastId, 10)) {
+  const type = typeof options;
+  const isObject = options != null && (type === 'object' || type === 'function');
+
+  if (isObject && options.toastId === parseInt(options.toastId, 10)) {
     return options.toastId;
   }
 
