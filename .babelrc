@@ -1,4 +1,30 @@
 {
-    "presets": ["env", "react-app"],
-    "plugins": ["transform-object-assign"]
+    "presets": [
+        "@babel/preset-env",
+        "@babel/preset-react"
+    ],
+    "plugins": [
+        [
+            "@babel/plugin-proposal-class-properties",
+            {
+                "loose": true
+            }
+        ],
+        "@babel/plugin-transform-object-assign",
+        "@babel/plugin-transform-spread"
+    ],
+    "env": {
+        "production": {
+            "presets": [
+                [
+                    "@babel/preset-env",
+                    {
+                        "modules": false,
+                        "loose": true
+                    }
+                ],
+                "@babel/preset-react"
+            ]
+        }
+    }
 }
