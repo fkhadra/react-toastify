@@ -1,8 +1,21 @@
 import * as React from 'react';
 
-type ToastType = 'info' | 'success' | 'warning' | 'error' | 'default';
+export const enum ToastType {
+  INFO = 'info',
+  SUCCESS = 'success',
+  WARNING = 'warning',
+  ERROR = 'error',
+  DEFAULT = 'default'
+}
 
-type ToastPosition = 'top-right' | 'top-center' | 'top-left' | 'bottom-right' | 'bottom-center' | 'bottom-left';
+export const enum ToastPosition {
+  TOP_RIGHT = 'top-right',
+  TOP_CENTER = 'top-center',
+  TOP_LEFT = 'top-left',
+  BOTTOM_RIGHT = 'bottom-right',
+  BOTTOM_CENTER = 'bottom-center',
+  BOTTOM_LEFT = 'bottom-left'
+}
 
 type ToastContent = React.ReactNode | { (): void };
 
@@ -214,27 +227,27 @@ interface Toast {
     /**
      * Set notification type to `'info'`
      */
-    INFO: string;
+    INFO: ToastType.INFO;
 
     /**
      * Set notification type to `'success'`
      */
-    SUCCESS: string;
+    SUCCESS: ToastType.SUCCESS;
 
     /**
      * Set notification type to `'warning'`
      */
-    WARNING: string;
+    WARNING: ToastType.WARNING;
 
     /**
      * Set notification type to `'error'`
      */
-    ERROR: string;
+    ERROR: ToastType.ERROR;
 
     /**
      * Set notification type to `'default'`
      */
-    DEFAULT: string;
+    DEFAULT: ToastType.DEFAULT;
   };
 
   /**
@@ -244,32 +257,32 @@ interface Toast {
     /**
      * Set the position to `'top-left'`
      */
-    TOP_LEFT: string;
+    TOP_LEFT: ToastPosition.TOP_LEFT;
 
     /**
      * Set the position to `'top-right'`
      */
-    TOP_RIGHT: string;
+    TOP_RIGHT: ToastPosition.TOP_RIGHT;
 
     /**
      * Set the position to `'top-center'`
      */
-    TOP_CENTER: string;
+    TOP_CENTER: ToastPosition.TOP_CENTER;
 
     /**
      * Set the position to `'bottom-left'`
      */
-    BOTTOM_LEFT: string;
+    BOTTOM_LEFT: ToastPosition.BOTTOM_LEFT;
 
     /**
      * Set the position to `'bottom-right'`
      */
-    BOTTOM_RIGHT: string;
+    BOTTOM_RIGHT: ToastPosition.BOTTOM_RIGHT;
 
     /**
      * Set the position to `'bottom-center'`
      */
-    BOTTOM_CENTER: string;
+    BOTTOM_CENTER: ToastPosition.BOTTOM_CENTER;
   };
 }
 
