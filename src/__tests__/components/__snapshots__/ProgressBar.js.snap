@@ -2,10 +2,21 @@
 
 exports[`ProgressBar Should be able to hide the progress bar 1`] = `
 ShallowWrapper {
-  "length": 1,
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <ProgressBar
-    closeToast={[Function]}
+    closeToast={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+        "results": Array [
+          Object {
+            "isThrow": false,
+            "value": undefined,
+          },
+        ],
+      }
+    }
     delay={5000}
     hide={true}
     isRunning={true}
@@ -25,7 +36,17 @@ ShallowWrapper {
     "nodeType": "host",
     "props": Object {
       "className": "Toastify__progress-bar Toastify__progress-bar--default",
-      "onAnimationEnd": [Function],
+      "onAnimationEnd": [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+        "results": Array [
+          Object {
+            "isThrow": false,
+            "value": undefined,
+          },
+        ],
+      },
       "style": Object {
         "animationDuration": "5000ms",
         "animationPlayState": "running",
@@ -43,7 +64,17 @@ ShallowWrapper {
       "nodeType": "host",
       "props": Object {
         "className": "Toastify__progress-bar Toastify__progress-bar--default",
-        "onAnimationEnd": [Function],
+        "onAnimationEnd": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+          "results": Array [
+            Object {
+              "isThrow": false,
+              "value": undefined,
+            },
+          ],
+        },
         "style": Object {
           "animationDuration": "5000ms",
           "animationPlayState": "running",
@@ -59,18 +90,37 @@ ShallowWrapper {
     "adapter": ReactSixteenAdapter {
       "options": Object {
         "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getSnapshotBeforeUpdate": true,
+        },
       },
     },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
   },
 }
 `;
 
 exports[`ProgressBar Should be able to pause animation 1`] = `
 ShallowWrapper {
-  "length": 1,
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <ProgressBar
-    closeToast={[Function]}
+    closeToast={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+        "results": Array [
+          Object {
+            "isThrow": false,
+            "value": undefined,
+          },
+        ],
+      }
+    }
     delay={5000}
     hide={false}
     isRunning={false}
@@ -90,7 +140,17 @@ ShallowWrapper {
     "nodeType": "host",
     "props": Object {
       "className": "Toastify__progress-bar Toastify__progress-bar--default",
-      "onAnimationEnd": [Function],
+      "onAnimationEnd": [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+        "results": Array [
+          Object {
+            "isThrow": false,
+            "value": undefined,
+          },
+        ],
+      },
       "style": Object {
         "animationDuration": "5000ms",
         "animationPlayState": "paused",
@@ -108,7 +168,17 @@ ShallowWrapper {
       "nodeType": "host",
       "props": Object {
         "className": "Toastify__progress-bar Toastify__progress-bar--default",
-        "onAnimationEnd": [Function],
+        "onAnimationEnd": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+          "results": Array [
+            Object {
+              "isThrow": false,
+              "value": undefined,
+            },
+          ],
+        },
         "style": Object {
           "animationDuration": "5000ms",
           "animationPlayState": "paused",
@@ -124,8 +194,16 @@ ShallowWrapper {
     "adapter": ReactSixteenAdapter {
       "options": Object {
         "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getSnapshotBeforeUpdate": true,
+        },
       },
     },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
   },
 }
 `;

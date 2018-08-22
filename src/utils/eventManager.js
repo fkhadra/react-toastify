@@ -18,10 +18,9 @@ const eventManager = {
     if (!this.list.has(event)) {
       return false;
     }
-
-    for (const callback of this.list.get(event)) {
-      setTimeout(() => callback.call(this, ...args), 0);
-    }
+    this.list
+      .get(event)
+      .forEach(callback => setTimeout(() => callback.call(null, ...args), 0));
 
     return true;
   }
