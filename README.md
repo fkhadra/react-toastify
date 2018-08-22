@@ -15,6 +15,7 @@
     - [Set autoclose delay or disable it](#set-autoclose-delay-or-disable-it)
     - [Render a component](#render-a-component)
     - [Remove a toast programmatically](#remove-a-toast-programmatically)
+    - [Usage with redux](#usage-with-redux)
     - [Pause toast timer when the window loses focus](#pause-toast-timer-when-the-window-loses-focus)
     - [Prevent duplicate](#prevent-duplicate)
     - [Update a toast](#update-a-toast)
@@ -273,6 +274,12 @@ Without args, all the displayed toasts will be removed.
     }
   }
 ```
+
+#### Usage with redux
+
+"Talk is cheap. Show me the code" 
+
+[![Edit react+redux+react-toastify](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/r0kv8km1pp)
 
 ### Pause toast timer when the window loses focus
 
