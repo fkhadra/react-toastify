@@ -1,6 +1,12 @@
 {
     "presets": [
-        "@babel/preset-env",
+        [
+            "@babel/preset-env",
+            {
+                "modules": false,
+                "loose": true
+            }
+        ],
         "@babel/preset-react"
     ],
     "plugins": [
@@ -14,16 +20,9 @@
         "@babel/plugin-transform-spread"
     ],
     "env": {
-        "production": {
-            "presets": [
-                [
-                    "@babel/preset-env",
-                    {
-                        "modules": false,
-                        "loose": true
-                    }
-                ],
-                "@babel/preset-react"
+        "test": {
+            "plugins": [
+                "@babel/transform-modules-commonjs"
             ]
         }
     }
