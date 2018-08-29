@@ -89,9 +89,9 @@ eventManager
     container = containerInstance;
     toast.isActive = id => container.isToastActive(id);
 
-    for (const item of queue) {
+    queue.forEach(item => {
       eventManager.emit(item.action, item.content, item.options);
-    }
+    });
 
     queue = [];
   })
