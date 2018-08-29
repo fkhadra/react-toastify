@@ -1,29 +1,26 @@
 {
-    "presets": [
-        [
-            "@babel/preset-env",
-            {
-                "modules": false,
-                "loose": true
-            }
-        ],
-        "@babel/preset-react"
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "loose": true
+      }
     ],
-    "plugins": [
-        [
-            "@babel/plugin-proposal-class-properties",
-            {
-                "loose": true
-            }
-        ],
-        "@babel/plugin-transform-object-assign",
-        "@babel/plugin-transform-spread"
+    "@babel/preset-react"
+  ],
+  "plugins": [
+    [
+      "@babel/plugin-proposal-class-properties",
+      {
+        "loose": true
+      }
     ],
-    "env": {
-        "test": {
-            "plugins": [
-                "@babel/transform-modules-commonjs"
-            ]
-        }
+    "@babel/plugin-transform-object-assign",
+    "@babel/plugin-transform-spread"
+  ],
+  "env": {
+    "test": {
+      "plugins": ["@babel/transform-modules-commonjs"]
     }
+  }
 }
