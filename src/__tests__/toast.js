@@ -45,8 +45,15 @@ describe('toastify', () => {
     expect(id).toEqual(toastId);
   });
 
+  it('Should allow the provided toastId from options to be a string', () => {
+    const toastId = 'xxxx';
+    const id = toast('Hello', { toastId });
+
+    expect(id).toEqual(toastId);
+  });
+
   it('Should not use the provided invalid toastId from options', () => {
-    const toastId = 'myId';
+    const toastId = Symbol('myId');
     const id = toast('Hello', { toastId });
 
     expect(id).not.toEqual(toastId);
