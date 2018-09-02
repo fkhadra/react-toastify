@@ -138,6 +138,11 @@ interface ToastOptions extends CommonOptions {
    * `One of: 'info', 'success', 'warning', 'error', 'default'`
    */
   type?: ToastType;
+
+  /**
+   * Set a custom `toastId`
+   */
+  toastId?: number|string;
 }
 
 interface UpdateOptions extends ToastOptions {
