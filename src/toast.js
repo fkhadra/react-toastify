@@ -10,7 +10,21 @@ const noop = () => false;
  * Merge provided options with the defaults settings and generate the toastId
  */
 function mergeOptions(options, type) {
-  return { ...options, type, toastId: ++toastId };
+  return { ...options, type, toastId: generateToastId(options) };
+}
+
+/**
+ * Generate the toastId either automatically or by provided toastId
+ */
+function generateToastId(options) {
+  const type = typeof options;
+  const isObject = options != null && (type === 'object' || type === 'function');
+
+  if (isObject && options.toastId === parseInt(options.toastId, 10)) {
+    return options.toastId;
+  }
+
+  return ++toastId;
 }
 
 /**
