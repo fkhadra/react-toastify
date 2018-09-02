@@ -159,12 +159,12 @@ class ToastContainer extends Component {
       .emit(ACTION.WILL_UNMOUNT);
   }
 
-  isToastActive = id => this.state.toast.indexOf(parseInt(id, 10)) !== -1;
+  isToastActive = id => this.state.toast.indexOf(id) !== -1;
 
   removeToast(id) {
     this.setState(
       {
-        toast: this.state.toast.filter(v => v !== parseInt(id, 10))
+        toast: this.state.toast.filter(v => v !== id)
       },
       this.dispatchChange
     );
@@ -184,9 +184,9 @@ class ToastContainer extends Component {
     return closeButton === false
       ? false
       : cloneElement(closeButton, {
-          closeToast: () => this.removeToast(toastId),
-          type: type
-        });
+        closeToast: () => this.removeToast(toastId),
+        type: type
+      });
   }
 
   getAutoCloseDelay(toastAutoClose) {
@@ -259,7 +259,7 @@ class ToastContainer extends Component {
           : this.props.draggable,
       draggablePercent:
         typeof options.draggablePercent === 'number' &&
-        !isNaN(options.draggablePercent)
+          !isNaN(options.draggablePercent)
           ? options.draggablePercent
           : this.props.draggablePercent,
       closeOnClick:
@@ -339,18 +339,18 @@ class ToastContainer extends Component {
 
     // group toast by position
     collection.forEach(toastId => {
-      const toast = this.collection[toastId];
-      toastToRender[toast.position] || (toastToRender[toast.position] = []);
+      const {position, options, content} = this.collection[toastId];
+      toastToRender[position] || (toastToRender[position] = []);
 
-      if (this.state.toast.indexOf(parseInt(toastId, 10)) !== -1) {
-        toastToRender[toast.position].push(
-          this.makeToast(toast.content, toast.options)
+      if (this.state.toast.indexOf(options.id) !== -1) {
+        toastToRender[position].push(
+          this.makeToast(content, options)
         );
       } else {
-        toastToRender[toast.position].push(null);
+        toastToRender[position].push(null);
         delete this.collection[toastId];
       }
-    })  
+    })
 
     return Object.keys(toastToRender).map(position => {
       const disablePointer =

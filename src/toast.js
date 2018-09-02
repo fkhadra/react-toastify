@@ -10,7 +10,22 @@ const noop = () => false;
  * Merge provided options with the defaults settings and generate the toastId
  */
 function mergeOptions(options, type) {
-  return { ...options, type, toastId: ++toastId };
+  return { ...options, type, toastId: generateToastId(options) };
+}
+
+/**
+ * Generate the toastId either automatically or by provided toastId
+ */
+function generateToastId(options) {
+  if (
+    options &&
+    ((typeof options.toastId === 'number' && !isNaN(options.toastId)) ||
+      typeof options.toastId === 'string')
+  ) {
+    return options.toastId;
+  }
+
+  return ++toastId;
 }
 
 /**

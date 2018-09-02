@@ -17,6 +17,7 @@
     - [Remove a toast programmatically](#remove-a-toast-programmatically)
     - [Usage with redux](#usage-with-redux)
     - [Pause toast timer when the window loses focus](#pause-toast-timer-when-the-window-loses-focus)
+    - [Use a custom toastId](#use-a-custom-toast-id)
     - [Prevent duplicate](#prevent-duplicate)
     - [Update a toast](#update-a-toast)
       - [Basic example](#basic-example)
@@ -295,9 +296,34 @@ toast('Hello', {
 })
 ```
 
+### Use a custom toastId
+
+A custom `toastId` can be used to replace the one generated. You can use a `number` or a `string`.
+
+```javascript
+  import React, { Component } from 'react';
+  import { toast } from 'react-toastify';
+
+  class Example extends Component {
+    notify = () => {
+      toast("I cannot be duplicated !", {
+        toastId: 13
+      });
+    }
+
+    render(){
+      return (
+        <div>
+          <button onClick={this.notify}>Notify</button>
+        </div>
+      );
+    }
+  }
+```
+
 ### Prevent duplicate
 
-To prevent duplicates, you can check if a given toast is active by calling `toast.isActive(id)` like the snippet below. With this approach, you can decide with more precision whether or not you want to display a toast.
+To prevent duplicates, you can check if a given toast is active by calling `toast.isActive(id)` like the snippet below. Or, you can use a custom `toastId`:
 
 ```javascript
   import React, { Component } from 'react';
@@ -305,11 +331,16 @@ To prevent duplicates, you can check if a given toast is active by calling `toas
 
   class Example extends Component {
     toastId = null;
+    customToastId = 'xxx-yyy';
 
     notify = () => {
       if (! toast.isActive(this.toastId)) {
         this.toastId = toast("I cannot be duplicated !");
       }
+
+      toast("xxx-yyy cannot be duplicated", {
+        toastId: customToastId
+      });
     }
 
     render(){
@@ -1027,9 +1058,12 @@ The **toastId** can be used to remove a toast programmatically or to check if th
     - `progressClassName`: same as ToastContainer
     - `draggable`: same as ToastContainer
     - `draggablePercent`: same as ToastContainer
+    - `toastId`: optional integer or string to manually set a toastId. If an invalid type is provided a generated toastId will be used
     - `render`: string or React Element, only available when calling update
 
 :warning:️ *Toast options supersede ToastContainer props* :warning:
+
+:warning:️ *Manually setting a toastId overwrite automatically generated toastIds* :warning:
 
 ```javascript
 const Img = ({ src }) => <div><img width={48} src={src} /></div>;
