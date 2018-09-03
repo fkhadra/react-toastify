@@ -129,7 +129,7 @@ interface ToastOptions extends CommonOptions {
   /**
    * Set a custom `toastId`
    */
-  toastId?: number|string;
+  toastId?: number | string;
 }
 
 interface UpdateOptions extends ToastOptions {
@@ -219,27 +219,27 @@ interface Toast {
     /**
      * Set notification type to `'info'`
      */
-    INFO: string;
+    INFO: 'info';
 
     /**
      * Set notification type to `'success'`
      */
-    SUCCESS: string;
+    SUCCESS: 'success';
 
     /**
      * Set notification type to `'warning'`
      */
-    WARNING: string;
+    WARNING: 'warning';
 
     /**
      * Set notification type to `'error'`
      */
-    ERROR: string;
+    ERROR: 'error';
 
     /**
      * Set notification type to `'default'`
      */
-    DEFAULT: string;
+    DEFAULT: 'default';
   };
 
   /**
@@ -249,36 +249,36 @@ interface Toast {
     /**
      * Set the position to `'top-left'`
      */
-    TOP_LEFT: string;
+    TOP_LEFT: 'top-left'
 
     /**
      * Set the position to `'top-right'`
      */
-    TOP_RIGHT: string;
+    TOP_RIGHT: 'top-right'
 
     /**
      * Set the position to `'top-center'`
      */
-    TOP_CENTER: string;
+    TOP_CENTER: 'top-center'
 
     /**
      * Set the position to `'bottom-left'`
      */
-    BOTTOM_LEFT: string;
+    BOTTOM_LEFT: 'bottom-left'
 
     /**
      * Set the position to `'bottom-right'`
      */
-    BOTTOM_RIGHT: string;
+    BOTTOM_RIGHT: 'bottom-right'
 
     /**
      * Set the position to `'bottom-center'`
      */
-    BOTTOM_CENTER: string;
+    BOTTOM_CENTER: 'bottom-center'
   };
 }
 
-export class ToastContainer extends React.Component<ToastContainerProps, any> {}
+export class ToastContainer extends React.Component<ToastContainerProps, any> { }
 
 /**
  * Helper to build custom entrance and exit transition
