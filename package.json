@@ -34,7 +34,7 @@
     "clean:es": "rimraf lib/*",
     "clean:umd": "rimraf dist/*",
     "sass": "node-sass scss/main.scss dist/ReactToastify.css",
-    "postsass": "postcss --use autoprefixer -m -b 'last 2 versions' dist/ReactToastify.css -o dist/ReactToastify.css",
+    "postsass": "postcss dist/ReactToastify.css --use autoprefixer -m -o dist/ReactToastify.css",
     "style": "npm run sass && cssnano dist/ReactToastify.css dist/ReactToastify.min.css --no-zindex --no-reduceIdents"
   },
   "repository": {
