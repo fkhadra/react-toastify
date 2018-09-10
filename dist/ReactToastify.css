@@ -100,9 +100,15 @@
 
 @keyframes Toastify__trackProgress {
   0% {
-    width: 100%; }
+    transform: translateX(0); }
   100% {
-    width: 0; } }
+    transform: translateX(-100%); } }
+
+@keyframes Toastify__trackProgress--rtl {
+  0% {
+    transform: translateX(0); }
+  100% {
+    transform: translateX(100%); } }
 
 .Toastify__progress-bar {
   position: absolute;
@@ -112,11 +118,14 @@
   height: 5px;
   z-index: 9999;
   opacity: 0.7;
-  animation: Toastify__trackProgress linear 1;
-  background-color: rgba(255, 255, 255, 0.7); }
+  animation: Toastify__trackProgress linear 1 forwards;
+  background-color: rgba(255, 255, 255, 0.7);
+  overflow: hidden;
+  width: 100%; }
   .Toastify__progress-bar--rtl {
     right: 0;
-    left: initial; }
+    left: initial;
+    animation: Toastify__trackProgress--rtl linear 1 forwards; }
   .Toastify__progress-bar--default {
     background: linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55); }
 
