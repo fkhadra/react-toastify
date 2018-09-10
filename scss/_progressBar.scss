@@ -1,9 +1,18 @@
 @keyframes #{$rt-namespace}__trackProgress {
   0%{
-    width: 100%;
+    transform: translateX(0);
   }
   100%{
-    width: 0;
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes #{$rt-namespace}__trackProgress--rtl {
+  0%{
+    transform: translateX(0);
+  }
+  100%{
+    transform: translateX(100%);
   }
 }
 
@@ -15,13 +24,17 @@
   height: 5px;
   z-index: $rt-z-index;
   opacity: 0.7;
-  animation: #{$rt-namespace}__trackProgress linear 1;
+  animation: #{$rt-namespace}__trackProgress linear 1 forwards;
   background-color: rgba(255,255,255,.7);
+  overflow: hidden;
+  width: 100%;
 
   &--rtl {
     right: 0;
     left: initial;
+    animation: #{$rt-namespace}__trackProgress--rtl linear 1 forwards;
   }
+  
   &--default{
     background: $rt-color-progress-default;
   }
