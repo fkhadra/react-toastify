@@ -134,29 +134,29 @@ For convenience, toast expose a POSITION property to avoid any typo.
 
   class Position extends Component {
     notify = () => {
-    toast("Default Notification !");
+      toast("Default Notification !");
 
-    toast.success("Success Notification !", {
-      position: toast.POSITION.TOP_CENTER
-    });
+      toast.success("Success Notification !", {
+        position: toast.POSITION.TOP_CENTER
+      });
 
-    toast.error("Error Notification !", {
-      position: toast.POSITION.TOP_LEFT
-    });
+      toast.error("Error Notification !", {
+        position: toast.POSITION.TOP_LEFT
+      });
     
-    toast.warn("Warning Notification !", {
-      position: toast.POSITION.BOTTOM_LEFT
-    });
+      toast.warn("Warning Notification !", {
+        position: toast.POSITION.BOTTOM_LEFT
+      });
 
-    toast.info("Info Notification !", {
-      position: toast.POSITION.BOTTOM_CENTER
-    });
+      toast.info("Info Notification !", {
+        position: toast.POSITION.BOTTOM_CENTER
+      });
 
-    toast("Custom Style Notification with css class!", {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      className: 'foo-bar'
-    });
-  };
+      toast("Custom Style Notification with css class!", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        className: 'foo-bar'
+      });
+    };
 
     render(){
       return <button onClick={this.notify}>Notify</button>;
