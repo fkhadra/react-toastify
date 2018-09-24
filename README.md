@@ -17,7 +17,7 @@
     - [Remove a toast programmatically](#remove-a-toast-programmatically)
     - [Usage with redux](#usage-with-redux)
     - [Pause toast timer when the window loses focus](#pause-toast-timer-when-the-window-loses-focus)
-    - [Use a custom toastId](#use-a-custom-toast-id)
+    - [Use a custom id](#use-a-custom-id)
     - [Prevent duplicate](#prevent-duplicate)
     - [Update a toast](#update-a-toast)
       - [Basic example](#basic-example)
@@ -134,29 +134,29 @@ For convenience, toast expose a POSITION property to avoid any typo.
 
   class Position extends Component {
     notify = () => {
-    toast("Default Notification !");
+      toast("Default Notification !");
 
-    toast.success("Success Notification !", {
-      position: toast.POSITION.TOP_CENTER
-    });
+      toast.success("Success Notification !", {
+        position: toast.POSITION.TOP_CENTER
+      });
 
-    toast.error("Error Notification !", {
-      position: toast.POSITION.TOP_LEFT
-    });
+      toast.error("Error Notification !", {
+        position: toast.POSITION.TOP_LEFT
+      });
     
-    toast.warn("Warning Notification !", {
-      position: toast.POSITION.BOTTOM_LEFT
-    });
+      toast.warn("Warning Notification !", {
+        position: toast.POSITION.BOTTOM_LEFT
+      });
 
-    toast.info("Info Notification !", {
-      position: toast.POSITION.BOTTOM_CENTER
-    });
+      toast.info("Info Notification !", {
+        position: toast.POSITION.BOTTOM_CENTER
+      });
 
-    toast("Custom Style Notification with css class!", {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      className: 'foo-bar'
-    });
-  };
+      toast("Custom Style Notification with css class!", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        className: 'foo-bar'
+      });
+    };
 
     render(){
       return <button onClick={this.notify}>Notify</button>;
@@ -296,7 +296,7 @@ toast('Hello', {
 })
 ```
 
-### Use a custom toastId
+### Use a custom id
 
 A custom `toastId` can be used to replace the one generated. You can use a `number` or a `string`.
 
