@@ -22,7 +22,7 @@ function getY(e) {
     : e.clientY;
 }
 
-const noop = () => { };
+const noop = () => {};
 
 class Toast extends Component {
   static propTypes = {
