@@ -62,23 +62,23 @@
     }
 }
 
-@keyframes #{$rt-namespace}__slideOutUp {
-    from {
-        @include transform;
-    }
-    to {
-        visibility: hidden;
-        transform: translate3d(0, 110%, 0);
-    }
-}
-
 @keyframes #{$rt-namespace}__slideOutDown {
     from {
         @include transform;
     }
     to {
         visibility: hidden;
-        transform: translate3d(0, -110%, 0);
+        transform: translate3d(0, 500px, 0);
+    }
+}
+
+@keyframes #{$rt-namespace}__slideOutUp {
+    from {
+        @include transform;
+    }
+    to {
+        visibility: hidden;
+        transform: translate3d(0, -500px, 0);
     }
 }
 

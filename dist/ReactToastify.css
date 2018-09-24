@@ -358,19 +358,19 @@
     visibility: hidden;
     transform: translate3d(-110%, 0, 0); } }
 
-@keyframes Toastify__slideOutUp {
-  from {
-    transform: translate3d(0, 0, 0); }
-  to {
-    visibility: hidden;
-    transform: translate3d(0, 110%, 0); } }
-
 @keyframes Toastify__slideOutDown {
   from {
     transform: translate3d(0, 0, 0); }
   to {
     visibility: hidden;
-    transform: translate3d(0, -110%, 0); } }
+    transform: translate3d(0, 500px, 0); } }
+
+@keyframes Toastify__slideOutUp {
+  from {
+    transform: translate3d(0, 0, 0); }
+  to {
+    visibility: hidden;
+    transform: translate3d(0, -500px, 0); } }
 
 .Toastify__slide-enter--top-left, .Toastify__slide-enter--bottom-left {
   animation-name: Toastify__slideInLeft; }
