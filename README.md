@@ -17,7 +17,7 @@
     - [Remove a toast programmatically](#remove-a-toast-programmatically)
     - [Usage with redux](#usage-with-redux)
     - [Pause toast timer when the window loses focus](#pause-toast-timer-when-the-window-loses-focus)
-    - [Use a custom toastId](#use-a-custom-toast-id)
+    - [Use a custom id](#use-a-custom-id)
     - [Prevent duplicate](#prevent-duplicate)
     - [Update a toast](#update-a-toast)
       - [Basic example](#basic-example)
@@ -296,7 +296,7 @@ toast('Hello', {
 })
 ```
 
-### Use a custom toastId
+### Use a custom id
 
 A custom `toastId` can be used to replace the one generated. You can use a `number` or a `string`.
 
