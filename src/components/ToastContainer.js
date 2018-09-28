@@ -83,7 +83,7 @@ class ToastContainer extends Component {
     /**
      * An optional style for the toast progress bar
      */
-    progressStyle: PropTypes.object(),
+    progressStyle: PropTypes.object,
 
     /**
      * Define enter and exit transition using react-transition-group
