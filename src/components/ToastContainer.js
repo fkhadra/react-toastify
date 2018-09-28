@@ -81,6 +81,11 @@ class ToastContainer extends Component {
     ]),
 
     /**
+     * An optional style for the toast progress bar
+     */
+    progressStyle: PropTypes.object(),
+
+    /**
      * Define enter and exit transition using react-transition-group
      */
     transition: PropTypes.func,
@@ -123,7 +128,8 @@ class ToastContainer extends Component {
     style: null,
     toastClassName: null,
     bodyClassName: null,
-    progressClassName: null
+    progressClassName: null,
+    progressStyle: null
   };
 
   /**
@@ -269,6 +275,7 @@ class ToastContainer extends Component {
       progressClassName: this.parseClassName(
         options.progressClassName || this.props.progressClassName
       ),
+      progressStyle: this.props.progressStyle,
       autoClose: this.getAutoCloseDelay(options.autoClose),
       hideProgressBar:
         typeof options.hideProgressBar === 'boolean'
