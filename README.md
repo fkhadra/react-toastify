@@ -83,7 +83,7 @@ $ yarn add react-toastify
 ## From v3 to v4
 
 Glamor has been dropped to switch back to scss due to user's feedback. You can read more about that choice if you take a look at the issues history.
-- Passing glamor rule to className is still working 😎. 
+- Passing glamor rule to className is still working 😎.
 - A css file needs to be imported now.
 - Toast are now draggable, you can swipe to close
 - New built-in transition added
@@ -143,7 +143,7 @@ For convenience, toast expose a POSITION property to avoid any typo.
       toast.error("Error Notification !", {
         position: toast.POSITION.TOP_LEFT
       });
-    
+
       toast.warn("Warning Notification !", {
         position: toast.POSITION.BOTTOM_LEFT
       });
@@ -278,7 +278,7 @@ Without args, all the displayed toasts will be removed.
 
 #### Usage with redux
 
-"Talk is cheap. Show me the code" 
+"Talk is cheap. Show me the code"
 
 [![Edit react+redux+react-toastify](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/r0kv8km1pp)
 
@@ -359,7 +359,7 @@ When you update a toast, the toast options and the content are inherited but don
 
 ![update-without-transition](https://user-images.githubusercontent.com/5574267/33761953-1ce2e0ea-dc0b-11e7-8967-a63c1185ce0e.gif)
 
-#### Basic example 
+#### Basic example
 
 ```js
 import React, { Component } from 'react';
@@ -371,7 +371,7 @@ class Update extends Component {
   notify = () => this.toastId = toast("Hello", { autoClose: false });
 
   update = () => toast.update(this.toastId, { type: toast.TYPE.INFO, autoClose: 5000 });
-  
+
   render(){
       return (
         <div>
@@ -389,17 +389,17 @@ If you want to change the content it's straightforward as well. You can render a
 
 ```js
  // With a string
- toast.update(this.toastId, { 
+ toast.update(this.toastId, {
     render: "New content",
     type: toast.TYPE.INFO,
-    autoClose: 5000 
+    autoClose: 5000
   });
- 
+
 // Or with a component
-toast.update(this.toastId, { 
+toast.update(this.toastId, {
     render: <MyComponent />
     type: toast.TYPE.INFO,
-    autoClose: 5000 
+    autoClose: 5000
   });
 
 
@@ -443,24 +443,24 @@ toast.update(this.toastId, {
 
 #### Reset option or inherit from ToastContainer
 
-If you want to inherit props from the `ToastContainer`, you can reset an option by passing null. 
+If you want to inherit props from the `ToastContainer`, you can reset an option by passing null.
 It's particulary usefull when you remove the `closeButton` from a toast and you want it back during the update:
 
 ```js
 class Update extends Component {
   toastId = null;
 
-  notify = () => this.toastId = toast("Hello", { 
+  notify = () => this.toastId = toast("Hello", {
       autoClose: false,
-      closeButton: false // Remove the closeButton 
+      closeButton: false // Remove the closeButton
     });
 
-  update = () => toast.update(this.toastId, { 
+  update = () => toast.update(this.toastId, {
       type: toast.TYPE.INFO,
       autoClose: 5000,
       closeButton: null // The closeButton defined on ToastContainer will be used
     });
-  
+
   render(){
       return (
         <div>
@@ -704,7 +704,7 @@ There is 4 built-in transition provided:
 </details>
 
 Bounce is used by default but you can replace it by your own transition or by one of the list above:
- 
+
 
 ```js
 import { Slide, Zoom, Flip, Bounce } from 'react-toastify';
@@ -716,7 +716,7 @@ import { Slide, Zoom, Flip, Bounce } from 'react-toastify';
   <ToastContainer
     transition={YourCustomTransition}
   />
-    
+
 ```
 You get the idea...
 
@@ -775,8 +775,8 @@ I'll use the zoom animation from animate.css. Of course, you could create your o
 #### Ease your life with the cssTransition helper
 
 The easiest way to roll your own transition is by using the `cssTransition` helper. Doing so you don't need to deal with `react-transition-group`. You only need to provide the `enter` and the `exit` class name, the transition `duration` is set
-to `750ms` by default but it can be overridden: 
-   
+to `750ms` by default but it can be overridden:
+
 ```js
 import React, { Component } from 'react';
 import { toast, cssTransition } from 'react-toastify';
@@ -864,7 +864,7 @@ class App extends Component {
 }
 ```
 
-#### Create a transition from scratch 
+#### Create a transition from scratch
 
 ```js
 import React, { Component } from 'react';
@@ -916,7 +916,7 @@ You need to drag 80% of the toast width to remove it. This can be changed to fit
 
 ```js
 <ToastContainer draggablePercent={60}>
-``` 
+```
 
 - Replace per toast:
 
@@ -924,7 +924,7 @@ You need to drag 80% of the toast width to remove it. This can be changed to fit
 toast('Hello', {
   draggablePercent: 60
 });
-``` 
+```
 
 #### Disable it
 
@@ -932,7 +932,7 @@ toast('Hello', {
 
 ```js
 <ToastContainer draggable={false}>
-``` 
+```
 
 - Disable per toast:
 
@@ -940,7 +940,7 @@ toast('Hello', {
 toast('Hello', {
   draggable: false
 });
-``` 
+```
 
 
 ### Le style
@@ -951,7 +951,7 @@ toast('Hello', {
 toast("Custom style",{
   className: 'black-background',
   bodyClassName: "grow-font-size",
-  progressClassName: 'fancy-progress-bar' 
+  progressClassName: 'fancy-progress-bar'
 });
 ```
 
@@ -1026,6 +1026,7 @@ On mobile the toast will take all the available width.
 | toastClassName          | string\|object         | -         | Add optional classes to the toast                                                                   |
 | bodyClassName           | string\|object         | -         | Add optional classes to the toast body                                                              |
 | progressClassName       | string\|object         | -         | Add optional classes to the progress bar                                                            |
+| progressStyle           | object                 | -         | Add optional inline style to the progress bar                                                            |
 | draggable               | bool                   | true      | Allow toast to be draggable                                                                         |
 | draggablePercent        | number                 | 80        | The percentage of the toast's width it takes for a drag to dismiss a toast(value between 0 and 100) |
 
@@ -1110,14 +1111,14 @@ import { cssTransition } from 'react-toastify';
 const Zoom = cssTransition({
   enter: 'zoomIn',
   exit: 'zoomOut',
-  duration: 750,  
+  duration: 750,
   appendPosition: false
 });
 
 const Zoom = cssTransition({
   enter: 'zoomIn',
   exit: 'zoomOut',
-  duration: [500, 600],  
+  duration: [500, 600],
   appendPosition: false
 });
 ```

@@ -11,9 +11,11 @@ function ProgressBar({
   type,
   hide,
   className,
+  style: userStyle,
   rtl
 }) {
   const style = {
+    ...userStyle,
     animationDuration: `${delay}ms`,
     animationPlayState: isRunning ? 'running' : 'paused',
     opacity: hide ? 0 : 1

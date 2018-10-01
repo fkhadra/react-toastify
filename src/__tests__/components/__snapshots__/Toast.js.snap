@@ -25,6 +25,7 @@ ShallowWrapper {
     pauseOnHover={true}
     position="top-right"
     progressClassName={null}
+    progressStyle={null}
     role="alert"
     rtl={true}
     style={null}

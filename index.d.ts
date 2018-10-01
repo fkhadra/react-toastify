@@ -89,6 +89,11 @@ interface CommonOptions {
   progressClassName?: string | object;
 
   /**
+   * An optional style to set for the progress bar.
+   */
+  progressStyle?: object;
+
+  /**
    * An optional css class to set.
    */
   className?: string | object;

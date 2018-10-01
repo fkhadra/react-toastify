@@ -50,6 +50,7 @@ class Toast extends Component {
       PropTypes.string,
       PropTypes.object
     ]),
+    progressStyle: PropTypes.object,
     updateId: PropTypes.number,
     ariaLabel: PropTypes.string
   };
@@ -249,6 +250,7 @@ class Toast extends Component {
       className,
       bodyClassName,
       progressClassName,
+      progressStyle,
       updateId,
       role,
       rtl
@@ -307,6 +309,7 @@ class Toast extends Component {
               closeToast={closeToast}
               hide={hideProgressBar}
               type={type}
+              style={progressStyle}
               className={progressClassName}
             />
           )}
