@@ -76,7 +76,7 @@ $ yarn add react-toastify
 - Has ```onOpen``` and ```onClose``` hooks. Both can access the props passed to the react component rendered inside the toast
 - Can remove a toast programmatically
 - Define behavior per toast
-- Pause toast when window loose focus 👁
+- Pause toast when window loses focus 👁
 - Fancy progress bar to display the remaining time
 - Possibility to update a toast
 
