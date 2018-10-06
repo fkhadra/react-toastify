@@ -121,12 +121,13 @@ The toasts inherit ToastContainer's props. **Props defined on toast supersede To
 
 By default, all the toasts will be positionned on the top right of your browser. If a position is set on a toast, the one defined on ToastContainer will be replaced.
 
-The following values are allowed: **top-right, top-center, top-left, bottom-right, bottom-center, bottom-left**
+The following values are allowed: **top-right, top-center, top-left, center-right, center-center, center-left, bottom-right, bottom-center, bottom-left**
 
 For convenience, toast expose a POSITION property to avoid any typo.
 
 ```javascript
  // toast.POSITION.TOP_LEFT, toast.POSITION.TOP_RIGHT, toast.POSITION.TOP_CENTER
+ // toast.POSITION.CENTER_LEFT, toast.POSITION.CENTER_RIGHT, toast.POSITION.CENTER_CENTER
  // toast.POSITION.BOTTOM_LEFT,toast.POSITION.BOTTOM_RIGHT, toast.POSITION.BOTTOM_CENTER
 
   import React, { Component } from 'react';
@@ -1011,7 +1012,7 @@ On mobile the toast will take all the available width.
 
 | Props                   | Type                   | Default   | Description                                                                                         |
 |-------------------------|------------------------|-----------|-----------------------------------------------------------------------------------------------------|
-| position                | string                 | top-right | One of top-right, top-center, top-left, bottom-right, bottom-center, bottom-left                    |
+| position                | string                 | top-right | One of top-right, top-center, top-left, center-left, center-center, center-right, bottom-right, bottom-center, bottom-left                    |
 | autoClose               | false or number        | 5000      | Delay in ms to close the toast. If set to false, the notification need to be closed manualy         |
 | closeButton             | React Element or false | -         | A React Component to replace the default close button or `false` to hide the button                 |
 | transition              | function               | -         | A reference to a valid react-transition-group/Transition component                                  |
