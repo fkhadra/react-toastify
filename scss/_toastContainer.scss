@@ -18,6 +18,19 @@
         top: 1em;
         right: 1em;
     }
+    &--center-left {
+        top: 50%;
+        left: 1em;
+    }
+    &--center-center {
+        top: 50%;
+        left: 50%;
+        margin-left: -($rt-toast-width / 2);
+    }
+    &--center-right {
+        top: 50%;
+        right: 1em;
+    }
     &--bottom-left {
         bottom: 1em;
         left: 1em;

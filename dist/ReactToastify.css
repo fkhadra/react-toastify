@@ -15,6 +15,16 @@
   .Toastify__toast-container--top-right {
     top: 1em;
     right: 1em; }
+  .Toastify__toast-container--center-left {
+    top: 50%;
+    left: 1em; }
+  .Toastify__toast-container--center-center {
+    top: 50%;
+    left: 50%;
+    margin-left: -160px; }
+  .Toastify__toast-container--center-right {
+    top: 50%;
+    right: 1em; }
   .Toastify__toast-container--bottom-left {
     bottom: 1em;
     left: 1em; }

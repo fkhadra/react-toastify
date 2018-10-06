@@ -12,6 +12,9 @@ export const enum ToastPosition {
   TOP_RIGHT = 'top-right',
   TOP_CENTER = 'top-center',
   TOP_LEFT = 'top-left',
+  CENTER_RIGHT = 'center-right',
+  CENTER_CENTER = 'center-center',
+  CENTER_LEFT = 'center-left',
   BOTTOM_RIGHT = 'bottom-right',
   BOTTOM_CENTER = 'bottom-center',
   BOTTOM_LEFT = 'bottom-left'
@@ -278,6 +281,21 @@ interface Toast {
      * Set the position to `'top-center'`
      */
     TOP_CENTER: ToastPosition.TOP_CENTER;
+    
+    /**
+     * Set the position to `'center-left'`
+     */
+    CENTER_LEFT: ToastPosition.CENTER_LEFT;
+
+    /**
+     * Set the position to `'center-right'`
+     */
+    CENTER_RIGHT: ToastPosition.CENTER_RIGHT;
+
+    /**
+     * Set the position to `'center-center'`
+     */
+    CENTER_CENTER: ToastPosition.CENTER_CENTER;
 
     /**
      * Set the position to `'bottom-left'`
