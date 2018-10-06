@@ -3,20 +3,19 @@ import { POSITION, TYPE, ACTION } from './utils/constant';
 
 let container = null;
 let queue = [];
-let toastId = 0;
 const noop = () => false;
 
 /**
  * Merge provided options with the defaults settings and generate the toastId
  */
 function mergeOptions(options, type) {
-  return { ...options, type, toastId: generateToastId(options) };
+  return { ...options, type, toastId: getToastId(options) };
 }
 
 /**
- * Generate the toastId either automatically or by provided toastId
+ * Get the toastId either automatically or by provided toastId
  */
-function generateToastId(options) {
+function getToastId(options) {
   if (
     options &&
     ((typeof options.toastId === 'number' && !isNaN(options.toastId)) ||
@@ -25,7 +24,21 @@ function generateToastId(options) {
     return options.toastId;
   }
 
-  return ++toastId;
+  return generateToastId();
+}
+
+/**
+ * Generate a random 10 character toastId
+ */
+function generateToastId() {
+  let text = '';
+  const possible = 'abcdefghijklmnopqrstuvwxyz0123456789';
+
+  for (let i = 0; i < 10; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+
+  return text;
 }
 
 /**
@@ -113,7 +126,6 @@ eventManager
   .on(ACTION.WILL_UNMOUNT, () => {
     container = null;
     toast.isActive = noop;
-    toastId = 0;
   });
 
 export default toast;
