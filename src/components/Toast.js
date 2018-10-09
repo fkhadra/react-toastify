@@ -218,15 +218,19 @@ class Toast extends Component {
     }
   };
 
-  onDragTransitionEnd = () => {
+  onDragTransitionEnd = e => {
     const { top, bottom, left, right } = this.ref.getBoundingClientRect();
+    const isCloseButtonTransition = e.target.classList.contains(
+      'Toastify__close-button'
+    );
 
     if (
-      this.props.pauseOnHover &&
-      this.drag.x >= left &&
-      this.drag.x <= right &&
-      this.drag.y >= top &&
-      this.drag.y <= bottom
+      (this.props.pauseOnHover &&
+        this.drag.x >= left &&
+        this.drag.x <= right &&
+        this.drag.y >= top &&
+        this.drag.y <= bottom) ||
+      isCloseButtonTransition
     ) {
       this.pauseToast();
     } else {
