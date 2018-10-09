@@ -246,6 +246,7 @@ class ToastContainer extends Component {
       bodyClassName: this.parseClassName(
         options.bodyClassName || this.props.bodyClassName
       ),
+      onClick: options.onClick || this.props.onClick,
       closeButton: this.makeCloseButton(
         options.closeButton,
         toastId,

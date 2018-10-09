@@ -240,6 +240,7 @@ class Toast extends Component {
       children,
       autoClose,
       pauseOnHover,
+      onClick,
       closeOnClick,
       type,
       hideProgressBar,
@@ -274,7 +275,10 @@ class Toast extends Component {
 
     // prevent toast from closing when user drags the toast
     if (closeOnClick) {
-      toastProps.onClick = () => this.flag.canCloseOnClick && closeToast();
+      toastProps.onClick = e => {
+        onClick && onClick(e);
+        this.flag.canCloseOnClick && closeToast();
+      };
     }
 
     return (
@@ -287,6 +291,7 @@ class Toast extends Component {
         preventExitTransition={this.state.preventExitTransition}
       >
         <div
+          onClick={onClick}
           {...toastProps}
           ref={ref => (this.ref = ref)}
           onMouseDown={this.onDragStart}
