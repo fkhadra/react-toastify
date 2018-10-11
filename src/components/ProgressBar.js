@@ -12,7 +12,8 @@ function ProgressBar({
   hide,
   className,
   style: userStyle,
-  rtl
+  rtl,
+  prefixCls = 'Toastify'
 }) {
   const style = {
     ...userStyle,
@@ -22,10 +23,10 @@ function ProgressBar({
   };
 
   const classNames = cx(
-    'Toastify__progress-bar',
-    `Toastify__progress-bar--${type}`,
+    `${prefixCls}__progress-bar`,
+    `${prefixCls}__progress-bar--${type}`,
     {
-      'Toastify__progress-bar--rtl': rtl
+      [`${prefixCls}__progress-bar--rtl`]: rtl
     },
     className
   );

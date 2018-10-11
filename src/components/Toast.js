@@ -52,7 +52,8 @@ class Toast extends Component {
     ]),
     progressStyle: PropTypes.object,
     updateId: PropTypes.number,
-    ariaLabel: PropTypes.string
+    ariaLabel: PropTypes.string,
+    prefixCls: PropTypes.string
   };
 
   static defaultProps = {
@@ -64,7 +65,8 @@ class Toast extends Component {
     bodyClassName: null,
     progressClassName: null,
     updateId: null,
-    role: 'alert'
+    role: 'alert',
+    prefixCls: 'Toastify'
   };
 
   state = {
@@ -253,15 +255,16 @@ class Toast extends Component {
       progressStyle,
       updateId,
       role,
-      rtl
+      rtl,
+      prefixCls,
     } = this.props;
 
     const toastProps = {
       className: cx(
-        'Toastify__toast',
-        `Toastify__toast--${type}`,
+        `${prefixCls}__toast`,
+        `${prefixCls}__toast--${type}`,
         {
-          'Toastify__toast--rtl': rtl
+          [`${prefixCls}__toast--rtl`]: rtl
         },
         className
       )
@@ -295,7 +298,7 @@ class Toast extends Component {
         >
           <div
             {...this.props.in && { role: role }}
-            className={cx('Toastify__toast-body', bodyClassName)}
+            className={cx(`${prefixCls}__toast-body`, bodyClassName)}
           >
             {children}
           </div>
@@ -311,6 +314,7 @@ class Toast extends Component {
               type={type}
               style={progressStyle}
               className={progressClassName}
+              prefixCls={prefixCls}
             />
           )}
         </div>

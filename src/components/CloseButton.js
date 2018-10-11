@@ -1,10 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function CloseButton({ closeToast, type, ariaLabel }) {
+function CloseButton({
+ closeToast,
+ type,
+ ariaLabel,
+ prefixCls = 'Toastify'
+}) {
   return (
     <button
-      className={`Toastify__close-button Toastify__close-button--${type}`}
+      className={`${prefixCls}__close-button ${prefixCls}__close-button--${type}`}
       type="button"
       onClick={closeToast}
       aria-label={ariaLabel}

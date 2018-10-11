@@ -108,7 +108,12 @@ class ToastContainer extends Component {
     /**
      * Pause the toast on focus loss
      */
-    pauseOnFocusLoss: PropTypes.bool
+    pauseOnFocusLoss: PropTypes.bool,
+
+    /**
+     * Add a custom prefix to toast block. Replaces BEM block name Toastify when this is set
+     */
+    prefixCls: PropTypes.string
   };
 
   static defaultProps = {
@@ -129,7 +134,8 @@ class ToastContainer extends Component {
     toastClassName: null,
     bodyClassName: null,
     progressClassName: null,
-    progressStyle: null
+    progressStyle: null,
+    prefixCls: 'Toastify',
   };
 
   /**
@@ -181,7 +187,8 @@ class ToastContainer extends Component {
   }
 
   makeCloseButton(toastClose, toastId, type) {
-    let closeButton = this.props.closeButton;
+    const { prefixCls } = this.props
+    let { closeButton } = this.props;
 
     if (isValidElement(toastClose) || toastClose === false) {
       closeButton = toastClose;
@@ -191,6 +198,7 @@ class ToastContainer extends Component {
       ? false
       : cloneElement(closeButton, {
           closeToast: () => this.removeToast(toastId),
+          prefixCls,
           type: type
         });
   }
@@ -322,9 +330,11 @@ class ToastContainer extends Component {
   }
 
   makeToast(content, options) {
+    const { prefixCls } = this.props
     return (
       <Toast
         {...options}
+        prefixCls={prefixCls}
         isDocumentHidden={this.state.isDocumentHidden}
         key={`toast-${options.id}`}
       >
@@ -339,7 +349,7 @@ class ToastContainer extends Component {
 
   renderToast() {
     const toastToRender = {};
-    const { className, style, newestOnTop } = this.props;
+    const { className, style, newestOnTop, prefixCls } = this.props;
     const collection = newestOnTop
       ? Object.keys(this.collection).reverse()
       : Object.keys(this.collection);
@@ -363,9 +373,9 @@ class ToastContainer extends Component {
         toastToRender[position][0] === null;
       const props = {
         className: cx(
-          'Toastify__toast-container',
-          `Toastify__toast-container--${position}`,
-          { 'Toastify__toast-container--rtl': this.props.rtl },
+          `${prefixCls}__toast-container`,
+          `${prefixCls}__toast-container--${position}`,
+          {[`${prefixCls}__toast-container--rtl`]: this.props.rtl },
           this.parseClassName(className)
         ),
         style: disablePointer
@@ -382,7 +392,8 @@ class ToastContainer extends Component {
   }
 
   render() {
-    return <div className="Toastify">{this.renderToast()}</div>;
+    const { prefixCls } = this.props
+    return <div className={prefixCls}>{this.renderToast()}</div>;
   }
 }
 
