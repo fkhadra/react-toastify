@@ -24,6 +24,7 @@ ShallowWrapper {
     pauseOnFocusLoss={true}
     pauseOnHover={true}
     position="top-right"
+    prefixCls="Toastify"
     progressClassName={null}
     progressStyle={null}
     role="alert"

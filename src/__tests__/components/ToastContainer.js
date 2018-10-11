@@ -131,6 +131,7 @@ describe('ToastContainer', () => {
     expect(Object.keys(props.closeButton.props)).toMatchObject([
       'ariaLabel',
       'closeToast',
+      'prefixCls',
       'type'
     ]);
   });
