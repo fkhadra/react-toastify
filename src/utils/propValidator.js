@@ -35,8 +35,7 @@ export const falseOrDelay = withRequired((props, propName, componentName) => {
 
 export const falseOrElement = withRequired((props, propName, componentName) => {
   const prop = props[propName];
-
-  if (prop !== false && !isValidElement(prop)) {
+  if (prop !== false && !isValidElement(prop) && typeof prop !== 'function') {
     return new Error(`${componentName} expect ${propName} 
       to be a valid react element or equal to false. ${prop} given.`);
   }
