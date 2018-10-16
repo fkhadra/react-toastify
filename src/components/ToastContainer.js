@@ -183,16 +183,22 @@ class ToastContainer extends Component {
   makeCloseButton(toastClose, toastId, type) {
     let closeButton = this.props.closeButton;
 
+    const closeButtonProps = {
+      closeToast: () => this.removeToast(toastId),
+        type: type
+    }
+
+    if (typeof closeButton === 'function') {
+      return closeButton(closeButtonProps)
+    }
+
     if (isValidElement(toastClose) || toastClose === false) {
       closeButton = toastClose;
     }
 
     return closeButton === false
       ? false
-      : cloneElement(closeButton, {
-          closeToast: () => this.removeToast(toastId),
-          type: type
-        });
+      : cloneElement(closeButton, closeButtonProps);
   }
 
   getAutoCloseDelay(toastAutoClose) {
