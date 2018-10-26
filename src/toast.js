@@ -67,14 +67,18 @@ const toast = Object.assign(
             options: oldOptions,
             content: oldContent
           } = container.collection[toastId];
-          const updateId = oldOptions.updateId ? oldOptions.updateId + 1 : 1;
 
           const nextOptions = {
             ...oldOptions,
             ...options,
-            toastId,
-            updateId
+            toastId: options.toastId || toastId,
           };
+
+          if (!options.toastId || options.toastId === toastId) {
+            nextOptions.updateId = oldOptions.updateId ? oldOptions.updateId + 1 : 1;
+          } else {
+            nextOptions.staleToastId = toastId;
+          }
 
           const content =
             typeof nextOptions.render !== 'undefined'
