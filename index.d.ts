@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export const enum ToastType {
+export enum ToastType {
   INFO = 'info',
   SUCCESS = 'success',
   WARNING = 'warning',
@@ -8,7 +8,7 @@ export const enum ToastType {
   DEFAULT = 'default'
 }
 
-export const enum ToastPosition {
+export enum ToastPosition {
   TOP_RIGHT = 'top-right',
   TOP_CENTER = 'top-center',
   TOP_LEFT = 'top-left',
