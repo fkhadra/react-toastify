@@ -1,20 +1,62 @@
 import * as React from 'react';
 
-export enum ToastType {
-  INFO = 'info',
-  SUCCESS = 'success',
-  WARNING = 'warning',
-  ERROR = 'error',
-  DEFAULT = 'default'
+interface Position {
+  /**
+   * Set the position to `'top-left'`
+   */
+  TOP_LEFT: 'top-left';
+
+  /**
+   * Set the position to `'top-right'`
+   */
+  TOP_RIGHT: 'top-right';
+
+  /**
+   * Set the position to `'top-center'`
+   */
+  TOP_CENTER: 'top-center';
+
+  /**
+   * Set the position to `'bottom-left'`
+   */
+  BOTTOM_LEFT: 'bottom-left';
+
+  /**
+   * Set the position to `'bottom-right'`
+   */
+  BOTTOM_RIGHT: 'bottom-right';
+
+  /**
+   * Set the position to `'bottom-center'`
+   */
+  BOTTOM_CENTER: 'bottom-center';
 }
 
-export enum ToastPosition {
-  TOP_RIGHT = 'top-right',
-  TOP_CENTER = 'top-center',
-  TOP_LEFT = 'top-left',
-  BOTTOM_RIGHT = 'bottom-right',
-  BOTTOM_CENTER = 'bottom-center',
-  BOTTOM_LEFT = 'bottom-left'
+interface Type {
+  /**
+   * Set notification type to `'info'`
+   */
+  INFO: 'info';
+
+  /**
+   * Set notification type to `'success'`
+   */
+  SUCCESS: 'success';
+
+  /**
+   * Set notification type to `'warning'`
+   */
+  WARNING: 'warning';
+
+  /**
+   * Set notification type to `'error'`
+   */
+  ERROR: 'error';
+
+  /**
+   * Set notification type to `'default'`
+   */
+  DEFAULT: 'default';
 }
 
 type ToastContent = React.ReactNode | { (): void };
@@ -147,7 +189,7 @@ interface ToastOptions extends CommonOptions {
   /**
    * Set a custom `toastId`
    */
-  toastId?: number|string;
+  toastId?: number | string;
 }
 
 interface UpdateOptions extends ToastOptions {
@@ -233,68 +275,23 @@ interface Toast {
   /**
    * Helper to set notification type
    */
-  TYPE: {
-    /**
-     * Set notification type to `'info'`
-     */
-    INFO: ToastType.INFO;
-
-    /**
-     * Set notification type to `'success'`
-     */
-    SUCCESS: ToastType.SUCCESS;
-
-    /**
-     * Set notification type to `'warning'`
-     */
-    WARNING: ToastType.WARNING;
-
-    /**
-     * Set notification type to `'error'`
-     */
-    ERROR: ToastType.ERROR;
-
-    /**
-     * Set notification type to `'default'`
-     */
-    DEFAULT: ToastType.DEFAULT;
-  };
+  TYPE: Type;
 
   /**
    * Helper to set position
    */
-  POSITION: {
-    /**
-     * Set the position to `'top-left'`
-     */
-    TOP_LEFT: ToastPosition.TOP_LEFT;
-
-    /**
-     * Set the position to `'top-right'`
-     */
-    TOP_RIGHT: ToastPosition.TOP_RIGHT;
-
-    /**
-     * Set the position to `'top-center'`
-     */
-    TOP_CENTER: ToastPosition.TOP_CENTER;
-
-    /**
-     * Set the position to `'bottom-left'`
-     */
-    BOTTOM_LEFT: ToastPosition.BOTTOM_LEFT;
-
-    /**
-     * Set the position to `'bottom-right'`
-     */
-    BOTTOM_RIGHT: ToastPosition.BOTTOM_RIGHT;
-
-    /**
-     * Set the position to `'bottom-center'`
-     */
-    BOTTOM_CENTER: ToastPosition.BOTTOM_CENTER;
-  };
+  POSITION: Position;
 }
+
+/**
+ * Helper to set notification type
+ */
+export const ToastType: Type;
+
+/**
+ * Helper to set position
+ */
+export const ToastPosition: Position;
 
 export class ToastContainer extends React.Component<ToastContainerProps, any> {}
 
