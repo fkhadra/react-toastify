@@ -22,6 +22,7 @@
   &--rtl {
     right: 0;
     left: initial;
+    transform-origin: right;
   }
   &--default{
     background: $rt-color-progress-default;
