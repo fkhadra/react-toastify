@@ -24,7 +24,8 @@ module.exports = {
     'react',
     'react-dom',
     'prop-types',
-    'react-transition-group'
+    'react-transition-group',
+    'classnames'
   ],
   plugins: [
     new webpack.DefinePlugin({
