@@ -59,6 +59,16 @@ interface Type {
   DEFAULT: 'default';
 }
 
+type PositionOptions =
+  | 'top-right'
+  | 'top-center'
+  | 'top-left'
+  | 'bottom-right'
+  | 'bottom-center'
+  | 'bottom-left';
+
+type TypeOptions = 'info' | 'success' | 'warning' | 'error' | 'default';
+
 type ToastContent = React.ReactNode | { (): void };
 
 interface cssTransitionProps {
@@ -117,7 +127,7 @@ interface CommonOptions {
    * `One of: 'top-right', 'top-center', 'top-left', 'bottom-right', 'bottom-center', 'bottom-left'`
    * `Default: 'top-right'`
    */
-  position?: ToastPosition;
+  position?: PositionOptions;
 
   /**
    * Pass a custom close button.
@@ -184,7 +194,7 @@ interface ToastOptions extends CommonOptions {
    * Set the toast type.
    * `One of: 'info', 'success', 'warning', 'error', 'default'`
    */
-  type?: ToastType;
+  type?: ToastOptions;
 
   /**
    * Set a custom `toastId`
