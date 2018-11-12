@@ -194,7 +194,7 @@ interface ToastOptions extends CommonOptions {
    * Set the toast type.
    * `One of: 'info', 'success', 'warning', 'error', 'default'`
    */
-  type?: ToastOptions;
+  type?: TypeOptions;
 
   /**
    * Set a custom `toastId`
