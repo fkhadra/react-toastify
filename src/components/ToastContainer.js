@@ -43,6 +43,11 @@ class ToastContainer extends Component {
     pauseOnHover: PropTypes.bool,
 
     /**
+     * Pause on window resize
+     */
+    pauseOnVisibilityChange: PropTypes.bool,
+
+    /**
      * Dismiss toast on click
      */
     closeOnClick: PropTypes.bool,
@@ -120,6 +125,7 @@ class ToastContainer extends Component {
     closeButton: <CloseButton />,
     pauseOnHover: true,
     pauseOnFocusLoss: true,
+    pauseOnVisibilityChange: false,
     closeOnClick: true,
     newestOnTop: false,
     draggable: true,
@@ -255,6 +261,10 @@ class ToastContainer extends Component {
         typeof options.pauseOnHover === 'boolean'
           ? options.pauseOnHover
           : this.props.pauseOnHover,
+      pauseOnVisibilityChange:
+        typeof options.pauseOnVisibilityChange === 'boolean'
+            ? options.pauseOnVisibilityChange
+            : this.props.pauseOnVisibilityChange,
       pauseOnFocusLoss:
         typeof options.pauseOnFocusLoss === 'boolean'
           ? options.pauseOnFocusLoss

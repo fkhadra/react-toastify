@@ -32,6 +32,7 @@ class Toast extends Component {
     closeToast: PropTypes.func.isRequired,
     position: PropTypes.oneOf(objectValues(POSITION)).isRequired,
     pauseOnHover: PropTypes.bool.isRequired,
+    pauseOnVisibilityChange: PropTypes.bool.isRequired,
     pauseOnFocusLoss: PropTypes.bool.isRequired,
     closeOnClick: PropTypes.bool.isRequired,
     transition: PropTypes.func.isRequired,
@@ -148,6 +149,10 @@ class Toast extends Component {
     document.addEventListener('touchend', this.onDragEnd);
   }
 
+  bindResizeEvents() {
+    document.addEventListener('onresize', this.onWindowResize);
+  }
+
   unbindDragEvents() {
     document.removeEventListener('mousemove', this.onDragMove);
     document.removeEventListener('mouseup', this.onDragEnd);
@@ -178,6 +183,12 @@ class Toast extends Component {
     this.drag.removalDistance =
       this.ref.offsetWidth * (this.props.draggablePercent / 100);
   };
+
+  onWindowResize = (e) => {
+    if (this.props.pauseOnVisibilityChange && this.state.isRunning) {
+      this.pauseToast();
+    }
+  }
 
   onDragMove = e => {
     if (this.flag.canDrag) {
@@ -240,6 +251,7 @@ class Toast extends Component {
       children,
       autoClose,
       pauseOnHover,
+      pauseOnVisibilityChange,
       closeOnClick,
       type,
       hideProgressBar,
