@@ -41,6 +41,7 @@ class Toast extends Component {
     draggablePercent: PropTypes.number.isRequired,
     in: PropTypes.bool,
     onExited: PropTypes.func,
+    customContent: PropTypes.func,
     onOpen: PropTypes.func,
     onClose: PropTypes.func,
     type: PropTypes.oneOf(objectValues(TYPE)),

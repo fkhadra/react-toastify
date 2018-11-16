@@ -48,6 +48,10 @@ const flags = [
   {
     id: 'draggable',
     label: 'Allow to drag and close the toast'
+  },
+  {
+    id: 'enableCustomContent',
+    label: 'Enable Custom content'
   }
 ];
 
@@ -63,12 +67,17 @@ class App extends Component {
 
   static getDefaultState() {
     return {
+      enableCustomContent: false,
       ...ToastContainer.defaultProps,
       transition: 'bounce',
       type: 'default',
       disableAutoClose: false
     };
   }
+
+  customContent = (content, options) => (<div>
+    {content} From a custom component 
+   </div>);
 
   handleReset = () =>
     this.setState({
@@ -228,6 +237,7 @@ class App extends Component {
         </div>
         <ToastContainer
           {...this.state}
+          customContent={this.state.enableCustomContent ? this.customContent : null}
           transition={transitions[this.state.transition]}
           autoClose={this.state.disableAutoClose ? false : this.state.autoClose}
         />

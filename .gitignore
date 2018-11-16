@@ -4,5 +4,6 @@ lib/
 .sass-cache/
 npm-debug.log
 coverage/
+package-lock.json
 yarn-error.log
 .DS_STORE

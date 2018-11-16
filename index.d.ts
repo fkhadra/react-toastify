@@ -116,6 +116,17 @@ interface CommonOptions {
   closeOnClick?: boolean;
 
   /**
+   * Custom inner content functional component
+   */
+  customContent?: (content: any, options: any) => React.ReactNode;
+
+
+  /**
+   * Enable Custom inner content
+   */
+  useCustomContent: boolean;
+
+  /**
    * Set the delay in ms to close the toast automatically.
    * Use `false` to prevent the toast from closing.
    * `Default: 5000`

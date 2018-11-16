@@ -17,6 +17,7 @@ const ContainerCode = ({
   position,
   disableAutoClose,
   autoClose,
+  enableCustomContent,
   hideProgressBar,
   newestOnTop,
   closeOnClick,
@@ -41,6 +42,15 @@ const ContainerCode = ({
         <span className="code__props">autoClose</span>
         {`={${disableAutoClose ? false : autoClose}}`}
       </div>
+      {
+        enableCustomContent ?
+      <div>
+        <span className="code__props">customContent</span>
+        {`={(content, options) => (<div>`} <br/>
+            &nbsp; &nbsp; &nbsp; &nbsp;{`{content}  From a custom component`}<br/>
+        {`</div>);}`}
+      </div> : ''
+      }
       {!disableAutoClose ? getProp('hideProgressBar', hideProgressBar) : ''}
       {getProp('newestOnTop', newestOnTop)}
       {getProp('closeOnClick', closeOnClick)}

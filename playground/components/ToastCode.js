@@ -21,6 +21,7 @@ const ToastCode = ({
   disableAutoClose,
   autoClose,
   hideProgressBar,
+  enableCustomContent,
   newestOnTop,
   closeOnClick,
   pauseOnHover,
@@ -60,6 +61,15 @@ const ToastCode = ({
         <span className="code__props">draggable</span>
         {`: ${draggable ? 'true' : 'false'}`}
       </div>
+        {
+          enableCustomContent ?
+            <div>
+              <span className="code__props">useCustomContent</span>
+              : false - [* mandatory to disable customComponent]
+            </div> : 
+            ''
+        }
+
       <div>{`});`}</div>
     </div>
   </div>

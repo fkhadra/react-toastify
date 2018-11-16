@@ -26,11 +26,21 @@ class ToastContainer extends Component {
      * Disable or set autoClose delay
      */
     autoClose: falseOrDelay,
+    
+    /**
+     * Custom inner content renderer
+     */
+    customContent: PropTypes.func,
 
     /**
      * Disable or set a custom react element for the close button
      */
     closeButton: falseOrElement,
+
+    /**
+     * Enable Custom inner content
+     */
+    useCustomContent: PropTypes.bool,
 
     /**
      * Hide or not progress bar when autoClose is enabled
@@ -117,8 +127,10 @@ class ToastContainer extends Component {
     rtl: false,
     autoClose: 5000,
     hideProgressBar: false,
+    useCustomContent: true,
     closeButton: <CloseButton />,
     pauseOnHover: true,
+    customContent: null,
     pauseOnFocusLoss: true,
     closeOnClick: true,
     newestOnTop: false,
@@ -235,7 +247,7 @@ class ToastContainer extends Component {
     const toastOptions = {
       id: toastId,
       type: options.type,
-      closeToast: closeToast,
+      closeToast: closeToast,      
       updateId: options.updateId,
       rtl: this.props.rtl,
       position: options.position || this.props.position,
@@ -275,6 +287,10 @@ class ToastContainer extends Component {
       progressClassName: this.parseClassName(
         options.progressClassName || this.props.progressClassName
       ),
+      // disable custom component by toast props.
+      useCustomContent: options.useCustomContent === 'boolean'
+        ? options.useCustomContent
+        : null !== this.props.customContent,
       progressStyle: this.props.progressStyle,
       autoClose: this.getAutoCloseDelay(options.autoClose),
       hideProgressBar:
@@ -321,14 +337,14 @@ class ToastContainer extends Component {
     );
   }
 
-  makeToast(content, options) {
+  makeToast(content, options, customContent) {
     return (
       <Toast
         {...options}
         isDocumentHidden={this.state.isDocumentHidden}
         key={`toast-${options.id}`}
       >
-        {content}
+        {customContent && options.useCustomContent ? customContent(content, options) : content}
       </Toast>
     );
   }
@@ -339,7 +355,7 @@ class ToastContainer extends Component {
 
   renderToast() {
     const toastToRender = {};
-    const { className, style, newestOnTop } = this.props;
+    const { className, style, newestOnTop, customContent } = this.props;
     const collection = newestOnTop
       ? Object.keys(this.collection).reverse()
       : Object.keys(this.collection);
@@ -350,7 +366,7 @@ class ToastContainer extends Component {
       toastToRender[position] || (toastToRender[position] = []);
 
       if (this.state.toast.indexOf(options.id) !== -1) {
-        toastToRender[position].push(this.makeToast(content, options));
+        toastToRender[position].push(this.makeToast(content, options, customContent));
       } else {
         toastToRender[position].push(null);
         delete this.collection[toastId];
