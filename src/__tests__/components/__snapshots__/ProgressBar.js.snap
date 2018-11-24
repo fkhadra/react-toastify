@@ -21,7 +21,7 @@ ShallowWrapper {
     delay={5000}
     hide={true}
     isRunning={true}
-    progress={0}
+    progress={null}
     rtl={false}
     type="default"
   />,
@@ -133,7 +133,7 @@ ShallowWrapper {
     delay={5000}
     hide={false}
     isRunning={false}
-    progress={0}
+    progress={null}
     rtl={false}
     type="default"
   />,

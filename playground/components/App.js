@@ -49,10 +49,6 @@ const flags = [
     id: 'draggable',
     label: 'Allow to drag and close the toast'
   },
-  {
-    id: 'controlledProgress',
-    label: 'Enable controlled progress'
-  }
 ];
 
 const transitions = {
@@ -71,7 +67,6 @@ class App extends Component {
       transition: 'bounce',
       type: 'default',
       progress: '',
-      controlledProgress: false,
       disableAutoClose: false
     };
   }
@@ -85,11 +80,11 @@ class App extends Component {
 
   showToast = () => {
     this.toastId = this.state.type === 'default'
-      ? toast('🦄 Wow so easy !', { controlledProgress: this.state.controlledProgress, progress: this.state.progress })
-      : toast[this.state.type]('🚀 Wow so easy !', { controlledProgress: this.state.controlledProgress, progress: this.state.progress });
+      ? toast('🦄 Wow so easy !', { progress: this.state.progress })
+      : toast[this.state.type]('🚀 Wow so easy !', { progress: this.state.progress });
   }
 
-  updateToast = () => toast.update(this.toastId, { controlledProgress: this.state.controlledProgress, progress: this.state.progress })
+  updateToast = () => toast.update(this.toastId, { progress: this.state.progress })
 
   handleAutoCloseDelay = e =>
     this.setState({

@@ -117,7 +117,7 @@
   .Toastify__progress-bar--animated {
     animation: Toastify__trackProgress linear 1 forwards; }
   .Toastify__progress-bar--controlled {
-    transition: all .2s; }
+    transition: transform .2s; }
   .Toastify__progress-bar--rtl {
     right: 0;
     left: initial;

@@ -90,7 +90,7 @@ ProgressBar.defaultProps = {
   type: TYPE.DEFAULT,
   hide: false,
   controlledProgress: false,
-  progress: 0,
+  progress: null,
 };
 
 export default ProgressBar;
