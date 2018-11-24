@@ -65,6 +65,7 @@
     "@babel/plugin-proposal-class-properties": "^7.0.0",
     "@babel/plugin-transform-modules-commonjs": "^7.0.0",
     "@babel/plugin-transform-object-assign": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.1.0",
     "@babel/plugin-transform-spread": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
@@ -107,6 +108,7 @@
     "webpack-dev-server": "^3.1.7"
   },
   "peerDependencies": {
+    "@babel/runtime": "^7.1.5",
     "react": ">=15.0.0",
     "react-dom": ">=15.0.0"
   }

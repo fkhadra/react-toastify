@@ -16,7 +16,8 @@
       }
     ],
     "@babel/plugin-transform-object-assign",
-    "@babel/plugin-transform-spread"
+    "@babel/plugin-transform-spread",
+    "@babel/plugin-transform-runtime"
   ],
   "env": {
     "test": {
