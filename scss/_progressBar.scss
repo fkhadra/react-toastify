@@ -15,9 +15,16 @@
   height: 5px;
   z-index: $rt-z-index;
   opacity: 0.7;
-  animation: #{$rt-namespace}__trackProgress linear 1 forwards;
   background-color: rgba(255,255,255,.7);
   transform-origin: left;
+
+  &--animated {
+    animation: #{$rt-namespace}__trackProgress linear 1 forwards;
+  }
+
+  &--controlled {
+    transition: all .2s;
+  }
 
   &--rtl {
     right: 0;

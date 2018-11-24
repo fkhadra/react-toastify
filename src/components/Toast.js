@@ -253,6 +253,8 @@ class Toast extends Component {
       progressStyle,
       updateId,
       role,
+      controlledProgress,
+      progress,
       rtl
     } = this.props;
 
@@ -302,7 +304,7 @@ class Toast extends Component {
           {closeButton && closeButton}
           {autoClose && (
             <ProgressBar
-              {...(updateId ? { key: `pb-${updateId}` } : {})}
+              {...((updateId && !controlledProgress) ? { key: `pb-${updateId}` } : {})}
               rtl={rtl}
               delay={autoClose}
               isRunning={this.state.isRunning}
@@ -311,6 +313,8 @@ class Toast extends Component {
               type={type}
               style={progressStyle}
               className={progressClassName}
+              controlledProgress={controlledProgress}
+              progress={progress}
             />
           )}
         </div>

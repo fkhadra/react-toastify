@@ -38,4 +38,11 @@ describe('ProgressBar', () => {
     );
     expect(component).toMatchSnapshot();
   });
+
+  it('Should render controlled progress bar', () => {
+    const component = shallow(
+      <ProgressBar {...REQUIRED_PROPS} controlledProgress progress={0.7} />
+    );
+    expect(component).toMatchSnapshot();
+  });
 });

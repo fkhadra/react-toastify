@@ -48,6 +48,10 @@ const flags = [
   {
     id: 'draggable',
     label: 'Allow to drag and close the toast'
+  },
+  {
+    id: 'controlledProgress',
+    label: 'Enable controlled progress'
   }
 ];
 
@@ -66,6 +70,8 @@ class App extends Component {
       ...ToastContainer.defaultProps,
       transition: 'bounce',
       type: 'default',
+      progress: '',
+      controlledProgress: false,
       disableAutoClose: false
     };
   }
@@ -77,10 +83,13 @@ class App extends Component {
 
   clearAll = () => toast.dismiss();
 
-  showToast = () =>
-    this.state.type === 'default'
-      ? toast('🦄 Wow so easy !')
-      : toast[this.state.type]('🚀 Wow so easy !');
+  showToast = () => {
+    this.toastId = this.state.type === 'default'
+      ? toast('🦄 Wow so easy !', { controlledProgress: this.state.controlledProgress, progress: this.state.progress })
+      : toast[this.state.type]('🚀 Wow so easy !', { controlledProgress: this.state.controlledProgress, progress: this.state.progress });
+  }
+
+  updateToast = () => toast.update(this.toastId, { controlledProgress: this.state.controlledProgress, progress: this.state.progress })
 
   handleAutoCloseDelay = e =>
     this.setState({
@@ -188,6 +197,17 @@ class App extends Component {
                     ))}
                   </select>
                 </label>
+                <br />
+                <label htmlFor="progress">
+                  Progress
+                  <input
+                    type="number"
+                    name="progress"
+                    id="progress"
+                    value={this.state.progress}
+                    onChange={this.handleRadioOrSelect}
+                  />
+                </label>
               </div>
               <ul>{this.renderFlags()}</ul>
               <ul className="container__actions">
@@ -197,6 +217,11 @@ class App extends Component {
                       🚀
                     </span>{' '}
                     Show Toast
+                  </button>
+                </li>
+                <li>
+                  <button className="btn" onClick={this.updateToast}>
+                    Update
                   </button>
                 </li>
                 <li>
