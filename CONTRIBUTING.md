@@ -21,7 +21,7 @@ Please note we have a code of conduct, please follow it in all your interactions
 ### Pre-requisites
 
 - *Node:* `^9.0.0`
-- *Yarn or Npm*
+- *Yarn*
 
 ### Install
 
