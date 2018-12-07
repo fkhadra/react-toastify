@@ -117,6 +117,9 @@ The toasts inherit ToastContainer's props. **Props defined on toast supersede To
   }
 ```
 
+Remember to render the `ToastContainer` *once* in your application tree. 
+If you can't figure out where to put it, rendering it in the application root would be the best bet. 
+
 ### Positioning toast
 
 By default, all the toasts will be positioned on the top right of your browser. If a position is set on a `toast`, the one defined on ToastContainer will be replaced.
