@@ -119,11 +119,11 @@ The toasts inherit ToastContainer's props. **Props defined on toast supersede To
 
 ### Positioning toast
 
-By default, all the toasts will be positionned on the top right of your browser. If a position is set on a toast, the one defined on ToastContainer will be replaced.
+By default, all the toasts will be positioned on the top right of your browser. If a position is set on a `toast`, the one defined on ToastContainer will be replaced.
 
 The following values are allowed: **top-right, top-center, top-left, bottom-right, bottom-center, bottom-left**
 
-For convenience, toast expose a POSITION property to avoid any typo.
+For convenience, `toast` expose a POSITION property to avoid any typo.
 
 ```javascript
  // toast.POSITION.TOP_LEFT, toast.POSITION.TOP_RIGHT, toast.POSITION.TOP_CENTER
@@ -444,7 +444,7 @@ toast.update(this.toastId, {
 #### Reset option or inherit from ToastContainer
 
 If you want to inherit props from the `ToastContainer`, you can reset an option by passing null.
-It's particulary usefull when you remove the `closeButton` from a toast and you want it back during the update:
+It's particulary useful when you remove the `closeButton` from a toast and you want it back during the update:
 
 ```js
 class Update extends Component {
@@ -474,7 +474,7 @@ class Update extends Component {
 
 ### Define callback
 
-You can define two callback on toast. They are really useful when the toast are not used only to display messages.
+You can define two callbacks on `toast`. They are really useful when the toast are not used only to display messages.
 
 - onOpen is called inside componentDidMount
 - onClose is called inside componentWillUnmount
@@ -682,7 +682,7 @@ class App extends Component {
 
 ### Replace the default transition
 
-There is 4 built-in transition provided:
+There is 4 built-in transitions provided:
 
 <details>
   <summary>Bounce</summary>
