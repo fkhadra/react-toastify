@@ -85,6 +85,12 @@ const toast = Object.assign(
         }
       }, 0);
     },
+    done(id, progress = 1) {
+      toast.update(id, {
+        progress,
+        isProgressDone: true
+      });
+    },
     onChange(callback) {
       if (typeof callback === 'function') {
         eventManager.on(ACTION.ON_CHANGE, callback);

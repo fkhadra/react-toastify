@@ -16,6 +16,9 @@ import {
 } from './../../src/index';
 import './../../scss/main.scss';
 
+// Attach to window. Can be useful to debug
+window.toast = toast;
+
 const flags = [
   {
     id: 'disableAutoClose',
