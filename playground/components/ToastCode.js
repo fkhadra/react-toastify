@@ -21,14 +21,10 @@ const ToastCode = ({
   disableAutoClose,
   autoClose,
   hideProgressBar,
-  newestOnTop,
   closeOnClick,
   pauseOnHover,
-  rtl,
-  pauseOnVisibilityChange,
   type,
   draggable,
-  controlledProgress,
   progress,
 }) => (
   <div>
@@ -61,10 +57,6 @@ const ToastCode = ({
       <div>
         <span className="code__props">draggable</span>
         {`: ${draggable ? 'true' : 'false'}`}
-      </div>
-      <div>
-        <span className="code__props">controlledProgress</span>
-        {`: ${controlledProgress ? 'true' : 'false'}`}
       </div>
       {!Number.isNaN(Number.parseFloat(progress)) && (
         <div>

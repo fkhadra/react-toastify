@@ -14,7 +14,7 @@ import {
   Flip,
   Zoom
 } from './../../src/index';
-import './../../dist/ReactToastify.css';
+import './../../scss/main.scss';
 
 const flags = [
   {
