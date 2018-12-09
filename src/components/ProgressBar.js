@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 import { TYPE } from './../utils/constant';
+import { falseOrDelay } from "../utils/propValidator";
 
 function ProgressBar({
   delay,
@@ -43,7 +44,7 @@ ProgressBar.propTypes = {
   /**
    * The animation delay which determine when to close the toast
    */
-  delay: PropTypes.number.isRequired,
+  delay: falseOrDelay.isRequired,
 
   /**
    * Whether or not the animation is running or paused
