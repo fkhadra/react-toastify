@@ -280,7 +280,8 @@ class ToastContainer extends Component {
       hideProgressBar:
         typeof options.hideProgressBar === 'boolean'
           ? options.hideProgressBar
-          : this.props.hideProgressBar
+          : this.props.hideProgressBar,
+      progress: Number.parseFloat(options.progress),
     };
 
     typeof options.onOpen === 'function' &&

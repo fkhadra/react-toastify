@@ -176,6 +176,12 @@ describe('Toast', () => {
     expect(window.removeEventListener).toHaveBeenCalled();
   });
 
+  it('Should render toast with controlled progress bar', () => {
+    const component = shallow(<Toast {...REQUIRED_PROPS} controlledProgress progress={0.3}>FooBar</Toast>);
+
+    expect(component).toMatchSnapshot();
+  });
+
   describe('Drag event', () => {
     it('Should handle drag start on mousedown', () => {
       const events = {};

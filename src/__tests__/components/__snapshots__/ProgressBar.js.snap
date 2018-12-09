@@ -17,9 +17,11 @@ ShallowWrapper {
         ],
       }
     }
+    controlledProgress={false}
     delay={5000}
     hide={true}
     isRunning={true}
+    progress={null}
     rtl={false}
     type="default"
   />,
@@ -35,7 +37,7 @@ ShallowWrapper {
     "key": undefined,
     "nodeType": "host",
     "props": Object {
-      "className": "Toastify__progress-bar Toastify__progress-bar--default",
+      "className": "Toastify__progress-bar Toastify__progress-bar--animated Toastify__progress-bar--default",
       "onAnimationEnd": [MockFunction] {
         "calls": Array [
           Array [],
@@ -51,6 +53,7 @@ ShallowWrapper {
         "animationDuration": "5000ms",
         "animationPlayState": "running",
         "opacity": 0,
+        "transform": null,
       },
     },
     "ref": null,
@@ -63,7 +66,7 @@ ShallowWrapper {
       "key": undefined,
       "nodeType": "host",
       "props": Object {
-        "className": "Toastify__progress-bar Toastify__progress-bar--default",
+        "className": "Toastify__progress-bar Toastify__progress-bar--animated Toastify__progress-bar--default",
         "onAnimationEnd": [MockFunction] {
           "calls": Array [
             Array [],
@@ -79,6 +82,7 @@ ShallowWrapper {
           "animationDuration": "5000ms",
           "animationPlayState": "running",
           "opacity": 0,
+          "transform": null,
         },
       },
       "ref": null,
@@ -125,9 +129,11 @@ ShallowWrapper {
         ],
       }
     }
+    controlledProgress={false}
     delay={5000}
     hide={false}
     isRunning={false}
+    progress={null}
     rtl={false}
     type="default"
   />,
@@ -143,7 +149,7 @@ ShallowWrapper {
     "key": undefined,
     "nodeType": "host",
     "props": Object {
-      "className": "Toastify__progress-bar Toastify__progress-bar--default",
+      "className": "Toastify__progress-bar Toastify__progress-bar--animated Toastify__progress-bar--default",
       "onAnimationEnd": [MockFunction] {
         "calls": Array [
           Array [],
@@ -159,6 +165,7 @@ ShallowWrapper {
         "animationDuration": "5000ms",
         "animationPlayState": "paused",
         "opacity": 1,
+        "transform": null,
       },
     },
     "ref": null,
@@ -171,7 +178,7 @@ ShallowWrapper {
       "key": undefined,
       "nodeType": "host",
       "props": Object {
-        "className": "Toastify__progress-bar Toastify__progress-bar--default",
+        "className": "Toastify__progress-bar Toastify__progress-bar--animated Toastify__progress-bar--default",
         "onAnimationEnd": [MockFunction] {
           "calls": Array [
             Array [],
@@ -187,6 +194,99 @@ ShallowWrapper {
           "animationDuration": "5000ms",
           "animationPlayState": "paused",
           "opacity": 1,
+          "transform": null,
+        },
+      },
+      "ref": null,
+      "rendered": null,
+      "type": "div",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
+  },
+}
+`;
+
+exports[`ProgressBar Should render controlled progress bar 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <ProgressBar
+    closeToast={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+        "results": Array [
+          Object {
+            "isThrow": false,
+            "value": undefined,
+          },
+        ],
+      }
+    }
+    controlledProgress={true}
+    delay={5000}
+    hide={false}
+    isRunning={true}
+    progress={0.7}
+    rtl={false}
+    type="default"
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "host",
+    "props": Object {
+      "className": "Toastify__progress-bar Toastify__progress-bar--controlled Toastify__progress-bar--default",
+      "onAnimationEnd": null,
+      "style": Object {
+        "animationDuration": "5000ms",
+        "animationPlayState": "running",
+        "opacity": 1,
+        "transform": "scaleX(0.7)",
+      },
+    },
+    "ref": null,
+    "rendered": null,
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "className": "Toastify__progress-bar Toastify__progress-bar--controlled Toastify__progress-bar--default",
+        "onAnimationEnd": null,
+        "style": Object {
+          "animationDuration": "5000ms",
+          "animationPlayState": "running",
+          "opacity": 1,
+          "transform": "scaleX(0.7)",
         },
       },
       "ref": null,
