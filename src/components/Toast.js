@@ -51,6 +51,7 @@ class Toast extends Component {
       PropTypes.object
     ]),
     progressStyle: PropTypes.object,
+    progress: PropTypes.number,
     updateId: PropTypes.number,
     ariaLabel: PropTypes.string
   };
