@@ -213,4 +213,17 @@ describe('toastify', () => {
 
     expect(expectedTypes).toEqual(typesToMatch);
   });
+
+  it('When using a controlled progress bar, it should close the toast when the `done` function is called', () => {
+    const component = mount(<ToastContainer />);
+    const id = toast('Hello', {
+      progress: 0.5
+    });
+    jest.runAllTimers();
+    expect(component.html().includes('Toastify__toast-body')).toBe(true);
+
+    toast.dismiss(id);
+    jest.runAllTimers();
+    expect(component.html().includes('Toastify__toast-body')).toBe(false);
+  });
 });

@@ -178,12 +178,20 @@ describe('Toast', () => {
 
   it('Should render toast with controlled progress bar', () => {
     const component = shallow(
-      <Toast {...REQUIRED_PROPS} controlledProgress progress={0.3}>
+      <Toast {...REQUIRED_PROPS} progress={0.3}>
         FooBar
       </Toast>
     );
+    expect(component.children().find(ProgressBar).length).toBe(1);
+  });
 
-    expect(component).toMatchSnapshot();
+  it('Should render toast with controlled progress bar even if autoClose is false', () => {
+    const component = shallow(
+      <Toast {...REQUIRED_PROPS} progress={0.3} autoClose={false}>
+        FooBar
+      </Toast>
+    );
+    expect(component.children().find(ProgressBar).length).toBe(1);
   });
 
   describe('Drag event', () => {

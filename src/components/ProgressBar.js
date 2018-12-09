@@ -13,7 +13,6 @@ function ProgressBar({
   hide,
   className,
   style: userStyle,
-  controlledProgress,
   progress,
   isProgressDone,
   rtl
@@ -23,12 +22,12 @@ function ProgressBar({
     animationDuration: `${delay}ms`,
     animationPlayState: isRunning ? 'running' : 'paused',
     opacity: hide ? 0 : 1,
-    transform: controlledProgress ? `scaleX(${progress})` : null
+    transform: progress ? `scaleX(${progress})` : null
   };
 
   const classNames = cx(
     'Toastify__progress-bar',
-    controlledProgress
+    progress
       ? 'Toastify__progress-bar--controlled'
       : 'Toastify__progress-bar--animated',
     `Toastify__progress-bar--${type}`,
@@ -39,10 +38,8 @@ function ProgressBar({
   );
 
   const animationEvent = {
-    [controlledProgress && isProgressDone
-      ? 'onTransitionEnd'
-      : 'onAnimationEnd']:
-      controlledProgress && !isProgressDone ? null : closeToast
+    [progress && isProgressDone ? 'onTransitionEnd' : 'onAnimationEnd']:
+      progress && !isProgressDone ? null : closeToast
   };
 
   return <div className={classNames} style={style} {...animationEvent} />;
@@ -85,11 +82,6 @@ ProgressBar.propTypes = {
   className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 
   /**
-   * Whether or not to control the progress from props
-   */
-  controlledProgress: PropTypes.bool,
-
-  /**
    * Controlled progress value
    */
   progress: PropTypes.number,
@@ -102,9 +94,7 @@ ProgressBar.propTypes = {
 
 ProgressBar.defaultProps = {
   type: TYPE.DEFAULT,
-  hide: false,
-  controlledProgress: false,
-  progress: null
+  hide: false
 };
 
 export default ProgressBar;
