@@ -15,6 +15,8 @@ import {
   objectValues
 } from './../utils/propValidator';
 
+let toastKey = 1;
+
 class ToastContainer extends Component {
   static propTypes = {
     /**
@@ -234,6 +236,7 @@ class ToastContainer extends Component {
     const closeToast = () => this.removeToast(toastId);
     const toastOptions = {
       id: toastId,
+      key: options.key || toastKey++,
       type: options.type,
       closeToast: closeToast,
       updateId: options.updateId,
@@ -315,9 +318,11 @@ class ToastContainer extends Component {
 
     this.setState(
       {
-        toast: toastOptions.updateId
+        toast: (toastOptions.updateId
           ? [...this.state.toast]
-          : [...this.state.toast, toastId]
+          : [...this.state.toast, toastId]).filter((x) => {
+            return x !== options.staleToastId;
+          })
       },
       this.dispatchChange
     );
@@ -328,7 +333,7 @@ class ToastContainer extends Component {
       <Toast
         {...options}
         isDocumentHidden={this.state.isDocumentHidden}
-        key={`toast-${options.id}`}
+        key={`toast-${options.key}`}
       >
         {content}
       </Toast>

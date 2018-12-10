@@ -155,6 +155,22 @@ describe('toastify', () => {
       jest.runAllTimers();
       expect(component.html()).not.toMatch(/hello/);
     });
+
+    it('Should be able to update the toastId', () => {
+      const component = mount(<ToastContainer />);
+      const id = toast('hello');
+      const updateId = 'foo';
+
+      jest.runAllTimers();
+      expect(component.html()).toMatch(/hello/);
+      toast.update(id, {
+        toastId: updateId
+      });
+      jest.runAllTimers();
+      expect(component.html()).toMatch(/hello/);
+      expect(toast.isActive(id)).toBe(false);
+      expect(toast.isActive(updateId)).toBe(true);
+    });
   });
 
   describe('isActive function', () => {
