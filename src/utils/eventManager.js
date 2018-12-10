@@ -9,7 +9,7 @@ const eventManager = {
     return this;
   },
 
-  off(event = null) {
+  off(event) {
     this.list.delete(event);
     return this;
   },

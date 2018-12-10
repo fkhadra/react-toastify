@@ -15,8 +15,6 @@ import {
   objectValues
 } from './../utils/propValidator';
 
-let toastKey = 1;
-
 class ToastContainer extends Component {
   static propTypes = {
     /**
@@ -142,6 +140,11 @@ class ToastContainer extends Component {
   };
 
   /**
+   * Keep reference for toastKey
+   */
+  toastKey = 0;
+
+  /**
    * Hold toast's informations:
    * - what to render
    * - position
@@ -153,10 +156,7 @@ class ToastContainer extends Component {
   componentDidMount() {
     eventManager
       .on(ACTION.SHOW, (content, options) => this.show(content, options))
-      .on(
-        ACTION.CLEAR,
-        id => (id !== null ? this.removeToast(id) : this.clear())
-      )
+      .on(ACTION.CLEAR, id => (!id ? this.clear() : this.removeToast(id)))
       .emit(ACTION.DID_MOUNT, this);
   }
 
@@ -236,7 +236,7 @@ class ToastContainer extends Component {
     const closeToast = () => this.removeToast(toastId);
     const toastOptions = {
       id: toastId,
-      key: options.key || toastKey++,
+      key: options.key || this.toastKey++,
       type: options.type,
       closeToast: closeToast,
       updateId: options.updateId,
@@ -320,9 +320,8 @@ class ToastContainer extends Component {
       {
         toast: (toastOptions.updateId
           ? [...this.state.toast]
-          : [...this.state.toast, toastId]).filter((x) => {
-            return x !== options.staleToastId;
-          })
+          : [...this.state.toast, toastId]
+        ).filter(id => id !== options.staleToastId)
       },
       this.dispatchChange
     );

@@ -15,8 +15,8 @@ function mergeOptions(options, type) {
 /**
  * Generate a random toastId
  */
-function generateToastId(){
-  return (Math.random().toString(36) + Date.now().toString(36)).substr(2,10);
+function generateToastId() {
+  return (Math.random().toString(36) + Date.now().toString(36)).substr(2, 10);
 }
 
 /**
@@ -25,8 +25,8 @@ function generateToastId(){
 function getToastId(options) {
   if (
     options &&
-    ((typeof options.toastId === 'number' && !isNaN(options.toastId)) ||
-      typeof options.toastId === 'string')
+    (typeof options.toastId === 'string' ||
+      (typeof options.toastId === 'number' && !isNaN(options.toastId)))
   ) {
     return options.toastId;
   }
@@ -77,11 +77,11 @@ const toast = Object.assign(
           const nextOptions = {
             ...oldOptions,
             ...options,
-            toastId: options.toastId || toastId,
+            toastId: options.toastId || toastId
           };
 
           if (!options.toastId || options.toastId === toastId) {
-            nextOptions.updateId = oldOptions.updateId ? oldOptions.updateId + 1 : 1;
+            nextOptions.updateId = generateToastId();
           } else {
             nextOptions.staleToastId = toastId;
           }

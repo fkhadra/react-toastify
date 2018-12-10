@@ -230,16 +230,43 @@ describe('toastify', () => {
     expect(expectedTypes).toEqual(typesToMatch);
   });
 
-  it('When using a controlled progress bar, it should close the toast when the `done` function is called', () => {
-    const component = mount(<ToastContainer />);
-    const id = toast('Hello', {
-      progress: 0.5
+  describe('Controlled progress bar', () => {
+    it('Should be possible to use a controlled progress bar', () => {
+      const component = mount(<ToastContainer />);
+      toast('Hello', {
+        progress: 0.5
+      });
+      jest.runAllTimers();
+      expect(component.html()).toMatch(/transform:(\s)?scaleX\(0.5\)/);
     });
-    jest.runAllTimers();
-    expect(component.html().includes('Toastify__toast-body')).toBe(true);
 
-    toast.dismiss(id);
-    jest.runAllTimers();
-    expect(component.html().includes('Toastify__toast-body')).toBe(false);
+    it('It should close the toast when `toast.done` is called', () => {
+      const component = mount(<ToastContainer />);
+      const id = toast('Hello', {
+        progress: 0.5
+      });
+      jest.runAllTimers();
+      expect(component.html()).toMatch(/Hello/);
+
+      toast.done(id);
+      jest.runAllTimers();
+
+      // Ok I cheated here 💩, I'm not testing if onTransitionEnd is triggered
+      // Shame on me 😭
+      expect(component.html()).toMatch(/transform:(\s)?scaleX\(1\)/);
+    });
+
+    it('It should be possible to define a percentage when `toast.done` is called', () => {
+      const component = mount(<ToastContainer />);
+      const id = toast('Hello', {
+        progress: 1
+      });
+      jest.runAllTimers();
+      expect(component.html()).toMatch(/transform:(\s)?scaleX\(1\)/);
+
+      toast.done(id, 0);
+      jest.runAllTimers();
+      expect(component.html()).toMatch(/transform:(\s)?scaleX\(0\)/);
+    });
   });
 });

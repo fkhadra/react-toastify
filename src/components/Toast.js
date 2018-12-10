@@ -53,7 +53,7 @@ class Toast extends Component {
     progressStyle: PropTypes.object,
     progress: PropTypes.number,
     isProgressDone: PropTypes.bool,
-    updateId: PropTypes.number,
+    updateId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     ariaLabel: PropTypes.string
   };
 
@@ -308,7 +308,9 @@ class Toast extends Component {
           {closeButton && closeButton}
           {(autoClose || controlledProgress) && (
             <ProgressBar
-              {...(updateId && !progress ? { key: `pb-${updateId}` } : {})}
+              {...(updateId && !controlledProgress
+                ? { key: `pb-${updateId}` }
+                : {})}
               rtl={rtl}
               delay={autoClose}
               isRunning={this.state.isRunning}
@@ -317,6 +319,7 @@ class Toast extends Component {
               type={type}
               style={progressStyle}
               className={progressClassName}
+              controlledProgress={controlledProgress}
               isProgressDone={isProgressDone}
               progress={progress}
             />

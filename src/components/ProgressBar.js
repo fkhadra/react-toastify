@@ -13,6 +13,7 @@ function ProgressBar({
   hide,
   className,
   style: userStyle,
+  controlledProgress,
   progress,
   isProgressDone,
   rtl
@@ -22,12 +23,12 @@ function ProgressBar({
     animationDuration: `${delay}ms`,
     animationPlayState: isRunning ? 'running' : 'paused',
     opacity: hide ? 0 : 1,
-    transform: progress ? `scaleX(${progress})` : null
+    transform: controlledProgress ? `scaleX(${progress})` : null
   };
 
   const classNames = cx(
     'Toastify__progress-bar',
-    progress
+    controlledProgress
       ? 'Toastify__progress-bar--controlled'
       : 'Toastify__progress-bar--animated',
     `Toastify__progress-bar--${type}`,
@@ -38,8 +39,10 @@ function ProgressBar({
   );
 
   const animationEvent = {
-    [progress && isProgressDone ? 'onTransitionEnd' : 'onAnimationEnd']:
-      progress && !isProgressDone ? null : closeToast
+    [controlledProgress && isProgressDone
+      ? 'onTransitionEnd'
+      : 'onAnimationEnd']:
+      controlledProgress && !isProgressDone ? null : closeToast
   };
 
   return <div className={classNames} style={style} {...animationEvent} />;
@@ -85,6 +88,11 @@ ProgressBar.propTypes = {
    * Controlled progress value
    */
   progress: PropTypes.number,
+
+  /**
+   * Tell wether or not controlled progress bar is used
+   */
+  controlledProgress: PropTypes.bool,
 
   /**
    * Helper to close the toast when using controlled progress value
