@@ -200,6 +200,11 @@ interface ToastOptions extends CommonOptions {
    * Set a custom `toastId`
    */
   toastId?: number | string;
+
+  /**
+   * Set the percentage for the controlled progress bar. `Value must be between 0 and 1.`
+   */
+  progress?: number;
 }
 
 interface UpdateOptions extends ToastOptions {
@@ -276,6 +281,11 @@ interface Toast {
    * Listen for change when a toast is added or removed. The number of toast displayed is passed as paran to the callback
    */
   onChange(callback: ((count?: number) => void)): void;
+
+  /**
+   * Set a controlled progress bar value to 100% then close the toast
+   */
+  done(toastId: number, progress?: number): void;
 
   /**
    * Display a toast without a specific type.
