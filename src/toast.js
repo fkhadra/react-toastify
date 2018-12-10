@@ -3,20 +3,26 @@ import { POSITION, TYPE, ACTION } from './utils/constant';
 
 let container = null;
 let queue = [];
-let toastId = 0;
 const noop = () => false;
 
 /**
  * Merge provided options with the defaults settings and generate the toastId
  */
 function mergeOptions(options, type) {
-  return { ...options, type, toastId: generateToastId(options) };
+  return { ...options, type, toastId: getToastId(options) };
+}
+
+/**
+ * Generate a random toastId
+ */
+function generateToastId(){
+  return (Math.random().toString(36) + Date.now().toString(36)).substr(2,10);
 }
 
 /**
  * Generate the toastId either automatically or by provided toastId
  */
-function generateToastId(options) {
+function getToastId(options) {
   if (
     options &&
     ((typeof options.toastId === 'number' && !isNaN(options.toastId)) ||
@@ -25,7 +31,7 @@ function generateToastId(options) {
     return options.toastId;
   }
 
-  return ++toastId;
+  return generateToastId();
 }
 
 /**
@@ -119,7 +125,6 @@ eventManager
   .on(ACTION.WILL_UNMOUNT, () => {
     container = null;
     toast.isActive = noop;
-    toastId = 0;
   });
 
 export default toast;
