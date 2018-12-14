@@ -119,7 +119,7 @@ The toasts inherit ToastContainer's props. **Props defined on toast supersede To
 
 ### Positioning toast
 
-By default, all the toasts will be positionned on the top right of your browser. If a position is set on a toast, the one defined on ToastContainer will be replaced.
+By default, all the toasts will be positioned on the top right of your browser. If a position is set on a toast, the one defined on ToastContainer will be replaced.
 
 The following values are allowed: **top-right, top-center, top-left, bottom-right, bottom-center, bottom-left**
 
