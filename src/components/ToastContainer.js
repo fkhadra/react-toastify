@@ -58,6 +58,11 @@ class ToastContainer extends Component {
     className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 
     /**
+     * An optional testId
+     */
+    testId: PropTypes.string,
+
+    /**
      * An optional style
      */
     style: PropTypes.object,
@@ -68,9 +73,19 @@ class ToastContainer extends Component {
     toastClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 
     /**
+     * An optional testId for the toast
+     */
+    toastTestId: PropTypes.string,
+
+    /**
      * An optional className for the toast body
      */
     bodyClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+
+    /**
+     * An optional testId for the toast body
+     */
+    bodyTestId: PropTypes.string,
 
     /**
      * An optional className for the toast progress bar
@@ -125,9 +140,12 @@ class ToastContainer extends Component {
     draggable: true,
     draggablePercent: 80,
     className: null,
+    testId: null,
     style: null,
     toastClassName: null,
+    toastTestId: null,
     bodyClassName: null,
+    bodyTestId: null,
     progressClassName: null,
     progressStyle: null
   };
@@ -243,9 +261,11 @@ class ToastContainer extends Component {
       className: this.parseClassName(
         options.className || this.props.toastClassName
       ),
+      testId: options.testId || this.props.toastTestId,
       bodyClassName: this.parseClassName(
         options.bodyClassName || this.props.bodyClassName
       ),
+      bodyTestId: options.bodyTestId || this.props.bodyTestId,
       closeButton: this.makeCloseButton(
         options.closeButton,
         toastId,
@@ -339,7 +359,7 @@ class ToastContainer extends Component {
 
   renderToast() {
     const toastToRender = {};
-    const { className, style, newestOnTop } = this.props;
+    const { className, testId, style, newestOnTop } = this.props;
     const collection = newestOnTop
       ? Object.keys(this.collection).reverse()
       : Object.keys(this.collection);
@@ -368,6 +388,7 @@ class ToastContainer extends Component {
           { 'Toastify__toast-container--rtl': this.props.rtl },
           this.parseClassName(className)
         ),
+        id: testId,
         style: disablePointer
           ? { ...style, pointerEvents: 'none' }
           : { ...style }

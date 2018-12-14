@@ -45,7 +45,9 @@ class Toast extends Component {
     onClose: PropTypes.func,
     type: PropTypes.oneOf(objectValues(TYPE)),
     className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    testId: PropTypes.string(),
     bodyClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    bodyTestId: PropTypes.string(),
     progressClassName: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.object
@@ -61,7 +63,9 @@ class Toast extends Component {
     onOpen: noop,
     onClose: noop,
     className: null,
+    testId: null,
     bodyClassName: null,
+    bodyTestId: null,
     progressClassName: null,
     updateId: null,
     role: 'alert'
@@ -248,7 +252,9 @@ class Toast extends Component {
       position,
       onExited,
       className,
+      testId,
       bodyClassName,
+      bodyTestId,
       progressClassName,
       progressStyle,
       updateId,
@@ -264,7 +270,8 @@ class Toast extends Component {
           'Toastify__toast--rtl': rtl
         },
         className
-      )
+      ),
+      id: testId
     };
 
     if (autoClose && pauseOnHover) {
@@ -296,6 +303,7 @@ class Toast extends Component {
           <div
             {...this.props.in && { role: role }}
             className={cx('Toastify__toast-body', bodyClassName)}
+            id={bodyTestId}
           >
             {children}
           </div>
