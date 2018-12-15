@@ -51,7 +51,9 @@ class Toast extends Component {
       PropTypes.object
     ]),
     progressStyle: PropTypes.object,
-    updateId: PropTypes.number,
+    progress: PropTypes.number,
+    isProgressDone: PropTypes.bool,
+    updateId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     ariaLabel: PropTypes.string
   };
 
@@ -253,6 +255,8 @@ class Toast extends Component {
       progressStyle,
       updateId,
       role,
+      progress,
+      isProgressDone,
       rtl
     } = this.props;
 
@@ -277,6 +281,8 @@ class Toast extends Component {
       toastProps.onClick = () => this.flag.canCloseOnClick && closeToast();
     }
 
+    const controlledProgress = parseFloat(progress) === progress;
+
     return (
       <Transition
         in={this.props.in}
@@ -300,9 +306,11 @@ class Toast extends Component {
             {children}
           </div>
           {closeButton && closeButton}
-          {autoClose && (
+          {(autoClose || controlledProgress) && (
             <ProgressBar
-              {...(updateId ? { key: `pb-${updateId}` } : {})}
+              {...(updateId && !controlledProgress
+                ? { key: `pb-${updateId}` }
+                : {})}
               rtl={rtl}
               delay={autoClose}
               isRunning={this.state.isRunning}
@@ -311,6 +319,9 @@ class Toast extends Component {
               type={type}
               style={progressStyle}
               className={progressClassName}
+              controlledProgress={controlledProgress}
+              isProgressDone={isProgressDone}
+              progress={progress}
             />
           )}
         </div>

@@ -71,6 +71,8 @@ type TypeOptions = 'info' | 'success' | 'warning' | 'error' | 'default';
 
 type ToastContent = React.ReactNode | { (): void };
 
+type ToastId = number | string;
+
 interface cssTransitionProps {
   /**
    * Css class to apply when toast enter
@@ -199,7 +201,12 @@ interface ToastOptions extends CommonOptions {
   /**
    * Set a custom `toastId`
    */
-  toastId?: number | string;
+  toastId?: ToastId;
+
+  /**
+   * Set the percentage for the controlled progress bar. `Value must be between 0 and 1.`
+   */
+  progress?: number;
 }
 
 interface UpdateOptions extends ToastOptions {
@@ -259,23 +266,28 @@ interface Toast {
    * Check if a toast is active by passing the `toastId`.
    * Each time you display a toast you receive a `toastId`.
    */
-  isActive(toastId: number): boolean;
+  isActive(toastId: ToastId): boolean;
 
   /**
    * Remove a toast. If no `toastId` is used, all the active toast
    * will be removed.
    */
-  dismiss(toastId?: number): void;
+  dismiss(toastId?: ToastId): void;
 
   /**
    * Update an existing toast. By default, we keep the initial content and options of the toast.
    */
-  update(toastId: number, options?: UpdateOptions): void;
+  update(toastId: ToastId, options?: UpdateOptions): void;
 
   /**
    * Listen for change when a toast is added or removed. The number of toast displayed is passed as paran to the callback
    */
   onChange(callback: ((count?: number) => void)): void;
+
+  /**
+   * Set a controlled progress bar value to 100% then close the toast
+   */
+  done(toastId: ToastId, progress?: number): void;
 
   /**
    * Display a toast without a specific type.

@@ -112,9 +112,12 @@
   height: 5px;
   z-index: 9999;
   opacity: 0.7;
-  animation: Toastify__trackProgress linear 1 forwards;
   background-color: rgba(255, 255, 255, 0.7);
   transform-origin: left; }
+  .Toastify__progress-bar--animated {
+    animation: Toastify__trackProgress linear 1 forwards; }
+  .Toastify__progress-bar--controlled {
+    transition: transform .2s; }
   .Toastify__progress-bar--rtl {
     right: 0;
     left: initial;

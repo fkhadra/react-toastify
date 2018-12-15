@@ -21,13 +21,11 @@ const ToastCode = ({
   disableAutoClose,
   autoClose,
   hideProgressBar,
-  newestOnTop,
   closeOnClick,
   pauseOnHover,
-  rtl,
-  pauseOnVisibilityChange,
   type,
-  draggable
+  draggable,
+  progress,
 }) => (
   <div>
     <h3>Toast Emitter</h3>
@@ -60,6 +58,12 @@ const ToastCode = ({
         <span className="code__props">draggable</span>
         {`: ${draggable ? 'true' : 'false'}`}
       </div>
+      {!Number.isNaN(Number.parseFloat(progress)) && (
+        <div>
+          <span className="code__props">progress</span>
+          {`: ${progress}`}
+        </div>
+      )}
       <div>{`});`}</div>
     </div>
   </div>

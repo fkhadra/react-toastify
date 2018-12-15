@@ -155,6 +155,22 @@ describe('toastify', () => {
       jest.runAllTimers();
       expect(component.html()).not.toMatch(/hello/);
     });
+
+    it('Should be able to update the toastId', () => {
+      const component = mount(<ToastContainer />);
+      const id = toast('hello');
+      const updateId = 'foo';
+
+      jest.runAllTimers();
+      expect(component.html()).toMatch(/hello/);
+      toast.update(id, {
+        toastId: updateId
+      });
+      jest.runAllTimers();
+      expect(component.html()).toMatch(/hello/);
+      expect(toast.isActive(id)).toBe(false);
+      expect(toast.isActive(updateId)).toBe(true);
+    });
   });
 
   describe('isActive function', () => {
@@ -212,5 +228,45 @@ describe('toastify', () => {
     ].sort();
 
     expect(expectedTypes).toEqual(typesToMatch);
+  });
+
+  describe('Controlled progress bar', () => {
+    it('Should be possible to use a controlled progress bar', () => {
+      const component = mount(<ToastContainer />);
+      toast('Hello', {
+        progress: 0.5
+      });
+      jest.runAllTimers();
+      expect(component.html()).toMatch(/transform:(\s)?scaleX\(0.5\)/);
+    });
+
+    it('It should close the toast when `toast.done` is called', () => {
+      const component = mount(<ToastContainer />);
+      const id = toast('Hello', {
+        progress: 0.5
+      });
+      jest.runAllTimers();
+      expect(component.html()).toMatch(/Hello/);
+
+      toast.done(id);
+      jest.runAllTimers();
+
+      // Ok I cheated here 💩, I'm not testing if onTransitionEnd is triggered
+      // Shame on me 😭
+      expect(component.html()).toMatch(/transform:(\s)?scaleX\(1\)/);
+    });
+
+    it('It should be possible to define a percentage when `toast.done` is called', () => {
+      const component = mount(<ToastContainer />);
+      const id = toast('Hello', {
+        progress: 1
+      });
+      jest.runAllTimers();
+      expect(component.html()).toMatch(/transform:(\s)?scaleX\(1\)/);
+
+      toast.done(id, 0);
+      jest.runAllTimers();
+      expect(component.html()).toMatch(/transform:(\s)?scaleX\(0\)/);
+    });
   });
 });

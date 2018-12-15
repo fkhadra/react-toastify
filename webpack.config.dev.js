@@ -17,13 +17,16 @@ module.exports = {
         loader: 'babel-loader'
       },
       {
-        test: /\.css$/,
+        test: /\.s?css$/,
         use: [
           {
             loader: 'style-loader'
           },
           {
             loader: 'css-loader'
+          },
+          {
+            loader: 'sass-loader'
           }
         ]
       }
@@ -32,7 +35,8 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: 'playground/index.html',
-    })
+    }),
+    new webpack.HotModuleReplacementPlugin()
   ],
   devServer: {
     host: 'localhost',

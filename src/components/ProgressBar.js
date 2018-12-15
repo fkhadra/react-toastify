@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 import { TYPE } from './../utils/constant';
+import { falseOrDelay } from '../utils/propValidator';
 
 function ProgressBar({
   delay,
@@ -12,17 +13,24 @@ function ProgressBar({
   hide,
   className,
   style: userStyle,
+  controlledProgress,
+  progress,
+  isProgressDone,
   rtl
 }) {
   const style = {
     ...userStyle,
     animationDuration: `${delay}ms`,
     animationPlayState: isRunning ? 'running' : 'paused',
-    opacity: hide ? 0 : 1
+    opacity: hide ? 0 : 1,
+    transform: controlledProgress ? `scaleX(${progress})` : null
   };
 
   const classNames = cx(
     'Toastify__progress-bar',
+    controlledProgress
+      ? 'Toastify__progress-bar--controlled'
+      : 'Toastify__progress-bar--animated',
     `Toastify__progress-bar--${type}`,
     {
       'Toastify__progress-bar--rtl': rtl
@@ -30,16 +38,21 @@ function ProgressBar({
     className
   );
 
-  return (
-    <div className={classNames} style={style} onAnimationEnd={closeToast} />
-  );
+  const animationEvent = {
+    [controlledProgress && isProgressDone
+      ? 'onTransitionEnd'
+      : 'onAnimationEnd']:
+      controlledProgress && !isProgressDone ? null : closeToast
+  };
+
+  return <div className={classNames} style={style} {...animationEvent} />;
 }
 
 ProgressBar.propTypes = {
   /**
    * The animation delay which determine when to close the toast
    */
-  delay: PropTypes.number.isRequired,
+  delay: falseOrDelay.isRequired,
 
   /**
    * Whether or not the animation is running or paused
@@ -69,7 +82,22 @@ ProgressBar.propTypes = {
   /**
    * Optionnal className
    */
-  className: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+  className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+
+  /**
+   * Controlled progress value
+   */
+  progress: PropTypes.number,
+
+  /**
+   * Tell wether or not controlled progress bar is used
+   */
+  controlledProgress: PropTypes.bool,
+
+  /**
+   * Helper to close the toast when using controlled progress value
+   */
+  isProgressDone: PropTypes.bool
 };
 
 ProgressBar.defaultProps = {

@@ -19,9 +19,11 @@
     - [Pause toast timer when the window loses focus](#pause-toast-timer-when-the-window-loses-focus)
     - [Use a custom id](#use-a-custom-id)
     - [Prevent duplicate](#prevent-duplicate)
+    - [Use a controlled progress bar](#use-a-controlled-progress-bar)
     - [Update a toast](#update-a-toast)
       - [Basic example](#basic-example)
       - [Update the content](#update-the-content)
+      - [Update the toast id](#update-the-toast-id)
       - [Apply a transition](#apply-a-transition)
       - [Reset option or inherit from ToastContainer](#reset-option-or-inherit-from-toastcontainer)
     - [Define callback](#define-callback)
@@ -79,6 +81,7 @@ $ yarn add react-toastify
 - Pause toast when window loses focus 👁
 - Fancy progress bar to display the remaining time
 - Possibility to update a toast
+- You can controll the progress bar a la npgrogress 😲
 
 ## From v3 to v4
 
@@ -117,13 +120,16 @@ The toasts inherit ToastContainer's props. **Props defined on toast supersede To
   }
 ```
 
+Remember to render the `ToastContainer` *once* in your application tree. 
+If you can't figure out where to put it, rendering it in the application root would be the best bet. 
+
 ### Positioning toast
 
-By default, all the toasts will be positionned on the top right of your browser. If a position is set on a toast, the one defined on ToastContainer will be replaced.
+By default, all the toasts will be positioned on the top right of your browser. If a position is set on a `toast`, the one defined on ToastContainer will be replaced.
 
 The following values are allowed: **top-right, top-center, top-left, bottom-right, bottom-center, bottom-left**
 
-For convenience, toast expose a POSITION property to avoid any typo.
+For convenience, `toast` expose a POSITION property to avoid any typo.
 
 ```javascript
  // toast.POSITION.TOP_LEFT, toast.POSITION.TOP_RIGHT, toast.POSITION.TOP_CENTER
@@ -276,11 +282,11 @@ Without args, all the displayed toasts will be removed.
   }
 ```
 
-#### Usage with redux
+### Usage with redux
 
 "Talk is cheap. Show me the code"
 
-[![Edit react+redux+react-toastify](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/r0kv8km1pp)
+[![Edit react+redux+react-toastify](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/2485wxy78j)
 
 ### Pause toast timer when the window loses focus
 
@@ -353,6 +359,56 @@ To prevent duplicates, you can check if a given toast is active by calling `toas
   }
 ```
 
+### Use a controlled progress bar
+
+Imagine you want to see the progress of a file upload. The example below feature axios, but it works with anything!
+
+```javascript
+  import React, { Component } from 'react';
+  import { toast } from 'react-toastify';
+  import axios from 'axios';
+
+  class Example extends Component {
+    upload = () => {
+      // we need to keep a reference of the toastId to be able to update it
+      let toastId = null;
+
+      axios.request({
+        method: "post", 
+        url: "/foobar", 
+        data: myData, 
+        onUploadProgress: p => {
+          const progress = p.loaded / p.total;
+
+          // check if we already displayed a toast
+          if(toastId === null){
+              toastId = toast('Upload in Progress', {
+              progress: progress
+            });
+          } else {
+            toast.update(toastId, {
+              progress: progress
+            })
+          }
+        }
+      }).then (data => {
+        // Upload is done! 
+        // The remaining progress bar will be filled up
+        // The toast will be closed when the transition end
+        toast.done(toast.id)
+      })
+    }
+
+    render(){
+      return (
+        <div>
+          <button onClick={this.upload}>Upload something</button>
+        </div>
+      );
+    }
+  }
+```
+
 ### Update a toast
 
 When you update a toast, the toast options and the content are inherited but don't worry you can update them.
@@ -401,8 +457,26 @@ toast.update(this.toastId, {
     type: toast.TYPE.INFO,
     autoClose: 5000
   });
+```
 
+#### Update the toast id
 
+If you want to update the `toastId` it can be done. But don't forget to use the new id!
+
+```js
+const myNewToastId = 'loremIpsum';
+
+toast.update(this.toastId, {
+  render: "New content",
+  type: toast.TYPE.INFO,
+  autoClose: 5000,
+  toastId: myNewToastId
+});
+
+toast.update(myNewToastId, {
+  render: <MyComponent />
+  autoClose: 6000
+}); 
 ```
 
 #### Apply a transition
@@ -444,7 +518,7 @@ toast.update(this.toastId, {
 #### Reset option or inherit from ToastContainer
 
 If you want to inherit props from the `ToastContainer`, you can reset an option by passing null.
-It's particulary usefull when you remove the `closeButton` from a toast and you want it back during the update:
+It's particulary useful when you remove the `closeButton` from a toast and you want it back during the update:
 
 ```js
 class Update extends Component {
@@ -474,7 +548,7 @@ class Update extends Component {
 
 ### Define callback
 
-You can define two callback on toast. They are really useful when the toast are not used only to display messages.
+You can define two callbacks on `toast`. They are really useful when the toast are not used only to display messages.
 
 - onOpen is called inside componentDidMount
 - onClose is called inside componentWillUnmount
@@ -682,7 +756,7 @@ class App extends Component {
 
 ### Replace the default transition
 
-There is 4 built-in transition provided:
+There is 4 built-in transitions provided:
 
 <details>
   <summary>Bounce</summary>
@@ -1060,13 +1134,14 @@ The **toastId** can be used to remove a toast programmatically or to check if th
     - `draggable`: same as ToastContainer
     - `draggablePercent`: same as ToastContainer
     - `toastId`: optional integer or string to manually set a toastId. If an invalid type is provided a generated toastId will be used
+    - `progress`: a value between 0..1 to control the progress bar 
     - `render`: string or React Element, only available when calling update
 
 :warning:️ *Toast options supersede ToastContainer props* :warning:
 
 :warning:️ *Manually setting a toastId overwrite automatically generated toastIds* :warning:
 
-```javascript
+```js
 const Img = ({ src }) => <div><img width={48} src={src} /></div>;
 const options = {
     onOpen: props => console.log(props.foo),
@@ -1078,6 +1153,7 @@ const options = {
     position: toast.POSITION.TOP_LEFT,
     pauseOnHover: true,
     transition: MyCustomTransition,
+    progress: 0.2
     // and so on ...
 };
 
@@ -1094,6 +1170,7 @@ toast.update(toastId, {
   type: toast.TYPE.INFO,
   render: <Img foo={bar}/>
 });
+toast.done(toastId);
 ```
 
 ### cssTransition
@@ -1138,13 +1215,7 @@ You can browse them all [here](https://github.com/fkhadra/react-toastify/release
 
 ## Contribute
 
-Show your ❤️ and support by giving a ⭐. Any suggestions and pull request are welcome !
-
-Try the playground:
-
-```js
-npm start
-```
+Show your ❤️ and support by giving a ⭐. Any suggestions are welcome ! Take a look at the contributing guide.
 
 ## License
 

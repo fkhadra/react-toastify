@@ -176,6 +176,29 @@ describe('Toast', () => {
     expect(window.removeEventListener).toHaveBeenCalled();
   });
 
+  it('Should render toast with controlled progress bar', () => {
+    const component = shallow(
+      <Toast {...REQUIRED_PROPS} progress={0.3} controlledProgress>
+        FooBar
+      </Toast>
+    );
+    expect(component.html()).toMatch(/transform:(\s)?scaleX\(0.3\)/);
+  });
+
+  it('Should render toast with controlled progress bar even if autoClose is false', () => {
+    const component = shallow(
+      <Toast
+        {...REQUIRED_PROPS}
+        progress={0.3}
+        autoClose={false}
+        controlledProgress
+      >
+        FooBar
+      </Toast>
+    );
+    expect(component.html()).toMatch(/transform:(\s)?scaleX\(0.3\)/);
+  });
+
   describe('Drag event', () => {
     it('Should handle drag start on mousedown', () => {
       const events = {};

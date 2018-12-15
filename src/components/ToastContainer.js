@@ -140,6 +140,11 @@ class ToastContainer extends Component {
   };
 
   /**
+   * Keep reference for toastKey
+   */
+  toastKey = 0;
+
+  /**
    * Hold toast's informations:
    * - what to render
    * - position
@@ -151,10 +156,7 @@ class ToastContainer extends Component {
   componentDidMount() {
     eventManager
       .on(ACTION.SHOW, (content, options) => this.show(content, options))
-      .on(
-        ACTION.CLEAR,
-        id => (id !== null ? this.removeToast(id) : this.clear())
-      )
+      .on(ACTION.CLEAR, id => (!id ? this.clear() : this.removeToast(id)))
       .emit(ACTION.DID_MOUNT, this);
   }
 
@@ -234,6 +236,7 @@ class ToastContainer extends Component {
     const closeToast = () => this.removeToast(toastId);
     const toastOptions = {
       id: toastId,
+      key: options.key || this.toastKey++,
       type: options.type,
       closeToast: closeToast,
       updateId: options.updateId,
@@ -280,7 +283,9 @@ class ToastContainer extends Component {
       hideProgressBar:
         typeof options.hideProgressBar === 'boolean'
           ? options.hideProgressBar
-          : this.props.hideProgressBar
+          : this.props.hideProgressBar,
+      progress: Number.parseFloat(options.progress),
+      isProgressDone: options.isProgressDone
     };
 
     typeof options.onOpen === 'function' &&
@@ -313,9 +318,10 @@ class ToastContainer extends Component {
 
     this.setState(
       {
-        toast: toastOptions.updateId
+        toast: (toastOptions.updateId
           ? [...this.state.toast]
           : [...this.state.toast, toastId]
+        ).filter(id => id !== options.staleToastId)
       },
       this.dispatchChange
     );
@@ -326,7 +332,7 @@ class ToastContainer extends Component {
       <Toast
         {...options}
         isDocumentHidden={this.state.isDocumentHidden}
-        key={`toast-${options.id}`}
+        key={`toast-${options.key}`}
       >
         {content}
       </Toast>

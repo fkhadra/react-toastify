@@ -1,6 +1,6 @@
 {
   "name": "react-toastify",
-  "version": "4.4.3",
+  "version": "4.5.0-rc.1",
   "description": "React notification made easy",
   "keywords": [
     "react",
@@ -101,6 +101,7 @@
     "react-test-renderer": "^16.4.2",
     "regenerator-runtime": "^0.12.1",
     "rimraf": "^2.6.2",
+    "sass-loader": "^7.1.0",
     "style-loader": "^0.23.0",
     "webpack": "^4.17.1",
     "webpack-cli": "^3.1.0",
