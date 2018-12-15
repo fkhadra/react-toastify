@@ -286,7 +286,7 @@ Without args, all the displayed toasts will be removed.
 
 "Talk is cheap. Show me the code"
 
-[![Edit react+redux+react-toastify](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/r0kv8km1pp)
+[![Edit react+redux+react-toastify](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/2485wxy78j)
 
 ### Pause toast timer when the window loses focus
 
