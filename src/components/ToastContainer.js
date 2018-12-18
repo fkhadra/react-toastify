@@ -142,7 +142,7 @@ class ToastContainer extends Component {
   /**
    * Keep reference for toastKey
    */
-  toastKey = 0;
+  toastKey = 1;
 
   /**
    * Hold toast's informations:
@@ -236,6 +236,7 @@ class ToastContainer extends Component {
     const closeToast = () => this.removeToast(toastId);
     const toastOptions = {
       id: toastId,
+      // ⚠️ if no options.key, this.toastKey - 1 is assigned
       key: options.key || this.toastKey++,
       type: options.type,
       closeToast: closeToast,
