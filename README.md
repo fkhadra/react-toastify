@@ -3,7 +3,7 @@
 ![React toastify](https://user-images.githubusercontent.com/5574267/35336500-e58f35b6-0118-11e8-800b-2da6594fc700.gif "React toastify")
 
 
-🎉 React-Toastify allow you to add notification to your app with ease. No bullshit !
+🎉 React-Toastify allow you to add notification to your app with ease. No more nonsense!
 
   - [Demo](#demo)
   - [Installation](#installation)
@@ -59,7 +59,7 @@
 
 ## Demo
 
-[A demo is worth thousand word](https://fkhadra.github.io/react-toastify/)
+[A demo is worth a thousand words](https://fkhadra.github.io/react-toastify/)
 
 ## Installation
 
@@ -70,7 +70,7 @@ $ yarn add react-toastify
 
 ## Features
 
-- Easy to setup for real, you can make it works in less than 10sec!
+- Easy to setup for real, you can make it work in less than 10sec!
 - Super easy to customize
 - RTL support
 - Swipe to close 👌
