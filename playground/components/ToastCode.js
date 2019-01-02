@@ -58,7 +58,7 @@ const ToastCode = ({
         <span className="code__props">draggable</span>
         {`: ${draggable ? 'true' : 'false'}`}
       </div>
-      {!Number.isNaN(Number.parseFloat(progress)) && (
+      {!Number.isNaN(parseFloat(progress)) && (
         <div>
           <span className="code__props">progress</span>
           {`: ${progress}`}
