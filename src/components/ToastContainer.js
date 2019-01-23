@@ -227,6 +227,12 @@ class ToastContainer extends Component {
   }
 
   show(content, options) {
+    if(options.delay){
+      const optionsWithoutDelay = {...options};
+      delete optionsWithoutDelay.delay;
+      setTimeout(() => this.show(content, optionsWithoutDelay), options.delay);
+      return;
+    }
     if (!this.canBeRendered(content)) {
       throw new Error(
         `The element you provided cannot be rendered. You provided an element of type ${typeof content}`
