@@ -1,19 +1,19 @@
-import React, { Component, isValidElement, cloneElement } from "react";
-import PropTypes from "prop-types";
-import cx from "classnames";
-import TransitionGroup from "react-transition-group/TransitionGroup";
+import React, { Component, isValidElement, cloneElement } from 'react';
+import PropTypes from 'prop-types';
+import cx from 'classnames';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
 
-import Toast from "./Toast";
-import CloseButton from "./CloseButton";
-import { Bounce } from "./Transitions";
-import { POSITION, ACTION } from "./../utils/constant";
-import eventManager from "./../utils/eventManager";
+import Toast from './Toast';
+import CloseButton from './CloseButton';
+import { Bounce } from './Transitions';
+import { POSITION, ACTION } from './../utils/constant';
+import eventManager from './../utils/eventManager';
 import {
   falseOrDelay,
   falseOrElement,
   isValidDelay,
   objectValues
-} from "./../utils/propValidator";
+} from './../utils/propValidator';
 
 class ToastContainer extends Component {
   static propTypes = {
@@ -206,19 +206,19 @@ class ToastContainer extends Component {
   canBeRendered(content) {
     return (
       isValidElement(content) ||
-      typeof content === "string" ||
-      typeof content === "number" ||
-      typeof content === "function"
+      typeof content === 'string' ||
+      typeof content === 'number' ||
+      typeof content === 'function'
     );
   }
 
   parseClassName(prop) {
-    if (typeof prop === "string") {
+    if (typeof prop === 'string') {
       return prop;
     } else if (
       prop !== null &&
-      typeof prop === "object" &&
-      "toString" in prop
+      typeof prop === 'object' &&
+      'toString' in prop
     ) {
       return prop.toString();
     }
@@ -262,24 +262,24 @@ class ToastContainer extends Component {
         options.type
       ),
       pauseOnHover:
-        typeof options.pauseOnHover === "boolean"
+        typeof options.pauseOnHover === 'boolean'
           ? options.pauseOnHover
           : this.props.pauseOnHover,
       pauseOnFocusLoss:
-        typeof options.pauseOnFocusLoss === "boolean"
+        typeof options.pauseOnFocusLoss === 'boolean'
           ? options.pauseOnFocusLoss
           : this.props.pauseOnFocusLoss,
       draggable:
-        typeof options.draggable === "boolean"
+        typeof options.draggable === 'boolean'
           ? options.draggable
           : this.props.draggable,
       draggablePercent:
-        typeof options.draggablePercent === "number" &&
+        typeof options.draggablePercent === 'number' &&
         !isNaN(options.draggablePercent)
           ? options.draggablePercent
           : this.props.draggablePercent,
       closeOnClick:
-        typeof options.closeOnClick === "boolean"
+        typeof options.closeOnClick === 'boolean'
           ? options.closeOnClick
           : this.props.closeOnClick,
       progressClassName: this.parseClassName(
@@ -288,29 +288,29 @@ class ToastContainer extends Component {
       progressStyle: this.props.progressStyle,
       autoClose: this.getAutoCloseDelay(options.autoClose),
       hideProgressBar:
-        typeof options.hideProgressBar === "boolean"
+        typeof options.hideProgressBar === 'boolean'
           ? options.hideProgressBar
           : this.props.hideProgressBar,
       progress: parseFloat(options.progress),
       isProgressDone: options.isProgressDone
     };
 
-    typeof options.onOpen === "function" &&
+    typeof options.onOpen === 'function' &&
       (toastOptions.onOpen = options.onOpen);
 
-    typeof options.onClose === "function" &&
+    typeof options.onClose === 'function' &&
       (toastOptions.onClose = options.onClose);
 
     // add closeToast function to react component only
     if (
       isValidElement(content) &&
-      typeof content.type !== "string" &&
-      typeof content.type !== "number"
+      typeof content.type !== 'string' &&
+      typeof content.type !== 'number'
     ) {
       content = cloneElement(content, {
         closeToast
       });
-    } else if (typeof content === "function") {
+    } else if (typeof content === 'function') {
       content = content({ closeToast });
     }
 
@@ -376,13 +376,13 @@ class ToastContainer extends Component {
         toastToRender[position][0] === null;
       const props = {
         className: cx(
-          "Toastify__toast-container",
+          'Toastify__toast-container',
           `Toastify__toast-container--${position}`,
-          { "Toastify__toast-container--rtl": this.props.rtl },
+          { 'Toastify__toast-container--rtl': this.props.rtl },
           this.parseClassName(className)
         ),
         style: disablePointer
-          ? { ...style, pointerEvents: "none" }
+          ? { ...style, pointerEvents: 'none' }
           : { ...style }
       };
 
@@ -395,7 +395,7 @@ class ToastContainer extends Component {
   }
 
   render() {
-    return <div className="Toastify">{this.renderToast()}</div>;
+    return <div className='Toastify'>{this.renderToast()}</div>;
   }
 }
 
