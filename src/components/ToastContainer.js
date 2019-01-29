@@ -227,10 +227,9 @@ class ToastContainer extends Component {
   }
 
   show(content, options) {
-    if (options.delay) {
-      const optionsWithoutDelay = { ...options };
-      delete optionsWithoutDelay.delay;
-      setTimeout(() => this.show(content, optionsWithoutDelay), options.delay);
+    const { delay, ...optionsWithoutDelay } = options;
+    if (delay) {
+      setTimeout(() => this.show(content, optionsWithoutDelay), delay);
       return;
     }
     if (!this.canBeRendered(content)) {
