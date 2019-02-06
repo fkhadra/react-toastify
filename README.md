@@ -1087,7 +1087,7 @@ On mobile the toast will take all the available width.
 |-------------------------|------------------------|-----------|-----------------------------------------------------------------------------------------------------|
 | position                | string                 | top-right | One of top-right, top-center, top-left, bottom-right, bottom-center, bottom-left                    |
 | autoClose               | false or number        | 5000      | Delay in ms to close the toast. If set to false, the notification need to be closed manualy         |
-| closeButton             | React Element or false | -         | A React Component to replace the default close button or `false` to hide the button                 |
+| closeButton             | React Element or bool  | -         | A React Component to replace the default close button or `false` to hide the button, set `true` to use the default CloseButton element                 |
 | transition              | function               | -         | A reference to a valid react-transition-group/Transition component                                  |
 | hideProgressBar         | bool                   | false     | Display or not the progress bar below the toast(remaining time)                                     |
 | pauseOnHover            | bool                   | true      | Keep the timer running or not on hover                                                              |
@@ -1100,7 +1100,7 @@ On mobile the toast will take all the available width.
 | toastClassName          | string\|object         | -         | Add optional classes to the toast                                                                   |
 | bodyClassName           | string\|object         | -         | Add optional classes to the toast body                                                              |
 | progressClassName       | string\|object         | -         | Add optional classes to the progress bar                                                            |
-| progressStyle           | object                 | -         | Add optional inline style to the progress bar                                                            |
+| progressStyle           | object                 | -         | Add optional inline style to the progress bar                                                       |
 | draggable               | bool                   | true      | Allow toast to be draggable                                                                         |
 | draggablePercent        | number                 | 80        | The percentage of the toast's width it takes for a drag to dismiss a toast(value between 0 and 100) |
 
