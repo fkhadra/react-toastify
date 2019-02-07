@@ -26,7 +26,8 @@ const noop = () => {};
 
 class Toast extends Component {
   static propTypes = {
-    closeButton: falseOrElement.isRequired,
+    closeButton: PropTypes.oneOfType([PropTypes.node, PropTypes.node])
+      .isRequired,
     autoClose: falseOrDelay.isRequired,
     children: PropTypes.node.isRequired,
     closeToast: PropTypes.func.isRequired,
