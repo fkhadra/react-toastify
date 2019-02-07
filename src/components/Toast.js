@@ -4,11 +4,7 @@ import cx from 'classnames';
 
 import ProgressBar from './ProgressBar';
 import { POSITION, TYPE } from './../utils/constant';
-import {
-  falseOrElement,
-  falseOrDelay,
-  objectValues
-} from './../utils/propValidator';
+import { falseOrDelay, objectValues } from './../utils/propValidator';
 
 function getX(e) {
   return e.targetTouches && e.targetTouches.length >= 1
