@@ -92,7 +92,7 @@ describe('ToastContainer', () => {
 
     expect(component.state().toast).toHaveLength(1);
     expect(component.state().toast).not.toContain(0);
-  })
+  });
 
   it('Should be able to render a react element, a string, a number, a render props without crashing', () => {
     const component = mount(<ToastContainer />);

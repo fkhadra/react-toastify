@@ -156,7 +156,10 @@ class ToastContainer extends Component {
   componentDidMount() {
     eventManager
       .on(ACTION.SHOW, (content, options) => this.show(content, options))
-      .on(ACTION.CLEAR, id => (id == null ? this.clear() : this.removeToast(id)))
+      .on(
+        ACTION.CLEAR,
+        id => (id == null ? this.clear() : this.removeToast(id))
+      )
       .emit(ACTION.DID_MOUNT, this);
   }
 
