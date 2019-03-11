@@ -73,6 +73,27 @@ describe('ToastContainer', () => {
     expect(component.state().toast).toHaveLength(0);
   });
 
+  it('Should dismiss toast with id == 0 only', () => {
+    const component = mount(<ToastContainer />);
+
+    toast('toast id 0', {
+      toastId: 0
+    });
+
+    toast('toast id 1', {
+      toastId: 1
+    });
+
+    jest.runAllTimers();
+    expect(component.state().toast).toHaveLength(2);
+
+    toast.dismiss(0);
+    jest.runAllTimers();
+
+    expect(component.state().toast).toHaveLength(1);
+    expect(component.state().toast).not.toContain(0);
+  })
+
   it('Should be able to render a react element, a string, a number, a render props without crashing', () => {
     const component = mount(<ToastContainer />);
     toast('coucou');
