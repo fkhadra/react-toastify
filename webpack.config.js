@@ -24,7 +24,7 @@ module.exports = {
     'react',
     'react-dom',
     'prop-types',
-    'react-transition-group',
+    'react-transition-group/Transition',
     'classnames'
   ],
   plugins: [
