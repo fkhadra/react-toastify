@@ -236,6 +236,25 @@ class Toast extends Component {
     }
   };
 
+  // Maybe let the end user tweak it later on
+  onExitTransitionEnd = () => {
+    const height = this.ref.scrollHeight;
+    const style = this.ref.style;
+
+    requestAnimationFrame(() => {
+      style.minHeight = 'initial';
+      style.height = height + 'px';
+      style.transition = 'all 0.4s ';
+
+      requestAnimationFrame(() => {
+        style.height = 0;
+        style.padding = 0;
+        style.margin = 0;
+      });
+      setTimeout(() => this.props.onExited(), 400);
+    });
+  };
+
   render() {
     const {
       closeButton,
@@ -248,7 +267,6 @@ class Toast extends Component {
       closeToast,
       transition: Transition,
       position,
-      onExited,
       className,
       bodyClassName,
       progressClassName,
@@ -287,8 +305,7 @@ class Toast extends Component {
       <Transition
         in={this.props.in}
         appear
-        unmountOnExit
-        onExited={onExited}
+        onExited={this.onExitTransitionEnd}
         position={position}
         preventExitTransition={this.state.preventExitTransition}
       >
