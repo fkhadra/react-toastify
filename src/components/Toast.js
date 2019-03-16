@@ -87,6 +87,7 @@ class Toast extends Component {
     removalDistance: 0
   };
 
+  boundingRect = null;
   ref = null;
 
   componentDidMount() {
@@ -173,6 +174,7 @@ class Toast extends Component {
   onDragStart = e => {
     this.flag.canCloseOnClick = true;
     this.flag.canDrag = true;
+    this.boundingRect = this.ref.getBoundingClientRect();
 
     this.ref.style.transition = '';
 
@@ -189,6 +191,7 @@ class Toast extends Component {
 
       this.drag.x = getX(e);
       this.drag.deltaX = this.drag.x - this.drag.start;
+      this.drag.y = getY(e);
 
       // prevent false positif during a toast click
       this.drag.start !== this.drag.x && (this.flag.canCloseOnClick = false);
@@ -213,7 +216,6 @@ class Toast extends Component {
         return;
       }
 
-      this.drag.y = getY(e);
       this.ref.style.transition = 'transform 0.2s, opacity 0.2s';
       this.ref.style.transform = 'translateX(0)';
       this.ref.style.opacity = 1;
@@ -221,7 +223,7 @@ class Toast extends Component {
   };
 
   onDragTransitionEnd = () => {
-    const { top, bottom, left, right } = this.ref.getBoundingClientRect();
+    const { top, bottom, left, right } = this.boundingRect;
 
     if (
       this.props.pauseOnHover &&
@@ -314,7 +316,8 @@ class Toast extends Component {
           ref={ref => (this.ref = ref)}
           onMouseDown={this.onDragStart}
           onTouchStart={this.onDragStart}
-          onTransitionEnd={this.onDragTransitionEnd}
+          onMouseUp={this.onDragTransitionEnd}
+          onTouchEnd={this.onDragTransitionEnd}
         >
           <div
             {...this.props.in && { role: role }}

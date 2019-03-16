@@ -38,8 +38,10 @@ ShallowWrapper {
   </Toast>,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
+    "checkPropTypes": [Function],
     "getNode": [Function],
     "render": [Function],
+    "simulateError": [Function],
     "simulateEvent": [Function],
     "unmount": [Function],
   },
@@ -53,8 +55,9 @@ ShallowWrapper {
         className="Toastify__toast Toastify__toast--default Toastify__toast--rtl"
         onClick={[Function]}
         onMouseDown={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
         onTouchStart={[Function]}
-        onTransitionEnd={[Function]}
       >
         <div
           className="Toastify__toast-body"
@@ -67,10 +70,9 @@ ShallowWrapper {
         />
       </div>,
       "in": true,
-      "onExited": undefined,
+      "onExited": [Function],
       "position": "top-right",
       "preventExitTransition": false,
-      "unmountOnExit": true,
     },
     "ref": null,
     "rendered": Object {
@@ -93,8 +95,9 @@ ShallowWrapper {
         "className": "Toastify__toast Toastify__toast--default Toastify__toast--rtl",
         "onClick": [Function],
         "onMouseDown": [Function],
+        "onMouseUp": [Function],
+        "onTouchEnd": [Function],
         "onTouchStart": [Function],
-        "onTransitionEnd": [Function],
       },
       "ref": [Function],
       "rendered": Array [
@@ -139,8 +142,9 @@ ShallowWrapper {
           className="Toastify__toast Toastify__toast--default Toastify__toast--rtl"
           onClick={[Function]}
           onMouseDown={[Function]}
+          onMouseUp={[Function]}
+          onTouchEnd={[Function]}
           onTouchStart={[Function]}
-          onTransitionEnd={[Function]}
         >
           <div
             className="Toastify__toast-body"
@@ -153,10 +157,9 @@ ShallowWrapper {
           />
         </div>,
         "in": true,
-        "onExited": undefined,
+        "onExited": [Function],
         "position": "top-right",
         "preventExitTransition": false,
-        "unmountOnExit": true,
       },
       "ref": null,
       "rendered": Object {
@@ -179,8 +182,9 @@ ShallowWrapper {
           "className": "Toastify__toast Toastify__toast--default Toastify__toast--rtl",
           "onClick": [Function],
           "onMouseDown": [Function],
+          "onMouseUp": [Function],
+          "onTouchEnd": [Function],
           "onTouchStart": [Function],
-          "onTransitionEnd": [Function],
         },
         "ref": [Function],
         "rendered": Array [
@@ -219,11 +223,17 @@ ShallowWrapper {
     "adapter": ReactSixteenAdapter {
       "options": Object {
         "enableComponentDidUpdateOnSetState": true,
+        "legacyContextMode": "parent",
         "lifecycles": Object {
           "componentDidUpdate": Object {
             "onSetState": true,
           },
-          "getDerivedStateFromProps": true,
+          "getChildContext": Object {
+            "calledByRenderer": false,
+          },
+          "getDerivedStateFromProps": Object {
+            "hasShouldComponentUpdateBug": false,
+          },
           "getSnapshotBeforeUpdate": true,
           "setState": Object {
             "skipsComponentDidUpdateOnNullish": true,
@@ -231,8 +241,7 @@ ShallowWrapper {
         },
       },
     },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
   },
+  Symbol(enzyme.__childContext__): null,
 }
 `;
