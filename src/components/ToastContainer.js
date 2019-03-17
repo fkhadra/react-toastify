@@ -10,7 +10,6 @@ import { POSITION, ACTION } from './../utils/constant';
 import eventManager from './../utils/eventManager';
 import {
   falseOrDelay,
-  falseOrElement,
   isValidDelay,
   objectValues
 } from './../utils/propValidator';
@@ -30,7 +29,7 @@ class ToastContainer extends Component {
     /**
      * Disable or set a custom react element for the close button
      */
-    closeButton: falseOrElement,
+    closeButton: PropTypes.oneOfType([PropTypes.node, PropTypes.bool]),
 
     /**
      * Hide or not progress bar when autoClose is enabled
