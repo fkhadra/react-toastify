@@ -1,12 +1,8 @@
 /* eslint-env jest */
-import React from 'react';
 import {
-  falseOrElement,
   falseOrDelay,
   objectValues
 } from './../../utils/propValidator';
-
-const ValidReactElement = () => <div>Hello</div>;
 
 describe('Custom PropTypes', () => {
   describe('falseOrDelay', () => {
@@ -35,35 +31,12 @@ describe('Custom PropTypes', () => {
     });
   });
 
-  describe('falseOrElement', () => {
-    it('Can be false or a valid react element', () => {
-      const props = { closeButton: false };
-      expect(falseOrElement(props, 'closeButton', 'TestComponent')).toBe(null);
-      props.closeButton = <ValidReactElement />;
-      expect(falseOrElement(props, 'closeButton', 'TestComponent')).toBe(null);
-    });
-
-    it('Should return an Error if prop equal true or not a valid react element', () => {
-      const props = { closeButton: true };
-      expect(
-        falseOrElement(props, 'closeButton', 'TestComponent')
-      ).toBeInstanceOf(Error);
-
-      props.closeButton = 'coucou';
-      expect(
-        falseOrElement(props, 'closeButton', 'TestComponent')
-      ).toBeInstanceOf(Error);
-    });
-  });
   describe('Can be set as Required', () => {
     it('Should return an Error if the prop is required but undefined', () => {
       const props = {};
 
       expect(
         falseOrDelay.isRequired(props, 'autoClose', 'TestComponent')
-      ).toBeInstanceOf(Error);
-      expect(
-        falseOrElement.isRequired(props, 'closeButton', 'TestComponent')
       ).toBeInstanceOf(Error);
     });
   });

@@ -1,4 +1,3 @@
-import { isValidElement } from 'react';
 
 export function isValidDelay(val) {
   return typeof val === 'number' && !isNaN(val) && val > 0;
