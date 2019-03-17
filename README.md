@@ -656,6 +656,14 @@ Sometimes you don't want to display a close button. It can be removed globally o
     })
 ```
 
+-- if you removed it globally, you can display the default Button per toast (or you can set your custom button)
+
+```js
+    toast("hello", {
+      closeButton: true // or <FontAwesomeCloseButton />
+    })
+```
+
 ### Add an undo option to a toast like google drive
 
 See it in action:
@@ -1121,7 +1129,7 @@ The **toastId** can be used to remove a toast programmatically or to check if th
     - `onOpen`: Called inside componentDidMount
     - `onClose`: Called inside componentWillUnmount
     - `autoClose`: same as ToastContainer.
-    - `closeButton`: same as ToastContainer.
+    - `closeButton`: `false` to disable, a `React Component` to replace or `true` to display the default button.
     - `transition`: same as ToastContainer.
     - `closeOnClick`: same as ToastContainer.
     - `hideProgressBar`: same as ToastContainer.

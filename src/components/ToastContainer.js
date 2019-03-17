@@ -190,6 +190,8 @@ class ToastContainer extends Component {
 
     if (isValidElement(toastClose) || toastClose === false) {
       closeButton = toastClose;
+    } else if (toastClose === true) {
+      closeButton = <CloseButton />;
     }
 
     return closeButton === false

@@ -171,6 +171,19 @@ describe('ToastContainer', () => {
     expect(component.html()).not.toMatch(/toastify__close/);
   });
 
+  it('Should use default CloseButton when toast option set to true and ToastContainer options is false', () => {
+    // set closeButton to false to remove it by default
+    let component = mount(<ToastContainer closeButton={false} />);
+    toast('hello');
+    jest.runAllTimers();
+    // ensure that close button is NOT present by default
+    expect(component.html()).not.toMatch(/✖/);
+    toast('hello', { closeButton: true });
+    jest.runAllTimers();
+    // now the close button should be present
+    expect(component.html()).toMatch(/✖/);
+  });
+
   it('Should merge className and style', () => {
     const component = mount(
       <ToastContainer className="foo" style={{ background: 'red' }} />
