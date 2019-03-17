@@ -1,4 +1,3 @@
-
 export function isValidDelay(val) {
   return typeof val === 'number' && !isNaN(val) && val > 0;
 }
@@ -31,4 +30,3 @@ export const falseOrDelay = withRequired((props, propName, componentName) => {
 
   return null;
 });
-

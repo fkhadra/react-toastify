@@ -282,9 +282,12 @@ describe('Toast', () => {
 
       // BoundingClientRect for Position top right
       component.instance().boundingRect = {
-        top: 20, right: 846, bottom: 84, left: 534
+        top: 20,
+        right: 846,
+        bottom: 84,
+        left: 534
       };
-      
+
       // Cursor inside the toast
       component.instance().drag = {
         x: 600,
@@ -303,9 +306,12 @@ describe('Toast', () => {
 
       // BoundingClientRect for Position top right
       component.instance().boundingRect = {
-        top: 20, right: 846, bottom: 84, left: 534
+        top: 20,
+        right: 846,
+        bottom: 84,
+        left: 534
       };
-      
+
       // Cursor outside the toast
       component.instance().drag = {
         x: 400,

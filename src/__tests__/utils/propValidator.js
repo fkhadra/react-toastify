@@ -1,8 +1,5 @@
 /* eslint-env jest */
-import {
-  falseOrDelay,
-  objectValues
-} from './../../utils/propValidator';
+import { falseOrDelay, objectValues } from './../../utils/propValidator';
 
 describe('Custom PropTypes', () => {
   describe('falseOrDelay', () => {
