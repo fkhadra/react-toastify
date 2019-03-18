@@ -3,7 +3,6 @@ const eventManager = {
 
   on(event, callback) {
     this.list.has(event) || this.list.set(event, []);
-
     this.list.get(event).push(callback);
 
     return this;
@@ -18,9 +17,10 @@ const eventManager = {
     if (!this.list.has(event)) {
       return false;
     }
+    
     this.list
       .get(event)
-      .forEach(callback => setTimeout(() => callback.call(null, ...args), 0));
+      .forEach(callback => callback.call(null, ...args));
 
     return true;
   }
