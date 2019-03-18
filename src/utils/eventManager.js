@@ -17,10 +17,8 @@ const eventManager = {
     if (!this.list.has(event)) {
       return false;
     }
-    
-    this.list
-      .get(event)
-      .forEach(callback => callback.call(null, ...args));
+
+    this.list.get(event).forEach(callback => callback.call(null, ...args));
 
     return true;
   }
