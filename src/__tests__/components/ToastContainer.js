@@ -8,8 +8,6 @@ import toast from './../../toast';
 import { ACTION } from './../../utils/constant';
 import eventManager from './../../utils/eventManager';
 
-jest.useFakeTimers();
-
 function hasProp(obj, key) {
   return Object.prototype.hasOwnProperty.call(obj, key);
 }
@@ -44,7 +42,6 @@ describe('ToastContainer', () => {
     const component = mount(<ToastContainer />);
     // Create a toast
     toast('coucou');
-    jest.runAllTimers();
 
     const props = getToastProps(component);
 
@@ -63,12 +60,10 @@ describe('ToastContainer', () => {
 
     toast('coucou');
     toast('coucou');
-    jest.runAllTimers();
 
     expect(component.state().toast).toHaveLength(2);
 
     toast.dismiss();
-    jest.runAllTimers();
 
     expect(component.state().toast).toHaveLength(0);
   });
@@ -84,11 +79,9 @@ describe('ToastContainer', () => {
       toastId: 1
     });
 
-    jest.runAllTimers();
     expect(component.state().toast).toHaveLength(2);
 
     toast.dismiss(0);
-    jest.runAllTimers();
 
     expect(component.state().toast).toHaveLength(1);
     expect(component.state().toast).not.toContain(0);
@@ -100,7 +93,6 @@ describe('ToastContainer', () => {
     toast(123);
     toast(<div>plop</div>);
     toast(() => <div>plop</div>);
-    jest.runAllTimers();
 
     expect(component.state().toast).toHaveLength(4);
   });
@@ -111,7 +103,6 @@ describe('ToastContainer', () => {
     mount(<ToastContainer newestOnTop />);
     toast('hello');
     toast(123);
-    jest.runAllTimers();
 
     expect(Array.prototype.reverse).toHaveBeenCalled();
   });
@@ -132,7 +123,6 @@ describe('ToastContainer', () => {
     };
 
     toast('hello', desiredProps);
-    jest.runAllTimers();
     const props = getToastProps(component);
 
     expect(props).toMatchObject(desiredProps);
@@ -146,7 +136,6 @@ describe('ToastContainer', () => {
     toast(<Msg />, {
       closeButton: CloseBtn
     });
-    jest.runAllTimers();
 
     const props = getToastProps(component);
     expect(Object.keys(props.closeButton.props)).toMatchObject([
@@ -159,14 +148,12 @@ describe('ToastContainer', () => {
   it('Should be able to disable the close button', () => {
     let component = mount(<ToastContainer />);
     toast('hello');
-    jest.runAllTimers();
     // ensure that close button is present by default
     expect(component.html()).toMatch(/✖/);
     component.unmount();
 
     component = mount(<ToastContainer closeButton={false} />);
     toast('hello');
-    jest.runAllTimers();
 
     expect(component.html()).not.toMatch(/toastify__close/);
   });
@@ -175,11 +162,9 @@ describe('ToastContainer', () => {
     // set closeButton to false to remove it by default
     let component = mount(<ToastContainer closeButton={false} />);
     toast('hello');
-    jest.runAllTimers();
     // ensure that close button is NOT present by default
     expect(component.html()).not.toMatch(/✖/);
     toast('hello', { closeButton: true });
-    jest.runAllTimers();
     // now the close button should be present
     expect(component.html()).toMatch(/✖/);
   });
@@ -189,7 +174,6 @@ describe('ToastContainer', () => {
       <ToastContainer className="foo" style={{ background: 'red' }} />
     );
     toast('hello');
-    jest.runAllTimers();
 
     expect(component.html()).toMatch(/class=".+foo"/);
     expect(component.html()).toMatch(/style="background: red;"/);
@@ -209,7 +193,6 @@ describe('ToastContainer', () => {
     );
 
     toast('hello');
-    jest.runAllTimers();
 
     expect(component.html()).toMatch(/class=".+random-class-name"/);
   });
@@ -219,7 +202,6 @@ describe('ToastContainer', () => {
     const Msg = () => <div>Plop</div>;
 
     toast(<Msg />);
-    jest.runAllTimers();
 
     const props = getToastProps(component);
 
@@ -232,7 +214,6 @@ describe('ToastContainer', () => {
       const Msg = () => <div>Plop</div>;
 
       toast(<Msg />);
-      jest.runAllTimers();
 
       let props = getToastProps(component);
 
@@ -241,13 +222,11 @@ describe('ToastContainer', () => {
 
       // close the toast with the function passed to the close button
       props.closeToast();
-      jest.runAllTimers();
 
       expect(component.state().toast).toHaveLength(0);
 
       //do the same but with the closeButton this time
       toast(<Msg />);
-      jest.runAllTimers();
 
       props = getToastProps(component);
 
@@ -256,7 +235,6 @@ describe('ToastContainer', () => {
 
       // close the toast with the function passed to the close button
       props.closeButton.props.closeToast();
-      jest.runAllTimers();
 
       expect(component.state().toast).toHaveLength(0);
     });
@@ -266,7 +244,7 @@ describe('ToastContainer', () => {
     Object.keys(toast.POSITION).forEach(k => {
       const component = mount(<ToastContainer position={toast.POSITION[k]} />);
       const id = toast('test');
-      jest.runAllTimers();
+
       expect(component.instance().collection[id].position).toBe(
         toast.POSITION[k]
       );
@@ -277,8 +255,6 @@ describe('ToastContainer', () => {
     expect(() => {
       mount(<ToastContainer />);
       toast(false);
-      jest.runAllTimers();
-      jest.clearAllTimers();
     }).toThrow(/The element you provided cannot be rendered/);
   });
 
