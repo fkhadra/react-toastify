@@ -290,6 +290,11 @@ interface Toast {
   done(toastId: ToastId, progress?: number): void;
 
   /**
+   * Let you define `ToastContainer` props when lazy mounted 
+   */
+  configure(config: ToastContainerProps): void;
+
+  /**
    * Display a toast without a specific type.
    */
   (content: ToastContent, options?: ToastOptions): number;

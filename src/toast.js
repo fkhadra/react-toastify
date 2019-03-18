@@ -1,9 +1,21 @@
+import React from 'react';
+import { render } from 'react-dom';
+
 import eventManager from './utils/eventManager';
 import { POSITION, TYPE, ACTION } from './utils/constant';
+import { ToastContainer } from '.';
 
 let container = null;
+let containerDomNode = null;
+let containerConfig = {};
 let queue = [];
+
 const noop = () => false;
+const canUseDom = !!(
+  typeof window !== 'undefined' &&
+  window.document &&
+  window.document.createElement
+);
 
 /**
  * Merge provided options with the defaults settings and generate the toastId
@@ -20,7 +32,7 @@ function generateToastId() {
 }
 
 /**
- * Generate the toastId either automatically or by provided toastId
+ * Generate a toastId or use the one provided
  */
 function getToastId(options) {
   if (
@@ -38,10 +50,15 @@ function getToastId(options) {
  * Dispatch toast. If the container is not mounted, the toast is enqueued
  */
 function emitEvent(content, options) {
-  if (container !== null) {
+  if (container) {
     eventManager.emit(ACTION.SHOW, content, options);
   } else {
     queue.push({ action: ACTION.SHOW, content, options });
+    if (canUseDom) {
+      containerDomNode = document.createElement('div');
+      document.body.appendChild(containerDomNode);
+      render(<ToastContainer {...containerConfig} />, containerDomNode);
+    }
   }
 
   return options.toastId;
@@ -67,6 +84,8 @@ const toast = Object.assign(
     dismiss: (id = null) => container && eventManager.emit(ACTION.CLEAR, id),
     isActive: noop,
     update(toastId, options) {
+      // if you call toast and toast.update directly nothing will be displayed
+      // this is way I defered the update
       setTimeout(() => {
         if (container && typeof container.collection[toastId] !== 'undefined') {
           const {
@@ -106,6 +125,9 @@ const toast = Object.assign(
         eventManager.on(ACTION.ON_CHANGE, callback);
       }
     },
+    configure(config) {
+      containerConfig = config;
+    },
     POSITION,
     TYPE
   }
@@ -129,6 +151,10 @@ eventManager
   .on(ACTION.WILL_UNMOUNT, () => {
     container = null;
     toast.isActive = noop;
+
+    if (canUseDom && containerDomNode) {
+      document.body.removeChild(containerDomNode);
+    }
   });
 
 export default toast;
