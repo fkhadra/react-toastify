@@ -147,7 +147,7 @@ eventManager
   .on(ACTION.WILL_UNMOUNT, () => {
     container = null;
     toast.isActive = noop;
-
+    
     if (canUseDom && containerDomNode) {
       document.body.removeChild(containerDomNode);
     }

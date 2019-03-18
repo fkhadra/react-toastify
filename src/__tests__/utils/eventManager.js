@@ -1,6 +1,8 @@
 /* eslint-env jest */
 import eventManager from './../../utils/eventManager';
 
+jest.useFakeTimers();
+
 describe('EventManager', () => {
   it('Should be able to bind an event', () => {
     eventManager.on('foo', () => {});
@@ -15,12 +17,15 @@ describe('EventManager', () => {
     expect(cb).not.toHaveBeenCalled();
 
     eventManager.emit('foo');
+    jest.runAllTimers();
     expect(cb).toHaveBeenCalled();
   });
 
-  it('Should return false when trying to call unbound event', () => {
-    const id = eventManager.emit('bar');
-    expect(id).toBe(false);
+  it('Should not crash when trying to call unbound event', () => {
+    expect(done => {
+      eventManager.emit('bar');
+      done();
+    })
   });
 
   it('Should be able to remove event', () => {

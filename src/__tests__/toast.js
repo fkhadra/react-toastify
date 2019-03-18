@@ -1,5 +1,4 @@
 /* eslint-env jest */
-
 import React from 'react';
 import { mount } from 'enzyme';
 
@@ -8,7 +7,6 @@ import toast from './../toast';
 import eventManager from './../utils/eventManager';
 import { ACTION, TYPE } from './../utils/constant';
 
-// needed for `toast.update` cause internally `setTimeout` is used
 jest.useFakeTimers();
 
 const containerClass = '.Toastify__toast-container';
@@ -21,36 +19,40 @@ beforeEach(() => {
     .off(ACTION.ON_CHANGE);
 });
 
-function ensureToastContainerIsNotMounted() {
+function ensureLazyContainerIsNotMounted() {
   expect(document.querySelector(containerClass)).toBe(null);
 }
 
-function clearLazyContainer() {
+function unmountLazyContainer() {
   eventManager.emit(ACTION.WILL_UNMOUNT);
+  jest.runAllTimers();
+  expect(document.querySelector(containerClass)).toBe(null);
 }
 
 describe('toastify', () => {
-  it("Should lazy mount a ToastContainer if it's not mounted", () => {
-    ensureToastContainerIsNotMounted();
+  it('Should lazy mount a ToastContainer if it is not mounted', () => {
+    ensureLazyContainerIsNotMounted();
     toast('hello');
+    jest.runAllTimers();
 
     expect(document.querySelector(containerClass)).not.toBe(null);
-    clearLazyContainer();
+    unmountLazyContainer();
   });
 
   it("Should be possible to configure the ToastContainer even when it's lazy mounted", () => {
-    ensureToastContainerIsNotMounted();
-
+    ensureLazyContainerIsNotMounted();
     toast.configure({
       rtl: true
     });
+
     toast('hello');
+    jest.runAllTimers();
 
     expect(document.querySelector(containerClass)).not.toBe(null);
     expect(document.querySelector('.Toastify__toast-container--rtl')).not.toBe(
       null
     );
-    clearLazyContainer();
+    unmountLazyContainer();
   });
 
   it('Should return a new id each time we emit a notification', () => {
@@ -85,12 +87,11 @@ describe('toastify', () => {
     it('Should be able to track when toast is added or removed', () => {
       mount(<ToastContainer />);
       const fn = jest.fn();
-
       toast.onChange(fn);
 
       expect(fn).not.toHaveBeenCalled();
       toast('hello');
-
+      jest.runAllTimers();
       expect(fn).toHaveBeenCalled();
     });
 
@@ -101,17 +102,18 @@ describe('toastify', () => {
         done();
       });
       toast('hello');
+      jest.runAllTimers();
     });
   });
 
   it('Should be able remove toast programmatically', () => {
     const component = mount(<ToastContainer />);
     const id = toast('hello');
-
+    jest.runAllTimers();
     expect(component.state('toast')[0]).toBe(id);
 
     toast.dismiss(id);
-
+    jest.runAllTimers();
     expect(component.state('toast').length).toBe(0);
   });
 
@@ -119,7 +121,7 @@ describe('toastify', () => {
     it('Should be able to update an existing toast', () => {
       const component = mount(<ToastContainer />);
       const id = toast('hello');
-
+      jest.runAllTimers();
       expect(component.html()).toMatch(/hello/);
       toast.update(id, {
         render: 'foobar'
@@ -201,7 +203,7 @@ describe('toastify', () => {
     it('Should be able to tell if a toast is active based on the id as soon as the container is mounted', () => {
       mount(<ToastContainer />);
       const id = toast('hello');
-
+      jest.runAllTimers();
       expect(toast.isActive(id)).toBe(true);
     });
   });
@@ -263,6 +265,7 @@ describe('toastify', () => {
       const id = toast('Hello', {
         progress: 0.5
       });
+      jest.runAllTimers();
       expect(component.html()).toMatch(/Hello/);
 
       toast.done(id);
@@ -276,7 +279,7 @@ describe('toastify', () => {
       const id = toast('Hello', {
         progress: 1
       });
-
+      jest.runAllTimers();
       expect(component.html()).toMatch(/transform:(\s)?scaleX\(1\)/);
 
       toast.done(id, 0);
