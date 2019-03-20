@@ -6,6 +6,12 @@ export function objectValues(obj) {
   return Object.keys(obj).map(key => obj[key]);
 }
 
+export const canUseDom = !!(
+  typeof window !== 'undefined' &&
+  window.document &&
+  window.document.createElement
+);
+
 function withRequired(fn) {
   fn.isRequired = function(props, propName, componentName) {
     const prop = props[propName];

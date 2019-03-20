@@ -4,6 +4,7 @@ import { render } from 'react-dom';
 import eventManager from './utils/eventManager';
 import { POSITION, TYPE, ACTION } from './utils/constant';
 import { ToastContainer } from '.';
+import { canUseDom } from './utils/propValidator';
 
 let container = null;
 let containerDomNode = null;
@@ -11,11 +12,6 @@ let containerConfig = {};
 let queue = [];
 
 const noop = () => false;
-const canUseDom = !!(
-  typeof window !== 'undefined' &&
-  window.document &&
-  window.document.createElement
-);
 
 /**
  * Merge provided options with the defaults settings and generate the toastId

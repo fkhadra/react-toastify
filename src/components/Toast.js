@@ -4,7 +4,11 @@ import cx from 'classnames';
 
 import ProgressBar from './ProgressBar';
 import { POSITION, TYPE } from './../utils/constant';
-import { falseOrDelay, objectValues } from './../utils/propValidator';
+import {
+  falseOrDelay,
+  objectValues,
+  canUseDom
+} from './../utils/propValidator';
 
 function getX(e) {
   return e.targetTouches && e.targetTouches.length >= 1
@@ -19,6 +23,8 @@ function getY(e) {
 }
 
 const noop = () => {};
+const iLoveInternetExplorer =
+  canUseDom && /(msie|trident)/i.test(navigator.userAgent);
 
 class Toast extends Component {
   static propTypes = {
@@ -236,7 +242,13 @@ class Toast extends Component {
   };
 
   // Maybe let the end user tweak it later on
+  // hmmm no comment about ie. I hope this browser die one day
+  // don't want to fix the issue on this browser, my head is hurting too much
   onExitTransitionEnd = () => {
+    if (iLoveInternetExplorer) {
+      this.props.onExited();
+      return;
+    }
     const height = this.ref.scrollHeight;
     const style = this.ref.style;
 
