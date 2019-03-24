@@ -25,7 +25,7 @@ describe('EventManager', () => {
     expect(done => {
       eventManager.emit('bar');
       done();
-    })
+    });
   });
 
   it('Should be able to remove event', () => {

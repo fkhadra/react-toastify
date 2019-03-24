@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 import ProgressBar from './ProgressBar';
-import { POSITION, TYPE } from './../utils/constant';
+import { POSITION, TYPE, NOOP } from './../utils/constant';
 import {
   falseOrDelay,
   objectValues,
@@ -22,7 +22,6 @@ function getY(e) {
     : e.clientY;
 }
 
-const noop = () => {};
 const iLoveInternetExplorer =
   canUseDom && /(msie|trident)/i.test(navigator.userAgent);
 
@@ -63,8 +62,8 @@ class Toast extends Component {
   static defaultProps = {
     type: TYPE.DEFAULT,
     in: true,
-    onOpen: noop,
-    onClose: noop,
+    onOpen: NOOP,
+    onClose: NOOP,
     className: null,
     bodyClassName: null,
     progressClassName: null,

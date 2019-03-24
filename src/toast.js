@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 
 import eventManager from './utils/eventManager';
-import { POSITION, TYPE, ACTION } from './utils/constant';
+import { POSITION, TYPE, ACTION, NOOP } from './utils/constant';
 import { ToastContainer } from '.';
 import { canUseDom } from './utils/propValidator';
 
@@ -10,8 +10,6 @@ let container = null;
 let containerDomNode = null;
 let containerConfig = {};
 let queue = [];
-
-const noop = () => false;
 
 /**
  * Merge provided options with the defaults settings and generate the toastId
@@ -60,74 +58,99 @@ function emitEvent(content, options) {
   return options.toastId;
 }
 
-const toast = Object.assign(
-  (content, options) =>
-    emitEvent(
-      content,
-      mergeOptions(options, (options && options.type) || TYPE.DEFAULT)
-    ),
-  {
-    success: (content, options) =>
-      emitEvent(content, mergeOptions(options, TYPE.SUCCESS)),
-    info: (content, options) =>
-      emitEvent(content, mergeOptions(options, TYPE.INFO)),
-    warn: (content, options) =>
-      emitEvent(content, mergeOptions(options, TYPE.WARNING)),
-    warning: (content, options) =>
-      emitEvent(content, mergeOptions(options, TYPE.WARNING)),
-    error: (content, options) =>
-      emitEvent(content, mergeOptions(options, TYPE.ERROR)),
-    dismiss: (id = null) => container && eventManager.emit(ACTION.CLEAR, id),
-    isActive: noop,
-    update(toastId, options) {
-      // if you call toast and toast.update directly nothing will be displayed
-      // this is way I defered the update
-      setTimeout(() => {
-        if (container && typeof container.collection[toastId] !== 'undefined') {
-          const {
-            options: oldOptions,
-            content: oldContent
-          } = container.collection[toastId];
+const toast = (content, options) =>
+  emitEvent(
+    content,
+    mergeOptions(options, (options && options.type) || TYPE.DEFAULT)
+  );
 
-          const nextOptions = {
-            ...oldOptions,
-            ...options,
-            toastId: options.toastId || toastId
-          };
-
-          if (!options.toastId || options.toastId === toastId) {
-            nextOptions.updateId = generateToastId();
-          } else {
-            nextOptions.staleToastId = toastId;
-          }
-
-          const content =
-            typeof nextOptions.render !== 'undefined'
-              ? nextOptions.render
-              : oldContent;
-          delete nextOptions.render;
-          emitEvent(content, nextOptions);
-        }
-      }, 0);
-    },
-    done(id, progress = 1) {
-      toast.update(id, {
-        progress,
-        isProgressDone: true
-      });
-    },
-    onChange(callback) {
-      if (typeof callback === 'function') {
-        eventManager.on(ACTION.ON_CHANGE, callback);
-      }
-    },
-    configure(config) {
-      containerConfig = config;
-    },
-    POSITION,
-    TYPE
+/**
+ * For each available position create a shortcut
+ */
+for (const pos in TYPE) {
+  if (TYPE[pos] !== TYPE.DEFAULT) {
+    toast[TYPE[pos].toLowerCase()] = (content, options) =>
+      emitEvent(
+        content,
+        mergeOptions(options, (options && options.type) || TYPE[pos])
+      );
   }
-);
+}
+
+/**
+ * Maybe I should remove warning in favor of warn, I don't know
+ */
+toast.warn = toast.warning;
+
+/**
+ * Remove toast programmaticaly
+ */
+toast.dismiss = (id = null) => container && eventManager.emit(ACTION.CLEAR, id);
+
+/**
+ * Do nothing until the container is mounted. Reassigned later
+ */
+toast.isActive = NOOP;
+
+toast.update = (toastId, options) => {
+  // if you call toast and toast.update directly nothing will be displayed
+  // this is way I defered the update
+  setTimeout(() => {
+    if (container && typeof container.collection[toastId] !== 'undefined') {
+      const { options: oldOptions, content: oldContent } = container.collection[
+        toastId
+      ];
+
+      const nextOptions = {
+        ...oldOptions,
+        ...options,
+        toastId: options.toastId || toastId
+      };
+
+      if (!options.toastId || options.toastId === toastId) {
+        nextOptions.updateId = generateToastId();
+      } else {
+        nextOptions.staleToastId = toastId;
+      }
+
+      const content =
+        typeof nextOptions.render !== 'undefined'
+          ? nextOptions.render
+          : oldContent;
+      delete nextOptions.render;
+      emitEvent(content, nextOptions);
+    }
+  }, 0);
+};
+
+/**
+ * Used for controlled progress bar.
+ */
+toast.done = (id, progress = 1) => {
+  toast.update(id, {
+    progress,
+    isProgressDone: true
+  });
+};
+
+/**
+ * Track changes. The callback get the number of toast displayed
+ */
+toast.onChange = callback => {
+  if (typeof callback === 'function') {
+    eventManager.on(ACTION.ON_CHANGE, callback);
+  }
+};
+
+/**
+ * Configure the ToastContainer when lazy mounted
+ */
+toast.configure = config => {
+  containerConfig = config;
+};
+
+toast.POSITION = POSITION;
+toast.TYPE = TYPE;
 
 /**
  * Wait until the ToastContainer is mounted to dispatch the toast
@@ -146,8 +169,8 @@ eventManager
   })
   .on(ACTION.WILL_UNMOUNT, () => {
     container = null;
-    toast.isActive = noop;
-    
+    toast.isActive = NOOP;
+
     if (canUseDom && containerDomNode) {
       document.body.removeChild(containerDomNode);
     }

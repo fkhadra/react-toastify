@@ -1,7 +1,6 @@
 import React from 'react';
 import Transition from 'react-transition-group/Transition';
-
-const noop = () => {};
+import { NOOP } from './constant';
 
 export default function({
   enter,
@@ -53,7 +52,7 @@ export default function({
         }
         onEnter={onEnter}
         onEntered={onEntered}
-        onExit={preventExitTransition ? noop : onExit}
+        onExit={preventExitTransition ? NOOP : onExit}
       >
         {children}
       </Transition>

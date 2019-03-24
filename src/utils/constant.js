@@ -21,3 +21,5 @@ export const ACTION = {
   WILL_UNMOUNT: 3,
   ON_CHANGE: 4
 };
+
+export const NOOP = () => {};
