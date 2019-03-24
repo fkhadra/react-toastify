@@ -41,9 +41,10 @@ function getToastId(options) {
 }
 
 /**
- * Dispatch toast. If the container is not mounted, the toast is enqueued
+ * If the container is not mounted, the toast is enqueued and
+ * the container lazy mounted
  */
-function emitEvent(content, options) {
+function dispatchToast(content, options) {
   if (container) {
     eventManager.emit(ACTION.SHOW, content, options);
   } else {
@@ -59,7 +60,7 @@ function emitEvent(content, options) {
 }
 
 const toast = (content, options) =>
-  emitEvent(
+  dispatchToast(
     content,
     mergeOptions(options, (options && options.type) || TYPE.DEFAULT)
   );
@@ -70,7 +71,7 @@ const toast = (content, options) =>
 for (const pos in TYPE) {
   if (TYPE[pos] !== TYPE.DEFAULT) {
     toast[TYPE[pos].toLowerCase()] = (content, options) =>
-      emitEvent(
+      dispatchToast(
         content,
         mergeOptions(options, (options && options.type) || TYPE[pos])
       );
@@ -118,7 +119,7 @@ toast.update = (toastId, options) => {
           ? nextOptions.render
           : oldContent;
       delete nextOptions.render;
-      emitEvent(content, nextOptions);
+      dispatchToast(content, nextOptions);
     }
   }, 0);
 };

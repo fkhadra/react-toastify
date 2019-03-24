@@ -207,6 +207,11 @@ interface ToastOptions extends CommonOptions {
    * Set the percentage for the controlled progress bar. `Value must be between 0 and 1.`
    */
   progress?: number;
+
+  /**
+   * Add a delay in ms before the toast appear.
+   */
+  delay?: number;
 }
 
 interface UpdateOptions extends ToastOptions {

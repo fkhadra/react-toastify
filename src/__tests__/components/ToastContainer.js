@@ -8,7 +8,6 @@ import toast from './../../toast';
 import { ACTION } from './../../utils/constant';
 import eventManager from './../../utils/eventManager';
 
-jest.useFakeTimers();
 
 function hasProp(obj, key) {
   return Object.prototype.hasOwnProperty.call(obj, key);
@@ -21,6 +20,11 @@ function getToastProps(component) {
 
   return toast.options;
 }
+
+beforeEach(() => {
+  jest.useFakeTimers();
+})
+
 describe('ToastContainer', () => {
   it('Should bind event when mounted and unbind them when unmounted', () => {
     const component = mount(<ToastContainer />);
@@ -164,6 +168,16 @@ describe('ToastContainer', () => {
 
     jest.runAllTimers();
     expect(component.html()).not.toMatch(/toastify__close/);
+  });
+
+  // TODO: rewrite this test properly. 
+  it('Should be able to delay toast rendering', () => {
+    const component= mount(<ToastContainer />);
+    toast('hello', { delay: 1000 });
+
+    jest.runAllTimers();
+
+    expect(component.html()).toMatch('hello');
   });
 
   it('Should use default CloseButton when toast option set to true and ToastContainer options is false', () => {
