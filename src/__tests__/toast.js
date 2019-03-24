@@ -233,21 +233,11 @@ describe('toastify', () => {
     toast.warn('plop');
     jest.runAllTimers();
 
-    // Remove default types as there is no shortcut for that one
-    const expectedTypes = Object.keys(TYPE)
-      .map(k => TYPE[k])
-      .sort();
+    const html = component.html();
 
-    // Array unique since warn and warning use the same type
-    const typesToMatch = [
-      ...new Set(
-        Object.keys(component.instance().collection).map(
-          k => component.instance().collection[k].options.type
-        )
-      )
-    ].sort();
-
-    expect(expectedTypes).toEqual(typesToMatch);
+    Object.keys(TYPE).forEach(k => {
+      expect(html.includes(`--${TYPE[k]}`)).toBe(true);
+    });
   });
 
   describe('Controlled progress bar', () => {

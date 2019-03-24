@@ -14,9 +14,7 @@
       {
         "loose": true
       }
-    ],
-    "@babel/plugin-transform-object-assign",
-    "@babel/plugin-transform-spread"
+    ]
   ],
   "env": {
     "test": {
