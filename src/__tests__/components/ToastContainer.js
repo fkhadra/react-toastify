@@ -8,7 +8,6 @@ import toast from './../../toast';
 import { ACTION } from './../../utils/constant';
 import eventManager from './../../utils/eventManager';
 
-
 function hasProp(obj, key) {
   return Object.prototype.hasOwnProperty.call(obj, key);
 }
@@ -23,7 +22,7 @@ function getToastProps(component) {
 
 beforeEach(() => {
   jest.useFakeTimers();
-})
+});
 
 describe('ToastContainer', () => {
   it('Should bind event when mounted and unbind them when unmounted', () => {
@@ -170,9 +169,9 @@ describe('ToastContainer', () => {
     expect(component.html()).not.toMatch(/toastify__close/);
   });
 
-  // TODO: rewrite this test properly. 
+  // TODO: rewrite this test properly.
   it('Should be able to delay toast rendering', () => {
-    const component= mount(<ToastContainer />);
+    const component = mount(<ToastContainer />);
     toast('hello', { delay: 1000 });
 
     jest.runAllTimers();

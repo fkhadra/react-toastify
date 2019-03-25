@@ -55,7 +55,7 @@ describe('toastify', () => {
     unmountLazyContainer();
   });
 
-  it("Should be possible to disable the lazy container", () => {
+  it('Should be possible to disable the lazy container', () => {
     ensureLazyContainerIsNotMounted();
     toast.useLazyContainer(false);
     toast('hello');

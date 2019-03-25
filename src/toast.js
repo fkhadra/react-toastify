@@ -157,7 +157,7 @@ toast.configure = config => {
  */
 toast.useLazyContainer = useLazy => {
   lazy = useLazy;
-}
+};
 
 toast.POSITION = POSITION;
 toast.TYPE = TYPE;

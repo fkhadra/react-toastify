@@ -225,18 +225,20 @@ class Toast extends Component {
   };
 
   onDragTransitionEnd = () => {
-    const { top, bottom, left, right } = this.boundingRect;
+    if (this.boundingRect) {
+      const { top, bottom, left, right } = this.boundingRect;
 
-    if (
-      this.props.pauseOnHover &&
-      this.drag.x >= left &&
-      this.drag.x <= right &&
-      this.drag.y >= top &&
-      this.drag.y <= bottom
-    ) {
-      this.pauseToast();
-    } else {
-      this.playToast();
+      if (
+        this.props.pauseOnHover &&
+        this.drag.x >= left &&
+        this.drag.x <= right &&
+        this.drag.y >= top &&
+        this.drag.y <= bottom
+      ) {
+        this.pauseToast();
+      } else {
+        this.playToast();
+      }
     }
   };
 

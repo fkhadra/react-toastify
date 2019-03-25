@@ -195,9 +195,9 @@ class ToastContainer extends Component {
     return closeButton === false
       ? false
       : cloneElement(closeButton, {
-        closeToast: () => this.removeToast(toastId),
-        type: type
-      });
+          closeToast: () => this.removeToast(toastId),
+          type: type
+        });
   }
 
   getAutoCloseDelay(toastAutoClose) {
@@ -272,7 +272,7 @@ class ToastContainer extends Component {
           : this.props.draggable,
       draggablePercent:
         typeof options.draggablePercent === 'number' &&
-          !isNaN(options.draggablePercent)
+        !isNaN(options.draggablePercent)
           ? options.draggablePercent
           : this.props.draggablePercent,
       closeOnClick:
@@ -316,19 +316,19 @@ class ToastContainer extends Component {
         this.appendToast(toastOptions, content, options.staleToastId);
       }, delay);
     } else {
-     this.appendToast(toastOptions, content, options.staleToastId);
+      this.appendToast(toastOptions, content, options.staleToastId);
     }
   }
 
   appendToast(options, content, staleToastId) {
     const { id, updateId } = options;
-    
+
     this.collection = {
       ...this.collection,
       [id]: {
         options,
         content,
-        position: options.position,
+        position: options.position
       }
     };
 
