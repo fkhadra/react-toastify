@@ -10,6 +10,7 @@ let container = null;
 let containerDomNode = null;
 let containerConfig = {};
 let queue = [];
+let lazy = true;
 
 /**
  * Merge provided options with the defaults settings and generate the toastId
@@ -49,7 +50,7 @@ function dispatchToast(content, options) {
     eventManager.emit(ACTION.SHOW, content, options);
   } else {
     queue.push({ action: ACTION.SHOW, content, options });
-    if (canUseDom) {
+    if (lazy && canUseDom) {
       containerDomNode = document.createElement('div');
       document.body.appendChild(containerDomNode);
       render(<ToastContainer {...containerConfig} />, containerDomNode);
@@ -149,6 +150,14 @@ toast.onChange = callback => {
 toast.configure = config => {
   containerConfig = config;
 };
+
+/**
+ * Opt-in/out for lazy mounted container
+ * By default it's on
+ */
+toast.useLazyContainer = useLazy => {
+  lazy = useLazy;
+}
 
 toast.POSITION = POSITION;
 toast.TYPE = TYPE;

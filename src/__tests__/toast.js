@@ -55,6 +55,15 @@ describe('toastify', () => {
     unmountLazyContainer();
   });
 
+  it("Should be possible to disable the lazy container", () => {
+    ensureLazyContainerIsNotMounted();
+    toast.useLazyContainer(false);
+    toast('hello');
+    jest.runAllTimers();
+
+    ensureLazyContainerIsNotMounted();
+  });
+
   it('Should return a new id each time we emit a notification', () => {
     const firstId = toast('Hello');
     const secondId = toast('Hello');
