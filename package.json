@@ -25,8 +25,8 @@
   ],
   "scripts": {
     "start": "npm run sass && webpack-dev-server --config ./webpack.config.dev.js",
-    "test": "cross-env NODE_ENV=test jest",
-    "test:coverage": "cross-env NODE_ENV=test jest --coverage && cat ./coverage/lcov.info | coveralls",
+    "test": "jest",
+    "test:coverage": "jest --coverage && cat ./coverage/lcov.info | coveralls",
     "lint": "eslint src/",
     "lint:fix": "eslint --fix src/",
     "prettier-all": "prettier --single-quote --write 'src/**/*.js'",

@@ -20,6 +20,14 @@
   ],
   "env": {
     "test": {
+      "presets": [
+        [
+          "@babel/preset-env",
+          {
+            "loose": true,
+          }
+        ],
+      ],
       "plugins": ["@babel/transform-modules-commonjs"]
     }
   }
