@@ -250,22 +250,22 @@ interface Toast {
   /**
    * Shorthand to display toast of type 'success'.
    */
-  success(content: ToastContent, options?: ToastOptions): number;
+  success(content: ToastContent, options?: ToastOptions): ToastId;
 
   /**
    * Shorthand to display toast of type 'info'.
    */
-  info(content: ToastContent, options?: ToastOptions): number;
+  info(content: ToastContent, options?: ToastOptions): ToastId;
 
   /**
    * Shorthand to display toast of type 'warning'.
    */
-  warn(content: ToastContent, options?: ToastOptions): number;
+  warn(content: ToastContent, options?: ToastOptions): ToastId;
 
   /**
    * Shorthand to display toast of type 'error'.
    */
-  error(content: ToastContent, options?: ToastOptions): number;
+  error(content: ToastContent, options?: ToastOptions): ToastId;
 
   /**
    * Check if a toast is active by passing the `toastId`.
@@ -308,7 +308,7 @@ interface Toast {
   /**
    * Display a toast without a specific type.
    */
-  (content: ToastContent, options?: ToastOptions): number;
+  (content: ToastContent, options?: ToastOptions): ToastId;
 
   /**
    * Helper to set notification type
