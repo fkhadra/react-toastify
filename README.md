@@ -1,16 +1,24 @@
-# React Toastify [![Build Status](https://travis-ci.org/fkhadra/react-toastify.svg?branch=master)](https://travis-ci.org/fkhadra/react-toastify) [![npm](https://img.shields.io/npm/dm/react-toastify.svg)]() [![npm](https://img.shields.io/npm/v/react-toastify.svg)]() [![license](https://img.shields.io/github/license/fkhadra/react-toastify.svg?maxAge=2592000)]() [![Coverage Status](https://coveralls.io/repos/github/fkhadra/react-toastify/badge.svg?branch=master)](https://coveralls.io/github/fkhadra/react-toastify?branch=master)
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/5574267/54994574-df4c1380-4fc4-11e9-8509-1d3aedbc7b96.png" alt="react-toastify logo"/>
+</p>
 
+![Travis (.org)](https://img.shields.io/travis/fkhadra/react-toastify.svg?label=%F0%9F%9A%A7Build&style=for-the-badge)
+![npm](https://img.shields.io/npm/dm/react-toastify.svg?label=%E2%8F%ACdownloads&style=for-the-badge)
+![npm](https://img.shields.io/npm/v/react-toastify.svg?style=for-the-badge)
+![NPM](https://img.shields.io/npm/l/react-toastify.svg?label=%F0%9F%93%9Clicense&style=for-the-badge)
+![Coveralls github](https://img.shields.io/coveralls/github/fkhadra/react-toastify.svg?label=%E2%9B%B1coverage&style=for-the-badge)
 ![React toastify](https://user-images.githubusercontent.com/5574267/35336500-e58f35b6-0118-11e8-800b-2da6594fc700.gif "React toastify")
 
 
-🎉 React-Toastify allow you to add notification to your app with ease. No bullshit !
+🎉 React-Toastify allow you to add notification to your app with ease. No more nonsense!
 
   - [Demo](#demo)
   - [Installation](#installation)
   - [Features](#features)
-  - [From v3 to v4](#from-v3-to-v4)
   - [Usage](#usage)
     - [One component to rule them all](#one-component-to-rule-them-all)
+      - [One ToastContainer to render them](#one-toastcontainer-to-render-them)
+      - [What if I told you that the ToastContainer is optional](#what-if-i-told-you-that-the-toastcontainer-is-optional)
     - [Positioning toast](#positioning-toast)
     - [Set autoclose delay or disable it](#set-autoclose-delay-or-disable-it)
     - [Render a component](#render-a-component)
@@ -19,6 +27,7 @@
     - [Pause toast timer when the window loses focus](#pause-toast-timer-when-the-window-loses-focus)
     - [Use a custom id](#use-a-custom-id)
     - [Prevent duplicate](#prevent-duplicate)
+    - [Delay notification appearance](#delay-notification-appearance)
     - [Use a controlled progress bar](#use-a-controlled-progress-bar)
     - [Update a toast](#update-a-toast)
       - [Basic example](#basic-example)
@@ -59,7 +68,7 @@
 
 ## Demo
 
-[A demo is worth thousand word](https://fkhadra.github.io/react-toastify/)
+[A demo is worth a thousand words](https://fkhadra.github.io/react-toastify/)
 
 ## Installation
 
@@ -70,7 +79,7 @@ $ yarn add react-toastify
 
 ## Features
 
-- Easy to setup for real, you can make it works in less than 10sec!
+- Easy to setup for real, you can make it work in less than 10sec!
 - Super easy to customize
 - RTL support
 - Swipe to close 👌
@@ -82,20 +91,13 @@ $ yarn add react-toastify
 - Fancy progress bar to display the remaining time
 - Possibility to update a toast
 - You can controll the progress bar a la npgrogress 😲
-
-## From v3 to v4
-
-Glamor has been dropped to switch back to scss due to user's feedback. You can read more about that choice if you take a look at the issues history.
-- Passing glamor rule to className is still working 😎.
-- A css file needs to be imported now.
-- Toast are now draggable, you can swipe to close
-- New built-in transition added
-- Playground for contributor
-- You may use glamorous or any other css-in-js library that relies on glamor. (Haven't been fully tested)
+- Starting v5 the `ToastContainer` is optional 😎
 
 ## Usage
 
 ### One component to rule them all
+
+#### One ToastContainer to render them
 
 The toasts inherit ToastContainer's props. **Props defined on toast supersede ToastContainer's props.**
 
@@ -121,7 +123,42 @@ The toasts inherit ToastContainer's props. **Props defined on toast supersede To
 ```
 
 Remember to render the `ToastContainer` *once* in your application tree. 
-If you can't figure out where to put it, rendering it in the application root would be the best bet. 
+If you can't figure out where to put it, rendering it in the application root would be the best bet.
+
+#### What if I told you that the ToastContainer is optional
+
+```javascript
+  import React, { Component } from 'react';
+  import { toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
+
+  const App = () => {
+    const notify = () => toast("Wow so easy !");
+    
+    return <button onClick={notify}>Notify !</button>;
+  }
+```
+
+The library will mount a `ToastContainer` for you if none is mounted. 
+
+You can disable this feature if you want to.
+
+```js
+toast.useLazyContainer(false);
+```
+
+#### Configure the ToastContainer when it is mounted on demand
+
+The configure function accept the same props as the ToastContainer. As soon as the container is
+rendered call to configure will have no effect.
+
+```js
+toast.configure({
+  autoClose: 8000,
+  draggable: false,
+  //etc you get the idea
+});
+```
 
 ### Positioning toast
 
@@ -357,6 +394,15 @@ To prevent duplicates, you can check if a given toast is active by calling `toas
       );
     }
   }
+```
+
+### Delay notification appearance
+
+You can delay the notification appearance as shown below. Under the hood the lib simply use `setTimeout`. 
+
+```js
+toast('Show now');
+toast('Show after 1sec', { delay: 1000 })
 ```
 
 ### Use a controlled progress bar
@@ -653,6 +699,14 @@ Sometimes you don't want to display a close button. It can be removed globally o
 ```js
     toast("hello", {
       closeButton: false
+    })
+```
+
+-- if you removed it globally, you can display the default Button per toast (or you can set your custom button)
+
+```js
+    toast("hello", {
+      closeButton: true // or <FontAwesomeCloseButton />
     })
 ```
 
@@ -1121,7 +1175,7 @@ The **toastId** can be used to remove a toast programmatically or to check if th
     - `onOpen`: Called inside componentDidMount
     - `onClose`: Called inside componentWillUnmount
     - `autoClose`: same as ToastContainer.
-    - `closeButton`: same as ToastContainer.
+    - `closeButton`: `false` to disable, a `React Component` to replace or `true` to display the default button.
     - `transition`: same as ToastContainer.
     - `closeOnClick`: same as ToastContainer.
     - `hideProgressBar`: same as ToastContainer.
@@ -1136,6 +1190,7 @@ The **toastId** can be used to remove a toast programmatically or to check if th
     - `toastId`: optional integer or string to manually set a toastId. If an invalid type is provided a generated toastId will be used
     - `progress`: a value between 0..1 to control the progress bar 
     - `render`: string or React Element, only available when calling update
+    - `delay`: a number to let you delay the toast appearance
 
 :warning:️ *Toast options supersede ToastContainer props* :warning:
 
@@ -1170,7 +1225,13 @@ toast.update(toastId, {
   type: toast.TYPE.INFO,
   render: <Img foo={bar}/>
 });
-toast.done(toastId);
+toast.done(toastId) // completes the controlled progress bar
+toast.configure({
+  autoClose: 8000,
+  draggable: false,
+  //same as ToastContainer props
+})
+toast.useLazyContainer(false) // disable lazy container
 ```
 
 ### cssTransition
@@ -1216,6 +1277,8 @@ You can browse them all [here](https://github.com/fkhadra/react-toastify/release
 ## Contribute
 
 Show your ❤️ and support by giving a ⭐. Any suggestions are welcome ! Take a look at the contributing guide.
+
+You can also find me on [reactiflux](https://www.reactiflux.com/). My pseudo is Fadi.
 
 ## License
 

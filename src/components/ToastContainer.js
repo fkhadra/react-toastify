@@ -10,7 +10,6 @@ import { POSITION, ACTION } from './../utils/constant';
 import eventManager from './../utils/eventManager';
 import {
   falseOrDelay,
-  falseOrElement,
   isValidDelay,
   objectValues
 } from './../utils/propValidator';
@@ -30,7 +29,7 @@ class ToastContainer extends Component {
     /**
      * Disable or set a custom react element for the close button
      */
-    closeButton: falseOrElement,
+    closeButton: PropTypes.oneOfType([PropTypes.node, PropTypes.bool]),
 
     /**
      * Hide or not progress bar when autoClose is enabled
@@ -155,8 +154,10 @@ class ToastContainer extends Component {
 
   componentDidMount() {
     eventManager
-      .on(ACTION.SHOW, (content, options) => this.show(content, options))
-      .on(ACTION.CLEAR, id => (!id ? this.clear() : this.removeToast(id)))
+      .on(ACTION.SHOW, (content, options) => this.buildToast(content, options))
+      .on(ACTION.CLEAR, id =>
+        id == null ? this.clear() : this.removeToast(id)
+      )
       .emit(ACTION.DID_MOUNT, this);
   }
 
@@ -187,6 +188,8 @@ class ToastContainer extends Component {
 
     if (isValidElement(toastClose) || toastClose === false) {
       closeButton = toastClose;
+    } else if (toastClose === true) {
+      closeButton = <CloseButton />;
     }
 
     return closeButton === false
@@ -226,7 +229,7 @@ class ToastContainer extends Component {
     return null;
   }
 
-  show(content, options) {
+  buildToast(content, { delay, ...options }) {
     if (!this.canBeRendered(content)) {
       throw new Error(
         `The element you provided cannot be rendered. You provided an element of type ${typeof content}`
@@ -308,35 +311,35 @@ class ToastContainer extends Component {
       content = content({ closeToast });
     }
 
+    if (isValidDelay(delay)) {
+      setTimeout(() => {
+        this.appendToast(toastOptions, content, options.staleToastId);
+      }, delay);
+    } else {
+      this.appendToast(toastOptions, content, options.staleToastId);
+    }
+  }
+
+  appendToast(options, content, staleToastId) {
+    const { id, updateId } = options;
+
     this.collection = {
       ...this.collection,
-      [toastId]: {
-        position: toastOptions.position,
-        options: toastOptions,
-        content: content
+      [id]: {
+        options,
+        content,
+        position: options.position
       }
     };
 
     this.setState(
       {
-        toast: (toastOptions.updateId
+        toast: (updateId
           ? [...this.state.toast]
-          : [...this.state.toast, toastId]
-        ).filter(id => id !== options.staleToastId)
+          : [...this.state.toast, id]
+        ).filter(id => id !== staleToastId)
       },
       this.dispatchChange
-    );
-  }
-
-  makeToast(content, options) {
-    return (
-      <Toast
-        {...options}
-        isDocumentHidden={this.state.isDocumentHidden}
-        key={`toast-${options.key}`}
-      >
-        {content}
-      </Toast>
     );
   }
 
@@ -357,7 +360,15 @@ class ToastContainer extends Component {
       toastToRender[position] || (toastToRender[position] = []);
 
       if (this.state.toast.indexOf(options.id) !== -1) {
-        toastToRender[position].push(this.makeToast(content, options));
+        toastToRender[position].push(
+          <Toast
+            {...options}
+            isDocumentHidden={this.state.isDocumentHidden}
+            key={`toast-${options.key}`}
+          >
+            {content}
+          </Toast>
+        );
       } else {
         toastToRender[position].push(null);
         delete this.collection[toastId];

@@ -280,7 +280,20 @@ describe('Toast', () => {
 
       expect(component.state('isRunning')).toBe(true);
 
-      // simulate transition end
+      // BoundingClientRect for Position top right
+      component.instance().boundingRect = {
+        top: 20,
+        right: 846,
+        bottom: 84,
+        left: 534
+      };
+
+      // Cursor inside the toast
+      component.instance().drag = {
+        x: 600,
+        y: 30
+      };
+
       component.instance().onDragTransitionEnd();
 
       expect(component.state('isRunning')).toBe(false);
@@ -291,8 +304,20 @@ describe('Toast', () => {
 
       expect(component.state('isRunning')).toBe(true);
 
-      // simulate transition end
-      component.instance().drag.x = -1;
+      // BoundingClientRect for Position top right
+      component.instance().boundingRect = {
+        top: 20,
+        right: 846,
+        bottom: 84,
+        left: 534
+      };
+
+      // Cursor outside the toast
+      component.instance().drag = {
+        x: 400,
+        y: 30
+      };
+
       component.instance().onDragTransitionEnd();
 
       expect(component.state('isRunning')).toBe(true);

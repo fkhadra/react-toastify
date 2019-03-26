@@ -1,5 +1,4 @@
 /* eslint-env jest */
-
 import React from 'react';
 import { mount } from 'enzyme';
 
@@ -10,6 +9,8 @@ import { ACTION, TYPE } from './../utils/constant';
 
 jest.useFakeTimers();
 
+const containerClass = '.Toastify__toast-container';
+
 // Clear all previous event to avoid any clash between tests
 beforeEach(() => {
   eventManager
@@ -18,17 +19,49 @@ beforeEach(() => {
     .off(ACTION.ON_CHANGE);
 });
 
+function ensureLazyContainerIsNotMounted() {
+  expect(document.querySelector(containerClass)).toBe(null);
+}
+
+function unmountLazyContainer() {
+  eventManager.emit(ACTION.WILL_UNMOUNT);
+  jest.runAllTimers();
+  expect(document.querySelector(containerClass)).toBe(null);
+}
+
 describe('toastify', () => {
-  it('Should emit notification only if a container is mounted', () => {
-    const fn = jest.fn();
-
-    eventManager.on(ACTION.SHOW, fn);
+  it('Should lazy mount a ToastContainer if it is not mounted', () => {
+    ensureLazyContainerIsNotMounted();
     toast('hello');
-    expect(fn).not.toHaveBeenCalled();
-
-    mount(<ToastContainer />);
     jest.runAllTimers();
-    expect(fn).toHaveBeenCalled();
+
+    expect(document.querySelector(containerClass)).not.toBe(null);
+    unmountLazyContainer();
+  });
+
+  it("Should be possible to configure the ToastContainer even when it's lazy mounted", () => {
+    ensureLazyContainerIsNotMounted();
+    toast.configure({
+      rtl: true
+    });
+
+    toast('hello');
+    jest.runAllTimers();
+
+    expect(document.querySelector(containerClass)).not.toBe(null);
+    expect(document.querySelector('.Toastify__toast-container--rtl')).not.toBe(
+      null
+    );
+    unmountLazyContainer();
+  });
+
+  it('Should be possible to disable the lazy container', () => {
+    ensureLazyContainerIsNotMounted();
+    toast.useLazyContainer(false);
+    toast('hello');
+    jest.runAllTimers();
+
+    ensureLazyContainerIsNotMounted();
   });
 
   it('Should return a new id each time we emit a notification', () => {
@@ -64,10 +97,9 @@ describe('toastify', () => {
       mount(<ToastContainer />);
       const fn = jest.fn();
       toast.onChange(fn);
+
       expect(fn).not.toHaveBeenCalled();
-
       toast('hello');
-
       jest.runAllTimers();
       expect(fn).toHaveBeenCalled();
     });
@@ -86,7 +118,6 @@ describe('toastify', () => {
   it('Should be able remove toast programmatically', () => {
     const component = mount(<ToastContainer />);
     const id = toast('hello');
-
     jest.runAllTimers();
     expect(component.state('toast')[0]).toBe(id);
 
@@ -99,7 +130,6 @@ describe('toastify', () => {
     it('Should be able to update an existing toast', () => {
       const component = mount(<ToastContainer />);
       const id = toast('hello');
-
       jest.runAllTimers();
       expect(component.html()).toMatch(/hello/);
       toast.update(id, {
@@ -182,7 +212,6 @@ describe('toastify', () => {
     it('Should be able to tell if a toast is active based on the id as soon as the container is mounted', () => {
       mount(<ToastContainer />);
       const id = toast('hello');
-
       jest.runAllTimers();
       expect(toast.isActive(id)).toBe(true);
     });
@@ -213,21 +242,11 @@ describe('toastify', () => {
     toast.warn('plop');
     jest.runAllTimers();
 
-    // Remove default types as there is no shortcut for that one
-    const expectedTypes = Object.keys(TYPE)
-      .map(k => TYPE[k])
-      .sort();
+    const html = component.html();
 
-    // Array unique since warn and warning use the same type
-    const typesToMatch = [
-      ...new Set(
-        Object.keys(component.instance().collection).map(
-          k => component.instance().collection[k].options.type
-        )
-      )
-    ].sort();
-
-    expect(expectedTypes).toEqual(typesToMatch);
+    Object.keys(TYPE).forEach(k => {
+      expect(html.includes(`--${TYPE[k]}`)).toBe(true);
+    });
   });
 
   describe('Controlled progress bar', () => {
@@ -251,8 +270,6 @@ describe('toastify', () => {
       toast.done(id);
       jest.runAllTimers();
 
-      // Ok I cheated here 💩, I'm not testing if onTransitionEnd is triggered
-      // Shame on me 😭
       expect(component.html()).toMatch(/transform:(\s)?scaleX\(1\)/);
     });
 
@@ -266,6 +283,7 @@ describe('toastify', () => {
 
       toast.done(id, 0);
       jest.runAllTimers();
+
       expect(component.html()).toMatch(/transform:(\s)?scaleX\(0\)/);
     });
   });

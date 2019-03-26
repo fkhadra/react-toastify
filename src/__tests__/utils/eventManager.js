@@ -21,10 +21,11 @@ describe('EventManager', () => {
     expect(cb).toHaveBeenCalled();
   });
 
-  it('Should return false when trying to call unbound event', () => {
-    const id = eventManager.emit('bar');
-    jest.runAllTimers();
-    expect(id).toBe(false);
+  it('Should not crash when trying to call unbound event', () => {
+    expect(done => {
+      eventManager.emit('bar');
+      done();
+    });
   });
 
   it('Should be able to remove event', () => {

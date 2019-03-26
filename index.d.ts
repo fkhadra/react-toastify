@@ -135,7 +135,7 @@ interface CommonOptions {
    * Pass a custom close button.
    * To remove the close button pass `false`
    */
-  closeButton?: React.ReactNode | false;
+  closeButton?: React.ReactNode | boolean;
 
   /**
    * An optional css class to set for the progress bar.
@@ -207,6 +207,11 @@ interface ToastOptions extends CommonOptions {
    * Set the percentage for the controlled progress bar. `Value must be between 0 and 1.`
    */
   progress?: number;
+
+  /**
+   * Add a delay in ms before the toast appear.
+   */
+  delay?: number;
 }
 
 interface UpdateOptions extends ToastOptions {
@@ -245,22 +250,22 @@ interface Toast {
   /**
    * Shorthand to display toast of type 'success'.
    */
-  success(content: ToastContent, options?: ToastOptions): number;
+  success(content: ToastContent, options?: ToastOptions): ToastId;
 
   /**
    * Shorthand to display toast of type 'info'.
    */
-  info(content: ToastContent, options?: ToastOptions): number;
+  info(content: ToastContent, options?: ToastOptions): ToastId;
 
   /**
    * Shorthand to display toast of type 'warning'.
    */
-  warn(content: ToastContent, options?: ToastOptions): number;
+  warn(content: ToastContent, options?: ToastOptions): ToastId;
 
   /**
    * Shorthand to display toast of type 'error'.
    */
-  error(content: ToastContent, options?: ToastOptions): number;
+  error(content: ToastContent, options?: ToastOptions): ToastId;
 
   /**
    * Check if a toast is active by passing the `toastId`.
@@ -290,9 +295,20 @@ interface Toast {
   done(toastId: ToastId, progress?: number): void;
 
   /**
+   * Let you define `ToastContainer` props when lazy mounted 
+   */
+  configure(config: ToastContainerProps): void;
+
+  /**
+   * Opt-in/out for lazy mounted container
+   * By default it's on
+   */
+  useLazyContainer(useLazyContainer: boolean): void;
+
+  /**
    * Display a toast without a specific type.
    */
-  (content: ToastContent, options?: ToastOptions): number;
+  (content: ToastContent, options?: ToastOptions): ToastId;
 
   /**
    * Helper to set notification type

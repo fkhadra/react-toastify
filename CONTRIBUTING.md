@@ -10,7 +10,7 @@ Please note we have a code of conduct, please follow it in all your interactions
 
 - If adding a new feature, write the corresponding test
 - Ensure that nothing get broke. You can use the playground for that
-- If applicable, pdate the readme
+- If applicable, update the readme
 - If applicable, update the typescript definition
 - Use prettier before commiting 😭
 - When solving a bug, please provide the steps to reproduce it(codesandbox is our best friend for that)

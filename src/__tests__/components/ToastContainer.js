@@ -8,8 +8,6 @@ import toast from './../../toast';
 import { ACTION } from './../../utils/constant';
 import eventManager from './../../utils/eventManager';
 
-jest.useFakeTimers();
-
 function hasProp(obj, key) {
   return Object.prototype.hasOwnProperty.call(obj, key);
 }
@@ -21,6 +19,10 @@ function getToastProps(component) {
 
   return toast.options;
 }
+
+beforeEach(() => {
+  jest.useFakeTimers();
+});
 
 describe('ToastContainer', () => {
   it('Should bind event when mounted and unbind them when unmounted', () => {
@@ -45,7 +47,6 @@ describe('ToastContainer', () => {
     // Create a toast
     toast('coucou');
     jest.runAllTimers();
-
     const props = getToastProps(component);
 
     [
@@ -64,13 +65,33 @@ describe('ToastContainer', () => {
     toast('coucou');
     toast('coucou');
     jest.runAllTimers();
-
     expect(component.state().toast).toHaveLength(2);
 
     toast.dismiss();
     jest.runAllTimers();
 
     expect(component.state().toast).toHaveLength(0);
+  });
+
+  it('Should dismiss toast with id == 0 only', () => {
+    const component = mount(<ToastContainer />);
+
+    toast('toast id 0', {
+      toastId: 0
+    });
+    toast('toast id 1', {
+      toastId: 1
+    });
+
+    jest.runAllTimers();
+
+    expect(component.state().toast).toHaveLength(2);
+
+    toast.dismiss(0);
+    jest.runAllTimers();
+
+    expect(component.state().toast).toHaveLength(1);
+    expect(component.state().toast).not.toContain(0);
   });
 
   it('Should be able to render a react element, a string, a number, a render props without crashing', () => {
@@ -88,9 +109,6 @@ describe('ToastContainer', () => {
     /*eslint no-extend-native: 0 */
     Array.prototype.reverse = jest.fn(Array.prototype.reverse);
     mount(<ToastContainer newestOnTop />);
-    toast('hello');
-    toast(123);
-    jest.runAllTimers();
 
     expect(Array.prototype.reverse).toHaveBeenCalled();
   });
@@ -112,6 +130,7 @@ describe('ToastContainer', () => {
 
     toast('hello', desiredProps);
     jest.runAllTimers();
+
     const props = getToastProps(component);
 
     expect(props).toMatchObject(desiredProps);
@@ -139,15 +158,40 @@ describe('ToastContainer', () => {
     let component = mount(<ToastContainer />);
     toast('hello');
     jest.runAllTimers();
+
     // ensure that close button is present by default
     expect(component.html()).toMatch(/✖/);
-    component.unmount();
+    toast('hello', {
+      closeButton: false
+    });
 
-    component = mount(<ToastContainer closeButton={false} />);
+    jest.runAllTimers();
+    expect(component.html()).not.toMatch(/toastify__close/);
+  });
+
+  // TODO: rewrite this test properly.
+  it('Should be able to delay toast rendering', () => {
+    const component = mount(<ToastContainer />);
+    toast('hello', { delay: 1000 });
+
+    jest.runAllTimers();
+
+    expect(component.html()).toMatch('hello');
+  });
+
+  it('Should use default CloseButton when toast option set to true and ToastContainer options is false', () => {
+    // set closeButton to false to remove it by default
+    let component = mount(<ToastContainer closeButton={false} />);
     toast('hello');
     jest.runAllTimers();
 
-    expect(component.html()).not.toMatch(/toastify__close/);
+    // ensure that close button is NOT present by default
+    expect(component.html()).not.toMatch(/✖/);
+    toast('hello', { closeButton: true });
+    jest.runAllTimers();
+
+    // now the close button should be present
+    expect(component.html()).toMatch(/✖/);
   });
 
   it('Should merge className and style', () => {
@@ -207,7 +251,6 @@ describe('ToastContainer', () => {
 
       // close the toast with the function passed to the close button
       props.closeToast();
-      jest.runAllTimers();
 
       expect(component.state().toast).toHaveLength(0);
 
@@ -222,7 +265,6 @@ describe('ToastContainer', () => {
 
       // close the toast with the function passed to the close button
       props.closeButton.props.closeToast();
-      jest.runAllTimers();
 
       expect(component.state().toast).toHaveLength(0);
     });
@@ -233,6 +275,7 @@ describe('ToastContainer', () => {
       const component = mount(<ToastContainer position={toast.POSITION[k]} />);
       const id = toast('test');
       jest.runAllTimers();
+
       expect(component.instance().collection[id].position).toBe(
         toast.POSITION[k]
       );
@@ -244,7 +287,6 @@ describe('ToastContainer', () => {
       mount(<ToastContainer />);
       toast(false);
       jest.runAllTimers();
-      jest.clearAllTimers();
     }).toThrow(/The element you provided cannot be rendered/);
   });
 

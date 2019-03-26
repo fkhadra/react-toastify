@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 import ProgressBar from './ProgressBar';
-import { POSITION, TYPE } from './../utils/constant';
+import { POSITION, TYPE, NOOP } from './../utils/constant';
 import {
-  falseOrElement,
   falseOrDelay,
-  objectValues
+  objectValues,
+  canUseDom
 } from './../utils/propValidator';
 
 function getX(e) {
@@ -22,11 +22,13 @@ function getY(e) {
     : e.clientY;
 }
 
-const noop = () => {};
+const iLoveInternetExplorer =
+  canUseDom && /(msie|trident)/i.test(navigator.userAgent);
 
 class Toast extends Component {
   static propTypes = {
-    closeButton: falseOrElement.isRequired,
+    closeButton: PropTypes.oneOfType([PropTypes.node, PropTypes.bool])
+      .isRequired,
     autoClose: falseOrDelay.isRequired,
     children: PropTypes.node.isRequired,
     closeToast: PropTypes.func.isRequired,
@@ -60,8 +62,8 @@ class Toast extends Component {
   static defaultProps = {
     type: TYPE.DEFAULT,
     in: true,
-    onOpen: noop,
-    onClose: noop,
+    onOpen: NOOP,
+    onClose: NOOP,
     className: null,
     bodyClassName: null,
     progressClassName: null,
@@ -87,6 +89,7 @@ class Toast extends Component {
     removalDistance: 0
   };
 
+  boundingRect = null;
   ref = null;
 
   componentDidMount() {
@@ -173,6 +176,7 @@ class Toast extends Component {
   onDragStart = e => {
     this.flag.canCloseOnClick = true;
     this.flag.canDrag = true;
+    this.boundingRect = this.ref.getBoundingClientRect();
 
     this.ref.style.transition = '';
 
@@ -189,6 +193,7 @@ class Toast extends Component {
 
       this.drag.x = getX(e);
       this.drag.deltaX = this.drag.x - this.drag.start;
+      this.drag.y = getY(e);
 
       // prevent false positif during a toast click
       this.drag.start !== this.drag.x && (this.flag.canCloseOnClick = false);
@@ -213,7 +218,6 @@ class Toast extends Component {
         return;
       }
 
-      this.drag.y = getY(e);
       this.ref.style.transition = 'transform 0.2s, opacity 0.2s';
       this.ref.style.transform = 'translateX(0)';
       this.ref.style.opacity = 1;
@@ -221,19 +225,46 @@ class Toast extends Component {
   };
 
   onDragTransitionEnd = () => {
-    const { top, bottom, left, right } = this.ref.getBoundingClientRect();
+    if (this.boundingRect) {
+      const { top, bottom, left, right } = this.boundingRect;
 
-    if (
-      this.props.pauseOnHover &&
-      this.drag.x >= left &&
-      this.drag.x <= right &&
-      this.drag.y >= top &&
-      this.drag.y <= bottom
-    ) {
-      this.pauseToast();
-    } else {
-      this.playToast();
+      if (
+        this.props.pauseOnHover &&
+        this.drag.x >= left &&
+        this.drag.x <= right &&
+        this.drag.y >= top &&
+        this.drag.y <= bottom
+      ) {
+        this.pauseToast();
+      } else {
+        this.playToast();
+      }
     }
+  };
+
+  // Maybe let the end user tweak it later on
+  // hmmm no comment about ie. I hope this browser die one day
+  // don't want to fix the issue on this browser, my head is hurting too much
+  onExitTransitionEnd = () => {
+    if (iLoveInternetExplorer) {
+      this.props.onExited();
+      return;
+    }
+    const height = this.ref.scrollHeight;
+    const style = this.ref.style;
+
+    requestAnimationFrame(() => {
+      style.minHeight = 'initial';
+      style.height = height + 'px';
+      style.transition = 'all 0.4s ';
+
+      requestAnimationFrame(() => {
+        style.height = 0;
+        style.padding = 0;
+        style.margin = 0;
+      });
+      setTimeout(() => this.props.onExited(), 400);
+    });
   };
 
   render() {
@@ -248,7 +279,6 @@ class Toast extends Component {
       closeToast,
       transition: Transition,
       position,
-      onExited,
       className,
       bodyClassName,
       progressClassName,
@@ -287,8 +317,7 @@ class Toast extends Component {
       <Transition
         in={this.props.in}
         appear
-        unmountOnExit
-        onExited={onExited}
+        onExited={this.onExitTransitionEnd}
         position={position}
         preventExitTransition={this.state.preventExitTransition}
       >
@@ -297,7 +326,8 @@ class Toast extends Component {
           ref={ref => (this.ref = ref)}
           onMouseDown={this.onDragStart}
           onTouchStart={this.onDragStart}
-          onTransitionEnd={this.onDragTransitionEnd}
+          onMouseUp={this.onDragTransitionEnd}
+          onTouchEnd={this.onDragTransitionEnd}
         >
           <div
             {...this.props.in && { role: role }}
