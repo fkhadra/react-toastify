@@ -300,10 +300,10 @@ interface Toast {
   configure(config: ToastContainerProps): void;
 
   /**
-   * Opt-in/out for lazy mounted container
-   * By default it's on
+   * Opt-in/out for lazy mounted container. 
+   * By default it's off
    */
-  useLazyContainer(useLazyContainer: boolean): void;
+  useLazyContainer(useLazyContainer?: boolean): void;
 
   /**
    * Display a toast without a specific type.

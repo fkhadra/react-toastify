@@ -30,8 +30,9 @@ function unmountLazyContainer() {
 }
 
 describe('toastify', () => {
-  it('Should lazy mount a ToastContainer if it is not mounted', () => {
+  it('Should lazy mount a ToastContainer if it is not mounted, when opt-in', () => {
     ensureLazyContainerIsNotMounted();
+    toast.useLazyContainer();
     toast('hello');
     jest.runAllTimers();
 
@@ -41,6 +42,7 @@ describe('toastify', () => {
 
   it("Should be possible to configure the ToastContainer even when it's lazy mounted", () => {
     ensureLazyContainerIsNotMounted();
+    toast.useLazyContainer();
     toast.configure({
       rtl: true
     });

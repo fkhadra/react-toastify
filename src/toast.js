@@ -10,7 +10,7 @@ let container = null;
 let containerDomNode = null;
 let containerConfig = {};
 let queue = [];
-let lazy = true;
+let lazy = false;
 
 /**
  * Merge provided options with the defaults settings and generate the toastId
@@ -153,10 +153,10 @@ toast.configure = config => {
 
 /**
  * Opt-in/out for lazy mounted container
- * By default it's on
+ * By default it's off
  */
 toast.useLazyContainer = useLazy => {
-  lazy = useLazy;
+  lazy = typeof useLazy === 'undefined' ? true : useLazy;
 };
 
 toast.POSITION = POSITION;

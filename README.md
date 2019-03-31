@@ -91,7 +91,7 @@ $ yarn add react-toastify
 - Fancy progress bar to display the remaining time
 - Possibility to update a toast
 - You can controll the progress bar a la npgrogress 😲
-- Starting v5 the `ToastContainer` is optional 😎
+- Starting v5 the `ToastContainer` is optional if you want to 😎
 
 ## Usage
 
@@ -132,6 +132,9 @@ If you can't figure out where to put it, rendering it in the application root wo
   import { toast } from 'react-toastify';
   import 'react-toastify/dist/ReactToastify.css';
 
+  // Call if once in your app. At the root of your app is the best place
+  toast.useLazyContainer()
+
   const App = () => {
     const notify = () => toast("Wow so easy !");
     
@@ -141,11 +144,6 @@ If you can't figure out where to put it, rendering it in the application root wo
 
 The library will mount a `ToastContainer` for you if none is mounted. 
 
-You can disable this feature if you want to.
-
-```js
-toast.useLazyContainer(false);
-```
 
 #### Configure the ToastContainer when it is mounted on demand
 
@@ -153,6 +151,7 @@ The configure function accept the same props as the ToastContainer. As soon as t
 rendered call to configure will have no effect.
 
 ```js
+toast.useLazyContainer();
 toast.configure({
   autoClose: 8000,
   draggable: false,
