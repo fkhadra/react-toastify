@@ -148,16 +148,10 @@ toast.onChange = callback => {
  * Configure the ToastContainer when lazy mounted
  */
 toast.configure = config => {
+  lazy = true;
   containerConfig = config;
 };
 
-/**
- * Opt-in/out for lazy mounted container
- * By default it's off
- */
-toast.useLazyContainer = useLazy => {
-  lazy = typeof useLazy === 'undefined' ? true : useLazy;
-};
 
 toast.POSITION = POSITION;
 toast.TYPE = TYPE;

@@ -32,7 +32,7 @@ function unmountLazyContainer() {
 describe('toastify', () => {
   it('Should lazy mount a ToastContainer if it is not mounted, when opt-in', () => {
     ensureLazyContainerIsNotMounted();
-    toast.useLazyContainer();
+    toast.configure();
     toast('hello');
     jest.runAllTimers();
 
@@ -42,7 +42,6 @@ describe('toastify', () => {
 
   it("Should be possible to configure the ToastContainer even when it's lazy mounted", () => {
     ensureLazyContainerIsNotMounted();
-    toast.useLazyContainer();
     toast.configure({
       rtl: true
     });
@@ -55,15 +54,6 @@ describe('toastify', () => {
       null
     );
     unmountLazyContainer();
-  });
-
-  it('Should be possible to disable the lazy container', () => {
-    ensureLazyContainerIsNotMounted();
-    toast.useLazyContainer(false);
-    toast('hello');
-    jest.runAllTimers();
-
-    ensureLazyContainerIsNotMounted();
   });
 
   it('Should return a new id each time we emit a notification', () => {

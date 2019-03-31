@@ -77,6 +77,8 @@ $ npm install --save react-toastify
 $ yarn add react-toastify
 ```
 
+> RC.5 `useLazyContainer has been removed. The lazy container is opt-in`
+
 ## Features
 
 - Easy to setup for real, you can make it work in less than 10sec!
@@ -132,8 +134,8 @@ If you can't figure out where to put it, rendering it in the application root wo
   import { toast } from 'react-toastify';
   import 'react-toastify/dist/ReactToastify.css';
 
-  // Call if once in your app. At the root of your app is the best place
-  toast.useLazyContainer()
+  // Call it once in your app. At the root of your app is the best place
+  toast.configure()
 
   const App = () => {
     const notify = () => toast("Wow so easy !");
@@ -151,7 +153,6 @@ The configure function accept the same props as the ToastContainer. As soon as t
 rendered call to configure will have no effect.
 
 ```js
-toast.useLazyContainer();
 toast.configure({
   autoClose: 8000,
   draggable: false,
