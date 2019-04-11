@@ -1,6 +1,6 @@
 {
   "name": "react-toastify",
-  "version": "5.0.0",
+  "version": "5.0.1-rc.1",
   "description": "React notification made easy",
   "keywords": [
     "react",
@@ -14,7 +14,7 @@
   "main": "index.js",
   "module": "esm/react-toastify.js",
   "sideEffects": [
-    "*.css" 
+    "*.css"
   ],
   "typings": "index.d.ts",
   "files": [
