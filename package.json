@@ -13,7 +13,9 @@
   ],
   "main": "index.js",
   "module": "esm/react-toastify.js",
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css" 
+  ],
   "typings": "index.d.ts",
   "files": [
     "esm",
