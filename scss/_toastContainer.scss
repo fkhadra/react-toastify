@@ -1,5 +1,6 @@
 .#{$rt-namespace}__toast-container {
     z-index: $rt-z-index;
+    -webkit-transform: translate3d(0, 0, #{$rt-z-index}px);
     position: fixed;
     padding: 4px;
     width: $rt-toast-width;
