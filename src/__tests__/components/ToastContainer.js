@@ -282,6 +282,71 @@ describe('ToastContainer', () => {
     });
   });
 
+  describe('Multiple container support', ()=> {
+    describe('Disabled', ()=> {
+      it('Should render toasts in all container', () => {
+        const toastContainerComponent1 = mount(<ToastContainer enableMultiContainer={false} />);
+        const toastContainerComponent2 = mount(<ToastContainer />);
+        const toastContainerComponent3 = mount(<ToastContainer containerId={1}/>);
+
+        toast('Toast 1');
+        toast('Toast 2', {toastContainerId: 1});
+        jest.runAllTimers();
+
+        expect(toastContainerComponent1.state().toast).toHaveLength(2);
+        expect(toastContainerComponent2.state().toast).toHaveLength(2);
+        expect(toastContainerComponent3.state().toast).toHaveLength(2);
+      });
+    });
+
+    describe('Enabled', () => {
+      describe('With containerId', () => {
+        it('Should show only related toasts aka- same containerId and toastContainerId', () => {
+          const toastContainerComponent1 = mount(<ToastContainer containerId={1} enableMultiContainer/>);
+          const toastContainerComponent2 = mount(<ToastContainer containerId={2} enableMultiContainer/>);
+
+          toast('Toast with toastContainerId 1', {toastContainerId: 1});
+          toast('Toast with toastContainerId 2', {toastContainerId: 2});
+          toast('Another toast with toastContainerId 2', {toastContainerId: 2});
+          jest.runAllTimers();
+
+          expect(toastContainerComponent1.state().toast).toHaveLength(1);
+          expect(toastContainerComponent2.state().toast).toHaveLength(2);
+        });
+
+        it('Should not display unrelated toasts', () => {
+          const toastContainerComponent = mount(<ToastContainer containerId={1} enableMultiContainer/>);
+
+          toast('Toast with toastContainerId 1', {toastContainerId: 2});
+          toast('Toast with toastContainerId 2', {toastContainerId: 2});
+          jest.runAllTimers();
+
+          expect(toastContainerComponent.state().toast).toHaveLength(0);
+        });
+      });
+
+      describe('Has no containerId', () => {
+        it('Should display toasts with no toastContainerId', () => {
+          const toastContainerComponent = mount(<ToastContainer enableMultiContainer />);
+
+          toast('Toast');
+          jest.runAllTimers();
+
+          expect(toastContainerComponent.state().toast).toHaveLength(1);
+        });
+
+        it('Should not display any toasts with toastContainerId', () => {
+          const toastContainerComponent = mount(<ToastContainer enableMultiContainer />);
+
+          toast('Toast', {toastContainerId: 1});
+          jest.runAllTimers();
+
+          expect(toastContainerComponent.state().toast).toHaveLength(0);
+        });
+      });
+    });
+  });
+
   it("Should throw an error if can't render a toast", () => {
     expect(() => {
       mount(<ToastContainer />);

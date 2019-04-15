@@ -107,7 +107,17 @@ class ToastContainer extends Component {
     /**
      * Pause the toast on focus loss
      */
-    pauseOnFocusLoss: PropTypes.bool
+    pauseOnFocusLoss: PropTypes.bool,
+
+    /**
+     * Show the toast only if it includes toastContainerId and it's the same as containerId
+     */
+    enableMultiContainer: PropTypes.bool,
+
+    /**
+     * Set id to handle multiple container
+     */
+    containerId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   };
 
   static defaultProps = {
@@ -229,11 +239,20 @@ class ToastContainer extends Component {
     return null;
   }
 
+  belongToContainer({toastContainerId}) {
+    return toastContainerId === this.props.containerId;
+  }
+
   buildToast(content, { delay, ...options }) {
     if (!this.canBeRendered(content)) {
       throw new Error(
-        `The element you provided cannot be rendered. You provided an element of type ${typeof content}`
+          `The element you provided cannot be rendered. You provided an element of type ${typeof content}`
       );
+    }
+    if (this.props.enableMultiContainer) {
+      if (!this.belongToContainer(options)) {
+        return null;
+      }
     }
     const toastId = options.toastId;
     const closeToast = () => this.removeToast(toastId);
