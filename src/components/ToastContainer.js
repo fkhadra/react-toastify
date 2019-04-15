@@ -110,7 +110,7 @@ class ToastContainer extends Component {
     pauseOnFocusLoss: PropTypes.bool,
 
     /**
-     * Show the toast only if it includes toastContainerId and it's the same as containerId
+     * Show the toast only if it includes containerId and it's the same as containerId
      */
     enableMultiContainer: PropTypes.bool,
 
@@ -239,8 +239,8 @@ class ToastContainer extends Component {
     return null;
   }
 
-  belongToContainer({toastContainerId}) {
-    return toastContainerId === this.props.containerId;
+  belongToContainer({containerId}) {
+    return containerId === this.props.containerId;
   }
 
   buildToast(content, { delay, ...options }) {
