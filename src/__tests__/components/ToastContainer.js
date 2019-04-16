@@ -347,14 +347,6 @@ describe('ToastContainer', () => {
     });
   });
 
-  it("Should throw an error if can't render a toast", () => {
-    expect(() => {
-      mount(<ToastContainer />);
-      toast(false);
-      jest.runAllTimers();
-    }).toThrow(/The element you provided cannot be rendered/);
-  });
-
   it('Should be able run toast even when document is not visible', () => {
     document.addEventListener = jest.fn();
     mount(<ToastContainer pauseOnVisibilityChange={false} />);
@@ -362,5 +354,14 @@ describe('ToastContainer', () => {
     document.dispatchEvent(ev);
 
     expect(document.addEventListener).not.toHaveBeenCalled();
+  });
+
+  // ⚠️ This test should be the last one until I expose an api to clear the toast stack ⚠️
+  it("Should throw an error if can't render a toast", () => {
+    expect(() => {
+      mount(<ToastContainer />);
+      toast(false);
+      jest.runAllTimers();
+    }).toThrow(/The element you provided cannot be rendered/);
   });
 });
