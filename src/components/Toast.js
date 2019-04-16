@@ -57,7 +57,7 @@ class Toast extends Component {
     isProgressDone: PropTypes.bool,
     updateId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     ariaLabel: PropTypes.string,
-    toastContainerId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    containerId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   };
 
   static defaultProps = {

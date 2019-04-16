@@ -163,14 +163,14 @@ toast.configure({
 #### Multi container support
 
 To enable multiple container support, you have to pass `enableMultiContainer` and specify a `containerId` and use it in
-each toast, to do so add `toastContainerId` to the toast's options object.
+each toast, to do so add `containerId` to the toast's options object.
 
 
 
 Note: adding `enableMultiContainer` prop to the `<ToastContainer/ >` will:
-- Check each toast to verify if its `toastContainerId` match `containerId` so it can be rendered.
-- Ensure not to render any `toast` that has `toastContainerId`.
-- Render any toast if both the `toast` and `<ToastContainer/ >`  does not include `toastContainerId` and `containerId` respectively.
+- Check each toast to verify if its `containerId` match the container `containerId` so it can be rendered.
+- Ensure not to render any `toast` that has `containerId`.
+- Render any toast if both the `toast` and `<ToastContainer/ >`  does not include `containerId` and `containerId` respectively.
 
 A simple example to demonstrate multi toast container capability.
 
@@ -184,8 +184,8 @@ A simple example to demonstrate multi toast container capability.
 
 
  class App extends Component {
-    notifyA = () => toast('Wow so easy !', {toastContainerId: 'A'});
-    notifyB = () => toast('Wow so easy !', {toastContainerId: 'B'});
+    notifyA = () => toast('Wow so easy !', {containerId: 'A'});
+    notifyB = () => toast('Wow so easy !', {containerId: 'B'});
 
     render(){
       return (
@@ -1201,7 +1201,7 @@ On mobile the toast will take all the available width.
 | draggable               | bool                   | true      | Allow toast to be draggable                                                                         |
 | draggablePercent        | number                 | 80        | The percentage of the toast's width it takes for a drag to dismiss a toast(value between 0 and 100) |
 | enableMultiContainer    | bool                   | -         | Enable multi toast container support                                                                |
-| containerId             | string\number          | -         | Container id used to match toast with the same toastContainerId                                     |
+| containerId             | string\number          | -         | Container id used to match toast with the same containerId                                     |
 
 
 
@@ -1237,7 +1237,7 @@ The **toastId** can be used to remove a toast programmatically or to check if th
     - `progress`: a value between 0..1 to control the progress bar 
     - `render`: string or React Element, only available when calling update
     - `delay`: a number to let you delay the toast appearance
-    - `toastContainerId`:  string or number to match a specific Toast container
+    - `containerId`:  string or number to match a specific Toast container
 
 :warning:️ *Toast options supersede ToastContainer props* :warning:
 
