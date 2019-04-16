@@ -17,6 +17,7 @@
     - [One component to rule them all](#one-component-to-rule-them-all)
       - [One ToastContainer to render them](#one-toastcontainer-to-render-them)
       - [What if I told you that the ToastContainer is optional](#what-if-i-told-you-that-the-toastcontainer-is-optional)
+      - [Multi container support](#multi-container-support)
     - [Positioning toast](#positioning-toast)
     - [Set autoclose delay or disable it](#set-autoclose-delay-or-disable-it)
     - [Render a component](#render-a-component)
@@ -157,6 +158,50 @@ toast.configure({
   //etc you get the idea
 });
 ```
+
+
+#### Multi container support
+
+To enable multiple container support, you have to pass `enableMultiContainer` and specify a `containerId` and use it in
+each toast, to do so add `containerId` to the toast's options object.
+
+
+
+Note: adding `enableMultiContainer` prop to the `<ToastContainer/ >` will:
+- Check each toast to verify if its `containerId` match the container `containerId` so it can be rendered.
+- Ensure not to render any `toast` that has `containerId`.
+- Render any toast if both the `toast` and `<ToastContainer/ >`  does not include `containerId` and `containerId` respectively.
+
+A simple example to demonstrate multi toast container capability.
+
+- Notify A button will show a toast on the bottom left.
+- Notify B button will show a toast on the top right.
+   
+```javascript
+  import React, { Component } from 'react';
+  import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
+
+
+ class App extends Component {
+    notifyA = () => toast('Wow so easy !', {containerId: 'A'});
+    notifyB = () => toast('Wow so easy !', {containerId: 'B'});
+
+    render(){
+      return (
+        <div>
+            <ToastContainer enableMultiContainer containerId={'A'} position={toast.POSITION.BOTTOM_LEFT} />
+            <ToastContainer enableMultiContainer containerId={'B'} position={toast.POSITION.TOP_RIGHT} />
+     
+            <button onClick={this.notifyA}>Notify A !</button>
+            <button onClick={this.notifyB}>Notify B !</button>          
+        </div>
+      );
+    }
+  }
+
+```
+
 
 ### Positioning toast
 
@@ -1152,9 +1197,12 @@ On mobile the toast will take all the available width.
 | toastClassName          | string\|object         | -         | Add optional classes to the toast                                                                   |
 | bodyClassName           | string\|object         | -         | Add optional classes to the toast body                                                              |
 | progressClassName       | string\|object         | -         | Add optional classes to the progress bar                                                            |
-| progressStyle           | object                 | -         | Add optional inline style to the progress bar                                                            |
+| progressStyle           | object                 | -         | Add optional inline style to the progress bar                                                       |
 | draggable               | bool                   | true      | Allow toast to be draggable                                                                         |
 | draggablePercent        | number                 | 80        | The percentage of the toast's width it takes for a drag to dismiss a toast(value between 0 and 100) |
+| enableMultiContainer    | bool                   | -         | Enable multi toast container support                                                                |
+| containerId             | string\number          | -         | Container id used to match toast with the same containerId                                     |
+
 
 
 ### toast
@@ -1189,6 +1237,7 @@ The **toastId** can be used to remove a toast programmatically or to check if th
     - `progress`: a value between 0..1 to control the progress bar 
     - `render`: string or React Element, only available when calling update
     - `delay`: a number to let you delay the toast appearance
+    - `containerId`:  string or number to match a specific Toast container
 
 :warning:️ *Toast options supersede ToastContainer props* :warning:
 
