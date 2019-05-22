@@ -179,6 +179,11 @@ interface CommonOptions {
    * `Default: 80`
    */
   draggablePercent?: number;
+
+  /**
+   * Set id to handle multiple container
+   */
+  containerId?: string | number;
 }
 
 interface ToastOptions extends CommonOptions {
@@ -244,6 +249,12 @@ interface ToastContainerProps extends CommonOptions {
    * `Default: false`
    */
   rtl?: boolean;
+
+  /**
+   * Show the toast only if it includes containerId and it's the same as containerId
+   * `Default: false`
+   */
+  enableMultiContainer?: boolean;
 }
 
 interface Toast {
@@ -287,7 +298,7 @@ interface Toast {
   /**
    * Listen for change when a toast is added or removed. The number of toast displayed is passed as paran to the callback
    */
-  onChange(callback: ((count?: number) => void)): void;
+  onChange(callback: (count?: number) => void): void;
 
   /**
    * Set a controlled progress bar value to 100% then close the toast
@@ -296,7 +307,7 @@ interface Toast {
 
   /**
    * Let you define `ToastContainer` props when lazy mounted.
-   * When called enable lazy mounted container 
+   * When called enable lazy mounted container
    */
   configure(config?: ToastContainerProps): void;
 
