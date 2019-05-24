@@ -199,6 +199,20 @@ describe('Toast', () => {
     expect(component.html()).toMatch(/transform:(\s)?scaleX\(0.3\)/);
   });
 
+  it('Should add the role prop to the toast body', () => {
+    const component = shallow(
+      <Toast
+        {...REQUIRED_PROPS}
+        role="status"
+      >
+        FooBar
+      </Toast>
+    );
+    expect(component.find(".Toastify__toast-body").prop("role")).toEqual(
+      "status"
+    );
+  })
+
   describe('Drag event', () => {
     it('Should handle drag start on mousedown', () => {
       const events = {};
