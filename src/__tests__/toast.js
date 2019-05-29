@@ -251,7 +251,7 @@ describe('toastify', () => {
       expect(component.html()).toMatch(/transform:(\s)?scaleX\(0.5\)/);
     });
 
-    it('It should close the toast when `toast.done` is called', () => {
+    it('When `toast.done` is called, it should set scaleX to 1', () => {
       const component = mount(<ToastContainer />);
       const id = toast('Hello', {
         progress: 0.5
@@ -263,20 +263,6 @@ describe('toastify', () => {
       jest.runAllTimers();
 
       expect(component.html()).toMatch(/transform:(\s)?scaleX\(1\)/);
-    });
-
-    it('It should be possible to define a percentage when `toast.done` is called', () => {
-      const component = mount(<ToastContainer />);
-      const id = toast('Hello', {
-        progress: 1
-      });
-      jest.runAllTimers();
-      expect(component.html()).toMatch(/transform:(\s)?scaleX\(1\)/);
-
-      toast.done(id, 0);
-      jest.runAllTimers();
-
-      expect(component.html()).toMatch(/transform:(\s)?scaleX\(0\)/);
     });
   });
 });

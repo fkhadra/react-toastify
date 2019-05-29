@@ -181,6 +181,13 @@ interface CommonOptions {
   draggablePercent?: number;
 
   /**
+   * Define the ARIA role for the toast
+   * `Default: alert`
+   *  https://www.w3.org/WAI/PF/aria/roles
+   */
+  role?: string;
+  
+  /**
    * Set id to handle multiple container
    */
   containerId?: string | number;
@@ -303,7 +310,7 @@ interface Toast {
   /**
    * Set a controlled progress bar value to 100% then close the toast
    */
-  done(toastId: ToastId, progress?: number): void;
+  done(toastId: ToastId): void;
 
   /**
    * Let you define `ToastContainer` props when lazy mounted.

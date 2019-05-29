@@ -42,7 +42,8 @@ describe('ToastContainer', () => {
     -position
     -pauseOnHover
     -transition
-    -closeToast`, () => {
+    -closeToast
+    -role`, () => {
     const component = mount(<ToastContainer />);
     // Create a toast
     toast('coucou');
@@ -55,7 +56,8 @@ describe('ToastContainer', () => {
       'position',
       'closeToast',
       'transition',
-      'pauseOnHover'
+      'pauseOnHover',
+      'role'
     ].forEach(key => expect(hasProp(props, key)).toBeTruthy());
   });
 
@@ -94,6 +96,23 @@ describe('ToastContainer', () => {
     expect(component.state().toast).not.toContain(0);
   });
 
+  it('Should prevent duplicate toast when same id is used', () => {
+    const component = mount(<ToastContainer />);
+
+    toast('REAL_TOAST', {
+      toastId: 'foo'
+    });
+    toast('DUPLICATE_TOAST', {
+      toastId: 'foo'
+    });
+
+    jest.runAllTimers();
+    const content = component.html();
+    expect(component.state().toast).toHaveLength(1);
+    expect(content).toMatch(/REAL_TOAST/);
+    expect(content).not.toMatch(/FAKE_TOAST/);
+  });
+
   it('Should be able to render a react element, a string, a number, a render props without crashing', () => {
     const component = mount(<ToastContainer />);
     toast('coucou');
@@ -125,7 +144,8 @@ describe('ToastContainer', () => {
       autoClose: false,
       hideProgressBar: true,
       position: 'top-left',
-      closeButton: <CloseBtn />
+      closeButton: <CloseBtn />,
+      role: 'status'
     };
 
     toast('hello', desiredProps);
@@ -282,15 +302,19 @@ describe('ToastContainer', () => {
     });
   });
 
-  describe('Multiple container support', ()=> {
-    describe('Disabled', ()=> {
+  describe('Multiple container support', () => {
+    describe('Disabled', () => {
       it('Should render toasts in all container', () => {
-        const toastContainerComponent1 = mount(<ToastContainer enableMultiContainer={false} />);
+        const toastContainerComponent1 = mount(
+          <ToastContainer enableMultiContainer={false} />
+        );
         const toastContainerComponent2 = mount(<ToastContainer />);
-        const toastContainerComponent3 = mount(<ToastContainer containerId={1}/>);
+        const toastContainerComponent3 = mount(
+          <ToastContainer containerId={1} />
+        );
 
         toast('Toast 1');
-        toast('Toast 2', {containerId: 1});
+        toast('Toast 2', { containerId: 1 });
         jest.runAllTimers();
 
         expect(toastContainerComponent1.state().toast).toHaveLength(2);
@@ -302,12 +326,16 @@ describe('ToastContainer', () => {
     describe('Enabled', () => {
       describe('With containerId', () => {
         it('Should show only related toasts aka- same containerId and containerId', () => {
-          const toastContainerComponent1 = mount(<ToastContainer containerId={1} enableMultiContainer/>);
-          const toastContainerComponent2 = mount(<ToastContainer containerId={2} enableMultiContainer/>);
+          const toastContainerComponent1 = mount(
+            <ToastContainer containerId={1} enableMultiContainer />
+          );
+          const toastContainerComponent2 = mount(
+            <ToastContainer containerId={2} enableMultiContainer />
+          );
 
-          toast('Toast with containerId 1', {containerId: 1});
-          toast('Toast with containerId 2', {containerId: 2});
-          toast('Another toast with containerId 2', {containerId: 2});
+          toast('Toast with containerId 1', { containerId: 1 });
+          toast('Toast with containerId 2', { containerId: 2 });
+          toast('Another toast with containerId 2', { containerId: 2 });
           jest.runAllTimers();
 
           expect(toastContainerComponent1.state().toast).toHaveLength(1);
@@ -315,10 +343,12 @@ describe('ToastContainer', () => {
         });
 
         it('Should not display unrelated toasts', () => {
-          const toastContainerComponent = mount(<ToastContainer containerId={1} enableMultiContainer/>);
+          const toastContainerComponent = mount(
+            <ToastContainer containerId={1} enableMultiContainer />
+          );
 
-          toast('Toast with containerId 1', {containerId: 2});
-          toast('Toast with containerId 2', {containerId: 2});
+          toast('Toast with containerId 1', { containerId: 2 });
+          toast('Toast with containerId 2', { containerId: 2 });
           jest.runAllTimers();
 
           expect(toastContainerComponent.state().toast).toHaveLength(0);
@@ -327,7 +357,9 @@ describe('ToastContainer', () => {
 
       describe('Has no containerId', () => {
         it('Should display toasts with no containerId', () => {
-          const toastContainerComponent = mount(<ToastContainer enableMultiContainer />);
+          const toastContainerComponent = mount(
+            <ToastContainer enableMultiContainer />
+          );
 
           toast('Toast');
           jest.runAllTimers();
@@ -336,9 +368,11 @@ describe('ToastContainer', () => {
         });
 
         it('Should not display any toasts with containerId', () => {
-          const toastContainerComponent = mount(<ToastContainer enableMultiContainer />);
+          const toastContainerComponent = mount(
+            <ToastContainer enableMultiContainer />
+          );
 
-          toast('Toast', {containerId: 1});
+          toast('Toast', { containerId: 1 });
           jest.runAllTimers();
 
           expect(toastContainerComponent.state().toast).toHaveLength(0);

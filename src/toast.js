@@ -96,7 +96,7 @@ toast.isActive = NOOP;
 
 toast.update = (toastId, options) => {
   // if you call toast and toast.update directly nothing will be displayed
-  // this is way I defered the update
+  // this is why I defered the update
   setTimeout(() => {
     if (container && typeof container.collection[toastId] !== 'undefined') {
       const { options: oldOptions, content: oldContent } = container.collection[
@@ -128,10 +128,9 @@ toast.update = (toastId, options) => {
 /**
  * Used for controlled progress bar.
  */
-toast.done = (id, progress = 1) => {
+toast.done = id => {
   toast.update(id, {
-    progress,
-    isProgressDone: true
+    progress: 1
   });
 };
 
@@ -151,7 +150,6 @@ toast.configure = config => {
   lazy = true;
   containerConfig = config;
 };
-
 
 toast.POSITION = POSITION;
 toast.TYPE = TYPE;

@@ -117,7 +117,12 @@ class ToastContainer extends Component {
     /**
      * Set id to handle multiple container
      */
-    containerId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    containerId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+
+    /**
+     * Set role attribute for the toast body
+     */
+    role: PropTypes.string
   };
 
   static defaultProps = {
@@ -138,7 +143,8 @@ class ToastContainer extends Component {
     toastClassName: null,
     bodyClassName: null,
     progressClassName: null,
-    progressStyle: null
+    progressStyle: null,
+    role: 'alert'
   };
 
   /**
@@ -239,22 +245,28 @@ class ToastContainer extends Component {
     return null;
   }
 
-  belongToContainer({containerId}) {
+  belongToContainer({ containerId }) {
     return containerId === this.props.containerId;
   }
 
   buildToast(content, { delay, ...options }) {
     if (!this.canBeRendered(content)) {
       throw new Error(
-          `The element you provided cannot be rendered. You provided an element of type ${typeof content}`
+        `The element you provided cannot be rendered. You provided an element of type ${typeof content}`
       );
     }
-    if (this.props.enableMultiContainer) {
-      if (!this.belongToContainer(options)) {
-        return null;
-      }
+
+    const { toastId, updateId } = options;
+
+    // Check for multi-container and also for duplicate toastId
+    // Maybe it would be better to extract it
+    if (
+      (this.props.enableMultiContainer && !this.belongToContainer(options)) ||
+      (this.isToastActive(toastId) && updateId == null)
+    ) {
+      return;
     }
-    const toastId = options.toastId;
+
     const closeToast = () => this.removeToast(toastId);
     const toastOptions = {
       id: toastId,
@@ -308,7 +320,7 @@ class ToastContainer extends Component {
           ? options.hideProgressBar
           : this.props.hideProgressBar,
       progress: parseFloat(options.progress),
-      isProgressDone: options.isProgressDone
+      role: typeof options.role === 'string' ? options.role : this.props.role
     };
 
     typeof options.onOpen === 'function' &&

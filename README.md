@@ -1180,28 +1180,29 @@ On mobile the toast will take all the available width.
 
 ### ToastContainer
 
-| Props                   | Type                   | Default   | Description                                                                                         |
-|-------------------------|------------------------|-----------|-----------------------------------------------------------------------------------------------------|
-| position                | string                 | top-right | One of top-right, top-center, top-left, bottom-right, bottom-center, bottom-left                    |
-| autoClose               | false or number        | 5000      | Delay in ms to close the toast. If set to false, the notification need to be closed manualy         |
-| closeButton             | React Element or false | -         | A React Component to replace the default close button or `false` to hide the button                 |
-| transition              | function               | -         | A reference to a valid react-transition-group/Transition component                                  |
-| hideProgressBar         | bool                   | false     | Display or not the progress bar below the toast(remaining time)                                     |
-| pauseOnHover            | bool                   | true      | Keep the timer running or not on hover                                                              |
-| pauseOnFocusLoss        | bool                   | true      | Pause the timer when the window loses focus                                                         |
-| rtl                     | bool                   | false     | Support right to left content                                                                       |
-| closeOnClick            | bool                   | true      | Dismiss toast on click                                                                              |
-| newestOnTop             | bool                   | false     | Display newest toast on top                                                                         |
-| className               | string\|object         | -         | Add optional classes to the container                                                               |
-| style                   | object                 | -         | Add optional inline style to the container                                                          |
-| toastClassName          | string\|object         | -         | Add optional classes to the toast                                                                   |
-| bodyClassName           | string\|object         | -         | Add optional classes to the toast body                                                              |
-| progressClassName       | string\|object         | -         | Add optional classes to the progress bar                                                            |
-| progressStyle           | object                 | -         | Add optional inline style to the progress bar                                                       |
-| draggable               | bool                   | true      | Allow toast to be draggable                                                                         |
-| draggablePercent        | number                 | 80        | The percentage of the toast's width it takes for a drag to dismiss a toast(value between 0 and 100) |
-| enableMultiContainer    | bool                   | -         | Enable multi toast container support                                                                |
-| containerId             | string\number          | -         | Container id used to match toast with the same containerId                                     |
+| Props                | Type                   | Default   | Description                                                                                         |
+|----------------------|------------------------|-----------|-----------------------------------------------------------------------------------------------------|
+| position             | string                 | top-right | One of top-right, top-center, top-left, bottom-right, bottom-center, bottom-left                    |
+| autoClose            | false or number        | 5000      | Delay in ms to close the toast. If set to false, the notification need to be closed manualy         |
+| closeButton          | React Element or false | -         | A React Component to replace the default close button or `false` to hide the button                 |
+| transition           | function               | -         | A reference to a valid react-transition-group/Transition component                                  |
+| hideProgressBar      | bool                   | false     | Display or not the progress bar below the toast(remaining time)                                     |
+| pauseOnHover         | bool                   | true      | Keep the timer running or not on hover                                                              |
+| pauseOnFocusLoss     | bool                   | true      | Pause the timer when the window loses focus                                                         |
+| rtl                  | bool                   | false     | Support right to left content                                                                       |
+| closeOnClick         | bool                   | true      | Dismiss toast on click                                                                              |
+| newestOnTop          | bool                   | false     | Display newest toast on top                                                                         |
+| className            | string\|object         | -         | Add optional classes to the container                                                               |
+| style                | object                 | -         | Add optional inline style to the container                                                          |
+| toastClassName       | string\|object         | -         | Add optional classes to the toast                                                                   |
+| bodyClassName        | string\|object         | -         | Add optional classes to the toast body                                                              |
+| progressClassName    | string\|object         | -         | Add optional classes to the progress bar                                                            |
+| progressStyle        | object                 | -         | Add optional inline style to the progress bar                                                       |
+| draggable            | bool                   | true      | Allow toast to be draggable                                                                         |
+| draggablePercent     | number                 | 80        | The percentage of the toast's width it takes for a drag to dismiss a toast(value between 0 and 100) |
+| enableMultiContainer | bool                   | -         | Enable multi toast container support                                                                |
+| containerId          | string\number          | -         | Container id used to match toast with the same containerId                                          |
+| role                 | string                 | alert     | Defne the ARIA role for the toasts                                                                  |
 
 
 
@@ -1233,6 +1234,7 @@ The **toastId** can be used to remove a toast programmatically or to check if th
     - `progressClassName`: same as ToastContainer
     - `draggable`: same as ToastContainer
     - `draggablePercent`: same as ToastContainer
+    - `role`: same as ToastContainer
     - `toastId`: optional integer or string to manually set a toastId. If an invalid type is provided a generated toastId will be used
     - `progress`: a value between 0..1 to control the progress bar 
     - `render`: string or React Element, only available when calling update

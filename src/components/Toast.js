@@ -54,10 +54,10 @@ class Toast extends Component {
     ]),
     progressStyle: PropTypes.object,
     progress: PropTypes.number,
-    isProgressDone: PropTypes.bool,
     updateId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     ariaLabel: PropTypes.string,
-    containerId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    containerId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    role: PropTypes.string
   };
 
   static defaultProps = {
@@ -68,8 +68,7 @@ class Toast extends Component {
     className: null,
     bodyClassName: null,
     progressClassName: null,
-    updateId: null,
-    role: 'alert'
+    updateId: null
   };
 
   state = {
@@ -287,7 +286,6 @@ class Toast extends Component {
       updateId,
       role,
       progress,
-      isProgressDone,
       rtl
     } = this.props;
 
@@ -351,7 +349,6 @@ class Toast extends Component {
               style={progressStyle}
               className={progressClassName}
               controlledProgress={controlledProgress}
-              isProgressDone={isProgressDone}
               progress={progress}
             />
           )}
