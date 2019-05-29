@@ -128,9 +128,9 @@ toast.update = (toastId, options) => {
 /**
  * Used for controlled progress bar.
  */
-toast.done = (id, progress = 1) => {
+toast.done = id => {
   toast.update(id, {
-    progress
+    progress: 1
   });
 };
 

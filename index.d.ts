@@ -310,7 +310,7 @@ interface Toast {
   /**
    * Set a controlled progress bar value to 100% then close the toast
    */
-  done(toastId: ToastId, progress?: number): void;
+  done(toastId: ToastId): void;
 
   /**
    * Let you define `ToastContainer` props when lazy mounted.
