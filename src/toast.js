@@ -130,8 +130,7 @@ toast.update = (toastId, options) => {
  */
 toast.done = (id, progress = 1) => {
   toast.update(id, {
-    progress,
-    isProgressDone: true
+    progress
   });
 };
 

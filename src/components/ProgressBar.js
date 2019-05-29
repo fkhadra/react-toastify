@@ -15,9 +15,9 @@ function ProgressBar({
   style: userStyle,
   controlledProgress,
   progress,
-  isProgressDone,
   rtl
 }) {
+  
   const style = {
     ...userStyle,
     animationDuration: `${delay}ms`,
@@ -37,12 +37,12 @@ function ProgressBar({
     },
     className
   );
-
+  
   const animationEvent = {
-    [controlledProgress && isProgressDone
+    [controlledProgress && progress >= 1
       ? 'onTransitionEnd'
       : 'onAnimationEnd']:
-      controlledProgress && !isProgressDone ? null : closeToast
+      controlledProgress && progress < 1 ? null : closeToast
   };
 
   return <div className={classNames} style={style} {...animationEvent} />;
@@ -93,11 +93,6 @@ ProgressBar.propTypes = {
    * Tell wether or not controlled progress bar is used
    */
   controlledProgress: PropTypes.bool,
-
-  /**
-   * Helper to close the toast when using controlled progress value
-   */
-  isProgressDone: PropTypes.bool
 };
 
 ProgressBar.defaultProps = {
