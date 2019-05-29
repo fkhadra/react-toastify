@@ -117,7 +117,12 @@ class ToastContainer extends Component {
     /**
      * Set id to handle multiple container
      */
-    containerId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    containerId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+
+    /**
+     * Set role attribute for the toast body 
+     */
+    role: PropTypes.string
   };
 
   static defaultProps = {
@@ -138,7 +143,8 @@ class ToastContainer extends Component {
     toastClassName: null,
     bodyClassName: null,
     progressClassName: null,
-    progressStyle: null
+    progressStyle: null,
+    role: "alert"
   };
 
   /**
@@ -314,7 +320,11 @@ class ToastContainer extends Component {
           ? options.hideProgressBar
           : this.props.hideProgressBar,
       progress: parseFloat(options.progress),
-      isProgressDone: options.isProgressDone
+      isProgressDone: options.isProgressDone,
+      role: 
+        typeof options.role === 'string'
+          ? options.role
+          : this.props.role
     };
 
     typeof options.onOpen === 'function' &&

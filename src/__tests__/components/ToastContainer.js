@@ -42,7 +42,8 @@ describe('ToastContainer', () => {
     -position
     -pauseOnHover
     -transition
-    -closeToast`, () => {
+    -closeToast
+    -role`, () => {
     const component = mount(<ToastContainer />);
     // Create a toast
     toast('coucou');
@@ -55,7 +56,8 @@ describe('ToastContainer', () => {
       'position',
       'closeToast',
       'transition',
-      'pauseOnHover'
+      'pauseOnHover',
+      'role'
     ].forEach(key => expect(hasProp(props, key)).toBeTruthy());
   });
 
@@ -142,7 +144,8 @@ describe('ToastContainer', () => {
       autoClose: false,
       hideProgressBar: true,
       position: 'top-left',
-      closeButton: <CloseBtn />
+      closeButton: <CloseBtn />,
+      role: "status"
     };
 
     toast('hello', desiredProps);
