@@ -239,20 +239,28 @@ class ToastContainer extends Component {
     return null;
   }
 
-  belongToContainer({containerId}) {
+  belongToContainer({ containerId }) {
     return containerId === this.props.containerId;
   }
 
   buildToast(content, { delay, ...options }) {
     if (!this.canBeRendered(content)) {
       throw new Error(
-          `The element you provided cannot be rendered. You provided an element of type ${typeof content}`
+        `The element you provided cannot be rendered. You provided an element of type ${typeof content}`
       );
     }
-    if (this.props.enableMultiContainer && !this.belongToContainer(options)) {
-        return null;
+
+    const { toastId, updateId } = options;
+
+    // Check for multi-container and also for duplicate toastId
+    // Maybe it would be better to extract it
+    if (
+      (this.props.enableMultiContainer && !this.belongToContainer(options)) ||
+      (this.isToastActive(toastId) && updateId == null)
+    ) {
+      return;
     }
-    const toastId = options.toastId;
+
     const closeToast = () => this.removeToast(toastId);
     const toastOptions = {
       id: toastId,

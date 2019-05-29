@@ -152,7 +152,6 @@ toast.configure = config => {
   containerConfig = config;
 };
 
-
 toast.POSITION = POSITION;
 toast.TYPE = TYPE;
 
