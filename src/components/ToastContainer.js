@@ -120,7 +120,7 @@ class ToastContainer extends Component {
     containerId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 
     /**
-     * Set role attribute for the toast body 
+     * Set role attribute for the toast body
      */
     role: PropTypes.string
   };
@@ -144,7 +144,7 @@ class ToastContainer extends Component {
     bodyClassName: null,
     progressClassName: null,
     progressStyle: null,
-    role: "alert"
+    role: 'alert'
   };
 
   /**
@@ -320,10 +320,7 @@ class ToastContainer extends Component {
           ? options.hideProgressBar
           : this.props.hideProgressBar,
       progress: parseFloat(options.progress),
-      role: 
-        typeof options.role === 'string'
-          ? options.role
-          : this.props.role
+      role: typeof options.role === 'string' ? options.role : this.props.role
     };
 
     typeof options.onOpen === 'function' &&

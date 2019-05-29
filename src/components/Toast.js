@@ -68,7 +68,7 @@ class Toast extends Component {
     className: null,
     bodyClassName: null,
     progressClassName: null,
-    updateId: null,
+    updateId: null
   };
 
   state = {

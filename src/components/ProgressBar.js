@@ -17,7 +17,6 @@ function ProgressBar({
   progress,
   rtl
 }) {
-  
   const style = {
     ...userStyle,
     animationDuration: `${delay}ms`,
@@ -37,7 +36,7 @@ function ProgressBar({
     },
     className
   );
-  
+
   const animationEvent = {
     [controlledProgress && progress >= 1
       ? 'onTransitionEnd'
@@ -92,7 +91,7 @@ ProgressBar.propTypes = {
   /**
    * Tell wether or not controlled progress bar is used
    */
-  controlledProgress: PropTypes.bool,
+  controlledProgress: PropTypes.bool
 };
 
 ProgressBar.defaultProps = {

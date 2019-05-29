@@ -145,7 +145,7 @@ describe('ToastContainer', () => {
       hideProgressBar: true,
       position: 'top-left',
       closeButton: <CloseBtn />,
-      role: "status"
+      role: 'status'
     };
 
     toast('hello', desiredProps);
