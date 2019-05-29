@@ -24,7 +24,7 @@
     }
   },
   "esm/react-toastify.js": {
-    "bundled": 33505,
+    "bundled": 33504,
     "minified": 18607,
     "gzipped": 5510,
     "treeshaked": {
