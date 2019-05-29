@@ -249,10 +249,8 @@ class ToastContainer extends Component {
           `The element you provided cannot be rendered. You provided an element of type ${typeof content}`
       );
     }
-    if (this.props.enableMultiContainer) {
-      if (!this.belongToContainer(options)) {
+    if (this.props.enableMultiContainer && !this.belongToContainer(options)) {
         return null;
-      }
     }
     const toastId = options.toastId;
     const closeToast = () => this.removeToast(toastId);
