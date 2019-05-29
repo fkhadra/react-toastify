@@ -199,6 +199,21 @@ describe('Toast', () => {
     expect(component.html()).toMatch(/transform:(\s)?scaleX\(0.3\)/);
   });
 
+  it('Should close the toast if progress value is >= 1', () => {
+    const closeToast = jest.fn();
+    const component = mount(
+      <Toast {...REQUIRED_PROPS} closeToast={closeToast} progress={0.3} controlledProgress>
+        FooBar
+      </Toast>
+    );
+    expect(component.html()).toMatch(/transform:(\s)?scaleX\(0.3\)/);
+
+    component.setProps({ progress: 1});
+    expect(component.html()).toMatch(/transform:(\s)?scaleX\(1\)/);
+    component.find('.Toastify__progress-bar--controlled').simulate('transitionEnd');
+    expect(closeToast).toHaveBeenCalled()
+  });
+
   it('Should add the role prop to the toast body', () => {
     const component = shallow(
       <Toast

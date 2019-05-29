@@ -5,9 +5,9 @@
     "gzipped": 5540
   },
   "cjs/react-toastify.min.js": {
-    "bundled": 29669,
-    "minified": 16590,
-    "gzipped": 5261
+    "bundled": 29600,
+    "minified": 16570,
+    "gzipped": 5254
   },
   "./esm/index.esm.js": {
     "bundled": 32847,
@@ -24,16 +24,16 @@
     }
   },
   "esm/react-toastify.js": {
-    "bundled": 33574,
-    "minified": 18627,
-    "gzipped": 5519,
+    "bundled": 33505,
+    "minified": 18607,
+    "gzipped": 5510,
     "treeshaked": {
       "rollup": {
-        "code": 16262,
+        "code": 16242,
         "import_statements": 442
       },
       "webpack": {
-        "code": 17855
+        "code": 17835
       }
     }
   }
