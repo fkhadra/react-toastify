@@ -96,7 +96,7 @@ toast.isActive = NOOP;
 
 toast.update = (toastId, options) => {
   // if you call toast and toast.update directly nothing will be displayed
-  // this is way I defered the update
+  // this is why I defered the update
   setTimeout(() => {
     if (container && typeof container.collection[toastId] !== 'undefined') {
       const { options: oldOptions, content: oldContent } = container.collection[
