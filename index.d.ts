@@ -181,6 +181,13 @@ interface CommonOptions {
   draggablePercent?: number;
 
   /**
+   * Define the ARIA role for the toast
+   * `Default: alert`
+   *  https://www.w3.org/WAI/PF/aria/roles
+   */
+  role?: string;
+  
+  /**
    * Set id to handle multiple container
    */
   containerId?: string | number;
