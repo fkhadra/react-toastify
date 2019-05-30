@@ -165,6 +165,9 @@ describe('toastify', () => {
       });
       jest.runAllTimers();
       expect(component.html()).toMatch(/hello/);
+      toast.update(id);
+      jest.runAllTimers();
+      expect(component.html()).toMatch(/hello/);
     });
 
     it('Should update a toast only if it exist and if the container is mounted', () => {

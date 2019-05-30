@@ -94,7 +94,7 @@ toast.dismiss = (id = null) => container && eventManager.emit(ACTION.CLEAR, id);
  */
 toast.isActive = NOOP;
 
-toast.update = (toastId, options) => {
+toast.update = (toastId, options = {}) => {
   // if you call toast and toast.update directly nothing will be displayed
   // this is why I defered the update
   setTimeout(() => {
