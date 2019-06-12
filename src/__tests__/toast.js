@@ -196,6 +196,34 @@ describe('toastify', () => {
       expect(toast.isActive(id)).toBe(false);
       expect(toast.isActive(updateId)).toBe(true);
     });
+
+    it('Should be able to update a toast even when using multi containers', () => {
+      const component = mount(
+        <>
+          <ToastContainer containerId='first' enableMultiContainer />
+          <ToastContainer containerId='second' enableMultiContainer />
+        </>
+      );
+
+      const firstId = toast('hello first', { containerId: 'first' });
+      const secondId = toast('hello second', { containerId: 'second' });
+      jest.runAllTimers();
+
+      toast.update(firstId, {
+        render: 'updated first',
+        containerId: 'first'
+      });
+
+      toast.update(secondId, {
+        render: 'updated second',
+        containerId: 'second'
+      });
+
+      jest.runAllTimers();
+
+      expect(component.first().html()).toMatch(/updated first/);
+      expect(component.at(1).html()).toMatch(/updated second/);
+    });
   });
 
   describe('isActive function', () => {

@@ -181,7 +181,7 @@ class ToastContainer extends Component {
     eventManager
       .off(ACTION.SHOW)
       .off(ACTION.CLEAR)
-      .emit(ACTION.WILL_UNMOUNT);
+      .emit(ACTION.WILL_UNMOUNT, this);
   }
 
   isToastActive = id => this.state.toast.indexOf(id) !== -1;
