@@ -40,6 +40,17 @@ describe('toastify', () => {
     unmountLazyContainer();
   });
 
+  it('Should mount only one ToastContainer when using lazy container', () => {
+    ensureLazyContainerIsNotMounted();
+    toast.configure();
+    toast('hello');
+    toast('hello');
+    jest.runAllTimers();
+
+    expect(document.querySelectorAll(containerClass)).toHaveLength(1);
+    unmountLazyContainer();
+  });
+
   it("Should be possible to configure the ToastContainer even when it's lazy mounted", () => {
     ensureLazyContainerIsNotMounted();
     toast.configure({

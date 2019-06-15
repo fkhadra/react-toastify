@@ -51,6 +51,7 @@ function dispatchToast(content, options) {
   } else {
     queue.push({ action: ACTION.SHOW, content, options });
     if (lazy && canUseDom) {
+      lazy = false;
       containerDomNode = document.createElement('div');
       document.body.appendChild(containerDomNode);
       render(<ToastContainer {...containerConfig} />, containerDomNode);
