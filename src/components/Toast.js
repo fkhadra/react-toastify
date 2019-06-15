@@ -334,7 +334,7 @@ class Toast extends Component {
           onTouchEnd={this.onDragTransitionEnd}
         >
           <div
-            {...this.props.in && { role: role }}
+            {...(this.props.in && { role: role })}
             className={cx('Toastify__toast-body', bodyClassName)}
           >
             {children}
