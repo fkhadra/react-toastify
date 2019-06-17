@@ -6,8 +6,8 @@ import { POSITION, TYPE, ACTION, NOOP } from './utils/constant';
 import { ToastContainer } from '.';
 import { canUseDom } from './utils/propValidator';
 
-let containers = [];
-
+let containers = new Map();
+let latestInstance = null;
 let containerDomNode = null;
 let containerConfig = {};
 let queue = [];
@@ -17,33 +17,29 @@ let lazy = false;
  * Check whether any container is currently mounted in the DOM
  */
 function isAnyContainerMounted() {
-  return containers.length > 0;
+  return containers.size > 0;
 }
 
 /**
  * Get the container by id. Returns the last container declared when no id is given.
  */
 function getContainer(containerId) {
-  if (!isAnyContainerMounted())
-    return null;
+  if (!isAnyContainerMounted()) return null;
 
-  if (!containerId)
-    return containers[containers.length - 1];
+  if (!containerId) return containers.get(latestInstance);
 
-  return containers.find(c => c.props.containerId === containerId);
+  return containers.get(containerId);
 }
 
 /**
  * Get the toast by id, given it's in the DOM, otherwise returns null
  */
 function getToast(toastId, { containerId }) {
-  if (!isAnyContainerMounted())
-    return null;
-
   const container = getContainer(containerId);
+  if (!container) return null;
+
   const toast = container.collection[toastId];
-  if (typeof toast === 'undefined')
-    return null;
+  if (typeof toast === 'undefined') return null;
 
   return toast;
 }
@@ -87,6 +83,7 @@ function dispatchToast(content, options) {
   } else {
     queue.push({ action: ACTION.SHOW, content, options });
     if (lazy && canUseDom) {
+      lazy = false;
       containerDomNode = document.createElement('div');
       document.body.appendChild(containerDomNode);
       render(<ToastContainer {...containerConfig} />, containerDomNode);
@@ -103,14 +100,14 @@ const toast = (content, options) =>
   );
 
 /**
- * For each available position create a shortcut
+ * For each available type create a shortcut
  */
-for (const pos in TYPE) {
-  if (TYPE[pos] !== TYPE.DEFAULT) {
-    toast[TYPE[pos].toLowerCase()] = (content, options) =>
+for (const t in TYPE) {
+  if (TYPE[t] !== TYPE.DEFAULT) {
+    toast[TYPE[t].toLowerCase()] = (content, options) =>
       dispatchToast(
         content,
-        mergeOptions(options, (options && options.type) || TYPE[pos])
+        mergeOptions(options, (options && options.type) || TYPE[t])
       );
   }
 }
@@ -123,7 +120,8 @@ toast.warn = toast.warning;
 /**
  * Remove toast programmaticaly
  */
-toast.dismiss = (id = null) => isAnyContainerMounted() && eventManager.emit(ACTION.CLEAR, id);
+toast.dismiss = (id = null) =>
+  isAnyContainerMounted() && eventManager.emit(ACTION.CLEAR, id);
 
 /**
  * Do nothing until the container is mounted. Reassigned later
@@ -195,7 +193,9 @@ toast.TYPE = TYPE;
  */
 eventManager
   .on(ACTION.DID_MOUNT, containerInstance => {
-    containers = containers.concat(containerInstance);
+    latestInstance = containerInstance.props.containerId || containerInstance;
+    containers.set(latestInstance, containerInstance);
+
     toast.isActive = id => containerInstance.isToastActive(id);
 
     queue.forEach(item => {
@@ -206,10 +206,11 @@ eventManager
   })
   .on(ACTION.WILL_UNMOUNT, containerInstance => {
     if (containerInstance)
-      containers = containers.filter(c => c !== containerInstance);
-    else
-      containers = [];
-    
+      containers.delete(
+        containerInstance.props.containerId || containerInstance
+      );
+    else containers.clear();
+
     toast.isActive = NOOP;
 
     if (canUseDom && containerDomNode) {
