@@ -68,14 +68,14 @@ const toast = (content, options) =>
   );
 
 /**
- * For each available position create a shortcut
+ * For each available type create a shortcut
  */
-for (const pos in TYPE) {
-  if (TYPE[pos] !== TYPE.DEFAULT) {
-    toast[TYPE[pos].toLowerCase()] = (content, options) =>
+for (const t in TYPE) {
+  if (TYPE[t] !== TYPE.DEFAULT) {
+    toast[TYPE[t].toLowerCase()] = (content, options) =>
       dispatchToast(
         content,
-        mergeOptions(options, (options && options.type) || TYPE[pos])
+        mergeOptions(options, (options && options.type) || TYPE[t])
       );
   }
 }
