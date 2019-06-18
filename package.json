@@ -1,6 +1,6 @@
 {
   "name": "react-toastify",
-  "version": "5.2.1",
+  "version": "5.3.0",
   "description": "React notification made easy",
   "keywords": [
     "react",
@@ -36,7 +36,7 @@
     "build": "npm run clean && cross-env NODE_ENV=production rollup -c && npm run style",
     "clean": "rimraf cjs/* && rimraf dist/* && rimraf esm/*",
     "sass": "node-sass scss/main.scss dist/ReactToastify.css",
-    "sass-minimal":"node-sass scss/minimal.scss dist/ReactToastify.minimal.css",
+    "sass-minimal": "node-sass scss/minimal.scss dist/ReactToastify.minimal.css",
     "postsass": "postcss dist/ReactToastify.css --use autoprefixer -m -o dist/ReactToastify.css",
     "postsass-minimal": "cssnano dist/ReactToastify.minimal.css dist/ReactToastify.minimal.css --no-zindex --no-reduceIdents",
     "style": "npm run sass && npm run sass-minimal && cssnano dist/ReactToastify.css dist/ReactToastify.min.css --no-zindex --no-reduceIdents"
