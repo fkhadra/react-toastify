@@ -1248,6 +1248,7 @@ The **toastId** can be used to remove a toast programmatically or to check if th
     - `render`: string or React Element, only available when calling update
     - `delay`: a number to let you delay the toast appearance
     - `containerId`:  string or number to match a specific Toast container
+    - `onClick`:  Called when click inside Toast notification
 
 :warning:️ *Toast options supersede ToastContainer props* :warning:
 
