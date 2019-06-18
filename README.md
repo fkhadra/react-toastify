@@ -1170,6 +1170,14 @@ Your app need to support rtl content? Set the rtl props to `true`:
   }
 ```
 
+#### Include the bare minimum style
+
+To include the bare minimum required style you can do as follow:
+
+```js
+import 'react-toastify/dist/ReactToastify.minimal.css`;
+```
+
 ### Mobile
 
 On mobile the toast will take all the available width.
