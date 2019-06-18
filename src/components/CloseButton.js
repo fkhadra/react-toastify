@@ -6,7 +6,10 @@ function CloseButton({ closeToast, type, ariaLabel }) {
     <button
       className={`Toastify__close-button Toastify__close-button--${type}`}
       type="button"
-      onClick={closeToast}
+      onClick={e => {
+        e.stopPropagation();
+        closeToast(e);
+      }}
       aria-label={ariaLabel}
     >
       ✖

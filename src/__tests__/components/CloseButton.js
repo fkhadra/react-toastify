@@ -11,7 +11,7 @@ describe('CloseButton', () => {
     const component = shallow(<CloseButton closeToast={closeToast} />);
 
     expect(closeToast).not.toHaveBeenCalled();
-    component.simulate('click');
+    component.simulate('click', { stopPropagation: () => undefined });
     expect(closeToast).toHaveBeenCalled();
   });
 });
