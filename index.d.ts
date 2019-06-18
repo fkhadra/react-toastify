@@ -224,6 +224,11 @@ interface ToastOptions extends CommonOptions {
    * Add a delay in ms before the toast appear.
    */
   delay?: number;
+
+  /**
+   * Fired when clicking inside toaster
+   */
+  onClick?: Function;
 }
 
 interface UpdateOptions extends ToastOptions {
