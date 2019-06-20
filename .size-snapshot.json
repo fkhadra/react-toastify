@@ -24,16 +24,16 @@
     }
   },
   "esm/react-toastify.js": {
-    "bundled": 34710,
-    "minified": 19128,
-    "gzipped": 5664,
+    "bundled": 34790,
+    "minified": 19151,
+    "gzipped": 5670,
     "treeshaked": {
       "rollup": {
-        "code": 16602,
+        "code": 16617,
         "import_statements": 442
       },
       "webpack": {
-        "code": 18195
+        "code": 18212
       }
     }
   }
