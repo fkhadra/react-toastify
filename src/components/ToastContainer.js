@@ -122,7 +122,12 @@ class ToastContainer extends Component {
     /**
      * Set role attribute for the toast body
      */
-    role: PropTypes.string
+    role: PropTypes.string,
+
+    /**
+     * Fired when clicking inside toaster
+     */
+    onClick: PropTypes.func
   };
 
   static defaultProps = {
