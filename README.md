@@ -957,7 +957,7 @@ const Zoom = cssTransition({
   enter: 'zoomIn',
   exit: 'zoomOut',
   // default to 750ms, can be omitted
-  duration = 750,
+  duration: 750,
 });
 
 class App extends Component {
