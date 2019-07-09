@@ -448,6 +448,8 @@ toast('Show now');
 toast('Show after 1sec', { delay: 1000 })
 ```
 
+_Note: [toast.dismiss()](#remove-a-toast-programmatically) has no effect if called during the delay before a given toast appears._
+
 ### Use a controlled progress bar
 
 Imagine you want to see the progress of a file upload. The example below feature axios, but it works with anything!
