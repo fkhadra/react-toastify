@@ -1175,7 +1175,7 @@ Your app need to support rtl content? Set the rtl props to `true`:
 To include the bare minimum required style you can do as follow:
 
 ```js
-import 'react-toastify/dist/ReactToastify.minimal.css`;
+import 'react-toastify/dist/ReactToastify.minimal.css';
 ```
 
 ### Mobile
