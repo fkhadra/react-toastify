@@ -1210,7 +1210,7 @@ On mobile the toast will take all the available width.
 | draggablePercent     | number                 | 80        | The percentage of the toast's width it takes for a drag to dismiss a toast(value between 0 and 100) |
 | enableMultiContainer | bool                   | -         | Enable multi toast container support                                                                |
 | containerId          | string\number          | -         | Container id used to match toast with the same containerId                                          |
-| role                 | string                 | alert     | Defne the ARIA role for the toasts                                                                  |
+| role                 | string                 | alert     | Define the ARIA role for the toasts                                                                  |
 
 
 
