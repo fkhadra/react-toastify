@@ -174,12 +174,8 @@ class ToastContainer extends Component {
   collection = {};
 
   componentDidMount() {
-    eventManager
-      .on(ACTION.SHOW, (content, options) => this.buildToast(content, options))
-      .on(ACTION.CLEAR, id =>
-        id == null ? this.clear() : this.removeToast(id)
-      )
-      .emit(ACTION.DID_MOUNT, this);
+    eventManager.emit(ACTION.DID_MOUNT, this);
+    this.listenToToastActions();
   }
 
   componentWillUnmount() {
@@ -187,6 +183,14 @@ class ToastContainer extends Component {
       .off(ACTION.SHOW)
       .off(ACTION.CLEAR)
       .emit(ACTION.WILL_UNMOUNT, this);
+  }
+
+  listenToToastActions() {
+    eventManager
+      .on(ACTION.SHOW, (content, options) => this.buildToast(content, options))
+      .on(ACTION.CLEAR, id =>
+        id == null ? this.clear() : this.removeToast(id)
+      );
   }
 
   isToastActive = id => this.state.toast.indexOf(id) !== -1;

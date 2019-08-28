@@ -123,11 +123,6 @@ toast.warn = toast.warning;
 toast.dismiss = (id = null) =>
   isAnyContainerMounted() && eventManager.emit(ACTION.CLEAR, id);
 
-/**
- * Do nothing until the container is mounted. Reassigned later
- */
-toast.isActive = NOOP;
-
 toast.update = (toastId, options = {}) => {
   // if you call toast and toast.update directly nothing will be displayed
   // this is why I defered the update
@@ -186,6 +181,21 @@ toast.configure = config => {
 
 toast.POSITION = POSITION;
 toast.TYPE = TYPE;
+
+/**
+ * Whether a toast is active within its container.
+ */
+toast.isActive = (id, containerId) => {
+  if (containerId) {
+    const containerInstance = containers.get(id);
+    return Boolean(containerInstance && containerInstance.isToastActive(id));
+  } else {
+    const allContainers = Array.from(containers);
+    return Boolean(
+      allContainers && allContainers[0] && allContainers[0][1].isToastActive(id)
+    );
+  }
+};
 
 /**
  * Wait until the ToastContainer is mounted to dispatch the toast

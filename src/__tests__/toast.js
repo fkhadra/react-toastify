@@ -211,8 +211,8 @@ describe('toastify', () => {
     it('Should be able to update a toast even when using multi containers', () => {
       const component = mount(
         <>
-          <ToastContainer containerId='first' enableMultiContainer />
-          <ToastContainer containerId='second' enableMultiContainer />
+          <ToastContainer containerId="first" enableMultiContainer />
+          <ToastContainer containerId="second" enableMultiContainer />
         </>
       );
 
