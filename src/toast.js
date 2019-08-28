@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 
 import eventManager from './utils/eventManager';
-import { POSITION, TYPE, ACTION, NOOP } from './utils/constant';
+import { POSITION, TYPE, ACTION } from './utils/constant';
 import { ToastContainer } from '.';
 import { canUseDom } from './utils/propValidator';
 
@@ -206,8 +206,6 @@ eventManager
     latestInstance = containerInstance.props.containerId || containerInstance;
     containers.set(latestInstance, containerInstance);
 
-    toast.isActive = id => containerInstance.isToastActive(id);
-
     queue.forEach(item => {
       eventManager.emit(item.action, item.content, item.options);
     });
@@ -221,7 +219,9 @@ eventManager
       );
     else containers.clear();
 
-    toast.isActive = NOOP;
+    containers.forEach(container => {
+      container.listenToToastActions();
+    })
 
     if (canUseDom && containerDomNode) {
       document.body.removeChild(containerDomNode);
