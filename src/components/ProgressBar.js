@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 
-import { TYPE } from './../utils/constant';
+import { TYPE, RT_NAMESPACE } from './../utils/constant';
 import { falseOrDelay } from '../utils/propValidator';
 
 function ProgressBar({
@@ -26,13 +26,13 @@ function ProgressBar({
   };
 
   const classNames = cx(
-    'Toastify__progress-bar',
+    `${RT_NAMESPACE}__progress-bar`,
     controlledProgress
-      ? 'Toastify__progress-bar--controlled'
-      : 'Toastify__progress-bar--animated',
-    `Toastify__progress-bar--${type}`,
+      ? `${RT_NAMESPACE}__progress-bar--controlled`
+      : `${RT_NAMESPACE}__progress-bar--animated`,
+    `${RT_NAMESPACE}__progress-bar--${type}`,
     {
-      'Toastify__progress-bar--rtl': rtl
+      [`${RT_NAMESPACE}__progress-bar--rtl`]: rtl
     },
     className
   );
