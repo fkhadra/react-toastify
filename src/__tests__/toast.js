@@ -5,11 +5,11 @@ import { mount } from 'enzyme';
 import ToastContainer from './../components/ToastContainer';
 import toast from './../toast';
 import eventManager from './../utils/eventManager';
-import { ACTION, TYPE } from './../utils/constant';
+import { ACTION, TYPE, RT_NAMESPACE } from './../utils/constant';
 
 jest.useFakeTimers();
 
-const containerClass = '.Toastify__toast-container';
+const containerClass = `.${RT_NAMESPACE}__toast-container`;
 
 // Clear all previous event to avoid any clash between tests
 beforeEach(() => {
@@ -61,7 +61,7 @@ describe('toastify', () => {
     jest.runAllTimers();
 
     expect(document.querySelector(containerClass)).not.toBe(null);
-    expect(document.querySelector('.Toastify__toast-container--rtl')).not.toBe(
+    expect(document.querySelector(`.${RT_NAMESPACE}__toast-container--rtl`)).not.toBe(
       null
     );
     unmountLazyContainer();

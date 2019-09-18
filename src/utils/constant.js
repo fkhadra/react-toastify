@@ -23,3 +23,5 @@ export const ACTION = {
 };
 
 export const NOOP = () => {};
+
+export const RT_NAMESPACE = 'Toastify';

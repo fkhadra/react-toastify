@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 import ProgressBar from './ProgressBar';
-import { POSITION, TYPE, NOOP } from './../utils/constant';
+import { POSITION, TYPE, NOOP, RT_NAMESPACE } from './../utils/constant';
 import {
   falseOrDelay,
   objectValues,
@@ -292,10 +292,10 @@ class Toast extends Component {
 
     const toastProps = {
       className: cx(
-        'Toastify__toast',
-        `Toastify__toast--${type}`,
+        `${RT_NAMESPACE}__toast`,
+        `${RT_NAMESPACE}__toast--${type}`,
         {
-          'Toastify__toast--rtl': rtl
+          [`${RT_NAMESPACE}__toast--rtl`]: rtl
         },
         className
       )
@@ -335,7 +335,7 @@ class Toast extends Component {
         >
           <div
             {...(this.props.in && { role: role })}
-            className={cx('Toastify__toast-body', bodyClassName)}
+            className={cx(`${RT_NAMESPACE}__toast-body`, bodyClassName)}
           >
             {children}
           </div>

@@ -1,26 +1,27 @@
 import cssTransition from './../utils/cssTransition';
+import {RT_NAMESPACE} from './../utils/constant';
 
 const Bounce = cssTransition({
-  enter: 'Toastify__bounce-enter',
-  exit: 'Toastify__bounce-exit',
+  enter: `${RT_NAMESPACE}__bounce-enter`,
+  exit: `${RT_NAMESPACE}__bounce-exit`,
   appendPosition: true
 });
 
 const Slide = cssTransition({
-  enter: 'Toastify__slide-enter',
-  exit: 'Toastify__slide-exit',
+  enter: `${RT_NAMESPACE}__slide-enter`,
+  exit: `${RT_NAMESPACE}__slide-exit`,
   duration: [450, 750],
   appendPosition: true
 });
 
 const Zoom = cssTransition({
-  enter: 'Toastify__zoom-enter',
-  exit: 'Toastify__zoom-exit'
+  enter: `${RT_NAMESPACE}__zoom-enter`,
+  exit: `${RT_NAMESPACE}__zoom-exit`
 });
 
 const Flip = cssTransition({
-  enter: 'Toastify__flip-enter',
-  exit: 'Toastify__flip-exit'
+  enter: `${RT_NAMESPACE}__flip-enter`,
+  exit: `${RT_NAMESPACE}__flip-exit`
 });
 
 export { Bounce, Slide, Zoom, Flip };
