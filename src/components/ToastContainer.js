@@ -211,7 +211,13 @@ class ToastContainer extends Component {
     if (isValidElement(toastClose) || toastClose === false) {
       closeButton = toastClose;
     } else if (toastClose === true) {
-      closeButton = <CloseButton />;
+      closeButton =
+        this.props.closeButton &&
+        typeof this.props.closeButton !== 'boolean' ? (
+          this.props.closeButton
+        ) : (
+          <CloseButton />
+        );
     }
 
     return closeButton === false
