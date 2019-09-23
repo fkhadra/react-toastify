@@ -214,6 +214,23 @@ describe('ToastContainer', () => {
     expect(component.html()).toMatch(/✖/);
   });
 
+  it('Should use custom CloseButton when toast option set to true and ToastContainer options is custom', () => {
+    // set closeButton to false to remove it by default
+    const CloseBtn = () => <div>CUSTOM_BUTTON</div>;
+    let component = mount(<ToastContainer closeButton={<CloseBtn />} />);
+    toast('hello');
+    jest.runAllTimers();
+
+    // ensure that close button is NOT present by default
+    expect(component.html()).toMatch(/CUSTOM_BUTTON/);
+    toast('hello', { closeButton: true });
+    jest.runAllTimers();
+
+    // now the close button should be present
+    expect(component.html()).toMatch(/CUSTOM_BUTTON/);
+    expect(component.html()).not.toMatch(/✖/);
+  });
+
   it('Should merge className and style', () => {
     const component = mount(
       <ToastContainer className="foo" style={{ background: 'red' }} />

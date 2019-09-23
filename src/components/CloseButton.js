@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {RT_NAMESPACE} from "../utils/constant";
 
 function CloseButton({ closeToast, type, ariaLabel }) {
   return (
     <button
-      className={`Toastify__close-button Toastify__close-button--${type}`}
+      className={`${RT_NAMESPACE}__close-button ${RT_NAMESPACE}__close-button--${type}`}
       type="button"
       onClick={e => {
         e.stopPropagation();

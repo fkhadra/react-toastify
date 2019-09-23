@@ -13,6 +13,7 @@ import {
   isValidDelay,
   objectValues
 } from './../utils/propValidator';
+import {RT_NAMESPACE} from "./../utils/constant";
 
 class ToastContainer extends Component {
   static propTypes = {
@@ -210,7 +211,13 @@ class ToastContainer extends Component {
     if (isValidElement(toastClose) || toastClose === false) {
       closeButton = toastClose;
     } else if (toastClose === true) {
-      closeButton = <CloseButton />;
+      closeButton =
+        this.props.closeButton &&
+        typeof this.props.closeButton !== 'boolean' ? (
+          this.props.closeButton
+        ) : (
+          <CloseButton />
+        );
     }
 
     return closeButton === false
@@ -418,9 +425,9 @@ class ToastContainer extends Component {
         toastToRender[position][0] === null;
       const props = {
         className: cx(
-          'Toastify__toast-container',
-          `Toastify__toast-container--${position}`,
-          { 'Toastify__toast-container--rtl': this.props.rtl },
+          `${RT_NAMESPACE}__toast-container`,
+          `${RT_NAMESPACE}__toast-container--${position}`,
+          { [`${RT_NAMESPACE}__toast-container--rtl`]: this.props.rtl },
           this.parseClassName(className)
         ),
         style: disablePointer
@@ -437,7 +444,7 @@ class ToastContainer extends Component {
   }
 
   render() {
-    return <div className="Toastify">{this.renderToast()}</div>;
+    return <div className={`${RT_NAMESPACE}`}>{this.renderToast()}</div>;
   }
 }
 

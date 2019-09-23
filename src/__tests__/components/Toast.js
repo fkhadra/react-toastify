@@ -6,6 +6,7 @@ import Toast from './../../components/Toast';
 import ToastContainer from './../../components/ToastContainer';
 import CloseButton from './../../components/CloseButton';
 import ProgressBar from './../../components/ProgressBar';
+import {RT_NAMESPACE} from "../../utils/constant";
 
 const REQUIRED_PROPS = {
   ...ToastContainer.defaultProps,
@@ -216,7 +217,7 @@ describe('Toast', () => {
     component.setProps({ progress: 1 });
     expect(component.html()).toMatch(/transform:(\s)?scaleX\(1\)/);
     component
-      .find('.Toastify__progress-bar--controlled')
+      .find(`.${RT_NAMESPACE}__progress-bar--controlled`)
       .simulate('transitionEnd');
     expect(closeToast).toHaveBeenCalled();
   });
@@ -227,7 +228,7 @@ describe('Toast', () => {
         FooBar
       </Toast>
     );
-    expect(component.find('.Toastify__toast-body').prop('role')).toEqual(
+    expect(component.find(`.${RT_NAMESPACE}__toast-body`).prop('role')).toEqual(
       'status'
     );
   });
