@@ -139,8 +139,10 @@ label{
 }
 
 .code {
+    font-family: "Source Code Pro", Menlo, Monaco, Courier, monospace;
     font-size: 12px;
-    font-style: italic;
+    line-height: 1.4;
+    font-style: normal;
     border-left: 3px solid #a9547e;
     padding-left: 20px;
     background: #222;
