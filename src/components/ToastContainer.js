@@ -1,7 +1,7 @@
 import React, { Component, isValidElement, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import TransitionGroup from 'react-transition-group/TransitionGroup';
+import { TransitionGroup } from 'react-transition-group';
 
 import Toast from './Toast';
 import CloseButton from './CloseButton';
@@ -13,7 +13,7 @@ import {
   isValidDelay,
   objectValues
 } from './../utils/propValidator';
-import {RT_NAMESPACE} from "./../utils/constant";
+import { RT_NAMESPACE } from './../utils/constant';
 
 class ToastContainer extends Component {
   static propTypes = {
