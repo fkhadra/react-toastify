@@ -32,6 +32,8 @@ describe('ToastContainer', () => {
     expect(eventManager.list.has(ACTION.CLEAR)).toBeTruthy();
 
     component.unmount();
+    jest.runAllTimers();
+
     expect(eventManager.list.has(ACTION.SHOW)).toBeFalsy();
     expect(eventManager.list.has(ACTION.CLEAR)).toBeFalsy();
   });

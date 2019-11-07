@@ -211,6 +211,12 @@ eventManager
       );
     else containers.clear();
 
+    if(containers.size === 0){
+      eventManager
+      .off(ACTION.SHOW)
+      .off(ACTION.CLEAR)
+    }
+
     toast.isActive = NOOP;
 
     if (canUseDom && containerDomNode) {
