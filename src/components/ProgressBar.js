@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 
-import { TYPE, RT_NAMESPACE } from './../utils/constant';
-import { falseOrDelay } from '../utils/propValidator';
+import { TYPE, RT_NAMESPACE, falseOrDelay } from './../utils';
 
 function ProgressBar({
   delay,

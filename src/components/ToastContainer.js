@@ -6,14 +6,15 @@ import { TransitionGroup } from 'react-transition-group';
 import Toast from './Toast';
 import CloseButton from './CloseButton';
 import { Bounce } from './Transitions';
-import { POSITION, ACTION } from './../utils/constant';
-import eventManager from './../utils/eventManager';
 import {
+  POSITION,
+  ACTION,
+  RT_NAMESPACE,
+  eventManager,
   falseOrDelay,
   isValidDelay,
   objectValues
-} from './../utils/propValidator';
-import { RT_NAMESPACE } from './../utils/constant';
+} from './../utils';
 
 class ToastContainer extends Component {
   static propTypes = {
@@ -184,8 +185,7 @@ class ToastContainer extends Component {
   }
 
   componentWillUnmount() {
-    eventManager
-      .emit(ACTION.WILL_UNMOUNT, this);
+    eventManager.emit(ACTION.WILL_UNMOUNT, this);
   }
 
   isToastActive = id => this.state.toast.indexOf(id) !== -1;

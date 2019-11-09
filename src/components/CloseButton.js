@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {RT_NAMESPACE} from "../utils/constant";
+import { RT_NAMESPACE } from '../utils';
 
 function CloseButton({ closeToast, type, ariaLabel }) {
   return (

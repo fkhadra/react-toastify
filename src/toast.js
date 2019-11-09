@@ -1,10 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom';
 
-import eventManager from './utils/eventManager';
-import { POSITION, TYPE, ACTION, NOOP } from './utils/constant';
+import { POSITION, TYPE, ACTION, NOOP, eventManager, canUseDom } from './utils';
 import { ToastContainer } from '.';
-import { canUseDom } from './utils/propValidator';
 
 let containers = new Map();
 let latestInstance = null;
@@ -211,10 +209,8 @@ eventManager
       );
     else containers.clear();
 
-    if(containers.size === 0){
-      eventManager
-      .off(ACTION.SHOW)
-      .off(ACTION.CLEAR)
+    if (containers.size === 0) {
+      eventManager.off(ACTION.SHOW).off(ACTION.CLEAR);
     }
 
     toast.isActive = NOOP;

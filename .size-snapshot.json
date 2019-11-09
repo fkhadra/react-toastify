@@ -5,9 +5,9 @@
     "gzipped": 5540
   },
   "cjs/react-toastify.min.js": {
-    "bundled": 31146,
+    "bundled": 31145,
     "minified": 17335,
-    "gzipped": 5471
+    "gzipped": 5459
   },
   "./esm/index.esm.js": {
     "bundled": 32847,
@@ -24,9 +24,9 @@
     }
   },
   "esm/react-toastify.js": {
-    "bundled": 35136,
+    "bundled": 35135,
     "minified": 19391,
-    "gzipped": 5730,
+    "gzipped": 5726,
     "treeshaked": {
       "rollup": {
         "code": 16606,

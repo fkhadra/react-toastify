@@ -2,7 +2,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import cssTransition from './../../utils/cssTransition';
+import { cssTransition } from './../../utils';
 
 describe('cssTransition helper', () => {
   it('Should return a valid react node', () => {
