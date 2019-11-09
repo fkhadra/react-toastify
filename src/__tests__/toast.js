@@ -248,6 +248,22 @@ describe('toastify', () => {
       jest.runAllTimers();
       expect(toast.isActive(id)).toBe(true);
     });
+
+    it('Should work with multi container', () => {
+      mount(
+        <>
+          <ToastContainer containerId="first" enableMultiContainer />
+          <ToastContainer containerId="second" enableMultiContainer />
+        </>
+      );
+
+      const firstId = toast('hello first', { containerId: 'first' });
+      const secondId = toast('hello second', { containerId: 'second' });
+      jest.runAllTimers();
+
+      expect(toast.isActive(firstId)).toBe(true);
+      expect(toast.isActive(secondId)).toBe(true);
+    });
   });
 
   it('Can append classNames', () => {
