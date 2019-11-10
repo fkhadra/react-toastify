@@ -36,32 +36,32 @@ const ToastCode = ({
       </div>
       <div>
         <span className="code__props">position</span>
-        {`: "${position}"`}
+        {`: "${position}"`},
       </div>
       <div>
         <span className="code__props">autoClose</span>
-        {`: ${disableAutoClose ? false : autoClose}`}
+        {`: ${disableAutoClose ? false : autoClose}`},
       </div>
       <div>
         <span className="code__props">hideProgressBar</span>
-        {`: ${hideProgressBar ? 'true' : 'false'}`}
+        {`: ${hideProgressBar ? 'true' : 'false'}`},
       </div>
       <div>
         <span className="code__props">closeOnClick</span>
-        {`: ${closeOnClick ? 'true' : 'false'}`}
+        {`: ${closeOnClick ? 'true' : 'false'}`},
       </div>
       <div>
         <span className="code__props">pauseOnHover</span>
-        {`: ${pauseOnHover ? 'true' : 'false'}`}
+        {`: ${pauseOnHover ? 'true' : 'false'}`},
       </div>
       <div>
         <span className="code__props">draggable</span>
-        {`: ${draggable ? 'true' : 'false'}`}
+        {`: ${draggable ? 'true' : 'false'}`},
       </div>
       {!Number.isNaN(parseFloat(progress)) && (
         <div>
           <span className="code__props">progress</span>
-          {`: ${progress}`}
+          {`: ${progress}`},
         </div>
       )}
       <div>{`});`}</div>

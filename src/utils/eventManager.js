@@ -1,4 +1,4 @@
-const eventManager = {
+export const eventManager = {
   list: new Map(),
 
   on(event, callback) {
@@ -29,5 +29,3 @@ const eventManager = {
       );
   }
 };
-
-export default eventManager;

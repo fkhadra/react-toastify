@@ -5,8 +5,7 @@ import { mount } from 'enzyme';
 import ToastContainer from './../../components/ToastContainer';
 import toast from './../../toast';
 
-import { ACTION } from './../../utils/constant';
-import eventManager from './../../utils/eventManager';
+import { ACTION, eventManager } from './../../utils';
 
 function hasProp(obj, key) {
   return Object.prototype.hasOwnProperty.call(obj, key);
@@ -32,6 +31,8 @@ describe('ToastContainer', () => {
     expect(eventManager.list.has(ACTION.CLEAR)).toBeTruthy();
 
     component.unmount();
+    jest.runAllTimers();
+
     expect(eventManager.list.has(ACTION.SHOW)).toBeFalsy();
     expect(eventManager.list.has(ACTION.CLEAR)).toBeFalsy();
   });

@@ -1,10 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom';
 
-import eventManager from './utils/eventManager';
-import { POSITION, TYPE, ACTION, NOOP } from './utils/constant';
+import { POSITION, TYPE, ACTION, eventManager, canUseDom } from './utils';
 import { ToastContainer } from '.';
-import { canUseDom } from './utils/propValidator';
 
 let containers = new Map();
 let latestInstance = null;
@@ -124,9 +122,21 @@ toast.dismiss = (id = null) =>
   isAnyContainerMounted() && eventManager.emit(ACTION.CLEAR, id);
 
 /**
- * Do nothing until the container is mounted. Reassigned later
+ * return true if one container is displaying the toast
  */
-toast.isActive = NOOP;
+toast.isActive = id => {
+  let isToastActive = false;
+
+  if (containers.size > 0) {
+    containers.forEach(container => {
+      if (container.isToastActive(id)) {
+        isToastActive = true;
+      }
+    })
+  }
+
+  return isToastActive;
+}
 
 toast.update = (toastId, options = {}) => {
   // if you call toast and toast.update directly nothing will be displayed
@@ -196,8 +206,6 @@ eventManager
     latestInstance = containerInstance.props.containerId || containerInstance;
     containers.set(latestInstance, containerInstance);
 
-    toast.isActive = id => containerInstance.isToastActive(id);
-
     queue.forEach(item => {
       eventManager.emit(item.action, item.content, item.options);
     });
@@ -211,7 +219,9 @@ eventManager
       );
     else containers.clear();
 
-    toast.isActive = NOOP;
+    if (containers.size === 0) {
+      eventManager.off(ACTION.SHOW).off(ACTION.CLEAR);
+    }
 
     if (canUseDom && containerDomNode) {
       document.body.removeChild(containerDomNode);

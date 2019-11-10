@@ -1,5 +1,4 @@
-import cssTransition from './../utils/cssTransition';
-import {RT_NAMESPACE} from './../utils/constant';
+import { RT_NAMESPACE, cssTransition } from './../utils';
 
 const Bounce = cssTransition({
   enter: `${RT_NAMESPACE}__bounce-enter`,
