@@ -177,6 +177,7 @@ class ToastContainer extends Component {
 
   componentDidMount() {
     eventManager
+      .cancelEmit(ACTION.WILL_UNMOUNT)
       .on(ACTION.SHOW, (content, options) => this.buildToast(content, options))
       .on(ACTION.CLEAR, id =>
         id == null ? this.clear() : this.removeToast(id)

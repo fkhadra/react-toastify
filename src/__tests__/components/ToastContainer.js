@@ -37,6 +37,19 @@ describe('ToastContainer', () => {
     expect(eventManager.list.has(ACTION.CLEAR)).toBeFalsy();
   });
 
+  it('Should bind event when re-mounted', () => {
+    const component = mount(<ToastContainer />);
+
+    expect(eventManager.list.has(ACTION.SHOW)).toBeTruthy();
+    expect(eventManager.list.has(ACTION.CLEAR)).toBeTruthy();
+
+    component.unmount().mount();
+    jest.runAllTimers();    
+
+    expect(eventManager.list.has(ACTION.SHOW)).toBeTruthy();
+    expect(eventManager.list.has(ACTION.CLEAR)).toBeTruthy();
+  });
+
   it(`Should always pass down to Toast the props: 
     -autoClose
     -closeButton
