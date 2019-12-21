@@ -444,7 +444,11 @@ class ToastContainer extends Component {
   }
 
   render() {
-    return <div ref={node => (this.ref=node)} className={`${RT_NAMESPACE}`}>{this.renderToast()}</div>;
+    return (
+      <div ref={node => (this.ref = node)} className={`${RT_NAMESPACE}`}>
+        {this.renderToast()}
+      </div>
+    );
   }
 }
 
