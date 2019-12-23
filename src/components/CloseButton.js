@@ -13,7 +13,7 @@ function CloseButton({ closeToast, type, ariaLabel }) {
       }}
       aria-label={ariaLabel}
     >
-      ✖
+      ✖︎
     </button>
   );
 }
