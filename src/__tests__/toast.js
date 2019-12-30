@@ -117,16 +117,14 @@ describe('toastify', () => {
     });
 
     it('Should pass containerId as second arg if set', done => {
-      mount(<ToastContainer containerId="foo"/>);
+      mount(<ToastContainer containerId="foo" />);
       toast.onChange((count, containerId) => {
-        expect(containerId).toBe("foo");
+        expect(containerId).toBe('foo');
         done();
       });
       toast('hello');
       jest.runAllTimers();
     });
-
-
   });
 
   it('Should be able remove toast programmatically', () => {

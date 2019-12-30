@@ -203,7 +203,11 @@ class ToastContainer extends Component {
   }
 
   dispatchChange() {
-    eventManager.emit(ACTION.ON_CHANGE, this.state.toast.length, this.props.containerId);
+    eventManager.emit(
+      ACTION.ON_CHANGE,
+      this.state.toast.length,
+      this.props.containerId
+    );
   }
 
   makeCloseButton(toastClose, toastId, type) {
