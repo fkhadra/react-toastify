@@ -665,8 +665,9 @@ You can define two callbacks on `toast`. They are really useful when the toast a
 If you want to know when a toast is displayed or removed, `toast` expose a `onChange` method:
 
 ```js
-toast.onChange( numberOfToastDisplayed => {
+toast.onChange( (numberOfToastDisplayed, containerId) => {
   // Do whatever you want
+  // The containerId is usefull when working with multiple containers
 });
 ```
 
