@@ -91,7 +91,7 @@ $ yarn add react-toastify
 - Pause toast when window loses focus 👁
 - Fancy progress bar to display the remaining time
 - Possibility to update a toast
-- You can controll the progress bar a la npgrogress 😲
+- You can control the progress bar a la nprogress 😲
 - Starting v5 the `ToastContainer` is optional if you want to 😎
 
 ## Usage
@@ -665,8 +665,9 @@ You can define two callbacks on `toast`. They are really useful when the toast a
 If you want to know when a toast is displayed or removed, `toast` expose a `onChange` method:
 
 ```js
-toast.onChange( numberOfToastDisplayed => {
+toast.onChange( (numberOfToastDisplayed, containerId) => {
   // Do whatever you want
+  // The containerId is usefull when working with multiple containers
 });
 ```
 

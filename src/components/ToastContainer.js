@@ -177,9 +177,12 @@ class ToastContainer extends Component {
 
   componentDidMount() {
     eventManager
-      .on(ACTION.SHOW, (content, options) => this.buildToast(content, options))
+      .cancelEmit(ACTION.WILL_UNMOUNT)
+      .on(ACTION.SHOW, (content, options) =>
+        this.ref ? this.buildToast(content, options) : null
+      )
       .on(ACTION.CLEAR, id =>
-        id == null ? this.clear() : this.removeToast(id)
+        !this.ref ? null : id == null ? this.clear() : this.removeToast(id)
       )
       .emit(ACTION.DID_MOUNT, this);
   }
@@ -200,7 +203,11 @@ class ToastContainer extends Component {
   }
 
   dispatchChange() {
-    eventManager.emit(ACTION.ON_CHANGE, this.state.toast.length);
+    eventManager.emit(
+      ACTION.ON_CHANGE,
+      this.state.toast.length,
+      this.props.containerId
+    );
   }
 
   makeCloseButton(toastClose, toastId, type) {
@@ -442,7 +449,11 @@ class ToastContainer extends Component {
   }
 
   render() {
-    return <div className={`${RT_NAMESPACE}`}>{this.renderToast()}</div>;
+    return (
+      <div ref={node => (this.ref = node)} className={`${RT_NAMESPACE}`}>
+        {this.renderToast()}
+      </div>
+    );
   }
 }
 

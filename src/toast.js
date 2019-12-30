@@ -132,11 +132,11 @@ toast.isActive = id => {
       if (container.isToastActive(id)) {
         isToastActive = true;
       }
-    })
+    });
   }
 
   return isToastActive;
-}
+};
 
 toast.update = (toastId, options = {}) => {
   // if you call toast and toast.update directly nothing will be displayed

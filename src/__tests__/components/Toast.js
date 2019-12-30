@@ -6,7 +6,7 @@ import Toast from './../../components/Toast';
 import ToastContainer from './../../components/ToastContainer';
 import CloseButton from './../../components/CloseButton';
 import ProgressBar from './../../components/ProgressBar';
-import {RT_NAMESPACE} from "../../utils";
+import { RT_NAMESPACE } from '../../utils';
 
 const REQUIRED_PROPS = {
   ...ToastContainer.defaultProps,
