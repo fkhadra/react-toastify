@@ -310,7 +310,7 @@ interface Toast {
   /**
    * Listen for change when a toast is added or removed. The number of toast displayed is passed as paran to the callback
    */
-  onChange(callback: (count?: number) => void): void;
+  onChange(callback: (count?: number, containerId?: string | number) => void): void;
 
   /**
    * Set a controlled progress bar value to 100% then close the toast
