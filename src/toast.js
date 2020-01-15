@@ -203,7 +203,7 @@ toast.TYPE = TYPE;
  */
 eventManager
   .on(ACTION.DID_MOUNT, containerInstance => {
-    latestInstance = containerInstance.props.containerId || containerInstance;
+    latestInstance = containerInstance.containerId || containerInstance;
     containers.set(latestInstance, containerInstance);
 
     queue.forEach(item => {
@@ -215,7 +215,7 @@ eventManager
   .on(ACTION.WILL_UNMOUNT, containerInstance => {
     if (containerInstance)
       containers.delete(
-        containerInstance.props.containerId || containerInstance
+        containerInstance.containerId || containerInstance
       );
     else containers.clear();
 
