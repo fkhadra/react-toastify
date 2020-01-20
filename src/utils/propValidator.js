@@ -1,3 +1,5 @@
+import { isValidElement } from "react";
+
 export function isValidDelay(val) {
   return typeof val === 'number' && !isNaN(val) && val > 0;
 }
@@ -13,16 +15,18 @@ export const canUseDom = !!(
 );
 
 function withRequired(fn) {
-  fn.isRequired = function(props, propName, componentName) {
-    const prop = props[propName];
-
-    if (typeof prop === 'undefined') {
-      return new Error(`The prop ${propName} is marked as required in 
-      ${componentName}, but its value is undefined.`);
-    }
-
-    fn(props, propName, componentName);
-  };
+  if (process.env.NODE_ENV === 'development') {
+    fn.isRequired = function(props, propName, componentName) {
+      const prop = props[propName];
+  
+      if (typeof prop === 'undefined') {
+        return new Error(`The prop ${propName} is marked as required in 
+        ${componentName}, but its value is undefined.`);
+      }
+  
+      fn(props, propName, componentName);
+    };  
+  }
   return fn;
 }
 
@@ -36,3 +40,27 @@ export const falseOrDelay = withRequired((props, propName, componentName) => {
 
   return null;
 });
+
+export function canBeRendered(content) {
+  return (
+    isValidElement(content) ||
+    typeof content === "string" ||
+    typeof content === "number" ||
+    typeof content === "function"
+  );
+}
+
+export function parseClassName(prop) {
+  if (typeof prop === "string") {
+    return prop;
+  } else if (
+    prop !== null &&
+    typeof prop === "object" &&
+    "toString" in prop
+  ) {
+    return prop.toString();
+  }
+
+  return null;
+}
+
