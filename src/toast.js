@@ -129,6 +129,8 @@ toast.isActive = id => {
 
   if (containers.size > 0) {
     containers.forEach(container => {
+      console.log(containers);
+      
       if (container.isToastActive(id)) {
         isToastActive = true;
       }

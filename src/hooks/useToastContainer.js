@@ -39,11 +39,12 @@ export function useToastContainer(props) {
   });
 
   useEffect(() => {
+    instanceRef.current.containerId = props.containerId;
     eventManager
       .cancelEmit(ACTION.WILL_UNMOUNT)
       .on(ACTION.SHOW, (content, options) => {
-        const { toastId, updateId, staleToastId, delay } = options;
-        
+        const { toastId, updateId, staleToastId } = options;
+
         if (containerRef.current) {
           collectionRef.current[toastId] = {
             content,
@@ -73,6 +74,7 @@ export function useToastContainer(props) {
   }, []);
 
   useEffect(() => {
+    instanceRef.current.isToastActive = isToastActive;
     eventManager.emit(ACTION.ON_CHANGE, toast.length, props.containerId);
   }, [toast]);
 
@@ -192,10 +194,15 @@ export function useToastContainer(props) {
     const toastToRender = {};
     const collection = collectionRef.current;
     const { newestOnTop } = props;
-    const toastList = newestOnTop
+    const toastList = newestOnTop 
+      // ? toast.slice().reverse()
+      // : toast.slice()
       ? Object.keys(collection).reverse()
       : Object.keys(collection);
-
+      
+      console.log({
+        toastList
+      });
     // reduce nope  😜
     for (let i = 0; i < toastList.length; i++) {
       const toastId = toastList[i];
@@ -208,9 +215,13 @@ export function useToastContainer(props) {
         const toast = build(rawToast);
         toastToRender[position].push(toast);
       } else {
-        delete collection[toastId];
+       // delete collection[toastId];
       }
     }
+    console.log({
+      toastToRender
+    });
+    
     return toastToRender;
   }
 

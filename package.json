@@ -32,7 +32,7 @@
     "lint": "eslint src/",
     "lint:fix": "eslint --fix src/",
     "prettier-all": "prettier --single-quote --write 'src/**/*.js'",
-    "prebuild": "yarn run test",
+    
     "build": "npm run clean && cross-env NODE_ENV=production rollup -c && npm run style",
     "clean": "rimraf cjs/* && rimraf dist/* && rimraf esm/*",
     "sass": "node-sass scss/main.scss dist/ReactToastify.css",
