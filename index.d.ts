@@ -73,31 +73,9 @@ type ToastContent = React.ReactNode | { (): void };
 
 type ToastId = number | string;
 
-interface cssTransitionProps {
-  /**
-   * Css class to apply when toast enter
-   */
-  enter: string;
-
-  /**
-   * Css class to apply when toast leave
-   */
-  exit: string;
-
-  /**
-   * Define the duration of the transition in ms
-   * `Default: 750`
-   */
-  duration?: number | Array<number>;
-
-  /**
-   * Append current toast position to the classname.
-   * For instance `myclass--top-center`...
-   * `Default: false`
-   */
-  appendPosition?: boolean;
-}
-
+/**
+ * Common options between ToastContainer and Toast
+ */
 interface CommonOptions {
   /**
    * Pause the timer when the mouse hover the toast.

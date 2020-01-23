@@ -1,8 +1,8 @@
-import { ToastOptions, ToastId, ToastContent } from '../types';
+import { InternalToastOptions, ToastId, ToastContent } from '../types';
 
 export type Event = 'show' | 'clear' | 'didMount' | 'willUnmount' | 'change';
 
-type OnShowCallback = (content: ToastContent , options: ToastOptions) => void;
+type OnShowCallback = (content: ToastContent , options: InternalToastOptions) => void;
 type OnClearCallback = (id?: ToastId) => void;
 type OnDidMountCallback = (containerInstance: object) => void;
 type OnWillUnmountCallback = OnDidMountCallback;
@@ -25,7 +25,7 @@ export interface EventManager {
   on(event: 'change', callback: OnChangeCallback): EventManager;
   off(event: Event): EventManager;
   cancelEmit(event: Event): EventManager;
-  emit(event: 'show', content: React.ReactNode, options: ToastOptions): void;
+  emit(event: 'show', content: React.ReactNode, options: InternalToastOptions): void;
   emit(event: 'clear', id?: string | number): void;
   emit(event: 'didMount', containerInstance: object): void;
   emit(event: 'willUnmount', containerInstance: object): void;

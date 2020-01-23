@@ -19,7 +19,7 @@ import {
   ToastId,
   ToastContainerProps,
   ContainerId,
-  ToastOptions,
+ InternalToastOptions,
   ToastContent,
   Toast,
   ToastPosition
@@ -43,12 +43,12 @@ function reducer(state: State, action: Action) {
     case 'REMOVE':
       return action.toastId ? state.filter(id => id !== action.toastId) : [];
     default:
-      break;
+      throw "";
   }
 }
 
 interface InstanceRef {
-  containerId?: ContainerId;
+  containerId?: ContainerId | null;
   isToastActive: false | ((toastId: ToastId) => boolean);
 }
 
@@ -93,9 +93,9 @@ export function useToastContainer(props: ToastContainerProps) {
     dispatch({ type: 'REMOVE', toastId });
   }
 
-  function getAutoCloseDelay(toastAutoClose: false | number) {
+  function getAutoCloseDelay(toastAutoClose?: false | number) {
     return toastAutoClose === false ||
-      (isNum(toastAutoClose) && toastAutoClose > 0)
+      (isNum(toastAutoClose) && toastAutoClose as number > 0)
       ? toastAutoClose
       : props.autoClose;
   }
@@ -105,7 +105,7 @@ export function useToastContainer(props: ToastContainerProps) {
    * check for multi-container, build only if associated
    * check for duplicate toastId if no update
    */
-  function isNotValid({ containerId, toastId, updateId }: ToastOptions) {
+  function isNotValid({ containerId, toastId, updateId }: InternalToastOptions) {
     return !containerRef.current ||
       (props.enableMultiContainer && containerId !== props.containerId) ||
       (isToastActive(toastId) && updateId == null)
@@ -115,13 +115,13 @@ export function useToastContainer(props: ToastContainerProps) {
 
   function buildToast(
     content: ToastContent,
-    { delay, staleId, ...options }: ToastOptions
+    { delay, staleId, ...options }: InternalToastOptions
   ) {
     if (!canBeRendered(content) || isNotValid(options)) return;
 
     const { toastId, updateId } = options;
     const closeToast = () => removeToast(toastId);
-    const toastOptions: ToastOptions = {
+    const toastOptions: InternalToastOptions = {
       toastId,
       updateId,
       key: options.key || toastKeyRef.current++,
@@ -175,7 +175,7 @@ export function useToastContainer(props: ToastContainerProps) {
       toastContent = (content as Function)({ closeToast });
     }
 
-    if (isNum(delay) && delay > 0) {
+    if (isNum(delay) && delay as number > 0) {
       setTimeout(() => {
         appendToast(toastContent, toastOptions, staleId);
       }, delay);
@@ -186,8 +186,8 @@ export function useToastContainer(props: ToastContainerProps) {
 
   function appendToast(
     content: ToastContent,
-    options: ToastOptions,
-    staleId: ToastId
+    options: InternalToastOptions,
+    staleId?: ToastId
   ) {
     const { toastId, updateId } = options;
 
@@ -221,7 +221,7 @@ export function useToastContainer(props: ToastContainerProps) {
 
       toastToRender[position] || (toastToRender[position] = []);
       isToastActive(toastId)
-        ? toastToRender[position].push(toast)
+        ? toastToRender[position]!.push(toast)
         : delete collection[toastId];
     }
 

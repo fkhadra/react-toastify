@@ -12,7 +12,7 @@ export type TypeOptions = 'info' | 'success' | 'warning' | 'error' | 'default';
 export type ToastContent = React.ReactNode | (() => React.ReactNode );
 export interface Toast {
   content: ToastContent;
-  options: ToastOptions;
+  options: InternalToastOptions;
 }
 
 type Id = number | string
@@ -61,7 +61,7 @@ interface CommonOptions {
   /**
    * An optional css class to set for the progress bar.
    */
-  progressClassName?: string | object;
+  progressClassName?: string | object | null;
 
   /**
    * An optional style to set for the progress bar.
@@ -71,12 +71,12 @@ interface CommonOptions {
   /**
    * An optional css class to set.
    */
-  className?: string | object;
+  className?: string | object | null;
 
   /**
    * An optional css class to set for the toast content.
    */
-  bodyClassName?: string | object;
+  bodyClassName?: string | object | null;
 
   /**
    * Hide or show the progress bar.
@@ -152,11 +152,6 @@ export interface ToastOptions extends CommonOptions {
    */
   updateId?: ToastId;
 
-   /**
-   * Issue #264
-   */
-  staleId?: ToastId;
-
   /**
    * Set the percentage for the controlled progress bar. `Value must be between 0 and 1.`
    */
@@ -166,15 +161,14 @@ export interface ToastOptions extends CommonOptions {
    * Add a delay in ms before the toast appear.
    */
   delay?: number;
+}
 
-  /**
-   * Key used for the react dom
-   */
-  key?: Id;
-
-  closeToast?: () => void;
-
-  
+export interface InternalToastOptions extends ToastOptions {
+  staleId?: ToastId;
+  toastId: ToastId;
+  key: Id;
+  closeToast: () => void;
+  position: ToastPosition;
 }
 
 export interface UpdateOptions extends ToastOptions {
@@ -200,7 +194,7 @@ export interface ToastContainerProps extends CommonOptions {
   /**
    * An optional css class for the toast.
    */
-  toastClassName?: string | object;
+  toastClassName?: string | object | null;
 
   /**
    * Show the toast only if it includes containerId and it's the same as containerId
