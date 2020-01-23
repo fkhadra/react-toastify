@@ -1,5 +1,11 @@
-
 export type TypeOptions = 'info' | 'success' | 'warning' | 'error' | 'default';
+export type Positons =
+  | 'top-left'
+  | 'top-right'
+  | 'top-center'
+  | 'bottom-left'
+  | 'bottom-right'
+  | 'bottom-center';
 
 export const POSITION = {
   TOP_LEFT: 'top-left',
