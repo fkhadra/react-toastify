@@ -17,27 +17,42 @@
     "react": ">=16"
   },
   "husky": {
-    "hooks": {
-      
-    }
+    "hooks": {}
   },
   "prettier": {
     "printWidth": 80,
     "semi": true,
     "singleQuote": true
   },
+  "jest": {
+    "verbose": true,
+    "setupFiles": [
+      "<rootDir>/setupJest.ts"
+    ]
+  },
   "name": "react-toastify",
   "author": "Fadi Khadra",
   "module": "dist/react-toastify.esm.js",
   "devDependencies": {
+    "@types/enzyme": "^3.10.4",
+    "@types/enzyme-adapter-react-16": "^1.0.5",
+    "@types/enzyme-to-json": "^1.5.3",
     "@types/jest": "^24.9.0",
     "@types/react": "^16.9.19",
     "@types/react-dom": "^16.9.5",
+    "@types/react-transition-group": "^4.2.3",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "enzyme-to-json": "^3.4.3",
     "husky": "^4.2.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "tsdx": "^0.12.3",
     "tslib": "^1.10.0",
     "typescript": "^3.7.5"
+  },
+  "dependencies": {
+    "prop-types": "^15.7.2",
+    "react-transition-group": "^4.3.0"
   }
 }
