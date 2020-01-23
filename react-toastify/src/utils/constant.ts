@@ -1,3 +1,6 @@
+
+export type TypeOptions = 'info' | 'success' | 'warning' | 'error' | 'default';
+
 export const POSITION = {
   TOP_LEFT: 'top-left',
   TOP_RIGHT: 'top-right',
