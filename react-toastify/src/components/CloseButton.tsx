@@ -8,7 +8,7 @@ export interface CloseButtonProps {
   ariaLabel: string;
 }
 
-function CloseButton({ closeToast, type, ariaLabel }: CloseButtonProps) {
+export function CloseButton({ closeToast, type, ariaLabel }: CloseButtonProps) {
   return (
     <button
       className={`${RT_NAMESPACE}__close-button ${RT_NAMESPACE}__close-button--${type}`}
@@ -32,5 +32,3 @@ CloseButton.propTypes = {
 CloseButton.defaultProps = {
   ariaLabel: 'close'
 };
-
-export default CloseButton;

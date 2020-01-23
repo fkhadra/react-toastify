@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import CloseButton from '../../src/components/CloseButton';
+import { CloseButton } from '../../src/components/CloseButton';
 
 const closeToast = jest.fn();
 
