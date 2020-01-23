@@ -1,8 +1,9 @@
-import { ToastOptions } from '../types';
+import { ToastOptions, ToastId } from '../types';
 
-type Event = 'show' | 'clear' | 'didMount' | 'willUnmount' | 'change';
+export type Event = 'show' | 'clear' | 'didMount' | 'willUnmount' | 'change';
+
 type OnShowCallback = (content: React.ReactNode, options: ToastOptions) => void;
-type OnClearCallback = (id?: string | number) => void;
+type OnClearCallback = (id?: ToastId) => void;
 type OnDidMountCallback = (containerInstance: object) => void;
 type OnWillUnmountCallback = OnDidMountCallback;
 type OnChangeCallback = (toast: number, containerId?: number | string) => void;
@@ -12,10 +13,11 @@ type Callback =
   | OnDidMountCallback
   | OnWillUnmountCallback
   | OnChangeCallback;
+type TimeoutId = ReturnType<typeof window.setTimeout>;
 
 export interface EventManager {
   list: Map<Event, Callback[]>;
-  emitQueue: Map<Event, Callback[]>;
+  emitQueue: Map<Event, TimeoutId[]>;
   on(event: 'show', callback: OnShowCallback): EventManager;
   on(event: 'clear', callback: OnClearCallback): EventManager;
   on(event: 'didMount', callback: OnDidMountCallback): EventManager;
@@ -34,9 +36,9 @@ export const eventManager: EventManager = {
   list: new Map(),
   emitQueue: new Map(),
 
-  on(event, callback) {
+  on(event: Event, callback: Callback) {
     this.list.has(event) || this.list.set(event, []);
-    this.list.get(event).push(callback);
+    this.list.get(event)!.push(callback);
     return this;
   },
 
@@ -48,7 +50,7 @@ export const eventManager: EventManager = {
   cancelEmit(event) {
     const timers = this.emitQueue.get(event);
     if (timers) {
-      timers.forEach(timer => clearTimeout(timer));
+      timers.forEach((timer: TimeoutId) => clearTimeout(timer));
       this.emitQueue.delete(event);
     }
 
@@ -63,15 +65,16 @@ export const eventManager: EventManager = {
    * toast('3')
    * Without setTimemout the code above will not work
    */
-  emit(event, ...args) {
+  emit(event: Event, ...args: any[]) {
     this.list.has(event) &&
-      this.list.get(event).forEach(callback => {
+      this.list.get(event)!.forEach((callback: Callback) => {
         const timer = setTimeout(() => {
+          // @ts-ignore
           callback(...args);
         }, 0);
 
         this.emitQueue.has(event) || this.emitQueue.set(event, []);
-        this.emitQueue.get(event).push(timer);
+        this.emitQueue.get(event)!.push(timer);
       });
   }
 };
