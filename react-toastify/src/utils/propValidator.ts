@@ -1,8 +1,9 @@
 import { isValidElement } from 'react';
 
-export function isValidDelay<T>(val: T): boolean {
-  return typeof val === 'number' && !isNaN(val) && val > 0;
-}
+export const isNum = <T>(v: T) => typeof v === 'number' && !isNaN(v);
+export const isBool = <T>(v: T) => typeof v === 'boolean';
+export const isStr = <T>(v: T) => typeof v === 'string';
+export const isFn = <T>(v: T) => typeof v === 'function';
 
 export function objectValues<T>(obj: Record<string, T>) {
   return Object.keys(obj).map(key => obj[key]);
@@ -13,33 +14,6 @@ export const canUseDom = !!(
   window.document &&
   window.document.createElement
 );
-
-// function withRequired(fn) {
-//   if (process.env.NODE_ENV === 'development') {
-//     fn.isRequired = function(props, propName, componentName) {
-//       const prop = props[propName];
-
-//       if (typeof prop === 'undefined') {
-//         return new Error(`The prop ${propName} is marked as required in
-//         ${componentName}, but its value is undefined.`);
-//       }
-
-//       fn(props, propName, componentName);
-//     };
-//   }
-//   return fn;
-// }
-
-// export const falseOrDelay = withRequired((props, propName, componentName) => {
-//   const prop = props[propName];
-
-//   if (prop !== false && !isValidDelay(prop)) {
-//     return new Error(`${componentName} expect ${propName}
-//       to be a valid Number > 0 or equal to false. ${prop} given.`);
-//   }
-
-//   return null;
-// });
 
 export function canBeRendered<T>(content: T): boolean {
   return (

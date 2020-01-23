@@ -1,8 +1,8 @@
-import { ToastOptions, ToastId } from '../types';
+import { ToastOptions, ToastId, ToastContent } from '../types';
 
 export type Event = 'show' | 'clear' | 'didMount' | 'willUnmount' | 'change';
 
-type OnShowCallback = (content: React.ReactNode, options: ToastOptions) => void;
+type OnShowCallback = (content: ToastContent , options: ToastOptions) => void;
 type OnClearCallback = (id?: ToastId) => void;
 type OnDidMountCallback = (containerInstance: object) => void;
 type OnWillUnmountCallback = OnDidMountCallback;
