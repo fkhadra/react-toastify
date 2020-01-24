@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render } from '@testing-library/react';
 
 import { cssTransition } from '../../src/utils';
 
@@ -10,7 +10,11 @@ describe('cssTransition helper', () => {
       exit: 'bar'
     });
     const children = () => <div>Plop</div>;
-    const component = shallow(<Transition>{children}</Transition>);
-    expect(component).toHaveLength(1);
+    const { container, getByText } = render(
+      <Transition>{children}</Transition>
+    );
+
+    expect(getByText('Plop').textContent).toContain('Plop');
+    expect(container).toMatchSnapshot();
   });
 });
