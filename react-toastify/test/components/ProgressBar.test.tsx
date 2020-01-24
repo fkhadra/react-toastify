@@ -1,5 +1,6 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render, fireEvent } from '@testing-library/react';
+//import { shallow } from 'enzyme';
 
 import { ProgressBar } from '../../src/components/ProgressBar';
 
@@ -12,36 +13,44 @@ const REQUIRED_PROPS = {
 
 describe('ProgressBar', () => {
   it('Should merge className', () => {
-    const component = shallow(
+    const { container } = render(
       <ProgressBar {...REQUIRED_PROPS} className="test" />
     );
-    expect(component.find('.test')).toHaveLength(1);
+
+    expect((container.firstChild! as HTMLElement).className).toContain('test');
   });
 
   it('Should call closeToast function when animation end', () => {
-    const component = shallow(<ProgressBar {...REQUIRED_PROPS} />);
+    const { container } = render(<ProgressBar {...REQUIRED_PROPS} />);
 
     expect(REQUIRED_PROPS.closeToast).not.toHaveBeenCalled();
-    component.simulate('animationEnd');
+    fireEvent.animationEnd(container.firstChild as HTMLElement);
     expect(REQUIRED_PROPS.closeToast).toHaveBeenCalled();
   });
 
   it('Should be able to hide the progress bar', () => {
-    const component = shallow(<ProgressBar {...REQUIRED_PROPS} hide />);
-    expect(component).toMatchSnapshot();
+    const { container } = render(<ProgressBar {...REQUIRED_PROPS} hide />);
+    expect((container.firstChild! as HTMLElement).style.opacity).toBe('0');
+    expect(container).toMatchSnapshot();
   });
 
   it('Should be able to pause animation', () => {
-    const component = shallow(
+    const { container } = render(
       <ProgressBar {...REQUIRED_PROPS} isRunning={false} />
     );
-    expect(component).toMatchSnapshot();
+    expect(
+      (container.firstChild! as HTMLElement).style.animationPlayState
+    ).toBe('paused');
+    expect(container).toMatchSnapshot();
   });
 
   it('Should render controlled progress bar', () => {
-    const component = shallow(
+    const { container } = render(
       <ProgressBar {...REQUIRED_PROPS} controlledProgress progress={0.7} />
     );
-    expect(component).toMatchSnapshot();
+    expect((container.firstChild! as HTMLElement).style.transform).toBe(
+      'scaleX(0.7)'
+    );
+    expect(container).toMatchSnapshot();
   });
 });
