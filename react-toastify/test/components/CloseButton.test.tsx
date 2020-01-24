@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render, fireEvent } from '@testing-library/react';
 
 import { CloseButton } from '../../src/components/CloseButton';
 
@@ -7,12 +7,12 @@ const closeToast = jest.fn();
 
 describe('CloseButton', () => {
   it('Should call closeToast on click', () => {
-    const component = shallow(
+    const { container } = render(
       <CloseButton closeToast={closeToast} type="default" />
     );
 
     expect(closeToast).not.toHaveBeenCalled();
-    component.simulate('click', { stopPropagation: () => undefined });
+    fireEvent.click(container.firstChild as HTMLElement);
     expect(closeToast).toHaveBeenCalled();
   });
 });
