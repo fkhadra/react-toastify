@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { Transition } from 'react-transition-group';
+import { TransitionProps } from 'react-transition-group/Transition';
 
 export type ToastPosition =
   | 'top-right'
@@ -12,7 +14,7 @@ export type TypeOptions = 'info' | 'success' | 'warning' | 'error' | 'default';
 export type ToastContent = React.ReactNode | (() => React.ReactNode );
 export interface Toast {
   content: ToastContent;
-  options: InternalToastOptions;
+  options: WithInjectedOptions;
 }
 
 type Id = number | string
@@ -87,7 +89,7 @@ interface CommonOptions {
   /**
    * Pass a custom transition built with react-transition-group.
    */
-  transition?: React.ComponentType;
+  transition?: Transition;
 
   /**
    * Allow toast to be draggable
@@ -129,12 +131,12 @@ export interface ToastOptions extends CommonOptions {
   /**
    * Called when toast is mounted.
    */
-  onOpen?: () => void;
+  onOpen?: <T = {}>(props: T) => void;
 
   /**
    * Called when toast is unmounted.
    */
-  onClose?: () => void;
+  onClose?: <T = {}>(props: T) => void;
 
   /**
    * Set the toast type.
@@ -163,12 +165,15 @@ export interface ToastOptions extends CommonOptions {
   delay?: number;
 }
 
-export interface InternalToastOptions extends ToastOptions {
+export interface WithInjectedOptions extends ToastOptions {
   staleId?: ToastId;
   toastId: ToastId;
   key: Id;
   closeToast: () => void;
   position: ToastPosition;
+  // children?: ToastContent;
+  // draggablePercent: number;
+  // transition: Transition;
 }
 
 export interface UpdateOptions extends ToastOptions {

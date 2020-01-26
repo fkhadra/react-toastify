@@ -19,7 +19,7 @@ import {
   ToastId,
   ToastContainerProps,
   ContainerId,
- InternalToastOptions,
+ WithInjectedOptions,
   ToastContent,
   Toast,
   ToastPosition
@@ -105,7 +105,7 @@ export function useToastContainer(props: ToastContainerProps) {
    * check for multi-container, build only if associated
    * check for duplicate toastId if no update
    */
-  function isNotValid({ containerId, toastId, updateId }: InternalToastOptions) {
+  function isNotValid({ containerId, toastId, updateId }: WithInjectedOptions) {
     return !containerRef.current ||
       (props.enableMultiContainer && containerId !== props.containerId) ||
       (isToastActive(toastId) && updateId == null)
@@ -115,13 +115,13 @@ export function useToastContainer(props: ToastContainerProps) {
 
   function buildToast(
     content: ToastContent,
-    { delay, staleId, ...options }: InternalToastOptions
+    { delay, staleId, ...options }: WithInjectedOptions
   ) {
     if (!canBeRendered(content) || isNotValid(options)) return;
 
     const { toastId, updateId } = options;
     const closeToast = () => removeToast(toastId);
-    const toastOptions: InternalToastOptions = {
+    const toastOptions: WithInjectedOptions = {
       toastId,
       updateId,
       key: options.key || toastKeyRef.current++,
@@ -186,7 +186,7 @@ export function useToastContainer(props: ToastContainerProps) {
 
   function appendToast(
     content: ToastContent,
-    options: InternalToastOptions,
+    options: WithInjectedOptions,
     staleId?: ToastId
   ) {
     const { toastId, updateId } = options;

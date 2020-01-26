@@ -33,6 +33,7 @@ export interface CSSTransitionProps {
 interface AnimationProps extends Partial<TransitionProps> {
   position?: Position;
   preventExitTransition?: boolean;
+  
 }
 
 export function cssTransition({

@@ -13,7 +13,7 @@ export interface ProgressBarProps {
   className?: string;
   style?: CSSProperties;
   controlledProgress?: boolean;
-  progress?: number;
+  progress?: number | string;
   rtl?: boolean;
 }
 
