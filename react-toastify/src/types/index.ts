@@ -58,7 +58,7 @@ interface CommonOptions {
    * Pass a custom close button.
    * To remove the close button pass `false`
    */
-  closeButton?: React.ReactNode | boolean;
+  closeButton?: React.ReactElement | false;
 
   /**
    * An optional css class to set for the progress bar.

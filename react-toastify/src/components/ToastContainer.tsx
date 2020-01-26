@@ -1,4 +1,4 @@
-import React, { isValidElement, cloneElement } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { TransitionGroup } from 'react-transition-group';
@@ -6,41 +6,47 @@ import { TransitionGroup } from 'react-transition-group';
 // import Toast from "./Toast";
 import { CloseButton } from './CloseButton';
 import { Bounce } from './Transitions';
-import { POSITION, RT_NAMESPACE, parseClassName, objectValues } from '../utils';
+import {
+  POSITION,
+  RT_NAMESPACE,
+  parseClassName,
+  objectValues
+} from '../utils';
 import { useToastContainer } from '../hooks';
-import { ToastContainerProps, WithInjectedOptions } from '../types';
+import { ToastContainerProps, ToastPosition } from '../types';
 
 const ToastContainer: React.FC<ToastContainerProps> = props => {
   const { getToastToRender, containerRef } = useToastContainer(props);
 
-  function makeCloseButton({ closeButton: toastClose, type, closeToast }) {
-    let closeButton = props.closeButton;
+  // function makeCloseButton({
+  //   closeButton: toastClose,
+  //   type,
+  //   closeToast
+  // }: WithInjectedOptions) {
+  //   let closeButton = props.closeButton;
 
-    if (isValidElement(toastClose) || toastClose === false) {
-      closeButton = toastClose;
-    } else if (toastClose === true) {
-      closeButton =
-        props.closeButton && typeof props.closeButton !== 'boolean' ? (
-          props.closeButton
-        ) : (
-          <CloseButton />
-        );
-    }
+  //   if (toastClose === false || isValidElement(toastClose)) {
+  //     closeButton = toastClose;
+  //   } else if (toastClose === true) {
+  //     closeButton = (isValidElement(props.closeButton)
+  //       ? props.closeButton
+  //       : CloseButton) as React.ReactElement;
+  //   }
 
-    return closeButton === false
-      ? false
-      : cloneElement(closeButton, {
-          closeToast,
-          type
-        });
-  }
+  //   return closeButton === false
+  //     ? false
+  //     : cloneElement(closeButton as React.ReactElement, {
+  //         closeToast,
+  //         type
+  //       });
+  // }
 
   function renderToast() {
     const { className, style } = props;
     const toastToRender = getToastToRender();
 
-    return Object.keys(toastToRender).map(position => {
-      const currentPosition = toastToRender[position];
+    return (Object.keys(toastToRender) as Array<ToastPosition>).map((position ) => {
+      const currentPosition = toastToRender[position]!;
       const disablePointer =
         currentPosition.length === 1 && currentPosition[0] === null;
       const propsp = {
@@ -57,11 +63,9 @@ const ToastContainer: React.FC<ToastContainerProps> = props => {
 
       return (
         <TransitionGroup {...propsp} key={`container-${position}`}>
-          {currentPosition.map(({ options, content }) => {
+          {currentPosition.map(({ content }) => {
             return (
-              <div>
-                {content}
-              </div>
+              <div>{content}</div>
               // <Toast
               //   {...options}
               //   key={`toast-${options.key}`}
@@ -83,6 +87,7 @@ const ToastContainer: React.FC<ToastContainerProps> = props => {
   );
 };
 
+// @ts-ignore
 ToastContainer.propTypes = {
   /**
    * Set toast position
@@ -92,7 +97,7 @@ ToastContainer.propTypes = {
   /**
    * Disable or set autoClose delay
    */
-  autoClose: falseOrDelay,
+  autoClose: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
 
   /**
    * Disable or set a custom react element for the close button
@@ -195,13 +200,14 @@ ToastContainer.propTypes = {
   onClick: PropTypes.func
 };
 
+// @ts-ignore
 ToastContainer.defaultProps = {
   position: POSITION.TOP_RIGHT,
   transition: Bounce,
   rtl: false,
   autoClose: 5000,
   hideProgressBar: false,
-  closeButton: <CloseButton />,
+  closeButton: CloseButton,
   pauseOnHover: true,
   pauseOnFocusLoss: true,
   closeOnClick: true,

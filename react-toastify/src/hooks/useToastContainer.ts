@@ -127,6 +127,7 @@ export function useToastContainer(props: ToastContainerProps) {
       key: options.key || toastKeyRef.current++,
       type: options.type,
       closeToast: closeToast,
+      closeButton: options.closeButton,
       rtl: props.rtl,
       position: options.position || props.position,
       transition: options.transition || props.transition,
