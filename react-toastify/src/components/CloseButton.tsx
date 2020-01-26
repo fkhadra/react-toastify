@@ -26,7 +26,7 @@ export function CloseButton({ closeToast, type, ariaLabel }: CloseButtonProps) {
 
 CloseButton.propTypes = {
   closeToast: PropTypes.func,
-  arialLabel: PropTypes.string
+  ariaLabel: PropTypes.string
 };
 
 CloseButton.defaultProps = {
