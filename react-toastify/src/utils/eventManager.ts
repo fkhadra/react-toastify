@@ -6,7 +6,7 @@ type OnShowCallback = (content: ToastContent , options: WithInjectedOptions) => 
 type OnClearCallback = (id?: ToastId) => void;
 type OnDidMountCallback = (containerInstance: object) => void;
 type OnWillUnmountCallback = OnDidMountCallback;
-type OnChangeCallback = (toast: number, containerId?: number | string) => void;
+export type OnChangeCallback = (toast: number, containerId?: number | string) => void;
 type Callback =
   | OnShowCallback
   | OnClearCallback
