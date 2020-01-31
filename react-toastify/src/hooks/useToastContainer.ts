@@ -47,9 +47,10 @@ function reducer(state: State, action: Action) {
   }
 }
 
-interface InstanceRef {
+export interface ContainerInstance {
   containerId?: ContainerId | null;
   isToastActive: false | ((toastId: ToastId) => boolean);
+  getToast: (id: ToastId) => Toast | null;
 }
 
 export function useToastContainer(props: ToastContainerProps) {
@@ -57,9 +58,10 @@ export function useToastContainer(props: ToastContainerProps) {
   const collectionRef = useRef<CollectionItem>({});
   const containerRef = useRef(null);
   const toastKeyRef = useRef(1);
-  const instanceRef = useRef<InstanceRef>({
+  const instanceRef = useRef<ContainerInstance>({
     containerId: null,
-    isToastActive: false
+    isToastActive: false,
+    getToast: id => collectionRef.current[id] || null
   });
 
   useEffect(() => {
