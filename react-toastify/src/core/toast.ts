@@ -15,7 +15,7 @@ import {
   ToastOptions,
   WithInjectedOptions,
   ToastId,
-  TypeOptions,
+  //TypeOptions,
   ContainerId,
   ToastContainerProps,
   UpdateOptions
