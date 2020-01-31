@@ -1,10 +1,11 @@
 import { WithInjectedOptions, ToastId, ToastContent } from '../types';
+import { ContainerInstance } from '../hooks';
 
 export type Event = 'show' | 'clear' | 'didMount' | 'willUnmount' | 'change';
 
 type OnShowCallback = (content: ToastContent , options: WithInjectedOptions) => void;
 type OnClearCallback = (id?: ToastId) => void;
-type OnDidMountCallback = (containerInstance: object) => void;
+type OnDidMountCallback = (containerInstance: ContainerInstance) => void;
 type OnWillUnmountCallback = OnDidMountCallback;
 export type OnChangeCallback = (toast: number, containerId?: number | string) => void;
 type Callback =
@@ -27,8 +28,8 @@ export interface EventManager {
   cancelEmit(event: Event): EventManager;
   emit(event: 'show', content: React.ReactNode, options: WithInjectedOptions): void;
   emit(event: 'clear', id?: string | number): void;
-  emit(event: 'didMount', containerInstance: object): void;
-  emit(event: 'willUnmount', containerInstance: object): void;
+  emit(event: 'didMount', containerInstance: ContainerInstance): void;
+  emit(event: 'willUnmount', containerInstance: ContainerInstance): void;
   emit(event: 'change', toast: number, containerId?: number | string): void;
 }
 
