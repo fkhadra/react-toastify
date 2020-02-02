@@ -54,7 +54,7 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
   });
 
   useEffect(() => {
-    //props.onOpen()
+    // props.onOpen(props.children!.props);
     if (props.draggable) bindDragEvents();
     if (props.pauseOnFocusLoss) bindFocusEvents();
 
@@ -130,6 +130,7 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
   function onDragMove(e: MouseEvent | TouchEvent) {
     const drag = dragRef.current;
     const toast = toastRef.current!;
+    
     if (drag.canDrag) {
       if (isRunning) pauseToast();
 

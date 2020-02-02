@@ -38,6 +38,14 @@ function getProgressBar(container: HTMLElement) {
   };
 }
 
+const defaultEvents = [document.addEventListener, document.removeEventListener];
+
+beforeEach(() => {
+  const [add, remove] = defaultEvents;
+  document.addEventListener = add;
+  document.removeEventListener = remove;
+});
+
 describe('Toast Component', () => {
   it('Should merge container and body className', () => {
     const { container } = render(
@@ -184,8 +192,8 @@ describe('Toast Component', () => {
       </Toast>
     );
 
-    expect(document.removeEventListener).toHaveBeenCalled();
-    expect(window.removeEventListener).toHaveBeenCalled();
+    expect(document.addEventListener).toHaveBeenCalled();
+    expect(window.addEventListener).toHaveBeenCalled();
   });
 
   it('Should render toast with controlled progress bar', () => {
@@ -247,5 +255,89 @@ describe('Toast Component', () => {
       </Toast>
     );
     expect(container.querySelector('[role="status"]')).not.toBe(null);
+  });
+});
+
+describe('Drag event', () => {
+  it('Should handle drag start on mousedown', () => {
+    const mockClientRect = jest.fn();
+    Element.prototype.getBoundingClientRect = mockClientRect;
+    const { container } = render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+    expect(mockClientRect).not.toHaveBeenCalled();
+    fireEvent.mouseDown(container.firstChild as HTMLElement);
+    expect(mockClientRect).toHaveBeenCalled();
+  });
+
+  it('Should handle drag start on touchstart', () => {
+    const mockClientRect = jest.fn();
+    Element.prototype.getBoundingClientRect = mockClientRect;
+    const { container } = render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+    expect(mockClientRect).not.toHaveBeenCalled();
+    fireEvent.touchStart(container.firstChild as HTMLElement);
+    expect(mockClientRect).toHaveBeenCalled();
+  });
+
+  it('Should pause toast duration on drag move', async () => {
+    const { container } = render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+    const progressBar = getProgressBar(container);
+
+    progressBar.isRunning();
+    fireEvent.mouseDown(container.firstChild as HTMLElement);
+    fireEvent.mouseMove(container.firstChild as HTMLElement);
+    progressBar.isPaused();
+  });
+
+  it('Should prevent the timer from running on drag end if the mouse hover the toast', () => {
+    const { container } = render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+
+    // BoundingClientRect for Position top right
+    Element.prototype.getBoundingClientRect = () => {
+      return {
+        top: 20,
+        right: 846,
+        bottom: 84,
+        left: 534
+      } as DOMRect;
+    };
+    const progressBar = getProgressBar(container);
+
+    progressBar.isRunning();
+
+    fireEvent.mouseDown(container.firstChild as HTMLElement);
+    // Cursor inside the toast
+    fireEvent.mouseMove(container.firstChild as HTMLElement, {
+      clientX: 600,
+      clientY: 30
+    });
+    progressBar.isPaused();
+    fireEvent.mouseUp(container.firstChild as HTMLElement);
+    progressBar.isPaused();
+  });
+
+  it('Should resume the timer on drag end if the mouse is not hovering the toast', () => {
+    const { container } = render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+
+    // BoundingClientRect for Position top right
+    Element.prototype.getBoundingClientRect = () => {
+      return {
+        top: 20,
+        right: 846,
+        bottom: 84,
+        left: 534
+      } as DOMRect;
+    };
+    const progressBar = getProgressBar(container);
+
+    progressBar.isRunning();
+
+    fireEvent.mouseDown(container.firstChild as HTMLElement);
+    // Cursor inside the toast
+    fireEvent.mouseMove(container.firstChild as HTMLElement, {
+      clientX: 400,
+      clientY: 30
+    });
+    progressBar.isPaused();
+    fireEvent.mouseUp(container.firstChild as HTMLElement);
+    progressBar.isRunning();
   });
 });
