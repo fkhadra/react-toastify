@@ -15,7 +15,7 @@ import {
 import { useToastContainer } from '../hooks';
 import { ToastContainerProps, ToastPosition } from '../types';
 
-const ToastContainer: React.FC<ToastContainerProps> = props => {
+export const ToastContainer: React.FC<ToastContainerProps> = props => {
   const { getToastToRender, containerRef } = useToastContainer(props);
 
   // function makeCloseButton({
@@ -35,7 +35,7 @@ const ToastContainer: React.FC<ToastContainerProps> = props => {
 
   //   return closeButton === false
   //     ? false
-  //     : cloneElement(closeButton as React.ReactElement, {
+  //     : cloneElement(clcoseButton as React.ReactElement, {
   //         closeToast,
   //         type
   //       });
@@ -200,9 +200,9 @@ ToastContainer.propTypes = {
   onClick: PropTypes.func
 };
 
-// @ts-ignore
+//
 ToastContainer.defaultProps = {
-  position: POSITION.TOP_RIGHT,
+  position: POSITION.TOP_RIGHT as ToastPosition,
   transition: Bounce,
   rtl: false,
   autoClose: 5000,
@@ -214,11 +214,5 @@ ToastContainer.defaultProps = {
   newestOnTop: false,
   draggable: true,
   draggablePercent: 80,
-  className: null,
-  style: null,
-  toastClassName: null,
-  bodyClassName: null,
-  progressClassName: null,
-  progressStyle: null,
   role: 'alert'
 };

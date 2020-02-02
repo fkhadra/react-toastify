@@ -149,7 +149,7 @@ export function useToastContainer(props: ToastContainerProps) {
         : props.draggable,
       draggablePercent: isNum(options.draggablePercent)
         ? options.draggablePercent
-        : props.draggablePercent,
+        : props.draggablePercent as number,
       closeOnClick: isBool(options.closeOnClick)
         ? options.closeOnClick
         : props.closeOnClick,

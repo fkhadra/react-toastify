@@ -10,7 +10,7 @@ export interface ProgressBarProps {
   closeToast: () => void;
   type: TypeOptions;
   hide?: boolean;
-  className?: string;
+  className?: string | null;
   style?: CSSProperties;
   controlledProgress?: boolean;
   progress?: number | string;

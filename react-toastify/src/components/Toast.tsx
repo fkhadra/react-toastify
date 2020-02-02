@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, isValidElement, cloneElement } from 'react';
 import cx from 'classnames';
 
-import { ProgressBar } from '../components/ProgressBar';
+import { ProgressBar } from './ProgressBar';
 import { WithInjectedOptions } from '../types';
-import { NOOP, canUseDom, RT_NAMESPACE } from '../utils';
+import { NOOP, canUseDom, RT_NAMESPACE, isFn } from '../utils';
+import { TransitionProps } from 'react-transition-group/Transition';
 
 type DragEvent = MouseEvent & TouchEvent;
 
@@ -33,7 +34,7 @@ interface DragRef {
   boundingRect: DOMRect | null;
 }
 
-const Toast: React.FC<WithInjectedOptions> = props => {
+export const Toast: React.FC<WithInjectedOptions> = props => {
   const [isRunning, setIsRunning] = useState(true);
   const [preventExitTransition, setPreventExitTransition] = useState(false);
   const toastRef = useRef<HTMLDivElement>(null);
@@ -218,7 +219,7 @@ const Toast: React.FC<WithInjectedOptions> = props => {
     type,
     hideProgressBar,
     closeToast,
-    transition: Transition,
+    transition: Foo,
     position,
     className,
     bodyClassName,
@@ -228,7 +229,8 @@ const Toast: React.FC<WithInjectedOptions> = props => {
     role,
     progress,
     rtl
-  } = props;
+  } = props as Required<WithInjectedOptions>;
+  
 
   const toastProps: Record<string, string | Function> = {
     className: cx(
@@ -255,8 +257,18 @@ const Toast: React.FC<WithInjectedOptions> = props => {
   }
 
   const controlledProgress = !!progress;
+  const T = Foo as React.FC<Partial<TransitionProps>>;
+
+  function renderCloseButton(closeButton: any) {
+    if (!closeButton) return null;
+
+    const props = { closeToast, type };
+    if (isFn(closeButton)) return closeButton(props);
+    if (isValidElement(closeButton)) return cloneElement(closeButton,props);
+  }
+
   return (
-    <Transition
+    <T
       in={props.in}
       appear
       onExited={onExitTransitionEnd}
@@ -278,14 +290,14 @@ const Toast: React.FC<WithInjectedOptions> = props => {
         >
           {children}
         </div>
-        {closeButton && closeButton}
+        {renderCloseButton(closeButton)}
         {(autoClose || controlledProgress) && (
           <ProgressBar
             {...(updateId && !controlledProgress
               ? { key: `pb-${updateId}` }
               : {})}
             rtl={rtl}
-            delay={autoClose}
+            delay={autoClose as number}
             isRunning={isRunning}
             closeToast={closeToast}
             hide={hideProgressBar}
@@ -297,7 +309,7 @@ const Toast: React.FC<WithInjectedOptions> = props => {
           />
         )}
       </div>
-    </Transition>
+    </T>
   );
 };
 

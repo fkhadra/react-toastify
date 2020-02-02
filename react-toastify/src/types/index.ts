@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { Transition } from 'react-transition-group';
-import { TransitionProps } from 'react-transition-group/Transition';
 
 export type ToastPosition =
   | 'top-right'
@@ -58,7 +56,7 @@ interface CommonOptions {
    * Pass a custom close button.
    * To remove the close button pass `false`
    */
-  closeButton?: React.ReactElement | false;
+  closeButton?: React.ReactElement | ((props: any) => React.ReactElement) | false;
 
   /**
    * An optional css class to set for the progress bar.
@@ -89,7 +87,7 @@ interface CommonOptions {
   /**
    * Pass a custom transition built with react-transition-group.
    */
-  transition?: Transition;
+  transition?: React.ReactNode;
 
   /**
    * Allow toast to be draggable
@@ -118,7 +116,7 @@ interface CommonOptions {
   /**
    * Fired when clicking inside toaster
    */
-  onClick?: Function;
+  onClick?: (event: React.MouseEvent) => void;
 
   /**
    * Support right to left display.
@@ -171,8 +169,13 @@ export interface WithInjectedOptions extends ToastOptions {
   key: Id;
   closeToast: () => void;
   position: ToastPosition;
-  // children?: ToastContent;
-  // draggablePercent: number;
+  children?: ToastContent;
+  draggablePercent: number;
+  in?: boolean;
+  progressClassName?: string | null;
+  className?: string | null;
+  bodyClassName?: string | null;
+
   // transition: Transition;
 }
 
