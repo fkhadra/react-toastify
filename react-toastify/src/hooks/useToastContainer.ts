@@ -184,7 +184,7 @@ export function useToastContainer(props: ToastContainerProps) {
 
     let toastContent = content;
 
-    if (isValidElement(content)) {
+    if (isValidElement(content) && !isStr(content.type)) {
       toastContent = cloneElement(content, {
         closeToast
       });
