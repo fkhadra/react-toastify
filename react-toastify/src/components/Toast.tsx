@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, isValidElement, cloneElement } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  isValidElement,
+  cloneElement
+} from 'react';
 import cx from 'classnames';
 
 import { ProgressBar } from './ProgressBar';
@@ -54,12 +60,14 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
   });
 
   useEffect(() => {
-    // props.onOpen(props.children!.props);
+    if (isFn(props.onOpen))
+      props.onOpen(isValidElement(props.children) ? props.children.props : {});
     if (props.draggable) bindDragEvents();
     if (props.pauseOnFocusLoss) bindFocusEvents();
 
     return () => {
-      // props.onClose(props.children.props);
+      if (isFn(props.onClose))
+        props.onClose(isValidElement(props.children) ? props.children.props : {});
       if (props.draggable) unbindDragEvents();
       if (props.pauseOnFocusLoss) unbindFocusEvents();
     };
@@ -130,7 +138,7 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
   function onDragMove(e: MouseEvent | TouchEvent) {
     const drag = dragRef.current;
     const toast = toastRef.current!;
-    
+
     if (drag.canDrag) {
       if (isRunning) pauseToast();
 
@@ -231,7 +239,6 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
     progress,
     rtl
   } = props as Required<WithInjectedOptions>;
-  
 
   const toastProps: Record<string, string | Function> = {
     className: cx(
@@ -265,7 +272,7 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
 
     const props = { closeToast, type };
     if (isFn(closeButton)) return closeButton(props);
-    if (isValidElement(closeButton)) return cloneElement(closeButton,props);
+    if (isValidElement(closeButton)) return cloneElement(closeButton, props);
   }
 
   return (
