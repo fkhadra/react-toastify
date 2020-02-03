@@ -5,8 +5,8 @@ import {
   cloneElement,
   isValidElement
 } from 'react';
+import { eventManager } from "../core";
 import {
-  eventManager,
   parseClassName,
   canBeRendered,
   isBool,

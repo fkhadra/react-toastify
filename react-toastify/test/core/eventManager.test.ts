@@ -1,4 +1,4 @@
-import { eventManager, Event } from '../../src/utils';
+import { eventManager, Event } from '../../src/core';
 
 jest.useFakeTimers();
 
