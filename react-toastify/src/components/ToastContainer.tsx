@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { TransitionGroup } from 'react-transition-group';
 
-// import Toast from "./Toast";
+import { Toast } from "./Toast";
 import { CloseButton } from './CloseButton';
 import { Bounce } from './Transitions';
 import {
@@ -13,33 +13,10 @@ import {
   objectValues
 } from '../utils';
 import { useToastContainer } from '../hooks';
-import { ToastContainerProps, ToastPosition } from '../types';
+import { ToastContainerProps, ToastPosition } from '../types';  
 
 export const ToastContainer: React.FC<ToastContainerProps> = props => {
   const { getToastToRender, containerRef } = useToastContainer(props);
-
-  // function makeCloseButton({
-  //   closeButton: toastClose,
-  //   type,
-  //   closeToast
-  // }: WithInjectedOptions) {
-  //   let closeButton = props.closeButton;
-
-  //   if (toastClose === false || isValidElement(toastClose)) {
-  //     closeButton = toastClose;
-  //   } else if (toastClose === true) {
-  //     closeButton = (isValidElement(props.closeButton)
-  //       ? props.closeButton
-  //       : CloseButton) as React.ReactElement;
-  //   }
-
-  //   return closeButton === false
-  //     ? false
-  //     : cloneElement(clcoseButton as React.ReactElement, {
-  //         closeToast,
-  //         type
-  //       });
-  // }
 
   function renderToast() {
     const { className, style } = props;
@@ -49,7 +26,7 @@ export const ToastContainer: React.FC<ToastContainerProps> = props => {
       const currentPosition = toastToRender[position]!;
       const disablePointer =
         currentPosition.length === 1 && currentPosition[0] === null;
-      const propsp = {
+      const swag = {
         className: cx(
           `${RT_NAMESPACE}__toast-container`,
           `${RT_NAMESPACE}__toast-container--${position}`,
@@ -62,17 +39,16 @@ export const ToastContainer: React.FC<ToastContainerProps> = props => {
       };
 
       return (
-        <TransitionGroup {...propsp} key={`container-${position}`}>
-          {currentPosition.map(({ content }) => {
+        <TransitionGroup {...swag} key={`container-${position}`}>
+          {currentPosition.map(({ content, options }) => {
             return (
-              <div>{content}</div>
-              // <Toast
-              //   {...options}
-              //   key={`toast-${options.key}`}
-              //   closeButton={makeCloseButton(options)}
-              // >
-              //   {content}
-              // </Toast>
+              <Toast
+                {...options}
+                key={`toast-${options.key}`}
+                closeButton={options.closeButton === true ? CloseButton : options.closeButton}
+              >
+                {content}
+              </Toast>
             );
           })}
         </TransitionGroup>

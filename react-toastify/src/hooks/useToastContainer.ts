@@ -19,7 +19,7 @@ import {
   ToastId,
   ToastContainerProps,
   ContainerId,
- WithInjectedOptions,
+  WithInjectedOptions,
   ToastContent,
   Toast,
   ToastPosition
@@ -43,7 +43,7 @@ function reducer(state: State, action: Action) {
     case 'REMOVE':
       return action.toastId ? state.filter(id => id !== action.toastId) : [];
     default:
-      throw "";
+      throw '';
   }
 }
 
@@ -97,9 +97,13 @@ export function useToastContainer(props: ToastContainerProps) {
 
   function getAutoCloseDelay(toastAutoClose?: false | number) {
     return toastAutoClose === false ||
-      (isNum(toastAutoClose) && toastAutoClose as number > 0)
+      (isNum(toastAutoClose) && (toastAutoClose as number) > 0)
       ? toastAutoClose
       : props.autoClose;
+  }
+
+  function isValidButton(val: any) {
+    return isFn(val) || isValidElement(val);
   }
 
   /**
@@ -149,7 +153,7 @@ export function useToastContainer(props: ToastContainerProps) {
         : props.draggable,
       draggablePercent: isNum(options.draggablePercent)
         ? options.draggablePercent
-        : props.draggablePercent as number,
+        : (props.draggablePercent as number),
       closeOnClick: isBool(options.closeOnClick)
         ? options.closeOnClick
         : props.closeOnClick,
@@ -168,6 +172,16 @@ export function useToastContainer(props: ToastContainerProps) {
     if (isFn(options.onOpen)) toastOptions.onOpen = options.onOpen;
     if (isFn(options.onClose)) toastOptions.onClose = options.onClose;
 
+    let closeButton = props.closeButton;
+
+    if (options.closeButton === false || isValidButton(options.closeButton)) {
+      closeButton = options.closeButton;
+    } else if (options.closeButton === true) {
+      closeButton = isValidButton(props.closeButton) ? props.closeButton : true;
+    }
+
+    options.closeButton = closeButton;
+
     let toastContent = content;
 
     if (isValidElement(content)) {
@@ -175,10 +189,10 @@ export function useToastContainer(props: ToastContainerProps) {
         closeToast
       });
     } else if (isFn(content)) {
-      toastContent = (content as Function)({ closeToast });
+      toastContent = content({ closeToast });
     }
 
-    if (isNum(delay) && delay as number > 0) {
+    if (isNum(delay) && (delay as number) > 0) {
       setTimeout(() => {
         appendToast(toastContent, toastOptions, staleId);
       }, delay);

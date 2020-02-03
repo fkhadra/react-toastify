@@ -9,7 +9,7 @@ export type ToastPosition =
   | 'bottom-left';
 
 export type TypeOptions = 'info' | 'success' | 'warning' | 'error' | 'default';
-export type ToastContent = React.ReactNode | (() => React.ReactNode );
+export type ToastContent = React.ReactNode | ((props?: any) => React.ReactNode );
 export interface Toast {
   content: ToastContent;
   options: WithInjectedOptions;
@@ -56,7 +56,7 @@ interface CommonOptions {
    * Pass a custom close button.
    * To remove the close button pass `false`
    */
-  closeButton?: React.ReactElement | ((props: any) => React.ReactElement) | false;
+  closeButton?: React.ReactElement | ((props: any) => React.ReactElement) | boolean;
 
   /**
    * An optional css class to set for the progress bar.
