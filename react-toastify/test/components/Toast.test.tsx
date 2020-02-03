@@ -92,7 +92,7 @@ describe('Toast Component', () => {
     expect(container.querySelector(cssClasses.closeButton)).toBe(null);
   });
 
-  it.skip('Can call onOpen callback when component mount', () => {
+  it('Can call onOpen callback when component mount', () => {
     const onOpen = jest.fn();
     render(
       <Toast {...REQUIRED_PROPS} onOpen={onOpen}>
@@ -103,7 +103,7 @@ describe('Toast Component', () => {
     expect(onOpen).toHaveBeenCalled();
   });
 
-  it.skip('Can call onClose callback when component will unmount', () => {
+  it('Can call onClose callback when component will unmount', () => {
     const onClose = jest.fn();
     const { unmount } = render(
       <Toast {...REQUIRED_PROPS} onClose={onClose}>
@@ -231,7 +231,7 @@ describe('Toast Component', () => {
     expect(closeToast).toHaveBeenCalled();
   });
 
-  it.skip('Should close the toast if progress value is >= 1 when the progress bar is controlled', () => {
+  it('Should close the toast if progress value is >= 1 when the progress bar is controlled', () => {
     const closeToast = jest.fn();
     const { container } = render(
       <Toast {...REQUIRED_PROPS} closeToast={closeToast} progress={1}>
