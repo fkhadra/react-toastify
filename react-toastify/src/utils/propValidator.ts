@@ -1,9 +1,10 @@
 import { isValidElement } from 'react';
 
-export const isNum = <T>(v: T) => typeof v === 'number' && !isNaN(v);
-export const isBool = <T>(v: T) => typeof v === 'boolean';
-export const isStr = <T>(v: T) => typeof v === 'string';
-export const isFn = <T>(v: T) => typeof v === 'function';
+export const isNum = (v: any): v is Number =>
+  typeof v === 'number' && !isNaN(v);
+export const isBool = (v: any): v is Boolean => typeof v === 'boolean';
+export const isStr = (v: any): v is String => typeof v === 'string';
+export const isFn = (v: any): v is Function => typeof v === 'function';
 
 export function objectValues<T>(obj: Record<string, T>) {
   return Object.keys(obj).map(key => obj[key]);
@@ -30,5 +31,5 @@ export function parseClassName(prop?: string | object | null) {
   } else if (prop !== null && typeof prop === 'object' && 'toString' in prop) {
     return prop.toString();
   }
- return null;
+  return null;
 }
