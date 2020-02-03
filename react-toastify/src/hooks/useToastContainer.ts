@@ -5,7 +5,7 @@ import {
   cloneElement,
   isValidElement
 } from 'react';
-import { eventManager } from "../core";
+import { eventManager } from '../core';
 import {
   parseClassName,
   canBeRendered,
@@ -41,7 +41,7 @@ function reducer(state: State, action: Action) {
     case 'UPDATE':
       return [...state];
     case 'REMOVE':
-      return action.toastId ? state.filter(id => id !== action.toastId) : [];
+      return action.toastId === 0 || action.toastId ? state.filter(id => id !== action.toastId) : [];
     default:
       throw '';
   }
@@ -180,7 +180,7 @@ export function useToastContainer(props: ToastContainerProps) {
       closeButton = isValidButton(props.closeButton) ? props.closeButton : true;
     }
 
-    options.closeButton = closeButton;
+    toastOptions.closeButton = closeButton;
 
     let toastContent = content;
 
@@ -229,12 +229,11 @@ export function useToastContainer(props: ToastContainerProps) {
     const toastList = newestOnTop
       ? Object.keys(collection).reverse()
       : Object.keys(collection);
-
+    
     // reduce nope  😜
     for (let i = 0; i < toastList.length; i++) {
-      const toastId = toastList[i];
-      const toast = collection[toastId];
-      const position = toast.options.position;
+      const toast = collection[toastList[i]];
+      const { position, toastId } = toast.options;
 
       toastToRender[position] || (toastToRender[position] = []);
       isToastActive(toastId)
