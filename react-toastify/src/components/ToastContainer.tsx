@@ -37,7 +37,6 @@ export const ToastContainer: React.FC<ToastContainerProps> = props => {
           ? { ...style, pointerEvents: 'none' }
           : { ...style }
       };
-
       return (
         <TransitionGroup {...swag} key={`container-${position}`}>
           {currentPosition.map(({ content, options }) => {
@@ -78,7 +77,7 @@ ToastContainer.propTypes = {
   /**
    * Disable or set a custom react element for the close button
    */
-  closeButton: PropTypes.oneOfType([PropTypes.node, PropTypes.bool]),
+  closeButton: PropTypes.oneOfType([PropTypes.node, PropTypes.bool, PropTypes.func]),
 
   /**
    * Hide or not progress bar when autoClose is enabled

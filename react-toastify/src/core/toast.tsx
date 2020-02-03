@@ -1,15 +1,14 @@
-// import React from 'react';
-// import { render } from 'react-dom';
+import React from 'react';
+import { render } from 'react-dom';
 
 import {
   POSITION,
   TYPE,
-  eventManager,
   canUseDom,
   isStr,
   isNum,
-  OnChangeCallback
 } from '../utils';
+import { eventManager, OnChangeCallback } from ".";
 import {
   ToastContent,
   ToastOptions,
@@ -21,79 +20,8 @@ import {
   UpdateOptions
 } from '../types';
 import { ContainerInstance } from 'hooks';
-//import { ToastContainer } from '.';
+import { ToastContainer } from '../components';
 
-// interface Toast {
-//   /**
-//    * Shorthand to display toast of type 'success'.
-//    */
-//   success(content: ToastContent, options?: ToastOptions): ToastId;
-
-//   /**
-//    * Shorthand to display toast of type 'info'.
-//    */
-//   info(content: ToastContent, options?: ToastOptions): ToastId;
-
-//   /**
-//    * Shorthand to display toast of type 'warning'.
-//    */
-//   warn(content: ToastContent, options?: ToastOptions): ToastId;
-
-//   /**
-//    * Shorthand to display toast of type 'error'.
-//    */
-//   error(content: ToastContent, options?: ToastOptions): ToastId;
-
-//   /**
-//    * Check if a toast is active by passing the `toastId`.
-//    * Each time you display a toast you receive a `toastId`.
-//    */
-//   isActive(toastId: ToastId): boolean;
-
-//   /**
-//    * Remove a toast. If no `toastId` is used, all the active toast
-//    * will be removed.
-//    */
-//   dismiss(toastId?: ToastId): void;
-
-//   /**
-//    * Update an existing toast. By default, we keep the initial content and options of the toast.
-//    */
-//   update(toastId: ToastId, options?: UpdateOptions): void;
-
-//   /**
-//    * Listen for change when a toast is added or removed. The number of toast displayed is passed as paran to the callback
-//    */
-//   onChange(
-//     callback: (count?: number, containerId?: string | number) => void
-//   ): void;
-
-//   /**
-//    * Set a controlled progress bar value to 100% then close the toast
-//    */
-//   done(toastId: ToastId): void;
-
-//   /**
-//    * Let you define `ToastContainer` props when lazy mounted.
-//    * When called enable lazy mounted container
-//    */
-//   configure(config?: ToastContainerProps): void;
-
-//   /**
-//    * Display a toast without a specific type.
-//    */
-//   (content: ToastContent, options?: ToastOptions): ToastId;
-
-//   /**
-//    * Helper to set notification type
-//    */
-//   TYPE: typeof TYPE;
-
-//   /**
-//    * Helper to set position
-//    */
-//   POSITION: typeof POSITION;
-// }
 
 interface EnqueuedToast {
   content: ToastContent;
@@ -142,7 +70,7 @@ function generateToastId() {
 /**
  * Generate a toastId or use the one provided
  */
-function getToastId(options: ToastOptions) {
+function getToastId(options?: ToastOptions) {
   if (options && (isStr(options.toastId) || isNum(options.toastId))) {
     return options.toastId;
   }
@@ -166,7 +94,7 @@ function dispatchToast(
       lazy = false;
       containerDomNode = document.createElement('div');
       document.body.appendChild(containerDomNode);
-      //   render(<ToastContainer {...containerConfig} />, containerDomNode);
+      render(<ToastContainer {...containerConfig} />, containerDomNode);
     }
   }
 
@@ -176,7 +104,7 @@ function dispatchToast(
 /**
  * Merge provided options with the defaults settings and generate the toastId
  */
-function mergeOptions(options: ToastOptions, type: string) {
+function mergeOptions(type: string, options?: ToastOptions) {
   return {
     ...options,
     type: (options && options.type) || type,
@@ -184,20 +112,20 @@ function mergeOptions(options: ToastOptions, type: string) {
   } as WithInjectedOptions;
 }
 
-const toast = (content: ToastContent, options: ToastOptions) =>
-  dispatchToast(content, mergeOptions(options, TYPE.DEFAULT));
+const toast = (content: ToastContent, options?: ToastOptions) =>
+  dispatchToast(content, mergeOptions(TYPE.DEFAULT, options));
 
-toast.success = (content: ToastContent, options: ToastOptions) =>
-  dispatchToast(content, mergeOptions(options, TYPE.SUCCESS));
+toast.success = (content: ToastContent, options?: ToastOptions) =>
+  dispatchToast(content, mergeOptions(TYPE.SUCCESS, options));
 
-toast.info = (content: ToastContent, options: ToastOptions) =>
-  dispatchToast(content, mergeOptions(options, TYPE.INFO));
+toast.info = (content: ToastContent, options?: ToastOptions) =>
+  dispatchToast(content, mergeOptions(TYPE.INFO, options));
 
-toast.error = (content: ToastContent, options: ToastOptions) =>
-  dispatchToast(content, mergeOptions(options, TYPE.ERROR));
+toast.error = (content: ToastContent, options?: ToastOptions) =>
+  dispatchToast(content, mergeOptions(TYPE.ERROR, options));
 
-toast.warning = (content: ToastContent, options: ToastOptions) =>
-  dispatchToast(content, mergeOptions(options, TYPE.WARNING));
+toast.warning = (content: ToastContent, options?: ToastOptions) =>
+  dispatchToast(content, mergeOptions(TYPE.WARNING, options));
 
 /**
  * Maybe I should remove warning in favor of warn, I don't know
@@ -237,7 +165,7 @@ toast.update = (toastId: ToastId, options: UpdateOptions = {}) => {
         ...oldOptions,
         ...options,
         toastId: options.toastId || toastId
-      };
+      } as WithInjectedOptions & UpdateOptions;
 
       if (!options.toastId || options.toastId === toastId) {
         nextOptions.updateId = generateToastId();
@@ -250,6 +178,7 @@ toast.update = (toastId: ToastId, options: UpdateOptions = {}) => {
           ? nextOptions.render
           : oldContent;
       delete nextOptions.render;
+
       dispatchToast(content, nextOptions);
     }
   }, 0);
@@ -289,7 +218,7 @@ toast.TYPE = TYPE;
  * and attach isActive method
  */
 eventManager
-  .on('didMount', containerInstance => {
+  .on('didMount', (containerInstance: ContainerInstance) => {
     latestInstance = containerInstance.containerId || containerInstance;
     containers.set(latestInstance, containerInstance);
 
@@ -299,7 +228,7 @@ eventManager
 
     queue = [];
   })
-  .on('willUnmount', containerInstance => {
+  .on('willUnmount', (containerInstance: ContainerInstance) => {
     if (containerInstance)
       containers.delete(containerInstance.containerId || containerInstance);
     else containers.clear();
@@ -313,4 +242,4 @@ eventManager
     }
   });
 
-export default toast;
+export { toast };

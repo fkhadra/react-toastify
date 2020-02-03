@@ -114,7 +114,7 @@ export function useToastContainer(props: ToastContainerProps) {
   function isNotValid({ containerId, toastId, updateId }: WithInjectedOptions) {
     return !containerRef.current ||
       (props.enableMultiContainer && containerId !== props.containerId) ||
-      (isToastActive(toastId) && updateId == null)
+      (instanceRef.current.isToastActive && instanceRef.current.isToastActive(toastId) && updateId == null)
       ? true
       : false;
   }
@@ -124,7 +124,7 @@ export function useToastContainer(props: ToastContainerProps) {
     { delay, staleId, ...options }: WithInjectedOptions
   ) {
     if (!canBeRendered(content) || isNotValid(options)) return;
-
+    
     const { toastId, updateId } = options;
     const closeToast = () => removeToast(toastId);
     const toastOptions: WithInjectedOptions = {
