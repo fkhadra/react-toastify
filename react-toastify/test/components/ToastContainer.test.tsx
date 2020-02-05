@@ -5,18 +5,18 @@ import { ToastContainer } from '../../src/components/ToastContainer';
 
 import { toast, eventManager } from '../../src/core';
 import { act } from 'react-dom/test-utils';
+import { ToastOptions } from 'types';
 
 beforeEach(() => {
   jest.useFakeTimers();
 });
 
 jest.mock('react-transition-group', () => {
-  const FakeTransition = jest.fn(({ children }) => children);
-  const FakeCSSTransition = jest.fn(props =>
-    props.in ? <FakeTransition>{props.children}</FakeTransition> : null
-  );
+  const FakeTransition = jest.fn(({ children, className = "" }) => {
+    return <div className={className}>{children}</div>
+  });
+  
   return {
-    CSSTransition: FakeCSSTransition,
     Transition: FakeTransition,
     TransitionGroup: FakeTransition
   };
@@ -112,16 +112,58 @@ describe('ToastContainer', () => {
     expect(queryByText('DUPLICATE_TOAST')).toBe(null);
   });
 
-  it.only("Should be able to render a react element, a string, a number, a render props without crashing", () => {
-    const { container } = render(<ToastContainer />);
+  it("Should be able to render a react element, a string, a number, a render props without crashing", () => {
+    const { getByText } = render(<ToastContainer />);
     act(() => {
       toast('coucou');
       toast(123);
-      toast(<div>plop</div>);
-      toast(() => <div>plop</div>);
+      toast(<div>foo</div>);
+      toast(() => <div>bar</div>);
       jest.runAllTimers();
     })
 
-    console.log(container.childNodes);
+    expect(getByText('coucou')).not.toBe(null)
+    expect(getByText("123")).not.toBe(null)
+    expect(getByText('foo')).not.toBe(null)
+    expect(getByText('bar')).not.toBe(null)
+  });
+
+  it("Should be able to display new toast on top", () => {
+    const { getAllByText } = render(<ToastContainer newestOnTop/>);
+    const toastValues = ['t 1', 't 2', 't 3'];
+    
+    act(() => {
+      for (const value of toastValues) {
+        toast(value);
+      }
+      jest.runAllTimers();
+    });
+
+    expect(getAllByText(/t [1,2,3]/).map(el => el.textContent)).toEqual(toastValues.reverse())
+  });
+
+  // this test could be improved by checking all the options
+  it("Toast options should supersede ToastContainer props", () => {
+    const {  getByText, container } = render(<ToastContainer />);
+    const CloseBtn = () => <div>Close</div>;
+    const fn = () => {};
+    const desiredProps: ToastOptions = {
+      pauseOnHover: false,
+      closeOnClick: false,
+      onOpen: fn,
+      onClose: fn,
+      autoClose: false,
+      hideProgressBar: true,
+      position: "top-left",
+      closeButton: <CloseBtn />
+    };
+
+    act(() => {
+      toast("hello", desiredProps);
+      jest.runAllTimers();
+    });
+
+    expect(getByText("Close")).not.toBe(null);
+    expect(container.innerHTML).toMatch(/top-left/);
   });
 });
