@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-
-import { Toast, ToastContainer } from '../../src/components';
-import { RT_NAMESPACE } from '../../src/utils';
-import { WithInjectedOptions } from 'types';
 import { act } from 'react-dom/test-utils';
+
+import { cssClasses } from "../helpers";
+import { Toast, ToastContainer } from '../../src/components';
+import { WithInjectedOptions } from '../../src/types';
 
 const REQUIRED_PROPS = {
   ...ToastContainer.defaultProps,
@@ -14,12 +14,6 @@ const REQUIRED_PROPS = {
   toastId: 'id',
   key: 'key'
 } as WithInjectedOptions;
-
-const cssClasses = {
-  rtl: `.${RT_NAMESPACE}__toast--rtl`,
-  progressBar: `.${RT_NAMESPACE}__progress-bar`,
-  closeButton: `.${RT_NAMESPACE}__close-button`
-};
 
 function getProgressBar(container: HTMLElement) {
   const progressBar = container.querySelector(
@@ -31,7 +25,7 @@ function getProgressBar(container: HTMLElement) {
     isPaused: () => expect(progressBar.style.animationPlayState).toBe('paused'),
     isControlled: (progress: number) => {
       expect(
-        container.querySelector(`.${RT_NAMESPACE}__progress-bar--controlled`)
+        container.querySelector(cssClasses.progressBarController)
       ).not.toBe(null);
       expect(progressBar.style.transform).toMatch(`scaleX(${progress})`);
     }
@@ -225,7 +219,7 @@ describe('Toast Component', () => {
     );
 
     fireEvent.animationEnd(
-      container.querySelector(`.${RT_NAMESPACE}__progress-bar`) as HTMLElement
+      container.querySelector(cssClasses.progressBar) as HTMLElement
     );
 
     expect(closeToast).toHaveBeenCalled();
@@ -242,7 +236,7 @@ describe('Toast Component', () => {
     progressBar.isControlled(1);
 
     fireEvent.transitionEnd(
-      container.querySelector(`.${RT_NAMESPACE}__progress-bar`) as HTMLElement
+      container.querySelector(cssClasses.progressBar) as HTMLElement
     );
 
     expect(closeToast).toHaveBeenCalled();
