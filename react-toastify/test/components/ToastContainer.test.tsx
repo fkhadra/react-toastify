@@ -317,9 +317,11 @@ describe('ToastContainer', () => {
     });
 
     expect(queryByText('Holy')).not.toBe(null);
-    fireEvent.click(container.querySelector(cssClasses.closeButton) as HTMLElement);
+    fireEvent.click(
+      container.querySelector(cssClasses.closeButton) as HTMLElement
+    );
 
-    expect(queryByText('Holy')).toBe(null)
+    expect(queryByText('Holy')).toBe(null);
   });
 
   // it("Should include only the style needed for a given position", () => {
@@ -333,4 +335,76 @@ describe('ToastContainer', () => {
   //     );
   //   });
   // });
+
+  describe('Multiple container support', () => {
+    it('Should render toasts in all container if enableMultiContainer is not set/false', () => {
+      const { getAllByText } = render(
+        <>
+          <ToastContainer enableMultiContainer={false} />
+          <ToastContainer />
+          <ToastContainer containerId={1} />
+        </>
+      );
+
+      act(() => {
+        toast('Toast 1');
+        toast('Toast 2', { containerId: 1 });
+        jest.runAllTimers();
+      });
+
+      expect(getAllByText('Toast 1').length).toBe(3);
+      expect(getAllByText('Toast 2').length).toBe(3);
+    });
+
+    it('Should show only related toasts aka- same containerId and containerId', () => {
+      const { getAllByText } = render(
+        <>
+          <ToastContainer containerId={1} enableMultiContainer />
+          <ToastContainer containerId={2} enableMultiContainer />
+        </>
+      );
+
+      act(() => {
+        toast('containerId 1', { containerId: 1 });
+        toast('containerId 2', { containerId: 2 });
+        jest.runAllTimers();
+      });
+
+      expect(getAllByText('containerId 1').length).toBe(1);
+      expect(getAllByText('containerId 2').length).toBe(1);
+    });
+
+    it('Should not display unrelated toasts', () => {
+      const { queryByText } = render(
+        <ToastContainer containerId={1} enableMultiContainer />
+      );
+
+      act(() => {
+        toast('hello', { containerId: 2 });
+        jest.runAllTimers();
+      });
+
+      expect(queryByText('hello')).toBe(null);
+    });
+
+    it('Should display toasts when no containerId is set on the container', () => {
+      const { getByText } = render(<ToastContainer enableMultiContainer />);
+      act(() => {
+        toast('hello');
+        jest.runAllTimers();
+      });
+      expect(getByText('hello')).not.toBe(null);
+    });
+
+    it('Should not display any toasts with containerId', () => {
+      const { queryByText } = render(<ToastContainer enableMultiContainer />);
+
+      act(() => {
+        toast('hello', { containerId: 1 });
+        jest.runAllTimers();
+      });
+
+      expect(queryByText('hello')).toBe(null);
+    });
+  });
 });
