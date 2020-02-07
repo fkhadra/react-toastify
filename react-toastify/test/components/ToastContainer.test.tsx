@@ -1,21 +1,26 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
+import { act } from 'react-dom/test-utils';
 
 import { ToastContainer } from '../../src/components/ToastContainer';
-
 import { toast, eventManager } from '../../src/core';
-import { act } from 'react-dom/test-utils';
-import { ToastOptions } from 'types';
+import { ToastOptions } from '../../src/types';
+
+import { cssClasses } from '../helpers';
 
 beforeEach(() => {
   jest.useFakeTimers();
 });
 
 jest.mock('react-transition-group', () => {
-  const FakeTransition = jest.fn(({ children, className = "" }) => {
-    return <div className={className}>{children}</div>
+  const FakeTransition = jest.fn(({ children, className = '', style = {} }) => {
+    return (
+      <div className={className} style={style}>
+        {children}
+      </div>
+    );
   });
-  
+
   return {
     Transition: FakeTransition,
     TransitionGroup: FakeTransition
@@ -90,20 +95,19 @@ describe('ToastContainer', () => {
     expect(getAllByText(/toast id/).length).toBe(1);
   });
 
-  it("Should prevent duplicate toast when same id is used", () => {
+  it('Should prevent duplicate toast when same id is used', () => {
     const { queryByText } = render(<ToastContainer />);
 
     act(() => {
-      toast("REAL_TOAST", {
-        toastId: "foo"
+      toast('REAL_TOAST', {
+        toastId: 'foo'
       });
       jest.runAllTimers();
     });
-    
 
     act(() => {
-      toast("DUPLICATE_TOAST", {
-        toastId: "foo"
+      toast('DUPLICATE_TOAST', {
+        toastId: 'foo'
       });
       jest.runAllTimers();
     });
@@ -112,7 +116,7 @@ describe('ToastContainer', () => {
     expect(queryByText('DUPLICATE_TOAST')).toBe(null);
   });
 
-  it("Should be able to render a react element, a string, a number, a render props without crashing", () => {
+  it('Should be able to render a react element, a string, a number, a render props without crashing', () => {
     const { getByText } = render(<ToastContainer />);
     act(() => {
       toast('coucou');
@@ -120,18 +124,18 @@ describe('ToastContainer', () => {
       toast(<div>foo</div>);
       toast(() => <div>bar</div>);
       jest.runAllTimers();
-    })
+    });
 
-    expect(getByText('coucou')).not.toBe(null)
-    expect(getByText("123")).not.toBe(null)
-    expect(getByText('foo')).not.toBe(null)
-    expect(getByText('bar')).not.toBe(null)
+    expect(getByText('coucou')).not.toBe(null);
+    expect(getByText('123')).not.toBe(null);
+    expect(getByText('foo')).not.toBe(null);
+    expect(getByText('bar')).not.toBe(null);
   });
 
-  it("Should be able to display new toast on top", () => {
-    const { getAllByText } = render(<ToastContainer newestOnTop/>);
+  it('Should be able to display new toast on top', () => {
+    const { getAllByText } = render(<ToastContainer newestOnTop />);
     const toastValues = ['t 1', 't 2', 't 3'];
-    
+
     act(() => {
       for (const value of toastValues) {
         toast(value);
@@ -139,12 +143,14 @@ describe('ToastContainer', () => {
       jest.runAllTimers();
     });
 
-    expect(getAllByText(/t [1,2,3]/).map(el => el.textContent)).toEqual(toastValues.reverse())
+    expect(getAllByText(/t [1,2,3]/).map(el => el.textContent)).toEqual(
+      toastValues.reverse()
+    );
   });
 
   // this test could be improved by checking all the options
-  it("Toast options should supersede ToastContainer props", () => {
-    const {  getByText, container } = render(<ToastContainer />);
+  it('Toast options should supersede ToastContainer props', () => {
+    const { getByText, container } = render(<ToastContainer />);
     const CloseBtn = () => <div>Close</div>;
     const fn = () => {};
     const desiredProps: ToastOptions = {
@@ -154,16 +160,177 @@ describe('ToastContainer', () => {
       onClose: fn,
       autoClose: false,
       hideProgressBar: true,
-      position: "top-left",
+      position: 'top-left',
       closeButton: <CloseBtn />
     };
 
     act(() => {
-      toast("hello", desiredProps);
+      toast('hello', desiredProps);
       jest.runAllTimers();
     });
 
-    expect(getByText("Close")).not.toBe(null);
+    expect(getByText('Close')).not.toBe(null);
     expect(container.innerHTML).toMatch(/top-left/);
   });
+
+  it('Should pass closeToast function and type when using a custom CloseButton', done => {
+    render(<ToastContainer />);
+
+    const CloseBtn = (props: any) => {
+      expect('closeToast' in props).toBe(true);
+      expect('type' in props).toBe(true);
+      done();
+      return <div>x</div>;
+    };
+    const Msg = () => <div>Plop</div>;
+
+    act(() => {
+      toast(<Msg />, {
+        closeButton: CloseBtn
+      });
+      jest.runAllTimers();
+    });
+  });
+
+  it('Should be able to disable the close button', () => {
+    const { container } = render(<ToastContainer />);
+
+    act(() => {
+      toast('hello');
+      jest.runAllTimers();
+    });
+
+    // ensure that close button is present by default
+    expect(container.querySelector(cssClasses.closeButton)).not.toBe(null);
+
+    act(() => {
+      toast.dismiss();
+      toast('hello', {
+        closeButton: false
+      });
+      jest.runAllTimers();
+    });
+
+    expect(container.querySelector(cssClasses.closeButton)).toBe(null);
+  });
+
+  it('Should be able to delay toast rendering', () => {
+    const { getByText } = render(<ToastContainer />);
+    act(() => {
+      toast('hello', { delay: 1000 });
+      jest.runAllTimers();
+    });
+
+    expect(getByText('hello')).not.toBe(null);
+  });
+
+  it('Should use default CloseButton when toast option set to true and ToastContainer options is false', () => {
+    // set closeButton to false to remove it by default
+    const { container } = render(<ToastContainer closeButton={false} />);
+
+    act(() => {
+      toast('hello');
+      jest.runAllTimers();
+    });
+
+    // ensure that close button is NOT present by default
+    expect(container.querySelector(cssClasses.closeButton)).toBe(null);
+
+    act(() => {
+      toast('hello', { closeButton: true });
+      jest.runAllTimers();
+    });
+
+    // now the close button should be present
+    expect(container.querySelector(cssClasses.closeButton)).not.toBe(null);
+  });
+
+  it('Should use custom CloseButton when toast option set to true and ToastContainer options is custom', () => {
+    const CloseBtn = () => <div>CUSTOM_BUTTON</div>;
+    const { getByText } = render(<ToastContainer closeButton={CloseBtn} />);
+
+    act(() => {
+      toast('hello', { closeButton: true });
+      jest.runAllTimers();
+    });
+
+    // now the close button should be present
+    expect(getByText('CUSTOM_BUTTON')).not.toBe(null);
+  });
+
+  it('Should merge className and style', () => {
+    const { container } = render(
+      <ToastContainer className="foo" style={{ background: 'red' }} />
+    );
+
+    act(() => {
+      toast('hello');
+      jest.runAllTimers();
+    });
+
+    expect(container.innerHTML).toMatch(/foo/);
+    expect(container.innerHTML).toMatch(/style="background: red;"/);
+  });
+
+  // Most of css-in-js use toString to translate to className
+  it('Should support css-in-js rules', () => {
+    const className = {
+      background: 'purple',
+      toString() {
+        return 'random-class-name';
+      }
+    };
+
+    const { container } = render(
+      <ToastContainer className={className} style={{ background: 'red' }} />
+    );
+
+    act(() => {
+      toast('hello');
+      jest.runAllTimers();
+    });
+
+    expect(container.innerHTML).toMatch(/class=".+random-class-name"/);
+  });
+
+  it('Should pass a closeToast function when displaying a react component', done => {
+    render(<ToastContainer />);
+    const Msg = (props: any) => {
+      expect('closeToast' in props).toBe(true);
+      done();
+
+      return <div>Plop</div>;
+    };
+
+    act(() => {
+      toast(<Msg />);
+      jest.runAllTimers();
+    });
+  });
+
+  it('Should remove toast when closeToast is called', () => {
+    const { container, queryByText } = render(<ToastContainer />);
+
+    act(() => {
+      toast('Holy');
+      jest.runAllTimers();
+    });
+
+    expect(queryByText('Holy')).not.toBe(null);
+    fireEvent.click(container.querySelector(cssClasses.closeButton) as HTMLElement);
+
+    expect(queryByText('Holy')).toBe(null)
+  });
+
+  // it("Should include only the style needed for a given position", () => {
+  //   Object.keys(toast.POSITION).forEach(k => {
+  //     const {container} = render(<ToastContainer position={toast.POSITION[k as keyof typeof toast.POSITION] as string} />);
+  //     const id = toast("test");
+  //     jest.runAllTimers();
+
+  //     expect(component.instance().collection[id].position).toBe(
+  //       toast.POSITION[k]
+  //     );
+  //   });
+  // });
 });
