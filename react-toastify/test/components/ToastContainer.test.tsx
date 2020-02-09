@@ -324,18 +324,6 @@ describe('ToastContainer', () => {
     expect(queryByText('Holy')).toBe(null);
   });
 
-  // it("Should include only the style needed for a given position", () => {
-  //   Object.keys(toast.POSITION).forEach(k => {
-  //     const {container} = render(<ToastContainer position={toast.POSITION[k as keyof typeof toast.POSITION] as string} />);
-  //     const id = toast("test");
-  //     jest.runAllTimers();
-
-  //     expect(component.instance().collection[id].position).toBe(
-  //       toast.POSITION[k]
-  //     );
-  //   });
-  // });
-
   describe('Multiple container support', () => {
     it('Should render toasts in all container if enableMultiContainer is not set/false', () => {
       const { getAllByText } = render(
