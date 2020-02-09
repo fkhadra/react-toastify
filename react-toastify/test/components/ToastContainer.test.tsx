@@ -8,9 +8,7 @@ import { ToastOptions } from '../../src/types';
 
 import { cssClasses } from '../helpers';
 
-beforeEach(() => {
-  jest.useFakeTimers();
-});
+jest.useFakeTimers();
 
 jest.mock('react-transition-group', () => {
   const FakeTransition = jest.fn(({ children, className = '', style = {} }) => {
