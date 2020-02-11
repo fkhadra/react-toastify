@@ -2,6 +2,7 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 
+import '../__mocks__/react-transition-group';
 import { ToastContainer } from '../../src/components/ToastContainer';
 import { toast, eventManager } from '../../src/core';
 import { ToastOptions } from '../../src/types';
@@ -9,21 +10,6 @@ import { ToastOptions } from '../../src/types';
 import { cssClasses } from '../helpers';
 
 jest.useFakeTimers();
-
-jest.mock('react-transition-group', () => {
-  const FakeTransition = jest.fn(({ children, className = '', style = {} }) => {
-    return (
-      <div className={className} style={style}>
-        {children}
-      </div>
-    );
-  });
-
-  return {
-    Transition: FakeTransition,
-    TransitionGroup: FakeTransition
-  };
-});
 
 describe('ToastContainer', () => {
   it('Should bind events when mounted and unbind them when unmounted', () => {
