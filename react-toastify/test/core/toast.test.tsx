@@ -1,10 +1,14 @@
+import React from 'react';
 import { act } from 'react-dom/test-utils';
+import { render } from '@testing-library/react';
 
-import { cssClasses } from "../helpers";
-import { eventManager, toast } from "../../src/core";
+import '../__mocks__/react-transition-group';
+import { cssClasses } from '../helpers';
+import { eventManager, toast } from '../../src/core';
 import { ContainerInstance } from '../../src/hooks';
 import { RT_NAMESPACE } from '../../src/utils';
 import { ToastId } from '../../src/types';
+import { ToastContainer } from '../../src/components';
 
 jest.useFakeTimers();
 
@@ -15,12 +19,12 @@ beforeEach(() => {
     .off('clear')
     .off('change');
 });
-const containerId = "foo";
+const containerId = 'foo';
 const containerInstance: ContainerInstance = {
   containerId,
   getToast: jest.fn(),
   isToastActive: jest.fn()
-}
+};
 
 function expectContainerNotToBeMounted() {
   expect(document.querySelector(cssClasses.container)).toBe(null);
@@ -63,7 +67,7 @@ describe('toastify', () => {
       toast('hello');
       jest.runAllTimers();
     });
-    
+
     expect(document.querySelectorAll(cssClasses.container)).toHaveLength(1);
     unmountLazyContainer();
   });
@@ -78,7 +82,7 @@ describe('toastify', () => {
     act(() => {
       toast('hello');
       jest.runAllTimers();
-    })
+    });
 
     expectContainerToBeMounted();
     expect(
@@ -89,9 +93,9 @@ describe('toastify', () => {
 
   it('Should return a new id each time we emit a notification', () => {
     let firstId, secondId;
-    
-      firstId = toast('Hello');
-      secondId = toast('Hello');
+
+    firstId = toast('Hello');
+    secondId = toast('Hello');
 
     expect(firstId).not.toEqual(secondId);
   });
@@ -111,163 +115,218 @@ describe('toastify', () => {
   });
 
   it('Should not use the provided invalid toastId from options', () => {
-    const toastId = Symbol('myId') as unknown as ToastId;
+    const toastId = (Symbol('myId') as unknown) as ToastId;
     const id = toast('Hello', { toastId });
 
     expect(id).not.toEqual(toastId);
   });
 
-  // describe('onChange event', () => {
-  //   it('Should be able to track when toast is added or removed', () => {
-  //     mount(<ToastContainer />);
-  //     const fn = jest.fn();
-  //     toast.onChange(fn);
+  describe('onChange event', () => {
+    it('Should be able to track when toast is added or removed', () => {
+      render(<ToastContainer />);
+      const fn = jest.fn();
+      toast.onChange(fn);
 
-  //     expect(fn).not.toHaveBeenCalled();
-  //     toast('hello');
-  //     jest.runAllTimers();
-  //     expect(fn).toHaveBeenCalled();
-  //   });
+      expect(fn).not.toHaveBeenCalled();
 
-  //   it('The callback should receive the number of toast displayed', done => {
-  //     mount(<ToastContainer />);
-  //     toast.onChange(count => {
-  //       expect(count).toBe(1);
-  //       done();
-  //     });
-  //     toast('hello');
-  //     jest.runAllTimers();
-  //   });
+      act(() => {
+        toast('hello');
+        jest.runAllTimers();
+      });
 
-  //   it('Should pass containerId as second arg if set', done => {
-  //     mount(<ToastContainer containerId="foo" />);
-  //     toast.onChange((count, containerId) => {
-  //       expect(containerId).toBe('foo');
-  //       done();
-  //     });
-  //     toast('hello');
-  //     jest.runAllTimers();
-  //   });
-  // });
+      expect(fn).toHaveBeenCalled();
+    });
 
-  // it('Should be able remove toast programmatically', () => {
-  //   const component = mount(<ToastContainer />);
-  //   const id = toast('hello');
-  //   jest.runAllTimers();
-  //   expect(component.state('toast')[0]).toBe(id);
+    it('The callback should receive the number of toast displayed', done => {
+      render(<ToastContainer />);
+      toast.onChange(count => {
+        expect(count).toBe(1);
+        done();
+      });
 
-  //   toast.dismiss(id);
-  //   jest.runAllTimers();
-  //   expect(component.state('toast').length).toBe(0);
-  // });
+      act(() => {
+        toast('hello');
+        jest.runAllTimers();
+      });
+    });
 
-  // describe('update function', () => {
-  //   it('Should be able to update an existing toast', () => {
-  //     const component = mount(<ToastContainer />);
-  //     const id = toast('hello');
-  //     jest.runAllTimers();
-  //     expect(component.html()).toMatch(/hello/);
-  //     toast.update(id, {
-  //       render: 'foobar'
-  //     });
-  //     jest.runAllTimers();
-  //     expect(component.html()).not.toMatch(/hello/);
-  //     expect(component.html()).toMatch(/foobar/);
-  //   });
+    it('Should pass containerId as second arg if set', done => {
+      render(<ToastContainer containerId="foo" />);
+      toast.onChange((_count, containerId) => {
+        expect(containerId).toBe('foo');
+        done();
+      });
+      act(() => {
+        toast('hello');
+        jest.runAllTimers();
+      });
+    });
+  });
 
-  //   it('Should be able to update the same toast many times', () => {
-  //     const component = mount(<ToastContainer />);
-  //     const id = toast('hello');
+  it('Should be able remove toast programmatically', () => {
+    const { queryByText } = render(<ToastContainer />);
+    let id: ToastId;
+    act(() => {
+      id = toast('hello');
+      jest.runAllTimers();
+    });
 
-  //     jest.runAllTimers();
-  //     expect(component.html()).toMatch(/hello/);
+    expect(queryByText('hello')).not.toBe(null);
 
-  //     toast.update(id, {
-  //       render: 'foobar'
-  //     });
+    act(() => {
+      toast.dismiss(id);
+      jest.runAllTimers();
+    });
 
-  //     jest.runAllTimers();
-  //     expect(component.html()).toMatch(/foobar/);
+    expect(queryByText('hello')).toBe(null);
+  });
 
-  //     toast.update(id, {
-  //       render: 'plop'
-  //     });
+  describe('update function', () => {
+    it('Should be able to update an existing toast', () => {
+      const { queryByText } = render(<ToastContainer />);
+      let id: ToastId;
 
-  //     jest.runAllTimers();
-  //     expect(component.html()).toMatch(/plop/);
-  //   });
+      act(() => {
+        id = toast('hello');
+        jest.runAllTimers();
+      });
 
-  //   it('Should be able to update a Toast and keep the same content', () => {
-  //     const component = mount(<ToastContainer />);
-  //     const id = toast('hello');
+      expect(queryByText('hello')).not.toBe(null);
 
-  //     jest.runAllTimers();
-  //     expect(component.html()).toMatch(/hello/);
-  //     toast.update(id, {
-  //       className: 'foobar'
-  //     });
-  //     jest.runAllTimers();
-  //     expect(component.html()).toMatch(/hello/);
-  //     toast.update(id);
-  //     jest.runAllTimers();
-  //     expect(component.html()).toMatch(/hello/);
-  //   });
+      act(() => {
+        toast.update(id, {
+          render: 'foobar'
+        });
+        jest.runAllTimers();
+      });
 
-  //   it('Should update a toast only if it exist and if the container is mounted', () => {
-  //     const component = mount(<ToastContainer />);
+      expect(queryByText('hello')).toBe(null);
+      expect(queryByText('foobar')).not.toBe(null);
+    });
 
-  //     toast.update(0, {
-  //       render: 'hello'
-  //     });
+    it('Should be able to update the same toast many times', () => {
+      const { queryByText } = render(<ToastContainer />);
+      let id: ToastId;
 
-  //     jest.runAllTimers();
-  //     expect(component.html()).not.toMatch(/hello/);
-  //   });
+      act(() => {
+        id = toast('hello');
+        jest.runAllTimers();
+      });
 
-  //   it('Should be able to update the toastId', () => {
-  //     const component = mount(<ToastContainer />);
-  //     const id = toast('hello');
-  //     const updateId = 'foo';
+      expect(queryByText('hello')).not.toBe(null);
 
-  //     jest.runAllTimers();
-  //     expect(component.html()).toMatch(/hello/);
-  //     toast.update(id, {
-  //       toastId: updateId
-  //     });
-  //     jest.runAllTimers();
-  //     expect(component.html()).toMatch(/hello/);
-  //     expect(toast.isActive(id)).toBe(false);
-  //     expect(toast.isActive(updateId)).toBe(true);
-  //   });
+      act(() => {
+        toast.update(id, {
+          render: 'foobar'
+        });
+        jest.runAllTimers();
+      });
 
-  //   it('Should be able to update a toast even when using multi containers', () => {
-  //     const component = mount(
-  //       <>
-  //         <ToastContainer containerId="first" enableMultiContainer />
-  //         <ToastContainer containerId="second" enableMultiContainer />
-  //       </>
-  //     );
+      expect(queryByText('foobar')).not.toBe(null);
 
-  //     const firstId = toast('hello first', { containerId: 'first' });
-  //     const secondId = toast('hello second', { containerId: 'second' });
-  //     jest.runAllTimers();
+      act(() => {
+        toast.update(id, {
+          render: 'peace'
+        });
+        jest.runAllTimers();
+      });
 
-  //     toast.update(firstId, {
-  //       render: 'updated first',
-  //       containerId: 'first'
-  //     });
+      expect(queryByText('peace')).not.toBe(null);
+    });
 
-  //     toast.update(secondId, {
-  //       render: 'updated second',
-  //       containerId: 'second'
-  //     });
+    it('Should be able to update a Toast and keep the same content', () => {
+      const { queryByText } = render(<ToastContainer />);
+      let id: ToastId;
+      act(() => {
+        id = toast('hello');
+        jest.runAllTimers();
+      });
 
-  //     jest.runAllTimers();
+      expect(queryByText('hello')).not.toBe(null);
 
-  //     expect(component.first().html()).toMatch(/updated first/);
-  //     expect(component.at(1).html()).toMatch(/updated second/);
-  //   });
-  // });
+      act(() => {
+        toast.update(id, {
+          className: 'foobar'
+        });
+        jest.runAllTimers();
+      });
+      expect(queryByText('hello')).not.toBe(null);
+
+      act(() => {
+        toast.update(id);
+        jest.runAllTimers();
+      });
+      expect(queryByText('hello')).not.toBe(null);
+    });
+
+    it('Should update a toast only if it exist and if the container is mounted', () => {
+      const { queryByText } = render(<ToastContainer />);
+
+      act(() => {
+        toast.update(0, {
+          render: 'hello'
+        });
+        jest.runAllTimers();
+      });
+
+      expect(queryByText('hello')).toBe(null);
+    });
+
+      // it('Should be able to update the toastId', () => {
+      //   const { queryByText } = render(<ToastContainer />);
+      //   let id:ToastId;
+      //   const updateId = 'foo';
+        
+      //   act(() => {
+      //     id = toast('hello');
+      //     jest.runAllTimers();
+      //   });
+
+      //   expect(queryByText('hello')).not.toBe(null);
+
+      //   act(() => {
+      //     toast.update(id, {
+      //       toastId: updateId
+      //     });
+      //     jest.runAllTimers();
+      //   })
+        
+      //   expect(queryByText('hello')).not.toBe(null);
+
+      //   act(() => {
+      //     expect(toast.isActive(id)).toBe(false);
+      //     expect(toast.isActive(updateId)).toBe(true);
+      //   })
+      // });
+
+    //   it('Should be able to update a toast even when using multi containers', () => {
+    //     const component = mount(
+    //       <>
+    //         <ToastContainer containerId="first" enableMultiContainer />
+    //         <ToastContainer containerId="second" enableMultiContainer />
+    //       </>
+    //     );
+
+    //     const firstId = toast('hello first', { containerId: 'first' });
+    //     const secondId = toast('hello second', { containerId: 'second' });
+    //     jest.runAllTimers();
+
+    //     toast.update(firstId, {
+    //       render: 'updated first',
+    //       containerId: 'first'
+    //     });
+
+    //     toast.update(secondId, {
+    //       render: 'updated second',
+    //       containerId: 'second'
+    //     });
+
+    //     jest.runAllTimers();
+
+    //     expect(component.first().html()).toMatch(/updated first/);
+    //     expect(component.at(1).html()).toMatch(/updated second/);
+    //   });
+  });
 
   // describe('isActive function', () => {
   //   it('toast.isActive should return false until the container is mounted', () => {
@@ -331,28 +390,38 @@ describe('toastify', () => {
   //   });
   // });
 
-  // describe('Controlled progress bar', () => {
-  //   it('Should be possible to use a controlled progress bar', () => {
-  //     const component = mount(<ToastContainer />);
-  //     toast('Hello', {
-  //       progress: 0.5
-  //     });
-  //     jest.runAllTimers();
-  //     expect(component.html()).toMatch(/transform:(\s)?scaleX\(0.5\)/);
-  //   });
+  describe('Controlled progress bar', () => {
+    it('Should be possible to use a controlled progress bar', () => {
+      const { container } = render(<ToastContainer />);
 
-  //   it('When `toast.done` is called, it should set scaleX to 1', () => {
-  //     const component = mount(<ToastContainer />);
-  //     const id = toast('Hello', {
-  //       progress: 0.5
-  //     });
-  //     jest.runAllTimers();
-  //     expect(component.html()).toMatch(/Hello/);
+      act(() => {
+        toast('Hello', {
+          progress: 0.5
+        });
+        jest.runAllTimers();
+      });
 
-  //     toast.done(id);
-  //     jest.runAllTimers();
+      expect(container.innerHTML).toMatch(/transform:(\s)?scaleX\(0.5\)/);
+    });
 
-  //     expect(component.html()).toMatch(/transform:(\s)?scaleX\(1\)/);
-  //   });
-  // });
+    it('When `toast.done` is called, it should set scaleX to 1', () => {
+      const { container, queryByText } = render(<ToastContainer />);
+      let id: ToastId;
+
+      act(() => {
+        id = toast('hello', {
+          progress: 0.5
+        });
+        jest.runAllTimers();
+      });
+
+      expect(queryByText('hello')).not.toBe(null);
+      act(() => {
+        toast.done(id);
+        jest.runAllTimers();
+      });
+
+      expect(container.innerHTML).toMatch(/transform:(\s)?scaleX\(1\)/);
+    });
+  });
 });
