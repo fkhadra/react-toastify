@@ -205,7 +205,7 @@ toast.onChange = (callback: OnChangeCallback) => {
 /**
  * Configure the ToastContainer when lazy mounted
  */
-toast.configure = (config: ToastContainerProps) => {
+toast.configure = (config: ToastContainerProps = {}) => {
   lazy = true;
   containerConfig = config;
 };

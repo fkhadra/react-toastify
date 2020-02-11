@@ -4,5 +4,6 @@ export const cssClasses = {
   rtl: `.${RT_NAMESPACE}__toast--rtl`,
   progressBar: `.${RT_NAMESPACE}__progress-bar`,
   progressBarController: `.${RT_NAMESPACE}__progress-bar--controlled`,
-  closeButton: `.${RT_NAMESPACE}__close-button`
+  closeButton: `.${RT_NAMESPACE}__close-button`,
+  container: `.${RT_NAMESPACE}__toast-container`,
 };
