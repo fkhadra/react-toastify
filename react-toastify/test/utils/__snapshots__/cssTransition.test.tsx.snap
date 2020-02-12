@@ -3,7 +3,9 @@
 exports[`cssTransition helper Should return a valid react component 1`] = `
 <div>
   <div>
-    Plop
+    <div>
+      Plop
+    </div>
   </div>
 </div>
 `;

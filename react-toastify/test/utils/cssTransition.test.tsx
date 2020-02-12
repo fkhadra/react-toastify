@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
+import '../__mocks__/react-transition-group';
 import { cssTransition } from '../../src/utils';
 
 describe('cssTransition helper', () => {
@@ -9,9 +10,12 @@ describe('cssTransition helper', () => {
       enter: 'foo',
       exit: 'bar'
     });
-    const children = () => <div>Plop</div>;
+
+    const Child = () => <div>Plop</div>;
     const { container, getByText } = render(
-      <Transition>{children}</Transition>
+      <Transition>
+        <Child />
+      </Transition>
     );
 
     expect(getByText('Plop').textContent).toContain('Plop');

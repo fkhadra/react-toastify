@@ -30,19 +30,13 @@ export interface CSSTransitionProps {
   appendPosition?: boolean;
 }
 
-// export interface AnimationProps extends Partial<TransitionProps> {
-//   position?: Position;
-//   preventExitTransition?: boolean;
-  
-// }
-
 export function cssTransition({
   enter,
   exit,
   duration = 750,
   appendPosition = false
 }: CSSTransitionProps) {
-  const Animation: React.FC<TransitionProps> = ({
+  const Animation: React.FC<Partial<TransitionProps>> = ({
     children,
     position,
     preventExitTransition,
