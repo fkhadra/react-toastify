@@ -32,7 +32,6 @@
     "lint": "eslint src/",
     "lint:fix": "eslint --fix src/",
     "prettier-all": "prettier --single-quote --write 'src/**/*.js'",
-    
     "build": "npm run clean && cross-env NODE_ENV=production rollup -c && npm run style",
     "clean": "rimraf cjs/* && rimraf dist/* && rimraf esm/*",
     "sass": "node-sass scss/main.scss dist/ReactToastify.css",
@@ -66,12 +65,12 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
-    "@babel/core": "^7.0.0",
+    "@babel/core": "^7.0.0-0",
     "@babel/plugin-proposal-class-properties": "^7.0.0",
     "@babel/plugin-transform-modules-commonjs": "^7.0.0",
     "@babel/plugin-transform-runtime": "^7.4.0",
     "@babel/preset-env": "^7.0.0",
-    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-react": "^7.8.3",
     "@types/react": "^16.4.12",
     "@types/react-transition-group": "^2.0.13",
     "babel-core": "7.0.0-bridge.0",

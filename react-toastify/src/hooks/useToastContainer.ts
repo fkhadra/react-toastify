@@ -83,6 +83,10 @@ export function useToastContainer(props: ToastContainerProps) {
   }, []);
 
   useEffect(() => {
+    console.log({ props });
+  }, [props])
+
+  useEffect(() => {
     instanceRef.current.isToastActive = isToastActive;
     eventManager.emit('change', toast.length, props.containerId);
   }, [toast]);

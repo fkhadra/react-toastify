@@ -2,7 +2,7 @@ import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { render } from '@testing-library/react';
 
-import '../__mocks__/react-transition-group';
+// import '../__mocks__/react-transition-group';
 import { cssClasses } from '../helpers';
 import { eventManager, toast } from '../../src/core';
 import { ContainerInstance } from '../../src/hooks';

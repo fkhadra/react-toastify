@@ -36,12 +36,12 @@ export function cssTransition({
   duration = 750,
   appendPosition = false
 }: CSSTransitionProps) {
-  const Animation: React.FC<Partial<TransitionProps>> = ({
+  return ({
     children,
     position,
     preventExitTransition,
     ...props
-  }) => {
+  }: Partial<TransitionProps>) => {
     const enterClassName = appendPosition ? `${enter}--${position}` : enter;
     const exitClassName = appendPosition ? `${exit}--${position}` : exit;
     let enterDuration: number, exitDuration: number;
@@ -86,5 +86,4 @@ export function cssTransition({
       </Transition>
     );
   };
-  return Animation;
 }

@@ -1,14 +1,8 @@
 import 'react-app-polyfill/ie11';
+import { render } from 'react-dom';
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { Thing } from '../.';
+import {App} from './components/App';
 
-const App = () => {
-  return (
-    <div>
-      <Thing />
-    </div>
-  );
-};
+import './index.css';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+render(<App />, document.getElementById('root'));

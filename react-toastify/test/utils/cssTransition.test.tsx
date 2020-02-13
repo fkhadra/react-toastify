@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import '../__mocks__/react-transition-group';
+// import '../__mocks__/react-transition-group';
 import { cssTransition } from '../../src/utils';
 
 describe('cssTransition helper', () => {
