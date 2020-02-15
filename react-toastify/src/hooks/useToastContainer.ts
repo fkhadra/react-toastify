@@ -48,6 +48,8 @@ function reducer(state: State, action: Action) {
 }
 
 export interface ContainerInstance {
+  toastKey: number;
+  props: ToastContainerProps;
   containerId?: ContainerId | null;
   isToastActive: false | ((toastId: ToastId) => boolean);
   getToast: (id: ToastId) => Toast | null;
@@ -57,8 +59,9 @@ export function useToastContainer(props: ToastContainerProps) {
   const [toast, dispatch] = useReducer(reducer, []);
   const collectionRef = useRef<CollectionItem>({});
   const containerRef = useRef(null);
-  const toastKeyRef = useRef(1);
   const instanceRef = useRef<ContainerInstance>({
+    toastKey: 1,
+    props,
     containerId: null,
     isToastActive: false,
     getToast: id => collectionRef.current[id] || null
@@ -83,7 +86,7 @@ export function useToastContainer(props: ToastContainerProps) {
   }, []);
 
   useEffect(() => {
-    console.log({ props });
+    instanceRef.current.props = props;
   }, [props])
 
   useEffect(() => {
@@ -99,13 +102,6 @@ export function useToastContainer(props: ToastContainerProps) {
     dispatch({ type: 'REMOVE', toastId });
   }
 
-  function getAutoCloseDelay(toastAutoClose?: false | number) {
-    return toastAutoClose === false ||
-      (isNum(toastAutoClose) && (toastAutoClose as number) > 0)
-      ? toastAutoClose
-      : props.autoClose;
-  }
-
   function isValidButton(val: any) {
     return isFn(val) || isValidElement(val);
   }
@@ -117,10 +113,18 @@ export function useToastContainer(props: ToastContainerProps) {
    */
   function isNotValid({ containerId, toastId, updateId }: WithInjectedOptions) {
     return !containerRef.current ||
-      (props.enableMultiContainer && containerId !== props.containerId) ||
+      (instanceRef.current.props.enableMultiContainer && containerId !== instanceRef.current.props.containerId) ||
       (instanceRef.current.isToastActive && instanceRef.current.isToastActive(toastId) && updateId == null)
       ? true
       : false;
+  }
+
+  // Need ref
+  function getAutoCloseDelay(toastAutoClose?: false | number) {
+    return toastAutoClose === false ||
+      (isNum(toastAutoClose) && (toastAutoClose as number) > 0)
+      ? toastAutoClose
+      : instanceRef.current.props.autoClose;
   }
 
   function buildToast(
@@ -130,11 +134,12 @@ export function useToastContainer(props: ToastContainerProps) {
     if (!canBeRendered(content) || isNotValid(options)) return;
     
     const { toastId, updateId } = options;
+    const { props } = instanceRef.current;
     const closeToast = () => removeToast(toastId);
     const toastOptions: WithInjectedOptions = {
       toastId,
       updateId,
-      key: options.key || toastKeyRef.current++,
+      key: options.key || instanceRef.current.toastKey++,
       type: options.type,
       closeToast: closeToast,
       closeButton: options.closeButton,
