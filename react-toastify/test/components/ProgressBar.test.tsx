@@ -1,8 +1,7 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-//import { shallow } from 'enzyme';
 
-import { ProgressBar } from '../../src/components/ProgressBar';
+import { ProgressBar } from '../../src/components';
 
 const REQUIRED_PROPS = {
   delay: 5000,

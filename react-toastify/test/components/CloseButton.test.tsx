@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 
-import { CloseButton } from '../../src/components/CloseButton';
+import { CloseButton } from '../../src/components';
 
 const closeToast = jest.fn();
 
