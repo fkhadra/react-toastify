@@ -197,7 +197,7 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
   // don't want to fix the issue on this browser, my head is hurting too much
   function onExitTransitionEnd() {
     if (iLoveInternetExplorer) {
-      //props.onExited();
+      props.onExited!();
       return;
     }
     const toast = toastRef.current!;
@@ -214,7 +214,7 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
         style.padding = '0';
         style.margin = '0';
       });
-      //setTimeout(() => this.props.onExited(), 400);
+     setTimeout(() => props.onExited!(), 400);
     });
   }
 
@@ -239,7 +239,7 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
     progress,
     rtl
   } = props as Required<WithInjectedOptions>;
-
+  
   const toastProps: Record<string, string | Function> = {
     className: cx(
       `${RT_NAMESPACE}__toast`,
@@ -282,6 +282,7 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
       onExited={onExitTransitionEnd}
       position={position}
       preventExitTransition={preventExitTransition}
+      
     >
       <div
         onClick={onClick}

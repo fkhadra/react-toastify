@@ -175,7 +175,7 @@ export interface WithInjectedOptions extends ToastOptions {
   progressClassName?: string | null;
   className?: string | null;
   bodyClassName?: string | null;
-
+  onExited?: () => void;
   // transition: Transition;
 }
 
