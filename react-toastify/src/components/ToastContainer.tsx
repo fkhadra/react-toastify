@@ -3,53 +3,46 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { TransitionGroup } from 'react-transition-group';
 
-import { Toast } from "./Toast";
+import { Toast } from './Toast';
 import { CloseButton } from './CloseButton';
 import { Bounce } from './Transitions';
-import {
-  POSITION,
-  RT_NAMESPACE,
-  parseClassName,
-  objectValues
-} from '../utils';
+import { POSITION, RT_NAMESPACE, parseClassName, objectValues } from '../utils';
 import { useToastContainer } from '../hooks';
-import { ToastContainerProps, ToastPosition } from '../types';  
+import { ToastContainerProps, ToastPosition } from '../types';
 
 export const ToastContainer: React.FC<ToastContainerProps> = props => {
   const { getToastToRender, containerRef } = useToastContainer(props);
 
   function renderToast() {
-    const { className, style } = props;
-    const toastToRender = getToastToRender();
+    const { className, style, rtl } = props;
 
-    return (Object.keys(toastToRender) as Array<ToastPosition>).map((position ) => {
-      const currentPosition = toastToRender[position]!;
-      const disablePointer =
-        currentPosition.length === 1 && currentPosition[0] === null;
+    return getToastToRender((position, toastList) => {
       const swag = {
         className: cx(
           `${RT_NAMESPACE}__toast-container`,
           `${RT_NAMESPACE}__toast-container--${position}`,
-          { [`${RT_NAMESPACE}__toast-container--rtl`]: props.rtl },
+          { [`${RT_NAMESPACE}__toast-container--rtl`]: rtl },
           parseClassName(className)
         ),
-        style: disablePointer
-          ? { ...style, pointerEvents: 'none' }
-          : { ...style }
+        style:
+          toastList.length === 0
+            ? { ...style, pointerEvents: 'none' }
+            : { ...style }
       };
+
       return (
         <TransitionGroup {...swag} key={`container-${position}`}>
-          {currentPosition.map(({ content, options }) => {
-            return (
-              <Toast
-                {...options}
-                key={`toast-${options.key}`}
-                closeButton={options.closeButton === true ? CloseButton : options.closeButton}
-              >
-                {content}
-              </Toast>
-            );
-          })}
+          {toastList.map(({ content, options }) => (
+            <Toast
+              {...options}
+              key={`toast-${options.key}`}
+              closeButton={
+                options.closeButton === true ? CloseButton : options.closeButton
+              }
+            >
+              {content}
+            </Toast>
+          ))}
         </TransitionGroup>
       );
     });
@@ -77,7 +70,11 @@ ToastContainer.propTypes = {
   /**
    * Disable or set a custom react element for the close button
    */
-  closeButton: PropTypes.oneOfType([PropTypes.node, PropTypes.bool, PropTypes.func]),
+  closeButton: PropTypes.oneOfType([
+    PropTypes.node,
+    PropTypes.bool,
+    PropTypes.func
+  ]),
 
   /**
    * Hide or not progress bar when autoClose is enabled

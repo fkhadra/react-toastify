@@ -41,7 +41,9 @@ function reducer(state: State, action: Action) {
     case 'UPDATE':
       return [...state];
     case 'REMOVE':
-      return action.toastId === 0 || action.toastId ? state.filter(id => id !== action.toastId) : [];
+      return action.toastId === 0 || action.toastId
+        ? state.filter(id => id !== action.toastId)
+        : [];
     default:
       throw '';
   }
@@ -87,7 +89,7 @@ export function useToastContainer(props: ToastContainerProps) {
 
   useEffect(() => {
     instanceRef.current.props = props;
-  }, [props])
+  }, [props]);
 
   useEffect(() => {
     instanceRef.current.isToastActive = isToastActive;
@@ -113,8 +115,11 @@ export function useToastContainer(props: ToastContainerProps) {
    */
   function isNotValid({ containerId, toastId, updateId }: WithInjectedOptions) {
     return !containerRef.current ||
-      (instanceRef.current.props.enableMultiContainer && containerId !== instanceRef.current.props.containerId) ||
-      (instanceRef.current.isToastActive && instanceRef.current.isToastActive(toastId) && updateId == null)
+      (instanceRef.current.props.enableMultiContainer &&
+        containerId !== instanceRef.current.props.containerId) ||
+      (instanceRef.current.isToastActive &&
+        instanceRef.current.isToastActive(toastId) &&
+        updateId == null)
       ? true
       : false;
   }
@@ -132,7 +137,7 @@ export function useToastContainer(props: ToastContainerProps) {
     { delay, staleId, ...options }: WithInjectedOptions
   ) {
     if (!canBeRendered(content) || isNotValid(options)) return;
-    
+
     const { toastId, updateId } = options;
     const { props } = instanceRef.current;
     const closeToast = () => removeToast(toastId);
@@ -231,26 +236,29 @@ export function useToastContainer(props: ToastContainerProps) {
         });
   }
 
-  function getToastToRender() {
+  function getToastToRender<T>(
+    cb: (position: ToastPosition, toastList: Toast[]) => T
+  ) {
     const toastToRender: ToastToRender = {};
     const collection = collectionRef.current;
-    const { newestOnTop } = props;
-    const toastList = newestOnTop
+    const toastList = props.newestOnTop
       ? Object.keys(collection).reverse()
       : Object.keys(collection);
-    
+
     // reduce nope  😜
     for (let i = 0; i < toastList.length; i++) {
       const toast = collection[toastList[i]];
       const { position, toastId } = toast.options;
-
       toastToRender[position] || (toastToRender[position] = []);
+
       isToastActive(toastId)
         ? toastToRender[position]!.push(toast)
         : delete collection[toastId];
     }
 
-    return toastToRender;
+    return (Object.keys(toastToRender) as Array<ToastPosition>).map(p =>
+      cb(p, toastToRender[p]!)
+    );
   }
 
   return {
