@@ -1,10 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`cssTransition helper Should be possible to prevent exit transition 1`] = `
+<div>
+  <div>
+    <div>
+      Plop
+    </div>
+  </div>
+</div>
+`;
+
+exports[`cssTransition helper Should be possible to specify different duration for enter and exit 1`] = `
+<div>
+  <div>
+    <div>
+      Plop
+    </div>
+  </div>
+</div>
+`;
+
 exports[`cssTransition helper Should return a valid react component 1`] = `
 <div>
-  <div
-    timeout="[object Object]"
-  >
+  <div>
     <div>
       Plop
     </div>
