@@ -28,6 +28,7 @@ export function canBeRendered<T>(content: T): boolean {
 export function parseClassName(prop?: string | object | null) {
   if (typeof prop === 'string') {
     return prop;
+    // TODO: Check if allowing object is still relevant
   } else if (prop !== null && typeof prop === 'object' && 'toString' in prop) {
     return prop.toString();
   }
