@@ -44,8 +44,6 @@ function reducer(state: State, action: Action) {
       return action.toastId === 0 || action.toastId
         ? state.filter(id => id !== action.toastId)
         : [];
-    default:
-      throw '';
   }
 }
 

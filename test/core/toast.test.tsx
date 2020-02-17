@@ -2,7 +2,7 @@ import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { render } from '@testing-library/react';
 
-// import '../__mocks__/react-transition-group';
+import '../__mocks__/react-transition-group';
 import { cssClasses } from '../helpers';
 import { eventManager, toast } from '../../src/core';
 import { ContainerInstance } from '../../src/hooks';
@@ -22,6 +22,8 @@ beforeEach(() => {
 const containerId = 'foo';
 const containerInstance: ContainerInstance = {
   containerId,
+  props: {},
+  toastKey: 1,
   getToast: jest.fn(),
   isToastActive: jest.fn()
 };
@@ -272,32 +274,32 @@ describe('toastify', () => {
       expect(queryByText('hello')).toBe(null);
     });
 
-      // it('Should be able to update the toastId', () => {
-      //   const { queryByText } = render(<ToastContainer />);
-      //   let id:ToastId;
-      //   const updateId = 'foo';
-        
-      //   act(() => {
-      //     id = toast('hello');
-      //     jest.runAllTimers();
-      //   });
+    // it('Should be able to update the toastId', () => {
+    //   const { queryByText } = render(<ToastContainer />);
+    //   let id:ToastId;
+    //   const updateId = 'foo';
 
-      //   expect(queryByText('hello')).not.toBe(null);
+    //   act(() => {
+    //     id = toast('hello');
+    //     jest.runAllTimers();
+    //   });
 
-      //   act(() => {
-      //     toast.update(id, {
-      //       toastId: updateId
-      //     });
-      //     jest.runAllTimers();
-      //   })
-        
-      //   expect(queryByText('hello')).not.toBe(null);
+    //   expect(queryByText('hello')).not.toBe(null);
 
-      //   act(() => {
-      //     expect(toast.isActive(id)).toBe(false);
-      //     expect(toast.isActive(updateId)).toBe(true);
-      //   })
-      // });
+    //   act(() => {
+    //     toast.update(id, {
+    //       toastId: updateId
+    //     });
+    //     jest.runAllTimers();
+    //   })
+
+    //   expect(queryByText('hello')).not.toBe(null);
+
+    //   act(() => {
+    //     expect(toast.isActive(id)).toBe(false);
+    //     expect(toast.isActive(updateId)).toBe(true);
+    //   })
+    // });
 
     //   it('Should be able to update a toast even when using multi containers', () => {
     //     const component = mount(
