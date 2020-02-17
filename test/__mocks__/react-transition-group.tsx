@@ -1,6 +1,7 @@
 import React from 'react';
 
 jest.mock('react-transition-group', () => {
+  // @ts-ignore ...rest
   const FakeTransition = jest.fn(({ children, className, style, ...rest }) => {
     const props: Record<string, any> = {};
     
@@ -8,7 +9,7 @@ jest.mock('react-transition-group', () => {
     if (style) props.style = style;
 
     return (
-      <div {...Object.assign(props, rest)}>
+      <div {...props}>
         {children}
       </div>
     );

@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
-import { config } from 'react-transition-group'
 
-import { cssClasses } from "../helpers";
+import '../__mocks__/react-transition-group';
+import { cssClasses } from '../helpers';
 import { Toast, ToastContainer } from '../../src/components';
 import { WithInjectedOptions } from '../../src/types';
 
@@ -42,7 +42,7 @@ beforeEach(() => {
 });
 
 describe('Toast Component', () => {
-  it.only('Should merge container and body className', () => {
+  it('Should merge container and body className', () => {
     const { container } = render(
       <Toast
         {...REQUIRED_PROPS}
@@ -110,16 +110,18 @@ describe('Toast Component', () => {
   });
 
   it('Can pause toast delay on mouse enter', () => {
-    const { container } = render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+    const { container, queryByRole } = render(
+      <Toast {...REQUIRED_PROPS}>FooBar</Toast>
+    );
     const progressBar = getProgressBar(container);
 
     progressBar.isRunning();
-    fireEvent.mouseEnter(container.firstChild as HTMLElement);
+    fireEvent.mouseOver(queryByRole('alert') as HTMLElement);
     progressBar.isPaused();
   });
 
   it('Can keep runing on mouse enter', () => {
-    const { container } = render(
+    const { container, queryByRole } = render(
       <Toast {...REQUIRED_PROPS} pauseOnHover={false}>
         FooBar
       </Toast>
@@ -127,18 +129,21 @@ describe('Toast Component', () => {
     const progressBar = getProgressBar(container);
 
     progressBar.isRunning();
-    fireEvent.mouseEnter(container.firstChild as HTMLElement);
+    fireEvent.mouseEnter(queryByRole('alert') as HTMLElement);
     progressBar.isRunning();
   });
 
   it('Should resume toast delay on mouse leave', () => {
-    const { container } = render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+    const { container, queryByRole } = render(
+      <Toast {...REQUIRED_PROPS}>FooBar</Toast>
+    );
     const progressBar = getProgressBar(container);
+    const notification = queryByRole('alert') as HTMLElement;
 
     progressBar.isRunning();
-    fireEvent.mouseEnter(container.firstChild as HTMLElement);
+    fireEvent.mouseEnter(notification);
     progressBar.isPaused();
-    fireEvent.mouseLeave(container.firstChild as HTMLElement);
+    fireEvent.mouseLeave(notification);
     progressBar.isRunning();
   });
 
@@ -257,33 +262,40 @@ describe('Drag event', () => {
   it('Should handle drag start on mousedown', () => {
     const mockClientRect = jest.fn();
     Element.prototype.getBoundingClientRect = mockClientRect;
-    const { container } = render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+    const { queryByRole } = render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
     expect(mockClientRect).not.toHaveBeenCalled();
-    fireEvent.mouseDown(container.firstChild as HTMLElement);
+
+    fireEvent.mouseDown(queryByRole('alert') as HTMLElement);
     expect(mockClientRect).toHaveBeenCalled();
   });
 
   it('Should handle drag start on touchstart', () => {
     const mockClientRect = jest.fn();
     Element.prototype.getBoundingClientRect = mockClientRect;
-    const { container } = render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+    const { queryByRole } = render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
     expect(mockClientRect).not.toHaveBeenCalled();
-    fireEvent.touchStart(container.firstChild as HTMLElement);
+    fireEvent.touchStart(queryByRole('alert') as HTMLElement);
     expect(mockClientRect).toHaveBeenCalled();
   });
 
   it('Should pause toast duration on drag move', async () => {
-    const { container } = render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+    const { container, queryByRole } = render(
+      <Toast {...REQUIRED_PROPS}>FooBar</Toast>
+    );
     const progressBar = getProgressBar(container);
+    const notification = queryByRole('alert') as HTMLElement;
 
     progressBar.isRunning();
-    fireEvent.mouseDown(container.firstChild as HTMLElement);
-    fireEvent.mouseMove(container.firstChild as HTMLElement);
+    fireEvent.mouseDown(notification);
+    fireEvent.mouseMove(notification);
     progressBar.isPaused();
   });
 
   it('Should prevent the timer from running on drag end if the mouse hover the toast', () => {
-    const { container } = render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+    const { container, queryByRole } = render(
+      <Toast {...REQUIRED_PROPS}>FooBar</Toast>
+    );
+    const notification = queryByRole('alert') as HTMLElement;
 
     // BoundingClientRect for Position top right
     Element.prototype.getBoundingClientRect = () => {
@@ -298,20 +310,22 @@ describe('Drag event', () => {
 
     progressBar.isRunning();
 
-    fireEvent.mouseDown(container.firstChild as HTMLElement);
+    fireEvent.mouseDown(notification);
     // Cursor inside the toast
-    fireEvent.mouseMove(container.firstChild as HTMLElement, {
+    fireEvent.mouseMove(notification, {
       clientX: 600,
       clientY: 30
     });
     progressBar.isPaused();
-    fireEvent.mouseUp(container.firstChild as HTMLElement);
+    fireEvent.mouseUp(notification);
     progressBar.isPaused();
   });
 
   it('Should resume the timer on drag end if the mouse is not hovering the toast', () => {
-    const { container } = render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
-
+    const { container, queryByRole } = render(
+      <Toast {...REQUIRED_PROPS}>FooBar</Toast>
+    );
+    const notification = queryByRole('alert') as HTMLElement;
     // BoundingClientRect for Position top right
     Element.prototype.getBoundingClientRect = () => {
       return {
@@ -325,14 +339,14 @@ describe('Drag event', () => {
 
     progressBar.isRunning();
 
-    fireEvent.mouseDown(container.firstChild as HTMLElement);
+    fireEvent.mouseDown(notification);
     // Cursor inside the toast
-    fireEvent.mouseMove(container.firstChild as HTMLElement, {
+    fireEvent.mouseMove(notification, {
       clientX: 400,
       clientY: 30
     });
     progressBar.isPaused();
-    fireEvent.mouseUp(container.firstChild as HTMLElement);
+    fireEvent.mouseUp(notification);
     progressBar.isRunning();
   });
 });
