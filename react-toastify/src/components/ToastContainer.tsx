@@ -12,45 +12,42 @@ import { ToastContainerProps, ToastPosition } from '../types';
 
 export const ToastContainer: React.FC<ToastContainerProps> = props => {
   const { getToastToRender, containerRef } = useToastContainer(props);
-
-  function renderToast() {
-    const { className, style, rtl } = props;
-
-    return getToastToRender((position, toastList) => {
-      const swag = {
-        className: cx(
-          `${RT_NAMESPACE}__toast-container`,
-          `${RT_NAMESPACE}__toast-container--${position}`,
-          { [`${RT_NAMESPACE}__toast-container--rtl`]: rtl },
-          parseClassName(className)
-        ),
-        style:
-          toastList.length === 0
-            ? { ...style, pointerEvents: 'none' }
-            : { ...style }
-      };
-
-      return (
-        <TransitionGroup {...swag} key={`container-${position}`}>
-          {toastList.map(({ content, options }) => (
-            <Toast
-              {...options}
-              key={`toast-${options.key}`}
-              closeButton={
-                options.closeButton === true ? CloseButton : options.closeButton
-              }
-            >
-              {content}
-            </Toast>
-          ))}
-        </TransitionGroup>
-      );
-    });
-  }
+  const { className, style, rtl } = props;
 
   return (
     <div ref={containerRef} className={`${RT_NAMESPACE}`}>
-      {renderToast()}
+      {getToastToRender((position, toastList) => {
+        const swag = {
+          className: cx(
+            `${RT_NAMESPACE}__toast-container`,
+            `${RT_NAMESPACE}__toast-container--${position}`,
+            { [`${RT_NAMESPACE}__toast-container--rtl`]: rtl },
+            parseClassName(className)
+          ),
+          style:
+            toastList.length === 0
+              ? { ...style, pointerEvents: 'none' }
+              : { ...style }
+        };
+
+        return (
+          <TransitionGroup {...swag} key={`container-${position}`}>
+            {toastList.map(({ content, options }) => (
+              <Toast
+                {...options}
+                key={`toast-${options.key}`}
+                closeButton={
+                  options.closeButton === true
+                    ? CloseButton
+                    : options.closeButton
+                }
+              >
+                {content}
+              </Toast>
+            ))}
+          </TransitionGroup>
+        );
+      })}
     </div>
   );
 };
@@ -172,7 +169,6 @@ ToastContainer.propTypes = {
   onClick: PropTypes.func
 };
 
-//
 ToastContainer.defaultProps = {
   position: POSITION.TOP_RIGHT as ToastPosition,
   transition: Bounce,

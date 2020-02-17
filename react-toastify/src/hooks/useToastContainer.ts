@@ -109,7 +109,7 @@ export function useToastContainer(props: ToastContainerProps) {
   }
 
   /**
-   * check is a container is attached
+   * check if a container is attached to the dom
    * check for multi-container, build only if associated
    * check for duplicate toastId if no update
    */
