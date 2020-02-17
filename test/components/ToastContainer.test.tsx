@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 
-// import '../__mocks__/react-transition-group';
+import '../__mocks__/react-transition-group';
 import { ToastContainer } from '../../src/components/ToastContainer';
 import { toast, eventManager } from '../../src/core';
 import { ToastOptions } from '../../src/types';
@@ -39,24 +39,22 @@ describe('ToastContainer', () => {
     expect(eventManager.list.has('clear')).toBe(true);
   });
 
-  it.only('Should clear all toast when clear is called without id', () => {
-    //@ts-ignore
-    const { queryAllByText, container } = render(<ToastContainer />);
+  it('Should clear all toast when clear is called without id', () => {
+    const { queryAllByText } = render(<ToastContainer />);
     
-    console.log(container.innerHTML);
     act(() => {
       toast('coucou');
       toast('coucou');
       jest.runAllTimers();
     });
     
-    // expect(queryAllByText('coucou').length).toBe(2);
+    expect(queryAllByText('coucou').length).toBe(2);
 
-    // act(() => {
-    //   toast.dismiss();
-    //   jest.runAllTimers();
-    // });
-    // expect(queryAllByText('coucou').length).toBe(0);
+    act(() => {
+      toast.dismiss();
+      jest.runAllTimers();
+    });
+    expect(queryAllByText('coucou').length).toBe(0);
   });
 
   it('Should dismiss toast with id == 0 only', () => {
