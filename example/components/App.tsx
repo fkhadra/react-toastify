@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 
-import Header from './Header';
-import Radio from './Radio';
-import Checkbox from './Checkbox';
-import ContainerCode from './ContainerCode';
-import ToastCode from './ToastCode';
+import {Header} from './Header';
+import {Radio} from './Radio';
+import {Checkbox} from './Checkbox';
+import {ContainerCode} from './ContainerCode';
+import {ToastCode} from './ToastCode';
 
 import {
   ToastContainer,
@@ -12,11 +12,13 @@ import {
   Bounce,
   Slide,
   Flip,
-  Zoom
-} from './../../src/index';
-import './../../scss/main.scss';
+  Zoom,
+  ToastId
+} from '../../react-toastify/src/index';
+import '../../../dist/ReactToastify.css';
 
 // Attach to window. Can be useful to debug
+// @ts-ignore
 window.toast = toast;
 
 const flags = [
@@ -61,9 +63,10 @@ const transitions = {
   flip: Flip
 };
 
-class App extends Component {
+class App extends React.Component {
   state = App.getDefaultState();
-
+  toastId: ToastId;
+  
   static getDefaultState() {
     return {
       ...ToastContainer.defaultProps,
@@ -132,6 +135,8 @@ class App extends Component {
   }
 
   render() {
+    console.log({ state: this.state });
+    
     return (
       <main>
         <Header />
@@ -253,10 +258,11 @@ class App extends Component {
           {...this.state}
           transition={transitions[this.state.transition]}
           autoClose={this.state.disableAutoClose ? false : this.state.autoClose}
+          
         />
       </main>
     );
   }
 }
 
-export default App;
+export {App};

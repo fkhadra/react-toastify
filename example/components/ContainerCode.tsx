@@ -1,6 +1,7 @@
-import React from 'react';
+import * as React from 'react';
+import { ToastContainerProps } from '../../react-toastify/src';
 
-function getProp(prop, value) {
+function getProp<L , R>(prop: L, value: R) {
   return value ? (
     <div>
       <span className="code__props">{prop}</span>
@@ -13,7 +14,12 @@ function getProp(prop, value) {
   );
 }
 
-const ContainerCode = ({
+interface ContainerCodeProps extends Partial<ToastContainerProps> {
+  isDefaultProps: boolean;
+  disableAutoClose: boolean;
+}
+
+export const ContainerCode: React.FC<ContainerCodeProps> = ({
   position,
   disableAutoClose,
   autoClose,
@@ -62,5 +68,3 @@ const ContainerCode = ({
     </div>
   </div>
 );
-
-export default ContainerCode;

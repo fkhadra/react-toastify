@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
+import { config } from 'react-transition-group'
 
-// import "../__mocks__/react-transition-group";
 import { cssClasses } from "../helpers";
 import { Toast, ToastContainer } from '../../src/components';
 import { WithInjectedOptions } from '../../src/types';
@@ -42,7 +42,7 @@ beforeEach(() => {
 });
 
 describe('Toast Component', () => {
-  it('Should merge container and body className', () => {
+  it.only('Should merge container and body className', () => {
     const { container } = render(
       <Toast
         {...REQUIRED_PROPS}

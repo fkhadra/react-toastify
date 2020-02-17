@@ -1,124 +1,56 @@
 {
-  "name": "react-toastify",
-  "version": "5.5.0",
-  "description": "React notification made easy",
-  "keywords": [
-    "react",
-    "notification",
-    "toast",
-    "react-component",
-    "react-toastify",
-    "push",
-    "alert"
-  ],
-  "main": "index.js",
-  "module": "esm/react-toastify.js",
-  "sideEffects": [
-    "*.css"
-  ],
-  "typings": "index.d.ts",
+  "version": "0.1.0",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "files": [
-    "esm",
-    "dist",
-    "cjs",
-    "scss",
-    "index.js",
-    "index.d.ts"
+    "dist"
   ],
   "scripts": {
-    "start": "npm run sass && webpack-dev-server --config ./webpack.config.dev.js",
-    "test": "jest",
-    "test:coverage": "jest --coverage && cat ./coverage/lcov.info | coveralls",
-    "lint": "eslint src/",
-    "lint:fix": "eslint --fix src/",
-    "prettier-all": "prettier --single-quote --write 'src/**/*.js'",
-    "build": "npm run clean && cross-env NODE_ENV=production rollup -c && npm run style",
-    "clean": "rimraf cjs/* && rimraf dist/* && rimraf esm/*",
-    "sass": "node-sass scss/main.scss dist/ReactToastify.css",
-    "sass-minimal": "node-sass scss/minimal.scss dist/ReactToastify.minimal.css",
-    "postsass": "postcss dist/ReactToastify.css --use autoprefixer -m -o dist/ReactToastify.css",
-    "postsass-minimal": "cssnano dist/ReactToastify.minimal.css dist/ReactToastify.minimal.css --no-zindex --no-reduceIdents",
-    "style": "npm run sass && npm run sass-minimal && cssnano dist/ReactToastify.css dist/ReactToastify.min.css --no-zindex --no-reduceIdents"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/fkhadra/react-toastify.git"
-  },
-  "author": "Fadi Khadra  <fdkhadra@gmail.com> (https://fkhadra.github.io)",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/fkhadra/react-toastify/issues"
-  },
-  "homepage": "https://github.com/fkhadra/react-toastify#readme",
-  "dependencies": {
-    "@babel/runtime": "^7.4.2",
-    "classnames": "^2.2.6",
-    "prop-types": "^15.7.2",
-    "react-transition-group": "^4"
-  },
-  "jest": {
-    "verbose": true,
-    "setupFiles": [
-      "raf/polyfill",
-      "<rootDir>/setupTests.js"
-    ]
-  },
-  "devDependencies": {
-    "@babel/cli": "^7.0.0",
-    "@babel/core": "^7.0.0-0",
-    "@babel/plugin-proposal-class-properties": "^7.0.0",
-    "@babel/plugin-transform-modules-commonjs": "^7.0.0",
-    "@babel/plugin-transform-runtime": "^7.4.0",
-    "@babel/preset-env": "^7.0.0",
-    "@babel/preset-react": "^7.8.3",
-    "@types/react": "^16.4.12",
-    "@types/react-transition-group": "^2.0.13",
-    "babel-core": "7.0.0-bridge.0",
-    "babel-eslint": "^9.0.0",
-    "babel-jest": "^24.8.0",
-    "babel-loader": "^8.0.0",
-    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
-    "coveralls": "^3.0.2",
-    "cross-env": "^5.2.0",
-    "css-loader": "^1.0.0",
-    "cssnano": "^4.1.10",
-    "cssnano-cli": "^1.0.5",
-    "enzyme": "^3.5.0",
-    "enzyme-adapter-react-16": "^1.3.0",
-    "enzyme-to-json": "^3.3.4",
-    "eslint": "^5.4.0",
-    "eslint-config-react-app": "^2.1.0",
-    "eslint-plugin-flowtype": "^2.50.0",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-jsx-a11y": "^6.1.1",
-    "eslint-plugin-react": "^7.11.1",
-    "html-webpack-plugin": "^3.2.0",
-    "jest": "^24.8.0",
-    "jest-cli": "^24.8.0",
-    "node-sass": "^4.9.3",
-    "postcss": "^7.0.17",
-    "postcss-cli": "^6.1.2",
-    "prettier": "^1.14.2",
-    "raf": "^3.4.0",
-    "react": "^16.4.2",
-    "react-dom": "^16.4.2",
-    "react-test-renderer": "^16.4.2",
-    "regenerator-runtime": "^0.12.1",
-    "rimraf": "^2.6.2",
-    "rollup": "^1.7.1",
-    "rollup-plugin-babel": "^4.3.2",
-    "rollup-plugin-commonjs": "^9.2.1",
-    "rollup-plugin-node-resolve": "^4.0.1",
-    "rollup-plugin-size-snapshot": "^0.8.0",
-    "rollup-plugin-uglify": "^6.0.2",
-    "sass-loader": "^7.1.0",
-    "style-loader": "^0.23.0",
-    "webpack": "^4.17.1",
-    "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.7"
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test --passWithNoTests",
+    "lint": "tsdx lint src",
+    "prepare": "tsdx build"
   },
   "peerDependencies": {
-    "react": ">=15.0.0",
-    "react-dom": ">=15.0.0"
+    "react": ">=16"
+  },
+  "husky": {
+    "hooks": {}
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true
+  },
+  "jest": {
+    "verbose": true
+  },
+  "name": "react-toastify",
+  "author": "Fadi Khadra",
+  "module": "dist/react-toastify.esm.js",
+  "devDependencies": {
+    "@babel/core": "^7.0.0-0",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/preset-env": "^7.8.4",
+    "@babel/preset-react": "^7.8.3",
+    "@testing-library/react": "^9.4.0",
+    "@types/classnames": "^2.2.9",
+    "@types/jest": "^24.9.0",
+    "@types/react": "^16.9.19",
+    "@types/react-dom": "^16.9.5",
+    "@types/react-transition-group": "^4.2.3",
+    "husky": "^4.2.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "tsdx": "^0.12.3",
+    "tslib": "^1.10.0",
+    "typescript": "^3.7.5"
+  },
+  "dependencies": {
+    "classnames": "^2.2.6",
+    "prop-types": "^15.7.2",
+    "react-transition-group": "^4.3.0"
   }
 }
