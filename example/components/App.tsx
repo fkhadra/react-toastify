@@ -14,8 +14,8 @@ import {
   Flip,
   Zoom,
   ToastId
-} from '../../react-toastify/src/index';
-import '../../../dist/ReactToastify.css';
+} from '../../src/index';
+import '../../scss/main.scss';
 
 // Attach to window. Can be useful to debug
 // @ts-ignore
