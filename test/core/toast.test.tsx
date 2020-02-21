@@ -274,123 +274,145 @@ describe('toastify', () => {
       expect(queryByText('hello')).toBe(null);
     });
 
-    // it('Should be able to update the toastId', () => {
-    //   const { queryByText } = render(<ToastContainer />);
-    //   let id:ToastId;
-    //   const updateId = 'foo';
+    it.skip('Should be able to update the toastId', done => {
+      const { queryByText, container } = render(<ToastContainer />);
+      const toastId = 'bar';
+      const updateId = 'foo';
 
-    //   act(() => {
-    //     id = toast('hello');
-    //     jest.runAllTimers();
-    //   });
+      act(() => {
+        toast('hello', {
+          toastId
+        });
+        jest.runAllTimers();
+        expect(queryByText('hello')).not.toBe(null);
+      });
 
-    //   expect(queryByText('hello')).not.toBe(null);
+      act(() => {
+        setTimeout(() => {
+          toast.update(toastId, {
+            toastId: updateId,
+            render: 'foo'
+          });
+        }, 400);
+        jest.runAllTimers();
+        // expect(queryByText('hello')).not.toBe(null);
+        console.log(container.innerHTML);
 
-    //   act(() => {
-    //     toast.update(id, {
-    //       toastId: updateId
-    //     });
-    //     jest.runAllTimers();
-    //   })
+        done();
+      });
 
-    //   expect(queryByText('hello')).not.toBe(null);
+      act(() => {
+        expect(toast.isActive(toastId)).toBe(false);
+        expect(toast.isActive(updateId)).toBe(true);
+        done();
+      });
+    });
 
-    //   act(() => {
-    //     expect(toast.isActive(id)).toBe(false);
-    //     expect(toast.isActive(updateId)).toBe(true);
-    //   })
-    // });
+    it('Should be able to update a toast even when using multi containers', () => {
+      const { queryByText } = render(
+        <>
+          <ToastContainer containerId="first" enableMultiContainer />
+          <ToastContainer containerId="second" enableMultiContainer />
+        </>
+      );
+      let firstId: ToastId, secondId: ToastId;
 
-    //   it('Should be able to update a toast even when using multi containers', () => {
-    //     const component = mount(
-    //       <>
-    //         <ToastContainer containerId="first" enableMultiContainer />
-    //         <ToastContainer containerId="second" enableMultiContainer />
-    //       </>
-    //     );
+      act(() => {
+        firstId = toast('hello first', { containerId: 'first' });
+        secondId = toast('hello second', { containerId: 'second' });
+        jest.runAllTimers();
+      });
 
-    //     const firstId = toast('hello first', { containerId: 'first' });
-    //     const secondId = toast('hello second', { containerId: 'second' });
-    //     jest.runAllTimers();
+      act(() => {
+        toast.update(firstId, {
+          render: 'updated first',
+          containerId: 'first'
+        });
 
-    //     toast.update(firstId, {
-    //       render: 'updated first',
-    //       containerId: 'first'
-    //     });
+        toast.update(secondId, {
+          render: 'updated second',
+          containerId: 'second'
+        });
 
-    //     toast.update(secondId, {
-    //       render: 'updated second',
-    //       containerId: 'second'
-    //     });
+        jest.runAllTimers();
+      });
 
-    //     jest.runAllTimers();
-
-    //     expect(component.first().html()).toMatch(/updated first/);
-    //     expect(component.at(1).html()).toMatch(/updated second/);
-    //   });
+      expect(queryByText('updated first')).not.toBe(null);
+      expect(queryByText('updated second')).not.toBe(null);
+    });
   });
 
-  // describe('isActive function', () => {
-  //   it('toast.isActive should return false until the container is mounted', () => {
-  //     const isActive = toast.isActive();
-  //     expect(isActive).toBe(false);
-  //   });
+  describe('isActive function', () => {
+    it('toast.isActive should return false until the container is mounted', () => {
+      expect(toast.isActive(1)).toBe(false);
+    });
 
-  //   it('Should be able to tell if a toast is active based on the id as soon as the container is mounted', () => {
-  //     mount(<ToastContainer />);
-  //     const id = toast('hello');
-  //     jest.runAllTimers();
-  //     expect(toast.isActive(id)).toBe(true);
-  //   });
+    it('Should be able to tell if a toast is active based on the id as soon as the container is mounted', done => {
+      render(<ToastContainer />);
+      let id;
 
-  //   it('Should work with multi container', () => {
-  //     mount(
-  //       <>
-  //         <ToastContainer containerId="first" enableMultiContainer />
-  //         <ToastContainer containerId="second" enableMultiContainer />
-  //       </>
-  //     );
+      act(() => {
+        id = toast('hello');
+        jest.runAllTimers();
+        expect(toast.isActive(id)).toBe(true);
+        done();
+      });
+    });
 
-  //     const firstId = toast('hello first', { containerId: 'first' });
-  //     const secondId = toast('hello second', { containerId: 'second' });
-  //     jest.runAllTimers();
+    it('Should work with multi container', done => {
+      render(
+        <>
+          <ToastContainer containerId="first" enableMultiContainer />
+          <ToastContainer containerId="second" enableMultiContainer />
+        </>
+      );
 
-  //     expect(toast.isActive(firstId)).toBe(true);
-  //     expect(toast.isActive(secondId)).toBe(true);
-  //   });
-  // });
+      act(() => {
+        const firstId = toast('hello first', { containerId: 'first' });
+        const secondId = toast('hello second', { containerId: 'second' });
+        jest.runAllTimers();
 
-  // it('Can append classNames', () => {
-  //   const component = mount(<ToastContainer />);
-  //   toast('hello', {
-  //     className: 'class1',
-  //     bodyClassName: 'class2',
-  //     progressClassName: 'class3'
-  //   });
+        expect(toast.isActive(firstId)).toBe(true);
+        expect(toast.isActive(secondId)).toBe(true);
+        done();
+      });
+    });
+  });
 
-  //   jest.runAllTimers();
-  //   expect(component.render().find('.class1')).toHaveLength(1);
-  //   expect(component.render().find('.class2')).toHaveLength(1);
-  //   expect(component.render().find('.class3')).toHaveLength(1);
-  // });
+  it('Can append classNames', () => {
+    render(<ToastContainer />);
+    act(() => {
+      toast('hello', {
+        className: 'class1',
+        bodyClassName: 'class2',
+        progressClassName: 'class3'
+      });
+      jest.runAllTimers();
+    });
+    expect(document.querySelector('.class1')).not.toBe(null);
+    expect(document.querySelector('.class2')).not.toBe(null);
+    expect(document.querySelector('.class3')).not.toBe(null);
+  });
 
-  // it('Should be able to use syntaxic sugar for different notification type', () => {
-  //   const component = mount(<ToastContainer />);
+  it('Should be able to use syntaxic sugar for different notification type', () => {
+    const { queryByText } = render(<ToastContainer />);
 
-  //   toast('plop');
-  //   toast.success('plop');
-  //   toast.error('plop');
-  //   toast.warning('plop');
-  //   toast.info('plop');
-  //   toast.warn('plop');
-  //   jest.runAllTimers();
-
-  //   const html = component.html();
-
-  //   Object.keys(TYPE).forEach(k => {
-  //     expect(html.includes(`--${TYPE[k]}`)).toBe(true);
-  //   });
-  // });
+    act(() => {
+      toast('default');
+      toast.success('success');
+      toast.error('error');
+      toast.warning('warning');
+      toast.info('info');
+      toast.warn('warn');
+      jest.runAllTimers();
+    });
+    expect(queryByText('default')).not.toBe(null);
+    expect(queryByText('success')).not.toBe(null);
+    expect(queryByText('error')).not.toBe(null);
+    expect(queryByText('warning')).not.toBe(null);
+    expect(queryByText('info')).not.toBe(null);
+    expect(queryByText('warn')).not.toBe(null);
+  });
 
   describe('Controlled progress bar', () => {
     it('Should be possible to use a controlled progress bar', () => {
