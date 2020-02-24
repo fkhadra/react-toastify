@@ -51,7 +51,7 @@ describe('toastify', () => {
     });
     expect(document.body.innerHTML.length).toBe(0);
   });
-  
+
   it('Should lazy mount a ToastContainer if it is not mounted, when opt-in', () => {
     expectContainerNotToBeMounted();
     toast.configure({
@@ -281,8 +281,8 @@ describe('toastify', () => {
       expect(queryByText('hello')).toBe(null);
     });
 
-    it.skip('Should be able to update the toastId', done => {
-      const { queryByText, container } = render(<ToastContainer />);
+    it('Should be able to update the toastId', () => {
+      const { queryByText } = render(<ToastContainer />);
       const toastId = 'bar';
       const updateId = 'foo';
 
@@ -291,28 +291,25 @@ describe('toastify', () => {
           toastId
         });
         jest.runAllTimers();
-        expect(queryByText('hello')).not.toBe(null);
       });
 
+      expect(queryByText('hello')).not.toBe(null);
+      expect(queryByText('foo')).toBe(null);
+      expect(toast.isActive(toastId)).toBe(true);
+      expect(toast.isActive(updateId)).toBe(false);
+
       act(() => {
-        setTimeout(() => {
-          toast.update(toastId, {
-            toastId: updateId,
-            render: 'foo'
-          });
-        }, 400);
+        toast.update(toastId, {
+          toastId: updateId,
+          render: 'foo'
+        });
         jest.runAllTimers();
-        // expect(queryByText('hello')).not.toBe(null);
-        console.log(container.innerHTML);
-
-        done();
       });
 
-      act(() => {
-        expect(toast.isActive(toastId)).toBe(false);
-        expect(toast.isActive(updateId)).toBe(true);
-        done();
-      });
+      expect(queryByText('hello')).toBe(null);
+      expect(queryByText('foo')).not.toBe(null);
+      expect(toast.isActive(toastId)).toBe(false);
+      expect(toast.isActive(updateId)).toBe(true);
     });
 
     it('Should be able to update a toast even when using multi containers', () => {
