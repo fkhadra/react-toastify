@@ -28,7 +28,6 @@ import {
 type State = Array<ToastId>;
 type Action =
   | { type: 'ADD'; toastId: ToastId; staleId?: ToastId }
-  | { type: 'UPDATE' }
   | { type: 'REMOVE'; toastId?: ToastId };
 
 type CollectionItem = Record<ToastId, Toast>;
@@ -38,8 +37,6 @@ function reducer(state: State, action: Action) {
   switch (action.type) {
     case 'ADD':
       return [...state, action.toastId].filter(id => id !== action.staleId);
-    case 'UPDATE':
-      return [...state];
     case 'REMOVE':
       return action.toastId === 0 || action.toastId
         ? state.filter(id => id !== action.toastId)
@@ -218,20 +215,17 @@ export function useToastContainer(props: ToastContainerProps) {
     options: WithInjectedOptions,
     staleId?: ToastId
   ) {
-    const { toastId, updateId } = options;
+    const { toastId } = options;
 
     collectionRef.current[toastId] = {
       content,
       options
     };
-
-    updateId
-      ? dispatch({ type: 'UPDATE' })
-      : dispatch({
-          type: 'ADD',
-          toastId,
-          staleId
-        });
+    dispatch({
+      type: 'ADD',
+      toastId,
+      staleId
+    });
   }
 
   function getToastToRender<T>(

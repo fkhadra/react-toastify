@@ -164,21 +164,18 @@ toast.update = (toastId: ToastId, options: UpdateOptions = {}) => {
       const nextOptions = {
         ...oldOptions,
         ...options,
-        toastId: options.toastId || toastId
+        toastId: options.toastId || toastId,
+        updateId: generateToastId()
       } as WithInjectedOptions & UpdateOptions;
 
-      if (!options.toastId || options.toastId === toastId) {
-        nextOptions.updateId = generateToastId();
-      } else {
-        (nextOptions as any).staleToastId = toastId;
-      }
+      if (nextOptions.toastId !== toastId) nextOptions.staleId = toastId
 
       const content =
         typeof nextOptions.render !== 'undefined'
           ? nextOptions.render
           : oldContent;
       delete nextOptions.render;
-
+      
       dispatchToast(content, nextOptions);
     }
   }, 0);
