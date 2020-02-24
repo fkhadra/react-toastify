@@ -45,6 +45,13 @@ function unmountLazyContainer() {
 }
 
 describe('toastify', () => {
+  it('Should not crash if no container is mounted', () => {
+    act(() => {
+      toast('hello');
+    });
+    expect(document.body.innerHTML.length).toBe(0);
+  });
+  
   it('Should lazy mount a ToastContainer if it is not mounted, when opt-in', () => {
     expectContainerNotToBeMounted();
     toast.configure({
