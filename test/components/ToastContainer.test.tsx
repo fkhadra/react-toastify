@@ -256,27 +256,6 @@ describe('ToastContainer', () => {
     expect(container.innerHTML).toMatch(/style="background: red;"/);
   });
 
-  // Most of css-in-js use toString to translate to className
-  it('Should support css-in-js rules', () => {
-    const className = {
-      background: 'purple',
-      toString() {
-        return 'random-class-name';
-      }
-    };
-
-    const { container } = render(
-      <ToastContainer className={className} style={{ background: 'red' }} />
-    );
-
-    act(() => {
-      toast('hello');
-      jest.runAllTimers();
-    });
-
-    expect(container.innerHTML).toMatch(/class=".+random-class-name"/);
-  });
-
   it('Should pass a closeToast function when displaying a react component', done => {
     render(<ToastContainer />);
     const Msg = (props: any) => {
