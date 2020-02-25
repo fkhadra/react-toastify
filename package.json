@@ -11,7 +11,12 @@
     "build": "tsdx build",
     "test": "tsdx test --passWithNoTests",
     "lint": "tsdx lint src",
-    "prepare": "tsdx build"
+    "prepare": "tsdx build",
+    "sass": "sass scss/main.scss dist/ReactToastify.css",
+    "sass-minimal": "sass scss/minimal.scss dist/ReactToastify.minimal.css",
+    "postsass": "postcss dist/ReactToastify.css --use autoprefixer -m -o dist/ReactToastify.css",
+    "postsass-minimal": "cssnano dist/ReactToastify.minimal.css dist/ReactToastify.minimal.css --no-zindex --no-reduceIdents",
+    "style": "npm run sass && npm run sass-minimal && cssnano dist/ReactToastify.css dist/ReactToastify.min.css --no-zindex --no-reduceIdents"
   },
   "peerDependencies": {
     "react": ">=16"
@@ -41,10 +46,14 @@
     "@types/react": "^16.9.19",
     "@types/react-dom": "^16.9.5",
     "@types/react-transition-group": "^4.2.3",
+    "cssnano": "^4.1.10",
+    "cssnano-cli": "^1.0.5",
     "husky": "^4.2.0",
+    "postcss": "^7.0.27",
+    "postcss-cli": "^7.1.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "sass": "^1.25.0",
+    "sass": "^1.26.0",
     "tsdx": "^0.12.3",
     "tslib": "^1.10.0",
     "typescript": "^3.7.5"
