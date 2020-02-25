@@ -169,7 +169,7 @@ export function useToastContainer(props: ToastContainerProps) {
       progressClassName: parseClassName(
         options.progressClassName || props.progressClassName
       ),
-      progressStyle: props.progressStyle,
+      progressStyle: options.progressStyle || props.progressStyle,
       autoClose: getAutoCloseDelay(options.autoClose),
       hideProgressBar: isBool(options.hideProgressBar)
         ? options.hideProgressBar
