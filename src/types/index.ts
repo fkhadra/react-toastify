@@ -16,6 +16,7 @@ export interface Toast {
 }
 
 type Id = number | string
+type ClassName = string | null;
 export type ToastId = Id;
 export type ContainerId = Id;
 
@@ -61,7 +62,7 @@ interface CommonOptions {
   /**
    * An optional css class to set for the progress bar.
    */
-  progressClassName?: string;
+  progressClassName?: ClassName;
 
   /**
    * An optional style to set for the progress bar.
@@ -71,12 +72,12 @@ interface CommonOptions {
   /**
    * An optional css class to set.
    */
-  className?: string;
+  className?: ClassName;
 
   /**
    * An optional css class to set for the toast content.
    */
-  bodyClassName?: string;
+  bodyClassName?: ClassName;
 
   /**
    * Hide or show the progress bar.
@@ -172,9 +173,9 @@ export interface WithInjectedOptions extends ToastOptions {
   children?: ToastContent;
   draggablePercent: number;
   in?: boolean;
-  progressClassName?: string;
-  className?: string;
-  bodyClassName?: string;
+  progressClassName?: ClassName;
+  className?: ClassName;
+  bodyClassName?: ClassName;
   onExited?: () => void;
   // transition: Transition;
 }
@@ -202,7 +203,7 @@ export interface ToastContainerProps extends CommonOptions {
   /**
    * An optional css class for the toast.
    */
-  toastClassName?: string;
+  toastClassName?: ClassName;
 
   /**
    * Show the toast only if it includes containerId and it's the same as containerId
