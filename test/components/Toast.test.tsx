@@ -349,4 +349,25 @@ describe('Drag event', () => {
     fireEvent.mouseUp(notification);
     progressBar.isRunning();
   });
+
+  it('Should support style attribute', () => {
+    const style: React.CSSProperties = {
+      background: 'purple'
+    };
+    const bodyStyle: React.CSSProperties = {
+      fontWeight: 'bold'
+    };
+    const { queryByRole } = render(
+      <Toast {...REQUIRED_PROPS} style={style} bodyStyle={bodyStyle}>
+        FooBar
+      </Toast>
+    );
+
+    const notification = queryByRole('alert') as HTMLElement;
+
+    expect((notification.parentNode as HTMLElement).style.background).toBe(
+      'purple'
+    );
+    expect(notification.style.fontWeight).toBe('bold');
+  });
 });

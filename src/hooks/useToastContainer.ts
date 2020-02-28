@@ -150,6 +150,8 @@ export function useToastContainer(props: ToastContainerProps) {
       bodyClassName: parseClassName(
         options.bodyClassName || props.bodyClassName
       ),
+      style: options.style || props.toastStyle,
+      bodyStyle: options.bodyStyle || props.bodyStyle,
       onClick: options.onClick || props.onClick,
       pauseOnHover: isBool(options.pauseOnHover)
         ? options.pauseOnHover

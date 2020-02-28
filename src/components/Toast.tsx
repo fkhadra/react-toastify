@@ -67,7 +67,9 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
 
     return () => {
       if (isFn(props.onClose))
-        props.onClose(isValidElement(props.children) ? props.children.props : {});
+        props.onClose(
+          isValidElement(props.children) ? props.children.props : {}
+        );
       if (props.draggable) unbindDragEvents();
       if (props.pauseOnFocusLoss) unbindFocusEvents();
     };
@@ -214,7 +216,7 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
         style.padding = '0';
         style.margin = '0';
       });
-     setTimeout(() => props.onExited!(), 400);
+      setTimeout(() => props.onExited!(), 400);
     });
   }
 
@@ -231,7 +233,9 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
     transition: Foo,
     position,
     className,
+    style,
     bodyClassName,
+    bodyStyle,
     progressClassName,
     progressStyle,
     updateId,
@@ -239,7 +243,7 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
     progress,
     rtl
   } = props as Required<WithInjectedOptions>;
-  
+
   const toastProps: Record<string, string | Function> = {
     className: cx(
       `${RT_NAMESPACE}__toast`,
@@ -282,11 +286,11 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
       onExited={onExitTransitionEnd}
       position={position}
       preventExitTransition={preventExitTransition}
-      
     >
       <div
         onClick={onClick}
         {...toastProps}
+        style={style}
         ref={toastRef}
         onMouseDown={onDragStart}
         onTouchStart={onDragStart}
@@ -296,6 +300,7 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
         <div
           {...(props.in && { role: role })}
           className={cx(`${RT_NAMESPACE}__toast-body`, bodyClassName)}
+          style={bodyStyle}
         >
           {children}
         </div>

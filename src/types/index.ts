@@ -9,13 +9,13 @@ export type ToastPosition =
   | 'bottom-left';
 
 export type TypeOptions = 'info' | 'success' | 'warning' | 'error' | 'default';
-export type ToastContent = React.ReactNode | ((props?: any) => React.ReactNode );
+export type ToastContent = React.ReactNode | ((props?: any) => React.ReactNode);
 export interface Toast {
   content: ToastContent;
   options: WithInjectedOptions;
 }
 
-type Id = number | string
+type Id = number | string;
 type ClassName = string | null;
 export type ToastId = Id;
 export type ContainerId = Id;
@@ -57,7 +57,10 @@ interface CommonOptions {
    * Pass a custom close button.
    * To remove the close button pass `false`
    */
-  closeButton?: React.ReactElement | ((props: any) => React.ReactElement) | boolean;
+  closeButton?:
+    | React.ReactElement
+    | ((props: any) => React.ReactElement)
+    | boolean;
 
   /**
    * An optional css class to set for the progress bar.
@@ -67,7 +70,7 @@ interface CommonOptions {
   /**
    * An optional style to set for the progress bar.
    */
-  progressStyle?: object;
+  progressStyle?: React.CSSProperties;
 
   /**
    * An optional css class to set.
@@ -78,6 +81,11 @@ interface CommonOptions {
    * An optional css class to set for the toast content.
    */
   bodyClassName?: ClassName;
+
+  /**
+   * An optional inline style to apply for the toast content.
+   */
+  bodyStyle?: React.CSSProperties;
 
   /**
    * Hide or show the progress bar.
@@ -136,6 +144,11 @@ export interface ToastOptions extends CommonOptions {
    * Called when toast is unmounted.
    */
   onClose?: <T = {}>(props: T) => void;
+
+  /**
+   * An optional inline style to apply.
+   */
+  style?: React.CSSProperties;
 
   /**
    * Set the toast type.
@@ -198,7 +211,12 @@ export interface ToastContainerProps extends CommonOptions {
   /**
    * An optional inline style to apply.
    */
-  style?: object;
+  style?: React.CSSProperties;
+
+   /**
+   * An optional inline style to apply for the toast.
+   */
+  toastStyle?: React.CSSProperties; 
 
   /**
    * An optional css class for the toast.
@@ -211,32 +229,3 @@ export interface ToastContainerProps extends CommonOptions {
    */
   enableMultiContainer?: boolean;
 }
-
-
-// /**
-//  * Helper to set notification type
-//  */
-
-// /**
-//  * Helper to set position
-//  */
-
-// /**
-//  * Helper to build custom entrance and exit transition
-//  */
-
-// /**
-//  * Built-in entrance and exit transition
-//  */
-
-// /**
-//  * Built-in entrance and exit transition
-//  */
-
-// /**
-//  * Built-in entrance and exit transition
-//  */
-
-// /**
-//  * Built-in entrance and exit transition
-//  */

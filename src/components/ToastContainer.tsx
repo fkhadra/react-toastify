@@ -28,7 +28,7 @@ export const ToastContainer: React.FC<ToastContainerProps> = props => {
             toastList.length === 0
               ? { ...style, pointerEvents: 'none' }
               : { ...style }
-        };
+        } as any;
 
         return (
           <TransitionGroup {...swag} key={`container-${position}`}>
