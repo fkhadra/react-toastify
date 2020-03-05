@@ -1,14 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom';
 
-import {
-  POSITION,
-  TYPE,
-  canUseDom,
-  isStr,
-  isNum,
-} from '../utils';
-import { eventManager, OnChangeCallback } from ".";
+import { POSITION, TYPE, canUseDom, isStr, isNum } from '../utils';
+import { eventManager, OnChangeCallback } from '.';
 import {
   ToastContent,
   ToastOptions,
@@ -21,7 +15,6 @@ import {
 } from '../types';
 import { ContainerInstance } from 'hooks';
 import { ToastContainer } from '../components';
-
 
 interface EnqueuedToast {
   content: ToastContent;
@@ -168,14 +161,14 @@ toast.update = (toastId: ToastId, options: UpdateOptions = {}) => {
         updateId: generateToastId()
       } as WithInjectedOptions & UpdateOptions;
 
-      if (nextOptions.toastId !== toastId) nextOptions.staleId = toastId
+      if (nextOptions.toastId !== toastId) nextOptions.staleId = toastId;
 
       const content =
         typeof nextOptions.render !== 'undefined'
           ? nextOptions.render
           : oldContent;
       delete nextOptions.render;
-      
+
       dispatchToast(content, nextOptions);
     }
   }, 0);
@@ -226,9 +219,7 @@ eventManager
     queue = [];
   })
   .on('willUnmount', (containerInstance: ContainerInstance) => {
-    if (containerInstance)
-      containers.delete(containerInstance.containerId || containerInstance);
-    else containers.clear();
+    containers.delete(containerInstance.containerId || containerInstance);
 
     if (containers.size === 0) {
       eventManager.off('show').off('clear');
