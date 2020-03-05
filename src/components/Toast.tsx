@@ -241,7 +241,8 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
     updateId,
     role,
     progress,
-    rtl
+    rtl,
+    toastId
   } = props as Required<WithInjectedOptions>;
 
   const toastProps: Record<string, string | Function> = {
@@ -288,6 +289,7 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
       preventExitTransition={preventExitTransition}
     >
       <div
+        id={toastId as string}
         onClick={onClick}
         {...toastProps}
         style={style}

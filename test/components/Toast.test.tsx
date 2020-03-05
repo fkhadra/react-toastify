@@ -370,4 +370,13 @@ describe('Drag event', () => {
     );
     expect(notification.style.fontWeight).toBe('bold');
   });
+
+  it('Should use toastId as node id', () => {
+    render(
+      <Toast {...REQUIRED_PROPS} toastId="foo">
+        FooBar
+      </Toast>
+    );
+    expect(document.getElementById('foo')).not.toBe(null);
+  });
 });

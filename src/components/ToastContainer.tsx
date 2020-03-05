@@ -12,10 +12,10 @@ import { ToastContainerProps, ToastPosition } from '../types';
 
 export const ToastContainer: React.FC<ToastContainerProps> = props => {
   const { getToastToRender, containerRef } = useToastContainer(props);
-  const { className, style, rtl } = props;
+  const { className, style, rtl, containerId } = props;
 
   return (
-    <div ref={containerRef} className={`${RT_NAMESPACE}`}>
+    <div ref={containerRef} className={`${RT_NAMESPACE}`} id={containerId as string}>
       {getToastToRender((position, toastList) => {
         const swag = {
           className: cx(

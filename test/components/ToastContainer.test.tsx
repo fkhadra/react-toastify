@@ -25,6 +25,12 @@ describe('ToastContainer', () => {
     expect(eventManager.list.has('clear')).toBe(false);
   });
 
+  it('Should use the containerId as node id', () => {
+    render(<ToastContainer containerId="foo" />);
+
+    expect(document.getElementById('foo')).not.toBe(null);
+  });
+
   it('Should bind event when re-mounted', () => {
     const { unmount } = render(<ToastContainer />);
 
@@ -41,13 +47,13 @@ describe('ToastContainer', () => {
 
   it('Should clear all toast when clear is called without id', () => {
     const { queryAllByText } = render(<ToastContainer />);
-    
+
     act(() => {
       toast('coucou');
       toast('coucou');
       jest.runAllTimers();
     });
-    
+
     expect(queryAllByText('coucou').length).toBe(2);
 
     act(() => {
