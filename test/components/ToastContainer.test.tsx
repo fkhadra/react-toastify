@@ -364,4 +364,88 @@ describe('ToastContainer', () => {
       expect(queryByText('hello')).toBe(null);
     });
   });
+
+  describe('Limit number of displayed toast', () => {
+    it('Should not crash when using limit', () => {
+      const { queryByText } = render(<ToastContainer limit={2} />);
+
+      act(() => {
+        toast('Hello');
+        jest.runAllTimers();
+      });
+
+      expect(queryByText('Hello')).not.toBe(null);
+    });
+
+    it('Should be possible to limit the number of toast visible', () => {
+      const { queryByText } = render(<ToastContainer limit={2} />);
+
+      act(() => {
+        toast('toast-1');
+        toast('toast-2');
+        jest.runAllTimers();
+      });
+
+      act(() => {
+        toast('toast-3');
+        jest.runAllTimers();
+      });
+
+      expect(queryByText('toast-1')).not.toBe(null);
+      expect(queryByText('toast-2')).not.toBe(null);
+
+      expect(queryByText('toast-3')).toBe(null);
+    });
+
+    it('Should handle only limit that are > 0', () => {
+      const { queryByText } = render(<ToastContainer limit={0} />);
+
+      act(() => {
+        toast('toast-1');
+        toast('toast-2');
+        jest.runAllTimers();
+      });
+
+      act(() => {
+        toast('toast-3');
+        jest.runAllTimers();
+      });
+
+      expect(queryByText('toast-1')).not.toBe(null);
+      expect(queryByText('toast-2')).not.toBe(null);
+
+      expect(queryByText('toast-3')).not.toBe(null);
+    });
+
+    it('Should display a new toast as soon as the limit is not reached', () => {
+      const { queryByText } = render(<ToastContainer limit={2} />);
+      const toastId = 'id';
+
+      act(() => {
+        toast('toast-1', { toastId });
+        toast('toast-2');
+        jest.runAllTimers();
+      });
+
+      act(() => {
+        toast('toast-3');
+        jest.runAllTimers();
+      });
+
+      expect(queryByText('toast-1')).not.toBe(null);
+      expect(queryByText('toast-2')).not.toBe(null);
+
+      expect(queryByText('toast-3')).toBe(null);
+
+      act(() => {
+        toast.dismiss(toastId);
+        jest.runAllTimers();
+      });
+
+      expect(queryByText('toast-1')).toBe(null);
+
+      expect(queryByText('toast-2')).not.toBe(null);
+      expect(queryByText('toast-3')).not.toBe(null);
+    });
+  });
 });

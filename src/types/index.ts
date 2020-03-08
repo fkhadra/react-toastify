@@ -228,4 +228,9 @@ export interface ToastContainerProps extends CommonOptions {
    * `Default: false`
    */
   enableMultiContainer?: boolean;
+
+  /**
+   * Limit the number of toast displayed at the same time
+   */
+  limit?: number;
 }

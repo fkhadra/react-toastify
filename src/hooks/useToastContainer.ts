@@ -33,6 +33,12 @@ type Action =
 type CollectionItem = Record<ToastId, Toast>;
 type ToastToRender = Partial<Record<ToastPosition, Toast[]>>;
 
+interface QueuedToast {
+  toastContent: ToastContent;
+  toastOptions: WithInjectedOptions;
+  staleId?: ToastId;
+}
+
 function reducer(state: State, action: Action) {
   switch (action.type) {
     case 'ADD':
@@ -46,9 +52,10 @@ function reducer(state: State, action: Action) {
 
 export interface ContainerInstance {
   toastKey: number;
+  toastCount: number;
   props: ToastContainerProps;
   containerId?: ContainerId | null;
-  isToastActive: false | ((toastId: ToastId) => boolean);
+  isToastActive: (toastId: ToastId) => boolean;
   getToast: (id: ToastId) => Toast | null;
 }
 
@@ -58,25 +65,20 @@ export function useToastContainer(props: ToastContainerProps) {
   const containerRef = useRef(null);
   const instanceRef = useRef<ContainerInstance>({
     toastKey: 1,
+    toastCount: 0,
     props,
     containerId: null,
-    isToastActive: false,
+    isToastActive: isToastActive,
     getToast: id => collectionRef.current[id] || null
   });
+  const queue = useRef<QueuedToast[]>([]);
 
   useEffect(() => {
     instanceRef.current.containerId = props.containerId;
     eventManager
       .cancelEmit('willUnmount')
       .on('show', buildToast)
-      .on('clear', toastId =>
-        // Dark magix FTW
-        !containerRef.current
-          ? null
-          : toastId == null
-          ? dispatch({ type: 'REMOVE' })
-          : dispatch({ type: 'REMOVE', toastId })
-      )
+      .on('clear', toastId => containerRef.current && removeToast(toastId))
       .emit('didMount', instanceRef.current);
 
     return () => eventManager.emit('willUnmount', instanceRef.current);
@@ -88,6 +90,7 @@ export function useToastContainer(props: ToastContainerProps) {
 
   useEffect(() => {
     instanceRef.current.isToastActive = isToastActive;
+    instanceRef.current.toastCount = toast.length;
     eventManager.emit('change', toast.length, props.containerId);
   }, [toast]);
 
@@ -97,6 +100,19 @@ export function useToastContainer(props: ToastContainerProps) {
 
   function removeToast(toastId?: ToastId) {
     dispatch({ type: 'REMOVE', toastId });
+
+    if (queue.current.length > 0) {
+      const {
+        toastContent,
+        toastOptions,
+        staleId
+      } = queue.current.shift() as QueuedToast;
+      // ensure that exit transition has been completed
+      // this could be tweaked
+      setTimeout(() => {
+        appendToast(toastContent, toastOptions, staleId);
+      }, 500);
+    }
   }
 
   function isValidButton(val: any) {
@@ -112,14 +128,11 @@ export function useToastContainer(props: ToastContainerProps) {
     return !containerRef.current ||
       (instanceRef.current.props.enableMultiContainer &&
         containerId !== instanceRef.current.props.containerId) ||
-      (instanceRef.current.isToastActive &&
-        instanceRef.current.isToastActive(toastId) &&
-        updateId == null)
+      (instanceRef.current.isToastActive(toastId) && updateId == null)
       ? true
       : false;
   }
 
-  // Need ref
   function getAutoCloseDelay(toastAutoClose?: false | number) {
     return toastAutoClose === false ||
       (isNum(toastAutoClose) && (toastAutoClose as number) > 0)
@@ -127,6 +140,7 @@ export function useToastContainer(props: ToastContainerProps) {
       : instanceRef.current.props.autoClose;
   }
 
+  // this function and all the function called inside needs to rely on ref
   function buildToast(
     content: ToastContent,
     { delay, staleId, ...options }: WithInjectedOptions
@@ -134,7 +148,7 @@ export function useToastContainer(props: ToastContainerProps) {
     if (!canBeRendered(content) || isNotValid(options)) return;
 
     const { toastId, updateId } = options;
-    const { props } = instanceRef.current;
+    const { props, toastCount, isToastActive } = instanceRef.current;
     const closeToast = () => removeToast(toastId);
     const toastOptions: WithInjectedOptions = {
       toastId,
@@ -203,7 +217,15 @@ export function useToastContainer(props: ToastContainerProps) {
       toastContent = content({ closeToast });
     }
 
-    if (isNum(delay) && (delay as number) > 0) {
+    // not handling limit + delay by design. Waiting for user feedback first
+    if (
+      props.limit &&
+      props.limit > 0 &&
+      toastCount === props.limit &&
+      !isToastActive(toastId)
+    ) {
+      queue.current.push({ toastContent, toastOptions, staleId });
+    } else if (isNum(delay) && (delay as number) > 0) {
       setTimeout(() => {
         appendToast(toastContent, toastOptions, staleId);
       }, delay);

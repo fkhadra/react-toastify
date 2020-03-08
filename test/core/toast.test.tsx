@@ -22,6 +22,7 @@ beforeEach(() => {
 const containerId = 'foo';
 const containerInstance: ContainerInstance = {
   containerId,
+  toastCount: 0,
   props: {},
   toastKey: 1,
   getToast: jest.fn(),
