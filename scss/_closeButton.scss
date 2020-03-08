@@ -1,7 +1,5 @@
 .#{$rt-namespace}__close-button {
   color: #fff;
-  font-weight: bold;
-  font-size: 14px;
   background: transparent;
   outline: none;
   border: none;
@@ -10,9 +8,16 @@
   opacity: 0.7;
   transition: 0.3s ease;
   align-self: flex-start;
+  
   &--default {
     color: #000;
     opacity: 0.3;
+  }
+
+  & > svg {
+    fill: currentColor;
+    height: 16px;
+    width: 14px;
   }
 
   &:hover, &:focus {

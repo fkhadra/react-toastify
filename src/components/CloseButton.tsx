@@ -8,7 +8,6 @@ export interface CloseButtonProps {
   ariaLabel: string;
 }
 
-// TODO: move style to css file and also remove font-weight and font-size from css file
 export function CloseButton({ closeToast, type, ariaLabel }: CloseButtonProps) {
   return (
     <button
@@ -22,12 +21,7 @@ export function CloseButton({ closeToast, type, ariaLabel }: CloseButtonProps) {
     >
       <svg
         aria-hidden="true"
-        height="16"
-        width="14"
         viewBox="0 0 14 16"
-        style={{
-          fill: 'currentcolor'
-        }}
       >
         <path
           fillRule="evenodd"
