@@ -365,7 +365,7 @@ describe('ToastContainer', () => {
     });
   });
 
-  describe('Limit number of displayed toast', () => {
+  describe('Limit number of toast displayed', () => {
     it('Should not crash when using limit', () => {
       const { queryByText } = render(<ToastContainer limit={2} />);
 
