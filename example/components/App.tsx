@@ -73,7 +73,8 @@ class App extends React.Component {
       transition: 'bounce',
       type: 'default',
       progress: '',
-      disableAutoClose: false
+      disableAutoClose: false,
+      limit: 0
     };
   }
 
@@ -113,7 +114,7 @@ class App extends React.Component {
 
   handleRadioOrSelect = e =>
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.name === 'limit' ? parseInt(e.target.value,10) : e.target.value
     });
 
   toggleCheckbox = e =>
@@ -211,6 +212,16 @@ class App extends React.Component {
                     onChange={this.handleRadioOrSelect}
                   />
                 </label>
+                <label htmlFor="limit">
+                  Limit
+                  <input
+                    type="number"
+                    name="limit"
+                    id="limit"
+                    value={this.state.limit}
+                    onChange={this.handleRadioOrSelect}
+                  />
+                </label>
               </div>
               <ul>{this.renderFlags()}</ul>
               <ul className="container__actions">
@@ -258,7 +269,6 @@ class App extends React.Component {
           {...this.state}
           transition={transitions[this.state.transition]}
           autoClose={this.state.disableAutoClose ? false : this.state.autoClose}
-          
         />
       </main>
     );
