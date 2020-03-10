@@ -21,7 +21,8 @@ export const TYPE = {
   SUCCESS: 'success',
   WARNING: 'warning',
   ERROR: 'error',
-  DEFAULT: 'default'
+  DEFAULT: 'default',
+  DARK: 'dark'
 };
 
 export const NOOP = () => {};

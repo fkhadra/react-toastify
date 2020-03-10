@@ -16,6 +16,10 @@
     &--rtl {
         direction: rtl;
     }
+    &--dark {
+        background: $rt-color-dark;
+        color: $rt-text-color-dark;
+    }
     &--default {
         background: $rt-color-default;
         color: $rt-text-color-default;

@@ -120,6 +120,9 @@ toast.error = (content: ToastContent, options?: ToastOptions) =>
 toast.warning = (content: ToastContent, options?: ToastOptions) =>
   dispatchToast(content, mergeOptions(TYPE.WARNING, options));
 
+toast.dark = (content: ToastContent, options?: ToastOptions) =>
+  dispatchToast(content, mergeOptions(TYPE.DARK, options));
+
 /**
  * Maybe I should remove warning in favor of warn, I don't know
  */
