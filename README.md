@@ -19,7 +19,7 @@
       - [What if I told you that the ToastContainer is optional](#what-if-i-told-you-that-the-toastcontainer-is-optional)
       - [Multi container support](#multi-container-support)
     - [Positioning toast](#positioning-toast)
-    - [Set autoclose delay or disable it](#set-autoclose-delay-or-disable-it)
+    - [Set autoClose delay or disable it](#set-autoclose-delay-or-disable-it)
     - [Render a component](#render-a-component)
     - [Remove a toast programmatically](#remove-a-toast-programmatically)
     - [Usage with redux](#usage-with-redux)
@@ -91,7 +91,7 @@ $ yarn add react-toastify
 - Pause toast when window loses focus 👁
 - Fancy progress bar to display the remaining time
 - Possibility to update a toast
-- You can control the progress bar a la nprogress 😲
+- You can control the progress bar and the progress 😲
 - Starting v5 the `ToastContainer` is optional if you want to 😎
 
 ## Usage
@@ -209,7 +209,7 @@ By default, all the toasts will be positioned on the top right of your browser. 
 
 The following values are allowed: **top-right, top-center, top-left, bottom-right, bottom-center, bottom-left**
 
-For convenience, `toast` expose a POSITION property to avoid any typo.
+For convenience, `toast` exposes a POSITION property to avoid typos.
 
 ```javascript
  // toast.POSITION.TOP_LEFT, toast.POSITION.TOP_RIGHT, toast.POSITION.TOP_CENTER
@@ -250,7 +250,7 @@ For convenience, `toast` expose a POSITION property to avoid any typo.
   }
 ```
 
-### Set autoclose delay or disable it
+### Set autoClose delay or disable it
 
 - Set the default delay
 
@@ -452,7 +452,7 @@ _Note: [toast.dismiss()](#remove-a-toast-programmatically) has no effect if call
 
 ### Use a controlled progress bar
 
-Imagine you want to see the progress of a file upload. The example below feature axios, but it works with anything!
+Imagine you want to see the progress of a file upload. The example below features [axios](https://github.com/axios/axios), but it works with anything!
 
 ```javascript
   import React, { Component } from 'react';
@@ -532,7 +532,7 @@ class Update extends Component {
 
 #### Update the content
 
-If you want to change the content it's straightforward as well. You can render any valid element including a react component. Pass your value to a `render` option as follow:
+If you want to change the content, it's straightforward as well. You can render any valid element including a react component. Pass your value to a `render` option as follow:
 
 ```js
  // With a string
@@ -609,7 +609,7 @@ toast.update(this.toastId, {
 #### Reset option or inherit from ToastContainer
 
 If you want to inherit props from the `ToastContainer`, you can reset an option by passing null.
-It's particulary useful when you remove the `closeButton` from a toast and you want it back during the update:
+It's particularly useful when you remove the `closeButton` from a toast and you want it back during the update:
 
 ```js
 class Update extends Component {
@@ -1194,7 +1194,7 @@ On mobile the toast will take all the available width.
 | Props                | Type                   | Default   | Description                                                                                         |
 |----------------------|------------------------|-----------|-----------------------------------------------------------------------------------------------------|
 | position             | string                 | top-right | One of top-right, top-center, top-left, bottom-right, bottom-center, bottom-left                    |
-| autoClose            | false or number        | 5000      | Delay in ms to close the toast. If set to false, the notification need to be closed manualy         |
+| autoClose            | false or number        | 5000      | Delay in ms to close the toast. If set to false, the notification need to be closed manually         |
 | closeButton          | React Element or false | -         | A React Component to replace the default close button or `false` to hide the button                 |
 | transition           | function               | -         | A reference to a valid react-transition-group/Transition component                                  |
 | hideProgressBar      | bool                   | false     | Display or not the progress bar below the toast(remaining time)                                     |
