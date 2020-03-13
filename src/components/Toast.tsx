@@ -73,6 +73,7 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
       if (props.draggable) unbindDragEvents();
       if (props.pauseOnFocusLoss) unbindFocusEvents();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -88,6 +89,7 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
       draggable: props.draggable,
       pauseOnFocusLoss: props.pauseOnFocusLoss
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props]);
 
   function playToast() {

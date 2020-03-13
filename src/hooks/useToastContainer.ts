@@ -81,7 +81,9 @@ export function useToastContainer(props: ToastContainerProps) {
       .on('clear', toastId => containerRef.current && removeToast(toastId))
       .emit('didMount', instanceRef.current);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     return () => eventManager.emit('willUnmount', instanceRef.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -92,6 +94,7 @@ export function useToastContainer(props: ToastContainerProps) {
     instanceRef.current.isToastActive = isToastActive;
     instanceRef.current.toastCount = toast.length;
     eventManager.emit('change', toast.length, props.containerId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [toast]);
 
   function isToastActive(id: ToastId) {

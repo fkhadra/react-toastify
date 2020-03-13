@@ -213,10 +213,10 @@ export interface ToastContainerProps extends CommonOptions {
    */
   style?: React.CSSProperties;
 
-   /**
+  /**
    * An optional inline style to apply for the toast.
    */
-  toastStyle?: React.CSSProperties; 
+  toastStyle?: React.CSSProperties;
 
   /**
    * An optional css class for the toast.
