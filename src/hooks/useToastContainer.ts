@@ -118,10 +118,6 @@ export function useToastContainer(props: ToastContainerProps) {
     }
   }
 
-  function isValidButton(val: any) {
-    return isFn(val) || isValidElement(val);
-  }
-
   /**
    * check if a container is attached to the dom
    * check for multi-container, build only if associated
@@ -202,10 +198,10 @@ export function useToastContainer(props: ToastContainerProps) {
 
     let closeButton = props.closeButton;
 
-    if (options.closeButton === false || isValidButton(options.closeButton)) {
+    if (options.closeButton === false || canBeRendered(options.closeButton)) {
       closeButton = options.closeButton;
     } else if (options.closeButton === true) {
-      closeButton = isValidButton(props.closeButton) ? props.closeButton : true;
+      closeButton = canBeRendered(props.closeButton) ? props.closeButton : true;
     }
 
     toastOptions.closeButton = closeButton;
