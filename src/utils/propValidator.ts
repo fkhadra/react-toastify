@@ -32,9 +32,6 @@ export const canUseDom = !!(
 
 export function canBeRendered<T>(content: T): boolean {
   return (
-    isValidElement(content) ||
-    typeof content === 'string' ||
-    typeof content === 'number' ||
-    typeof content === 'function'
+    isValidElement(content) || isStr(content) || isFn(content) || isNum(content)
   );
 }
