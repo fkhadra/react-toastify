@@ -3,13 +3,29 @@
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
+  "description": "React notification made easy",
+  "keywords": [
+    "react",
+    "notification",
+    "toast",
+    "react-component",
+    "react-toastify",
+    "push",
+    "alert"
+  ],
   "files": [
-    "dist"
+    "dist",
+    "scss"
+  ],
+  "sideEffects": [
+    "*.css"
   ],
   "scripts": {
     "start": "tsdx watch",
-    "build": "tsdx build",
+    "build": "tsdx build && npm run style",
     "test": "tsdx test --passWithNoTests",
+    "test:coverage": "tsdx test --coverage",
+    "ci": "npm run lint && npm run test:coverage && cat ./coverage/lcov.info | coveralls",
     "lint": "tsdx lint src",
     "prepare": "tsdx build",
     "sass": "sass scss/main.scss dist/ReactToastify.css",
@@ -30,10 +46,21 @@
     "singleQuote": true
   },
   "jest": {
-    "verbose": true
+    "verbose": true,
+    "coveragePathIgnorePatterns": [
+      "/src/index.tsx"
+    ]
   },
   "name": "react-toastify",
-  "author": "Fadi Khadra",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fkhadra/react-toastify.git"
+  },
+  "author": "Fadi Khadra  <fdkhadra@gmail.com> (https://fkhadra.github.io)",
+  "bugs": {
+    "url": "https://github.com/fkhadra/react-toastify/issues"
+  },
+  "homepage": "https://github.com/fkhadra/react-toastify#readme",
   "module": "dist/react-toastify.esm.js",
   "devDependencies": {
     "@babel/core": "^7.0.0-0",
@@ -46,6 +73,7 @@
     "@types/react": "^16.9.19",
     "@types/react-dom": "^16.9.5",
     "@types/react-transition-group": "^4.2.3",
+    "coveralls": "^3.0.9",
     "cssnano": "^4.1.10",
     "cssnano-cli": "^1.0.5",
     "husky": "^4.2.0",
