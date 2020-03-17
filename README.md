@@ -1129,24 +1129,6 @@ toast("Custom style",{
 });
 ```
 
-#### style with glamor
-
-```javascript
-import { css } from 'glamor';
-
-toast("Custom style",{
-  className: css({
-    background: 'black'
-  }),
-  bodyClassName: css({
-    fontSize: '60px'
-  }),
-  progressClassName: css({
-    background: "repeating-radial-gradient(circle at center, red 0, blue, green 30px)"
-  })
-});
-```
-
 #### Define style globally
 
 ```js
@@ -1203,11 +1185,11 @@ On mobile, the toast will take all the available width.
 | rtl                  | bool                   | false     | Support right to left content                                                                       |
 | closeOnClick         | bool                   | true      | Dismiss toast on click                                                                              |
 | newestOnTop          | bool                   | false     | Display newest toast on top                                                                         |
-| className            | string\|object         | -         | Add optional classes to the container                                                               |
+| className            | string         | -         | Add optional classes to the container                                                               |
 | style                | object                 | -         | Add optional inline style to the container                                                          |
-| toastClassName       | string\|object         | -         | Add optional classes to the toast                                                                   |
-| bodyClassName        | string\|object         | -         | Add optional classes to the toast body                                                              |
-| progressClassName    | string\|object         | -         | Add optional classes to the progress bar                                                            |
+| toastClassName       | string         | -         | Add optional classes to the toast                                                                   |
+| bodyClassName        | string         | -         | Add optional classes to the toast body                                                              |
+| progressClassName    | string         | -         | Add optional classes to the progress bar                                                            |
 | progressStyle        | object                 | -         | Add optional inline style to the progress bar                                                       |
 | draggable            | bool                   | true      | Allow toast to be draggable                                                                         |
 | draggablePercent     | number                 | 80        | The percentage of the toast's width it takes for a drag to dismiss a toast(value between 0 and 100) |
