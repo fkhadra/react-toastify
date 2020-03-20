@@ -9,8 +9,10 @@ import cx from 'classnames';
 
 import { ProgressBar } from './ProgressBar';
 import { WithInjectedOptions } from '../types';
-import { NOOP, canUseDom, RT_NAMESPACE, isFn } from '../utils';
+import { NOOP, canUseDom, RT_NAMESPACE, isFn, w, d } from '../utils';
+
 import { TransitionProps } from 'react-transition-group/Transition';
+import { useToast } from '../hooks';
 
 type DragEvent = MouseEvent & TouchEvent;
 
@@ -41,7 +43,7 @@ interface DragRef {
 }
 
 export const Toast: React.FC<WithInjectedOptions> = props => {
-  const [isRunning, setIsRunning] = useState(true);
+  const { isRunning, pauseToast, playToast  } = useToast(props);
   const [preventExitTransition, setPreventExitTransition] = useState(false);
   const toastRef = useRef<HTMLDivElement>(null);
   const prevPropsRef = useRef({
@@ -92,38 +94,30 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props]);
 
-  function playToast() {
-    props.autoClose && setIsRunning(true);
-  }
-
-  function pauseToast() {
-    props.autoClose && setIsRunning(false);
-  }
-
   function bindFocusEvents() {
-    window.addEventListener('focus', playToast);
-    window.addEventListener('blur', pauseToast);
+    w.on('focus', playToast);
+    w.on('blur', pauseToast);
   }
 
   function unbindFocusEvents() {
-    window.removeEventListener('focus', playToast);
-    window.removeEventListener('blur', pauseToast);
+    w.off('focus', playToast);
+    w.off('blur', pauseToast);
   }
 
   function bindDragEvents() {
-    document.addEventListener('mousemove', onDragMove);
-    document.addEventListener('mouseup', onDragEnd);
+    d.on('mousemove', onDragMove);
+    d.on('mouseup', onDragEnd);
 
-    document.addEventListener('touchmove', onDragMove);
-    document.addEventListener('touchend', onDragEnd);
+    d.on('touchmove', onDragMove);
+    d.on('touchend', onDragEnd);
   }
 
   function unbindDragEvents() {
-    document.removeEventListener('mousemove', onDragMove);
-    document.removeEventListener('mouseup', onDragEnd);
+    d.off('mousemove', onDragMove);
+    d.off('mouseup', onDragEnd);
 
-    document.removeEventListener('touchmove', onDragMove);
-    document.removeEventListener('touchend', onDragEnd);
+    d.off('touchmove', onDragMove);
+    d.off('touchend', onDragEnd);
   }
 
   function onDragStart(
