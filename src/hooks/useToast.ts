@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 import { WithInjectedOptions } from '../types';
 
@@ -17,5 +17,5 @@ export function useToast(props: WithInjectedOptions) {
     playToast,
     pauseToast,
     isRunning
-  }
+  };
 }

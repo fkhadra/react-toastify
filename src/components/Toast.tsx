@@ -12,7 +12,7 @@ import { WithInjectedOptions } from '../types';
 import { NOOP, canUseDom, RT_NAMESPACE, isFn } from '../utils';
 
 import { TransitionProps } from 'react-transition-group/Transition';
-import { useToast } from '../hooks';
+import { useToast, useKeeper } from '../hooks';
 
 type DragEvent = MouseEvent & TouchEvent;
 
@@ -31,7 +31,7 @@ function getY(e: DragEvent) {
 const iLoveInternetExplorer =
   canUseDom && /(msie|trident)/i.test(navigator.userAgent);
 
-interface DragRef {
+interface Draggable {
   start: number;
   x: number;
   y: number;
@@ -43,14 +43,14 @@ interface DragRef {
 }
 
 export const Toast: React.FC<WithInjectedOptions> = props => {
-  const { isRunning, pauseToast, playToast  } = useToast(props);
+  const { isRunning, pauseToast, playToast } = useToast(props);
   const [preventExitTransition, setPreventExitTransition] = useState(false);
   const toastRef = useRef<HTMLDivElement>(null);
-  const prevPropsRef = useRef({
+  const prevProps = useKeeper({
     draggable: props.draggable,
     pauseOnFocusLoss: props.pauseOnFocusLoss
   });
-  const dragRef = useRef<DragRef>({
+  const drag = useKeeper<Draggable>({
     start: 0,
     x: 0,
     y: 0,
@@ -79,19 +79,16 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
   }, []);
 
   useEffect(() => {
-    if (prevPropsRef.current.draggable !== props.draggable) {
+    if (prevProps.draggable !== props.draggable) {
       props.draggable ? bindDragEvents() : unbindDragEvents();
     }
 
-    if (prevPropsRef.current.pauseOnFocusLoss !== props.pauseOnFocusLoss) {
+    if (prevProps.pauseOnFocusLoss !== props.pauseOnFocusLoss) {
       props.pauseOnFocusLoss ? bindFocusEvents() : unbindFocusEvents();
     }
 
-    prevPropsRef.current = {
-      draggable: props.draggable,
-      pauseOnFocusLoss: props.pauseOnFocusLoss
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    prevProps.draggable = props.draggable;
+    prevProps.pauseOnFocusLoss = props.pauseOnFocusLoss;
   }, [props]);
 
   function bindFocusEvents() {
@@ -123,7 +120,6 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
   function onDragStart(
     e: React.MouseEvent<HTMLElement, MouseEvent> | React.TouchEvent<HTMLElement>
   ) {
-    const drag = dragRef.current;
     const toast = toastRef.current!;
     drag.canCloseOnClick = true;
     drag.canDrag = true;
@@ -134,7 +130,6 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
   }
 
   function onDragMove(e: MouseEvent | TouchEvent) {
-    const drag = dragRef.current;
     const toast = toastRef.current!;
 
     if (drag.canDrag) {
@@ -154,7 +149,6 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
   }
 
   function onDragEnd() {
-    const drag = dragRef.current;
     const toast = toastRef.current!;
     if (drag.canDrag) {
       drag.canDrag = false;
@@ -172,7 +166,6 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
   }
 
   function onDragTransitionEnd() {
-    const drag = dragRef.current;
     if (drag.boundingRect) {
       const { top, bottom, left, right } = drag.boundingRect;
 
@@ -261,7 +254,7 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
   if (closeOnClick) {
     toastProps.onClick = (e: React.MouseEvent) => {
       onClick && onClick(e);
-      dragRef.current.canCloseOnClick && closeToast();
+      drag.canCloseOnClick && closeToast();
     };
   }
 

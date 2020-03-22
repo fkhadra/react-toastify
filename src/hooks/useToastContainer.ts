@@ -24,6 +24,7 @@ import {
   Toast,
   ToastPosition
 } from '../types';
+import { useKeeper } from './useKeeper';
 
 type State = Array<ToastId>;
 type Action =
@@ -61,40 +62,37 @@ export interface ContainerInstance {
 
 export function useToastContainer(props: ToastContainerProps) {
   const [toast, dispatch] = useReducer(reducer, []);
-  const collectionRef = useRef<CollectionItem>({});
   const containerRef = useRef(null);
-  const instanceRef = useRef<ContainerInstance>({
+  const queue = useKeeper<QueuedToast[]>([]);
+  const collection = useKeeper<CollectionItem>({});
+  const instance = useKeeper<ContainerInstance>({
     toastKey: 1,
     toastCount: 0,
     props,
     containerId: null,
     isToastActive: isToastActive,
-    getToast: id => collectionRef.current[id] || null
+    getToast: id => collection[id] || null
   });
-  const queue = useRef<QueuedToast[]>([]);
 
   useEffect(() => {
-    instanceRef.current.containerId = props.containerId;
+    instance.containerId = props.containerId;
     eventManager
       .cancelEmit('willUnmount')
       .on('show', buildToast)
       .on('clear', toastId => containerRef.current && removeToast(toastId))
-      .emit('didMount', instanceRef.current);
+      .emit('didMount', instance);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    return () => eventManager.emit('willUnmount', instanceRef.current);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => eventManager.emit('willUnmount', instance);
   }, []);
 
   useEffect(() => {
-    instanceRef.current.props = props;
+    instance.props = props;
   }, [props]);
 
   useEffect(() => {
-    instanceRef.current.isToastActive = isToastActive;
-    instanceRef.current.toastCount = toast.length;
+    instance.isToastActive = isToastActive;
+    instance.toastCount = toast.length;
     eventManager.emit('change', toast.length, props.containerId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [toast]);
 
   function isToastActive(id: ToastId) {
@@ -104,12 +102,12 @@ export function useToastContainer(props: ToastContainerProps) {
   function removeToast(toastId?: ToastId) {
     dispatch({ type: 'REMOVE', toastId });
 
-    if (queue.current.length > 0) {
+    if (queue.length > 0) {
       const {
         toastContent,
         toastOptions,
         staleId
-      } = queue.current.shift() as QueuedToast;
+      } = queue.shift() as QueuedToast;
       // ensure that exit transition has been completed
       // this could be tweaked
       setTimeout(() => {
@@ -125,9 +123,9 @@ export function useToastContainer(props: ToastContainerProps) {
    */
   function isNotValid({ containerId, toastId, updateId }: WithInjectedOptions) {
     return !containerRef.current ||
-      (instanceRef.current.props.enableMultiContainer &&
-        containerId !== instanceRef.current.props.containerId) ||
-      (instanceRef.current.isToastActive(toastId) && updateId == null)
+      (instance.props.enableMultiContainer &&
+        containerId !== instance.props.containerId) ||
+      (instance.isToastActive(toastId) && updateId == null)
       ? true
       : false;
   }
@@ -136,7 +134,7 @@ export function useToastContainer(props: ToastContainerProps) {
     return toastAutoClose === false ||
       (isNum(toastAutoClose) && (toastAutoClose as number) > 0)
       ? toastAutoClose
-      : instanceRef.current.props.autoClose;
+      : instance.props.autoClose;
   }
 
   // this function and all the function called inside needs to rely on ref
@@ -147,12 +145,12 @@ export function useToastContainer(props: ToastContainerProps) {
     if (!canBeRendered(content) || isNotValid(options)) return;
 
     const { toastId, updateId } = options;
-    const { props, toastCount, isToastActive } = instanceRef.current;
+    const { props, toastCount, isToastActive } = instance;
     const closeToast = () => removeToast(toastId);
     const toastOptions: WithInjectedOptions = {
       toastId,
       updateId,
-      key: options.key || instanceRef.current.toastKey++,
+      key: options.key || instance.toastKey++,
       type: options.type,
       closeToast: closeToast,
       closeButton: options.closeButton,
@@ -223,7 +221,7 @@ export function useToastContainer(props: ToastContainerProps) {
       toastCount === props.limit &&
       !isToastActive(toastId)
     ) {
-      queue.current.push({ toastContent, toastOptions, staleId });
+      queue.push({ toastContent, toastOptions, staleId });
     } else if (isNum(delay) && (delay as number) > 0) {
       setTimeout(() => {
         appendToast(toastContent, toastOptions, staleId);
@@ -240,7 +238,7 @@ export function useToastContainer(props: ToastContainerProps) {
   ) {
     const { toastId } = options;
 
-    collectionRef.current[toastId] = {
+    collection[toastId] = {
       content,
       options
     };
@@ -255,7 +253,6 @@ export function useToastContainer(props: ToastContainerProps) {
     cb: (position: ToastPosition, toastList: Toast[]) => T
   ) {
     const toastToRender: ToastToRender = {};
-    const collection = collectionRef.current;
     const toastList = props.newestOnTop
       ? Object.keys(collection).reverse()
       : Object.keys(collection);
@@ -279,7 +276,7 @@ export function useToastContainer(props: ToastContainerProps) {
   return {
     toast,
     getToastToRender,
-    collection: collectionRef.current,
+    collection: collection,
     containerRef,
     isToastActive,
     removeToast
