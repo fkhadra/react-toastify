@@ -21,7 +21,7 @@
     "*.css"
   ],
   "scripts": {
-    "start": "tsdx watch",
+    "start": "cd example && npm run start",
     "build": "tsdx build && npm run style",
     "test": "tsdx test --passWithNoTests",
     "test:coverage": "tsdx test --coverage",
