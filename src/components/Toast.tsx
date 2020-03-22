@@ -9,7 +9,7 @@ import cx from 'classnames';
 
 import { ProgressBar } from './ProgressBar';
 import { WithInjectedOptions } from '../types';
-import { NOOP, canUseDom, RT_NAMESPACE, isFn, w, d } from '../utils';
+import { NOOP, canUseDom, RT_NAMESPACE, isFn } from '../utils';
 
 import { TransitionProps } from 'react-transition-group/Transition';
 import { useToast } from '../hooks';
@@ -95,29 +95,29 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
   }, [props]);
 
   function bindFocusEvents() {
-    w.on('focus', playToast);
-    w.on('blur', pauseToast);
+    window.addEventListener('focus', playToast);
+    window.addEventListener('blur', pauseToast);
   }
 
   function unbindFocusEvents() {
-    w.off('focus', playToast);
-    w.off('blur', pauseToast);
+    window.removeEventListener('focus', playToast);
+    window.removeEventListener('blur', pauseToast);
   }
 
   function bindDragEvents() {
-    d.on('mousemove', onDragMove);
-    d.on('mouseup', onDragEnd);
+    document.addEventListener('mousemove', onDragMove);
+    document.addEventListener('mouseup', onDragEnd);
 
-    d.on('touchmove', onDragMove);
-    d.on('touchend', onDragEnd);
+    document.addEventListener('touchmove', onDragMove);
+    document.addEventListener('touchend', onDragEnd);
   }
 
   function unbindDragEvents() {
-    d.off('mousemove', onDragMove);
-    d.off('mouseup', onDragEnd);
+    document.removeEventListener('mousemove', onDragMove);
+    document.removeEventListener('mouseup', onDragEnd);
 
-    d.off('touchmove', onDragMove);
-    d.off('touchend', onDragEnd);
+    document.removeEventListener('touchmove', onDragMove);
+    document.removeEventListener('touchend', onDragEnd);
   }
 
   function onDragStart(
