@@ -38,12 +38,19 @@
     "react": ">=16"
   },
   "husky": {
-    "hooks": {}
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
   },
   "prettier": {
     "printWidth": 80,
     "semi": true,
     "singleQuote": true
+  },
+  "eslint": {
+    "rules": {
+      "react-hooks/exhaustive-deps": "off"
+    }
   },
   "jest": {
     "verbose": true,
