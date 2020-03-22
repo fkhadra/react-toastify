@@ -25,6 +25,4 @@ export const TYPE = {
   DARK: 'dark'
 };
 
-export const NOOP = () => {};
-
 export const RT_NAMESPACE = 'Toastify';

@@ -1,11 +1,10 @@
 import React, { isValidElement, cloneElement } from 'react';
+import { TransitionProps } from 'react-transition-group/Transition';
 import cx from 'classnames';
 
 import { ProgressBar } from './ProgressBar';
 import { WithInjectedOptions } from '../types';
-import { NOOP, RT_NAMESPACE, isFn } from '../utils';
-
-import { TransitionProps } from 'react-transition-group/Transition';
+import { RT_NAMESPACE, isFn } from '../utils';
 import { useToast } from '../hooks';
 
 export const Toast: React.FC<WithInjectedOptions> = props => {
@@ -101,8 +100,4 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
       </div>
     </Transition>
   );
-};
-
-Toast.defaultProps = {
-  onOpen: NOOP
 };

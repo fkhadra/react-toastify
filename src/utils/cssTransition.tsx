@@ -2,8 +2,6 @@ import React from 'react';
 import { Transition } from 'react-transition-group';
 import { TransitionProps } from 'react-transition-group/Transition';
 
-import { NOOP } from './constant';
-
 export interface CSSTransitionProps {
   /**
    * Css class to apply when toast enter
@@ -80,7 +78,7 @@ export function cssTransition({
         }
         onEnter={onEnter}
         onEntered={onEntered}
-        onExit={preventExitTransition ? NOOP : onExit}
+        onExit={preventExitTransition ? undefined : onExit}
       >
         {children}
       </Transition>
