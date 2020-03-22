@@ -154,7 +154,7 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
       drag.canDrag = false;
 
       if (Math.abs(drag.deltaX) > drag.removalDistance) {
-        setPreventExitTransition(false);
+        setPreventExitTransition(true);
         props.closeToast();
         return;
       }
