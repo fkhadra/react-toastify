@@ -137,7 +137,7 @@ export function useToastContainer(props: ToastContainerProps) {
       : instance.props.autoClose;
   }
 
-  // this function and all the function called inside needs to rely on ref
+  // this function and all the function called inside needs to rely on ref(`useKeeper`)
   function buildToast(
     content: ToastContent,
     { delay, staleId, ...options }: WithInjectedOptions
@@ -276,7 +276,7 @@ export function useToastContainer(props: ToastContainerProps) {
   return {
     toast,
     getToastToRender,
-    collection: collection,
+    collection,
     containerRef,
     isToastActive,
     removeToast
