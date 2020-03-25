@@ -11,6 +11,7 @@
 🎉 React-Toastify allow you to add notification to your app with ease. No more nonsense!
 
   - [Demo](#demo)
+  - [Video tutorial (10min)](https://www.youtube.com/watch?v=nX_xDBR_gqo&list=PLC3y8-rFHvwhAh1ypBvcZLDO6I7QTY5CM&index=3)
   - [Installation](#installation)
   - [Features](#features)
   - [Usage](#usage)
