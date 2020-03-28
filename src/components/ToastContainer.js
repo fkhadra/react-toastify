@@ -1,6 +1,6 @@
 import React, { Component, isValidElement, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import cx from 'classnames';
+import cx from 'clsx';
 import { TransitionGroup } from 'react-transition-group';
 
 import Toast from './Toast';

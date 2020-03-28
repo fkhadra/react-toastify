@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import cx from 'classnames';
+import cx from 'clsx';
 
 import { TYPE, RT_NAMESPACE, falseOrDelay } from './../utils';
 
