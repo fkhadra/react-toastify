@@ -42,10 +42,6 @@ export function useToast(props: WithInjectedOptions) {
   const [isRunning, setIsRunning] = useState(true);
   const [preventExitTransition, setPreventExitTransition] = useState(false);
   const toastRef = useRef<HTMLDivElement>(null);
-  const prevProps = useKeeper({
-    draggable: props.draggable,
-    pauseOnFocusLoss: props.pauseOnFocusLoss
-  });
   const drag = useKeeper<Draggable>({
     start: 0,
     x: 0,
@@ -61,31 +57,28 @@ export function useToast(props: WithInjectedOptions) {
   useEffect(() => {
     if (isFn(props.onOpen))
       props.onOpen(isValidElement(props.children) ? props.children.props : {});
-    if (props.draggable) bindDragEvents();
-    if (props.pauseOnFocusLoss) bindFocusEvents();
 
     return () => {
       if (isFn(props.onClose))
         props.onClose(
           isValidElement(props.children) ? props.children.props : {}
         );
-      if (props.draggable) unbindDragEvents();
-      if (props.pauseOnFocusLoss) unbindFocusEvents();
     };
   }, []);
 
   useEffect(() => {
-    if (prevProps.draggable !== props.draggable) {
-      props.draggable ? bindDragEvents() : unbindDragEvents();
-    }
+    props.draggable && bindDragEvents();
+    return () => {
+      props.draggable && unbindDragEvents();
+    };
+  }, [props.draggable]);
 
-    if (prevProps.pauseOnFocusLoss !== props.pauseOnFocusLoss) {
-      props.pauseOnFocusLoss ? bindFocusEvents() : unbindFocusEvents();
-    }
-
-    prevProps.draggable = props.draggable;
-    prevProps.pauseOnFocusLoss = props.pauseOnFocusLoss;
-  }, [props]);
+  useEffect(() => {
+    props.pauseOnFocusLoss && bindFocusEvents();
+    return () => {
+      props.draggable && unbindFocusEvents();
+    };
+  }, [props.pauseOnFocusLoss]);
 
   function onDragStart(
     e: React.MouseEvent<HTMLElement, MouseEvent> | React.TouchEvent<HTMLElement>
