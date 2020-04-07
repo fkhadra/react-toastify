@@ -76,7 +76,7 @@ export function useToast(props: WithInjectedOptions) {
   useEffect(() => {
     props.pauseOnFocusLoss && bindFocusEvents();
     return () => {
-      props.draggable && unbindFocusEvents();
+      props.pauseOnFocusLoss && unbindFocusEvents();
     };
   }, [props.pauseOnFocusLoss]);
 
@@ -111,11 +111,11 @@ export function useToast(props: WithInjectedOptions) {
   }
 
   function playToast() {
-    props.autoClose && setIsRunning(true);
+    setIsRunning(true);
   }
 
   function pauseToast() {
-    props.autoClose && setIsRunning(false);
+    setIsRunning(false);
   }
 
   function bindFocusEvents() {
