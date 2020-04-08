@@ -69,7 +69,7 @@ type PositionOptions =
 
 type TypeOptions = 'info' | 'success' | 'warning' | 'error' | 'default';
 
-type ToastContent = React.ReactNode | { (): void };
+type ToastContent = React.ReactNode | ((props: { closeToast: () => void }) => React.ReactNode);
 
 type ToastId = number | string;
 
@@ -186,7 +186,7 @@ interface CommonOptions {
    *  https://www.w3.org/WAI/PF/aria/roles
    */
   role?: string;
-  
+
   /**
    * Set id to handle multiple container
    */
@@ -349,7 +349,7 @@ export const ToastType: Type;
  */
 export const ToastPosition: Position;
 
-export class ToastContainer extends React.Component<ToastContainerProps, any> {}
+export class ToastContainer extends React.Component<ToastContainerProps, any> { }
 
 /**
  * Helper to build custom entrance and exit transition
