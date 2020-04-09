@@ -188,10 +188,14 @@ toast.done = (id: ToastId) => {
 
 /**
  * Track changes. The callback get the number of toast displayed
+ *
  */
 toast.onChange = (callback: OnChangeCallback) => {
   if (typeof callback === 'function') {
     eventManager.on('change', callback);
+    return () => {
+      eventManager.off('change', callback);
+    };
   }
 };
 

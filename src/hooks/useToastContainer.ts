@@ -87,7 +87,7 @@ export function useToastContainer(props: ToastContainerProps) {
 
   useEffect(() => {
     instance.props = props;
-  }, [props]);
+  });
 
   useEffect(() => {
     instance.isToastActive = isToastActive;
@@ -257,7 +257,6 @@ export function useToastContainer(props: ToastContainerProps) {
       ? Object.keys(collection).reverse()
       : Object.keys(collection);
 
-    // reduce nope  😜
     for (let i = 0; i < toastList.length; i++) {
       const toast = collection[toastList[i]];
       const { position, toastId } = toast.options;

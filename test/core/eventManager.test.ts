@@ -40,6 +40,27 @@ describe('EventManager', () => {
     expect(cb).toHaveBeenCalled();
   });
 
+  it('Should be possible to remove a specific callback', () => {
+    const cb1 = jest.fn();
+    const cb2 = jest.fn();
+    eventManager.on('change', cb1);
+    eventManager.on('change', cb2);
+
+    eventManager.emit('change', 1);
+    jest.runAllTimers();
+
+    expect(cb1).toHaveBeenCalled();
+    expect(cb2).toHaveBeenCalled();
+
+    eventManager.off('change', cb1);
+
+    eventManager.emit('change', 1);
+    jest.runAllTimers();
+
+    expect(cb1).toHaveBeenCalledTimes(1);
+    expect(cb2).toHaveBeenCalledTimes(2);
+  });
+
   it('Should be possible to cancel event by kind', () => {
     const cb = jest.fn();
     eventManager.on('change', cb);

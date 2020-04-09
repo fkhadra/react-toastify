@@ -30,7 +30,7 @@ export interface EventManager {
   on(event: 'didMount', callback: OnDidMountCallback): EventManager;
   on(event: 'willUnmount', callback: OnWillUnmountCallback): EventManager;
   on(event: 'change', callback: OnChangeCallback): EventManager;
-  off(event: Event): EventManager;
+  off(event: Event, callback?: Callback): EventManager;
   cancelEmit(event: Event): EventManager;
   emit(
     event: 'show',
@@ -53,7 +53,12 @@ export const eventManager: EventManager = {
     return this;
   },
 
-  off(event) {
+  off(event, callback) {
+    if (callback) {
+      const cb = this.list.get(event)!.filter(cb => cb !== callback);
+      this.list.set(event, cb);
+      return this;
+    }
     this.list.delete(event);
     return this;
   },
