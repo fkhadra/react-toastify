@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 
-import { POSITION, TYPE, canUseDom, isStr, isNum } from '../utils';
+import { POSITION, TYPE, canUseDom, isStr, isNum, isFn } from '../utils';
 import { eventManager, OnChangeCallback } from '.';
 import {
   ToastContent,
@@ -191,12 +191,12 @@ toast.done = (id: ToastId) => {
  *
  */
 toast.onChange = (callback: OnChangeCallback) => {
-  if (typeof callback === 'function') {
+  if (isFn(callback)) {
     eventManager.on('change', callback);
-    return () => {
-      eventManager.off('change', callback);
-    };
   }
+  return () => {
+    isFn(callback) && eventManager.off('change', callback);
+  };
 };
 
 /**

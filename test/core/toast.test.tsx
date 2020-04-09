@@ -147,6 +147,30 @@ describe('toastify', () => {
       expect(fn).toHaveBeenCalled();
     });
 
+    it("Should be able to unsubscribe to onChange event", () => {
+      render(<ToastContainer />);
+      const fn = jest.fn();
+      const off = toast.onChange(fn);
+
+      expect(fn).not.toHaveBeenCalled();
+
+      act(() => {
+        toast('hello');
+        jest.runAllTimers();
+      });
+
+      expect(fn).toHaveBeenCalled();
+
+      off();
+
+      act(() => {
+        toast('hello');
+        jest.runAllTimers();
+      });
+
+      expect(fn).toHaveBeenCalledTimes(1);
+    });
+
     it('The callback should receive the number of toast displayed', done => {
       render(<ToastContainer />);
       toast.onChange(count => {
