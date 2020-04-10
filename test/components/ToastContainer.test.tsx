@@ -4,7 +4,7 @@ import { act } from 'react-dom/test-utils';
 
 import '../__mocks__/react-transition-group';
 import { ToastContainer } from '../../src/components/ToastContainer';
-import { toast, eventManager } from '../../src/core';
+import { toast, eventManager, Event } from '../../src/core';
 import { ToastOptions } from '../../src/types';
 
 import { cssClasses } from '../helpers';
@@ -15,14 +15,14 @@ describe('ToastContainer', () => {
   it('Should bind events when mounted and unbind them when unmounted', () => {
     const { unmount } = render(<ToastContainer />);
 
-    expect(eventManager.list.has('show')).toBe(true);
-    expect(eventManager.list.has('clear')).toBe(true);
+    expect(eventManager.list.has(Event.Show)).toBe(true);
+    expect(eventManager.list.has(Event.Clear)).toBe(true);
 
     unmount();
     jest.runAllTimers();
 
-    expect(eventManager.list.has('show')).toBe(false);
-    expect(eventManager.list.has('clear')).toBe(false);
+    expect(eventManager.list.has(Event.Show)).toBe(false);
+    expect(eventManager.list.has(Event.Clear)).toBe(false);
   });
 
   it('Should use the containerId as node id', () => {
@@ -34,15 +34,15 @@ describe('ToastContainer', () => {
   it('Should bind event when re-mounted', () => {
     const { unmount } = render(<ToastContainer />);
 
-    expect(eventManager.list.has('show')).toBe(true);
-    expect(eventManager.list.has('clear')).toBe(true);
+    expect(eventManager.list.has(Event.Show)).toBe(true);
+    expect(eventManager.list.has(Event.Clear)).toBe(true);
 
     unmount();
     render(<ToastContainer />);
     jest.runAllTimers();
 
-    expect(eventManager.list.has('show')).toBe(true);
-    expect(eventManager.list.has('clear')).toBe(true);
+    expect(eventManager.list.has(Event.Show)).toBe(true);
+    expect(eventManager.list.has(Event.Clear)).toBe(true);
   });
 
   it('Should clear all toast when clear is called without id', () => {

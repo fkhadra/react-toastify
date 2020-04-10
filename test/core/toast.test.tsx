@@ -4,7 +4,7 @@ import { render } from '@testing-library/react';
 
 import '../__mocks__/react-transition-group';
 import { cssClasses } from '../helpers';
-import { eventManager, toast } from '../../src/core';
+import { eventManager, toast, Event } from '../../src/core';
 import { ContainerInstance } from '../../src/hooks';
 import { RT_NAMESPACE } from '../../src/utils';
 import { ToastId } from '../../src/types';
@@ -15,9 +15,9 @@ jest.useFakeTimers();
 // Clear all previous event to avoid any clash between tests
 beforeEach(() => {
   eventManager
-    .off('show')
-    .off('clear')
-    .off('change');
+    .off(Event.Show)
+    .off(Event.Clear)
+    .off(Event.Change);
 });
 const containerId = 'foo';
 const containerInstance: ContainerInstance = {
@@ -39,7 +39,7 @@ function expectContainerToBeMounted() {
 
 function unmountLazyContainer() {
   act(() => {
-    eventManager.emit('willUnmount', containerInstance);
+    eventManager.emit(Event.WillUnmount, containerInstance);
     jest.runAllTimers();
   });
   expectContainerNotToBeMounted();

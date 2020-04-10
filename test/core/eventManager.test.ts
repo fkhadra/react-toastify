@@ -3,11 +3,11 @@ import { eventManager, Event } from '../../src/core';
 jest.useFakeTimers();
 
 const eventList: Event[] = [
-  'show',
-  'clear',
-  'didMount',
-  'willUnmount',
-  'change'
+  Event.Change,
+  Event.Clear,
+  Event.DidMount,
+  Event.Show,
+  Event.WillUnmount
 ];
 
 beforeEach(() => {
@@ -18,11 +18,11 @@ beforeEach(() => {
 describe('EventManager', () => {
   it('Should be able to listen for an event', () => {
     eventManager
-      .on('change', () => {})
-      .on('clear', () => {})
-      .on('didMount', () => {})
-      .on('willUnmount', () => {})
-      .on('show', () => {});
+      .on(Event.Change, () => {})
+      .on(Event.Clear, () => {})
+      .on(Event.DidMount, () => {})
+      .on(Event.WillUnmount, () => {})
+      .on(Event.Show, () => {});
 
     for (const event of eventList) {
       expect(eventManager.list.has(event)).toBe(true);
@@ -32,10 +32,10 @@ describe('EventManager', () => {
   it('Should be able to emit event', () => {
     const cb = jest.fn();
 
-    eventManager.on('change', cb);
+    eventManager.on(Event.Change, cb);
     expect(cb).not.toHaveBeenCalled();
 
-    eventManager.emit('change', 1);
+    eventManager.emit(Event.Change, 1);
     jest.runAllTimers();
     expect(cb).toHaveBeenCalled();
   });
@@ -43,18 +43,18 @@ describe('EventManager', () => {
   it('Should be possible to remove a specific callback', () => {
     const cb1 = jest.fn();
     const cb2 = jest.fn();
-    eventManager.on('change', cb1);
-    eventManager.on('change', cb2);
+    eventManager.on(Event.Change, cb1);
+    eventManager.on(Event.Change, cb2);
 
-    eventManager.emit('change', 1);
+    eventManager.emit(Event.Change, 1);
     jest.runAllTimers();
 
     expect(cb1).toHaveBeenCalled();
     expect(cb2).toHaveBeenCalled();
 
-    eventManager.off('change', cb1);
+    eventManager.off(Event.Change, cb1);
 
-    eventManager.emit('change', 1);
+    eventManager.emit(Event.Change, 1);
     jest.runAllTimers();
 
     expect(cb1).toHaveBeenCalledTimes(1);
@@ -63,18 +63,18 @@ describe('EventManager', () => {
 
   it('Should be possible to cancel event by kind', () => {
     const cb = jest.fn();
-    eventManager.on('change', cb);
-    eventManager.emit('change', 1);
-    eventManager.cancelEmit('change');
+    eventManager.on(Event.Change, cb);
+    eventManager.emit(Event.Change, 1);
+    eventManager.cancelEmit(Event.Change);
     jest.runAllTimers();
     expect(cb).not.toHaveBeenCalled();
   });
 
   it('Should be able to remove event', () => {
-    eventManager.on('change', () => {});
+    eventManager.on(Event.Change, () => {});
     expect(eventManager.list.size).toBe(1);
 
-    eventManager.off('change');
+    eventManager.off(Event.Change);
     expect(eventManager.list.size).toBe(0);
   });
 });

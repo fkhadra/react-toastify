@@ -1,7 +1,13 @@
 import { WithInjectedOptions, ToastId, ToastContent } from '../types';
 import { ContainerInstance } from '../hooks';
 
-export type Event = 'show' | 'clear' | 'didMount' | 'willUnmount' | 'change';
+export const enum Event {
+  Show,
+  Clear,
+  DidMount,
+  WillUnmount,
+  Change
+}
 
 type OnShowCallback = (
   content: ToastContent,
@@ -25,22 +31,22 @@ type TimeoutId = ReturnType<typeof window.setTimeout>;
 export interface EventManager {
   list: Map<Event, Callback[]>;
   emitQueue: Map<Event, TimeoutId[]>;
-  on(event: 'show', callback: OnShowCallback): EventManager;
-  on(event: 'clear', callback: OnClearCallback): EventManager;
-  on(event: 'didMount', callback: OnDidMountCallback): EventManager;
-  on(event: 'willUnmount', callback: OnWillUnmountCallback): EventManager;
-  on(event: 'change', callback: OnChangeCallback): EventManager;
+  on(event: Event.Show, callback: OnShowCallback): EventManager;
+  on(event: Event.Clear, callback: OnClearCallback): EventManager;
+  on(event: Event.DidMount, callback: OnDidMountCallback): EventManager;
+  on(event: Event.WillUnmount, callback: OnWillUnmountCallback): EventManager;
+  on(event: Event.Change, callback: OnChangeCallback): EventManager;
   off(event: Event, callback?: Callback): EventManager;
   cancelEmit(event: Event): EventManager;
   emit(
-    event: 'show',
+    event: Event.Show,
     content: React.ReactNode,
     options: WithInjectedOptions
   ): void;
-  emit(event: 'clear', id?: string | number): void;
-  emit(event: 'didMount', containerInstance: ContainerInstance): void;
-  emit(event: 'willUnmount', containerInstance: ContainerInstance): void;
-  emit(event: 'change', toast: number, containerId?: number | string): void;
+  emit(event: Event.Clear, id?: string | number): void;
+  emit(event: Event.DidMount, containerInstance: ContainerInstance): void;
+  emit(event: Event.WillUnmount, containerInstance: ContainerInstance): void;
+  emit(event: Event.Change, toast: number, containerId?: number | string): void;
 }
 
 export const eventManager: EventManager = {

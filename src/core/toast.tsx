@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 
 import { POSITION, TYPE, canUseDom, isStr, isNum, isFn } from '../utils';
-import { eventManager, OnChangeCallback } from '.';
+import { eventManager, OnChangeCallback, Event } from '.';
 import {
   ToastContent,
   ToastOptions,
@@ -80,7 +80,7 @@ function dispatchToast(
   options: WithInjectedOptions
 ): ToastId {
   if (isAnyContainerMounted()) {
-    eventManager.emit('show', content, options);
+    eventManager.emit(Event.Show, content, options);
   } else {
     queue.push({ content, options });
     if (lazy && canUseDom) {
@@ -132,7 +132,7 @@ toast.warn = toast.warning;
  * Remove toast programmaticaly
  */
 toast.dismiss = (id?: ToastId) =>
-  isAnyContainerMounted() && eventManager.emit('clear', id);
+  isAnyContainerMounted() && eventManager.emit(Event.Clear, id);
 
 /**
  * return true if one container is displaying the toast
@@ -192,10 +192,10 @@ toast.done = (id: ToastId) => {
  */
 toast.onChange = (callback: OnChangeCallback) => {
   if (isFn(callback)) {
-    eventManager.on('change', callback);
+    eventManager.on(Event.Change, callback);
   }
   return () => {
-    isFn(callback) && eventManager.off('change', callback);
+    isFn(callback) && eventManager.off(Event.Change, callback);
   };
 };
 
@@ -215,21 +215,21 @@ toast.TYPE = TYPE;
  * and attach isActive method
  */
 eventManager
-  .on('didMount', (containerInstance: ContainerInstance) => {
+  .on(Event.DidMount, (containerInstance: ContainerInstance) => {
     latestInstance = containerInstance.containerId || containerInstance;
     containers.set(latestInstance, containerInstance);
 
     queue.forEach(item => {
-      eventManager.emit('show', item.content, item.options);
+      eventManager.emit(Event.Show, item.content, item.options);
     });
 
     queue = [];
   })
-  .on('willUnmount', (containerInstance: ContainerInstance) => {
+  .on(Event.WillUnmount, (containerInstance: ContainerInstance) => {
     containers.delete(containerInstance.containerId || containerInstance);
 
     if (containers.size === 0) {
-      eventManager.off('show').off('clear');
+      eventManager.off(Event.Show).off(Event.Clear);
     }
 
     if (canUseDom && containerDomNode) {

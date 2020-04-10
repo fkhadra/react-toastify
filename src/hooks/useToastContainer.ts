@@ -5,7 +5,7 @@ import {
   cloneElement,
   isValidElement
 } from 'react';
-import { eventManager } from '../core';
+import { eventManager, Event } from '../core';
 import {
   parseClassName,
   canBeRendered,
@@ -77,12 +77,12 @@ export function useToastContainer(props: ToastContainerProps) {
   useEffect(() => {
     instance.containerId = props.containerId;
     eventManager
-      .cancelEmit('willUnmount')
-      .on('show', buildToast)
-      .on('clear', toastId => containerRef.current && removeToast(toastId))
-      .emit('didMount', instance);
+      .cancelEmit(Event.WillUnmount)
+      .on(Event.Show, buildToast)
+      .on(Event.Clear, toastId => containerRef.current && removeToast(toastId))
+      .emit(Event.DidMount, instance);
 
-    return () => eventManager.emit('willUnmount', instance);
+    return () => eventManager.emit(Event.WillUnmount, instance);
   }, []);
 
   useEffect(() => {
@@ -92,7 +92,7 @@ export function useToastContainer(props: ToastContainerProps) {
   useEffect(() => {
     instance.isToastActive = isToastActive;
     instance.toastCount = toast.length;
-    eventManager.emit('change', toast.length, props.containerId);
+    eventManager.emit(Event.Change, toast.length, props.containerId);
   }, [toast]);
 
   function isToastActive(id: ToastId) {
