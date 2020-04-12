@@ -16,9 +16,8 @@ import {
 } from '../utils';
 
 import {
-  ToastId,
+  Id,
   ToastContainerProps,
-  ContainerId,
   WithInjectedOptions,
   ToastContent,
   Toast,
@@ -26,18 +25,18 @@ import {
 } from '../types';
 import { useKeeper } from './useKeeper';
 
-type State = Array<ToastId>;
+type State = Array<Id>;
 type Action =
-  | { type: 'ADD'; toastId: ToastId; staleId?: ToastId }
-  | { type: 'REMOVE'; toastId?: ToastId };
+  | { type: 'ADD'; toastId: Id; staleId?: Id }
+  | { type: 'REMOVE'; toastId?: Id };
 
-type CollectionItem = Record<ToastId, Toast>;
+type CollectionItem = Record<Id, Toast>;
 type ToastToRender = Partial<Record<ToastPosition, Toast[]>>;
 
 interface QueuedToast {
   toastContent: ToastContent;
   toastOptions: WithInjectedOptions;
-  staleId?: ToastId;
+  staleId?: Id;
 }
 
 function reducer(state: State, action: Action) {
@@ -55,9 +54,9 @@ export interface ContainerInstance {
   toastKey: number;
   toastCount: number;
   props: ToastContainerProps;
-  containerId?: ContainerId | null;
-  isToastActive: (toastId: ToastId) => boolean;
-  getToast: (id: ToastId) => Toast | null;
+  containerId?: Id | null;
+  isToastActive: (toastId: Id) => boolean;
+  getToast: (id: Id) => Toast | null;
 }
 
 export function useToastContainer(props: ToastContainerProps) {
@@ -95,11 +94,11 @@ export function useToastContainer(props: ToastContainerProps) {
     eventManager.emit(Event.Change, toast.length, props.containerId);
   }, [toast]);
 
-  function isToastActive(id: ToastId) {
+  function isToastActive(id: Id) {
     return toast.indexOf(id) !== -1;
   }
 
-  function removeToast(toastId?: ToastId) {
+  function removeToast(toastId?: Id) {
     dispatch({ type: 'REMOVE', toastId });
 
     if (queue.length > 0) {
@@ -234,7 +233,7 @@ export function useToastContainer(props: ToastContainerProps) {
   function appendToast(
     content: ToastContent,
     options: WithInjectedOptions,
-    staleId?: ToastId
+    staleId?: Id
   ) {
     const { toastId } = options;
 

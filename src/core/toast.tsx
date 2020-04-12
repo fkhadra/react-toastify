@@ -7,9 +7,7 @@ import {
   ToastContent,
   ToastOptions,
   WithInjectedOptions,
-  ToastId,
-  //TypeOptions,
-  ContainerId,
+  Id,
   ToastContainerProps,
   UpdateOptions
 } from '../types';
@@ -21,8 +19,8 @@ interface EnqueuedToast {
   options: WithInjectedOptions;
 }
 
-let containers = new Map<ContainerInstance | ContainerId, ContainerInstance>();
-let latestInstance: ContainerInstance | ContainerId;
+let containers = new Map<ContainerInstance | Id, ContainerInstance>();
+let latestInstance: ContainerInstance | Id;
 let containerDomNode: HTMLElement;
 let containerConfig: ToastContainerProps;
 let queue: EnqueuedToast[] = [];
@@ -38,7 +36,7 @@ function isAnyContainerMounted() {
 /**
  * Get the container by id. Returns the last container declared when no id is given.
  */
-function getContainer(containerId?: ContainerId) {
+function getContainer(containerId?: Id) {
   if (!isAnyContainerMounted()) return null;
   return containers.get(!containerId ? latestInstance : containerId);
 }
@@ -46,7 +44,7 @@ function getContainer(containerId?: ContainerId) {
 /**
  * Get the toast by id, given it's in the DOM, otherwise returns null
  */
-function getToast(toastId: ToastId, { containerId }: ToastOptions) {
+function getToast(toastId: Id, { containerId }: ToastOptions) {
   const container = getContainer(containerId);
   if (!container) return null;
 
@@ -78,7 +76,7 @@ function getToastId(options?: ToastOptions) {
 function dispatchToast(
   content: ToastContent,
   options: WithInjectedOptions
-): ToastId {
+): Id {
   if (isAnyContainerMounted()) {
     eventManager.emit(Event.Show, content, options);
   } else {
@@ -131,13 +129,13 @@ toast.warn = toast.warning;
 /**
  * Remove toast programmaticaly
  */
-toast.dismiss = (id?: ToastId) =>
+toast.dismiss = (id?: Id) =>
   isAnyContainerMounted() && eventManager.emit(Event.Clear, id);
 
 /**
  * return true if one container is displaying the toast
  */
-toast.isActive = (id: ToastId) => {
+toast.isActive = (id: Id) => {
   let isToastActive = false;
 
   containers.forEach(container => {
@@ -149,7 +147,7 @@ toast.isActive = (id: ToastId) => {
   return isToastActive;
 };
 
-toast.update = (toastId: ToastId, options: UpdateOptions = {}) => {
+toast.update = (toastId: Id, options: UpdateOptions = {}) => {
   // if you call toast and toast.update directly nothing will be displayed
   // this is why I defered the update
   setTimeout(() => {
@@ -180,7 +178,7 @@ toast.update = (toastId: ToastId, options: UpdateOptions = {}) => {
 /**
  * Used for controlled progress bar.
  */
-toast.done = (id: ToastId) => {
+toast.done = (id: Id) => {
   toast.update(id, {
     progress: 1
   });

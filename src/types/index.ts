@@ -15,10 +15,8 @@ export interface Toast {
   options: WithInjectedOptions;
 }
 
-type Id = number | string;
+export type Id = number | string;
 type ClassName = string | null;
-export type ToastId = Id;
-export type ContainerId = Id;
 
 interface CommonOptions {
   /**
@@ -120,7 +118,7 @@ interface CommonOptions {
   /**
    * Set id to handle multiple container
    */
-  containerId?: ContainerId;
+  containerId?: Id;
 
   /**
    * Fired when clicking inside toaster
@@ -159,12 +157,12 @@ export interface ToastOptions extends CommonOptions {
   /**
    * Set a custom `toastId`
    */
-  toastId?: ToastId;
+  toastId?: Id;
 
   /**
    * Used during update
    */
-  updateId?: ToastId;
+  updateId?: Id;
 
   /**
    * Set the percentage for the controlled progress bar. `Value must be between 0 and 1.`
@@ -178,8 +176,8 @@ export interface ToastOptions extends CommonOptions {
 }
 
 export interface WithInjectedOptions extends ToastOptions {
-  staleId?: ToastId;
-  toastId: ToastId;
+  staleId?: Id;
+  toastId: Id;
   key: Id;
   closeToast: () => void;
   position: ToastPosition;

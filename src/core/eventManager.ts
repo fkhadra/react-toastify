@@ -1,4 +1,4 @@
-import { WithInjectedOptions, ToastId, ToastContent } from '../types';
+import { WithInjectedOptions, Id, ToastContent } from '../types';
 import { ContainerInstance } from '../hooks';
 
 export const enum Event {
@@ -13,7 +13,7 @@ type OnShowCallback = (
   content: ToastContent,
   options: WithInjectedOptions
 ) => void;
-type OnClearCallback = (id?: ToastId) => void;
+type OnClearCallback = (id?: Id) => void;
 type OnDidMountCallback = (containerInstance: ContainerInstance) => void;
 type OnWillUnmountCallback = OnDidMountCallback;
 export type OnChangeCallback = (
