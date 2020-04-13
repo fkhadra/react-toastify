@@ -12,12 +12,20 @@ import { ToastContainerProps, ToastPosition } from '../types';
 
 export const ToastContainer: React.FC<ToastContainerProps> = props => {
   const { getToastToRender, containerRef } = useToastContainer(props);
-  const { className, style, rtl, containerId } = props;
+  const {
+    className,
+    style,
+    rtl,
+    containerId,
+    groupClassName,
+    groupStyle
+  } = props;
 
   return (
     <div
       ref={containerRef}
-      className={`${RT_NAMESPACE}`}
+      className={cx(RT_NAMESPACE, parseClassName(className))}
+      style={style}
       id={containerId as string}
     >
       {getToastToRender((position, toastList) => {
@@ -26,12 +34,12 @@ export const ToastContainer: React.FC<ToastContainerProps> = props => {
             `${RT_NAMESPACE}__toast-container`,
             `${RT_NAMESPACE}__toast-container--${position}`,
             { [`${RT_NAMESPACE}__toast-container--rtl`]: rtl },
-            parseClassName(className)
+            parseClassName(groupClassName)
           ),
           style:
             toastList.length === 0
-              ? { ...style, pointerEvents: 'none' }
-              : { ...style }
+              ? { ...groupStyle, pointerEvents: 'none' }
+              : { ...groupStyle }
         } as any;
 
         return (

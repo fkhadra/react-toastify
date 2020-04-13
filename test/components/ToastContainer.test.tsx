@@ -262,6 +262,21 @@ describe('ToastContainer', () => {
     expect(container.innerHTML).toMatch(/style="background: red;"/);
   });
 
+  it('Should allow to define className and style on group', () => {
+    const { container } = render(
+      <ToastContainer groupClassName="foo" groupStyle={{ background: 'red' }} />
+    );
+
+    act(() => {
+      toast('hello');
+      jest.runAllTimers();
+    });
+
+    expect(container.innerHTML).toMatch(/foo/);
+    expect(container.innerHTML).toMatch(/style="background: red;"/);
+  });
+
+
   it('Should pass a closeToast function when displaying a react component', done => {
     render(<ToastContainer />);
     const Msg = (props: any) => {

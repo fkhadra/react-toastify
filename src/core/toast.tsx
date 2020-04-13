@@ -151,7 +151,7 @@ toast.update = (toastId: Id, options: UpdateOptions = {}) => {
   // if you call toast and toast.update directly nothing will be displayed
   // this is why I defered the update
   setTimeout(() => {
-    const toast = getToast(toastId, options);
+    const toast = getToast(toastId, options as ToastOptions);
     if (toast) {
       const { options: oldOptions, content: oldContent } = toast;
 
