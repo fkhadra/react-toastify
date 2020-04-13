@@ -8,7 +8,8 @@
     "build": "parcel build index.html"
   },
   "dependencies": {
-    "react-app-polyfill": "^1.0.0"
+    "react-app-polyfill": "^1.0.0",
+    "styled-components": "^5.1.0"
   },
   "alias": {
     "react": "../node_modules/react",
@@ -21,6 +22,7 @@
     "@babel/preset-react": "^7.8.3",
     "@types/react": "^16.9.11",
     "@types/react-dom": "^16.8.4",
+    "@types/styled-components": "^5.0.1",
     "parcel": "^1.12.3",
     "sass": "^1.25.0",
     "typescript": "^3.4.5"
