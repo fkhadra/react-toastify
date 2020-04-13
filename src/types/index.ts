@@ -1,5 +1,9 @@
 import * as React from 'react';
 
+type Nullable<T> = {
+  [P in keyof T]: T[P] | null;
+};
+
 export type ToastPosition =
   | 'top-right'
   | 'top-center'
@@ -191,7 +195,7 @@ export interface WithInjectedOptions extends ToastOptions {
   // transition: Transition;
 }
 
-export interface UpdateOptions extends ToastOptions {
+export interface UpdateOptions extends Nullable<ToastOptions> {
   /**
    * Used to update a toast.
    * Pass any valid ReactNode(string, number, component)

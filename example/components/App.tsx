@@ -13,7 +13,7 @@ import {
   Slide,
   Flip,
   Zoom,
-  ToastId
+  Id
 } from '../../src/index';
 import '../../scss/main.scss';
 
@@ -65,7 +65,7 @@ const transitions = {
 
 class App extends React.Component {
   state = App.getDefaultState();
-  toastId: ToastId;
+  toastId: Id;
   
   static getDefaultState() {
     return {
