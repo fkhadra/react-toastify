@@ -7,7 +7,7 @@ import { cssClasses } from '../helpers';
 import { eventManager, toast, Event } from '../../src/core';
 import { ContainerInstance } from '../../src/hooks';
 import { RT_NAMESPACE } from '../../src/utils';
-import { ToastId } from '../../src/types';
+import { Id } from '../../src/types';
 import { ToastContainer } from '../../src/components';
 
 jest.useFakeTimers();
@@ -125,7 +125,7 @@ describe('toastify', () => {
   });
 
   it('Should not use the provided invalid toastId from options', () => {
-    const toastId = (Symbol('myId') as unknown) as ToastId;
+    const toastId = (Symbol('myId') as unknown) as Id;
     const id = toast('Hello', { toastId });
 
     expect(id).not.toEqual(toastId);
@@ -199,7 +199,7 @@ describe('toastify', () => {
 
   it('Should be able remove toast programmatically', () => {
     const { queryByText } = render(<ToastContainer />);
-    let id: ToastId;
+    let id: Id;
     act(() => {
       id = toast('hello');
       jest.runAllTimers();
@@ -218,7 +218,7 @@ describe('toastify', () => {
   describe('update function', () => {
     it('Should be able to update an existing toast', () => {
       const { queryByText } = render(<ToastContainer />);
-      let id: ToastId;
+      let id: Id;
 
       act(() => {
         id = toast('hello');
@@ -240,7 +240,7 @@ describe('toastify', () => {
 
     it('Should be able to update the same toast many times', () => {
       const { queryByText } = render(<ToastContainer />);
-      let id: ToastId;
+      let id: Id;
 
       act(() => {
         id = toast('hello');
@@ -270,7 +270,7 @@ describe('toastify', () => {
 
     it('Should be able to update a Toast and keep the same content', () => {
       const { queryByText } = render(<ToastContainer />);
-      let id: ToastId;
+      let id: Id;
       act(() => {
         id = toast('hello');
         jest.runAllTimers();
@@ -344,7 +344,7 @@ describe('toastify', () => {
           <ToastContainer containerId="second" enableMultiContainer />
         </>
       );
-      let firstId: ToastId, secondId: ToastId;
+      let firstId: Id, secondId: Id;
 
       act(() => {
         firstId = toast('hello first', { containerId: 'first' });
@@ -459,7 +459,7 @@ describe('toastify', () => {
 
     it('When `toast.done` is called, it should set scaleX to 1', () => {
       const { container, queryByText } = render(<ToastContainer />);
-      let id: ToastId;
+      let id: Id;
 
       act(() => {
         id = toast('hello', {
