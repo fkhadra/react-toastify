@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0",
+  "version": "6.0.0",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -22,12 +22,12 @@
   ],
   "scripts": {
     "start": "cd example && npm run start",
-    "build": "tsdx build && npm run style",
+    "build": "npm run prepare",
     "test": "tsdx test --passWithNoTests",
     "test:coverage": "tsdx test --coverage",
     "ci": "npm run lint && npm run test:coverage && cat ./coverage/lcov.info | coveralls",
     "lint": "tsdx lint src",
-    "prepare": "tsdx build",
+    "prepare": "tsdx build && npm run style",
     "sass": "sass scss/main.scss dist/ReactToastify.css",
     "sass-minimal": "sass scss/minimal.scss dist/ReactToastify.minimal.css",
     "postsass": "postcss dist/ReactToastify.css --use autoprefixer -m -o dist/ReactToastify.css",
