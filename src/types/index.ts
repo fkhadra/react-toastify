@@ -13,8 +13,8 @@ export type ToastPosition =
   | 'bottom-left';
 
 export interface ToastContentProps {
-  closeToast?: () => void
-}  
+  closeToast?: () => void;
+}
 export type TypeOptions = 'info' | 'success' | 'warning' | 'error' | 'default';
 export type ToastContent =
   | React.ReactNode
