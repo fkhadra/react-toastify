@@ -12,8 +12,13 @@ export type ToastPosition =
   | 'bottom-center'
   | 'bottom-left';
 
+export interface ToastContentProps {
+  closeToast?: () => void
+}  
 export type TypeOptions = 'info' | 'success' | 'warning' | 'error' | 'default';
-export type ToastContent = React.ReactNode | ((props: { closeToast: () => void }) => React.ReactNode)
+export type ToastContent =
+  | React.ReactNode
+  | ((props: ToastContentProps) => React.ReactNode);
 export interface Toast {
   content: ToastContent;
   options: WithInjectedOptions;
