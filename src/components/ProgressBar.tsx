@@ -1,19 +1,57 @@
 import React, { CSSProperties } from 'react';
-import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 import { TYPE, RT_NAMESPACE, TypeOptions } from './../utils';
 
 export interface ProgressBarProps {
+  /**
+   * The animation delay which determine when to close the toast
+   */
   delay: number;
+
+  /**
+   * Whether or not the animation is running or paused
+   */
   isRunning: boolean;
+
+  /**
+   * Func to close the current toast
+   */
   closeToast: () => void;
+
+  /**
+   * Optional type : info, success ...
+   */
   type: TypeOptions;
+
+  /**
+   * Hide or not the progress bar
+   */
   hide?: boolean;
+
+  /**
+   * Optionnal className
+   */
   className?: string | null;
+
+  /**
+   * Optionnal inline style
+   */
   style?: CSSProperties;
+
+  /**
+   * Tell wether or not controlled progress bar is used
+   */
   controlledProgress?: boolean;
+
+  /**
+   * Controlled progress value
+   */
   progress?: number | string;
+
+  /**
+   * Support rtl content
+   */
   rtl?: boolean;
 }
 
@@ -62,53 +100,6 @@ export function ProgressBar({
 
   return <div className={classNames} style={style} {...animationEvent} />;
 }
-
-ProgressBar.propTypes = {
-  /**
-   * The animation delay which determine when to close the toast
-   */
-  delay: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]).isRequired,
-
-  /**
-   * Whether or not the animation is running or paused
-   */
-  isRunning: PropTypes.bool.isRequired,
-
-  /**
-   * Func to close the current toast
-   */
-  closeToast: PropTypes.func.isRequired,
-
-  /**
-   * Support rtl content
-   */
-  rtl: PropTypes.bool.isRequired,
-
-  /**
-   * Optional type : info, success ...
-   */
-  type: PropTypes.string,
-
-  /**
-   * Hide or not the progress bar
-   */
-  hide: PropTypes.bool,
-
-  /**
-   * Optionnal className
-   */
-  className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-
-  /**
-   * Controlled progress value
-   */
-  progress: PropTypes.number,
-
-  /**
-   * Tell wether or not controlled progress bar is used
-   */
-  controlledProgress: PropTypes.bool
-};
 
 ProgressBar.defaultProps = {
   type: TYPE.DEFAULT,

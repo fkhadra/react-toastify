@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { RT_NAMESPACE, TypeOptions } from '../utils';
 
 export interface CloseButtonProps {
@@ -28,11 +27,6 @@ export function CloseButton({ closeToast, type, ariaLabel }: CloseButtonProps) {
     </button>
   );
 }
-
-CloseButton.propTypes = {
-  closeToast: PropTypes.func,
-  ariaLabel: PropTypes.string
-};
 
 CloseButton.defaultProps = {
   ariaLabel: 'close'

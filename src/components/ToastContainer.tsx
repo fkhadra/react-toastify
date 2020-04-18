@@ -64,120 +64,37 @@ export const ToastContainer: React.FC<ToastContainerProps> = props => {
   );
 };
 
-// @ts-ignore
 ToastContainer.propTypes = {
-  /**
-   * Set toast position
-   */
+  // @ts-ignore
   position: PropTypes.oneOf(objectValues(POSITION)),
 
-  /**
-   * Disable or set autoClose delay
-   */
+  // @ts-ignore
   autoClose: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
 
-  /**
-   * Disable or set a custom react element for the close button
-   */
+  // @ts-ignore
   closeButton: PropTypes.oneOfType([
     PropTypes.node,
     PropTypes.bool,
     PropTypes.func
   ]),
-
-  /**
-   * Hide or not progress bar when autoClose is enabled
-   */
   hideProgressBar: PropTypes.bool,
-
-  /**
-   * Pause toast duration on hover
-   */
   pauseOnHover: PropTypes.bool,
-
-  /**
-   * Dismiss toast on click
-   */
   closeOnClick: PropTypes.bool,
-
-  /**
-   * Newest on top
-   */
   newestOnTop: PropTypes.bool,
-
-  /**
-   * An optional className
-   */
-  className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-
-  /**
-   * An optional style
-   */
+  className: PropTypes.string,
   style: PropTypes.object,
-
-  /**
-   * An optional className for the toast
-   */
-  toastClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-
-  /**
-   * An optional className for the toast body
-   */
-  bodyClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-
-  /**
-   * An optional className for the toast progress bar
-   */
-  progressClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-
-  /**
-   * An optional style for the toast progress bar
-   */
+  toastClassName: PropTypes.string,
+  bodyClassName: PropTypes.string,
+  progressClassName: PropTypes.string,
   progressStyle: PropTypes.object,
-
-  /**
-   * Define enter and exit transition using react-transition-group
-   */
   transition: PropTypes.func,
-
-  /**
-   * Support rtl display
-   */
   rtl: PropTypes.bool,
-
-  /**
-   * Allow toast to be draggable
-   */
   draggable: PropTypes.bool,
-
-  /**
-   * The percentage of the toast's width it takes for a drag to dismiss a toast
-   */
   draggablePercent: PropTypes.number,
-
-  /**
-   * Pause the toast on focus loss
-   */
   pauseOnFocusLoss: PropTypes.bool,
-
-  /**
-   * Show the toast only if it includes containerId and it's the same as containerId
-   */
   enableMultiContainer: PropTypes.bool,
-
-  /**
-   * Set id to handle multiple container
-   */
   containerId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-
-  /**
-   * Set role attribute for the toast body
-   */
   role: PropTypes.string,
-
-  /**
-   * Fired when clicking inside toaster
-   */
   onClick: PropTypes.func
 };
 
