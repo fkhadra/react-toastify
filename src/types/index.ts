@@ -216,19 +216,9 @@ export interface ToastContainerProps extends CommonOptions {
   newestOnTop?: boolean;
 
   /**
-   * An optional css class for the TransitionGroup
-   */
-  groupClassName?: ClassName;
-
-  /**
    * An optional inline style to apply.
    */
   style?: React.CSSProperties;
-
-  /**
-   * An optional inline style to apply for the TransitionGroup
-   */
-  groupStyle?: React.CSSProperties;
 
   /**
    * An optional inline style to apply for the toast.

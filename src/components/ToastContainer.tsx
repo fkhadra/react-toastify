@@ -12,34 +12,22 @@ import { ToastContainerProps, ToastPosition } from '../types';
 
 export const ToastContainer: React.FC<ToastContainerProps> = props => {
   const { getToastToRender, containerRef } = useToastContainer(props);
-  const {
-    className,
-    style,
-    rtl,
-    containerId,
-    groupClassName,
-    groupStyle
-  } = props;
+  const { className, style, rtl, containerId } = props;
 
   return (
-    <div
-      ref={containerRef}
-      className={cx(RT_NAMESPACE, parseClassName(className))}
-      style={style}
-      id={containerId as string}
-    >
+    <div ref={containerRef} className={RT_NAMESPACE} id={containerId as string}>
       {getToastToRender((position, toastList) => {
         const swag = {
           className: cx(
             `${RT_NAMESPACE}__toast-container`,
             `${RT_NAMESPACE}__toast-container--${position}`,
             { [`${RT_NAMESPACE}__toast-container--rtl`]: rtl },
-            parseClassName(groupClassName)
+            parseClassName(className)
           ),
           style:
             toastList.length === 0
-              ? { ...groupStyle, pointerEvents: 'none' }
-              : { ...groupStyle }
+              ? { ...style, pointerEvents: 'none' }
+              : { ...style }
         } as any;
 
         return (
@@ -64,6 +52,7 @@ export const ToastContainer: React.FC<ToastContainerProps> = props => {
   );
 };
 
+// @ts-ignore
 ToastContainer.propTypes = {
   // @ts-ignore
   position: PropTypes.oneOf(objectValues(POSITION)),
