@@ -136,8 +136,6 @@ class App extends React.Component {
   }
 
   render() {
-    console.log({ state: this.state });
-    
     return (
       <main>
         <Header />
