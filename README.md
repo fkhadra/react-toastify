@@ -1,5 +1,7 @@
 # React-Toastify
 
+> 🚀 Hey v6 release candidate is out! Wanna try it? You can try it [now](https://github.com/fkhadra/react-toastify/releases/tag/v6.0.0-rc.0)!
+
 [![Financial Contributors on Open Collective](https://opencollective.com/react-toastify/all/badge.svg?label=financial+contributors)](https://opencollective.com/react-toastify) ![Travis (.org)](https://img.shields.io/travis/fkhadra/react-toastify.svg?label=%F0%9F%9A%A7Build&style=for-the-badge)
 ![npm](https://img.shields.io/npm/dm/react-toastify.svg?label=%E2%8F%ACdownloads&style=for-the-badge)
 ![npm](https://img.shields.io/npm/v/react-toastify.svg?style=for-the-badge)
@@ -8,7 +10,7 @@
 ![React toastify](https://user-images.githubusercontent.com/5574267/35336500-e58f35b6-0118-11e8-800b-2da6594fc700.gif "React toastify")
 
 
-🎉 React-Toastify allow you to add notification to your app with ease. No more nonsense!
+🎉 React-Toastify allows you to add notifications to your app with ease. No more nonsense!
 
   - [Demo](#demo)
   - [Installation](#installation)
@@ -80,7 +82,7 @@ $ yarn add react-toastify
 
 ## Features
 
-- Easy to setup for real, you can make it work in less than 10sec!
+- Easy to set up for real, you can make it work in less than 10sec!
 - Super easy to customize
 - RTL support
 - Swipe to close 👌
@@ -88,10 +90,10 @@ $ yarn add react-toastify
 - Has ```onOpen``` and ```onClose``` hooks. Both can access the props passed to the react component rendered inside the toast
 - Can remove a toast programmatically
 - Define behavior per toast
-- Pause toast when window loses focus 👁
+- Pause toast when the window loses focus 👁
 - Fancy progress bar to display the remaining time
 - Possibility to update a toast
-- You can control the progress bar and the progress 😲
+- You can control the progress bar a la `nprogress` 😲
 - Starting v5 the `ToastContainer` is optional if you want to 😎
 
 ## Usage
@@ -148,8 +150,8 @@ The library will mount a `ToastContainer` for you if none is mounted.
 
 #### Configure the ToastContainer when it is mounted on demand
 
-The configure function accept the same props as the ToastContainer. As soon as the container is
-rendered call to configure will have no effect.
+The configure function accepts the same props as the ToastContainer. As soon as the container is
+rendered, the call to configure will have no effect.
 
 ```js
 toast.configure({
@@ -208,6 +210,7 @@ A simple example to demonstrate multi toast container capability.
 By default, all the toasts will be positioned on the top right of your browser. If a position is set on a `toast`, the one defined on ToastContainer will be replaced.
 
 The following values are allowed: **top-right, top-center, top-left, bottom-right, bottom-center, bottom-left**
+
 
 For convenience, `toast` exposes a POSITION property to avoid typos.
 
@@ -303,7 +306,7 @@ For convenience, `toast` exposes a POSITION property to avoid typos.
 
 ### Render a component
 
-When you render a component, a `closeToast` function is passed as a props. That way you can close the toast on user interaction for example.
+When you render a component, a `closeToast` function is passed as a prop. That way you can close the toast on user interaction for example.
 
 ```js
 import React from 'react';
@@ -441,7 +444,7 @@ To prevent duplicates, you can check if a given toast is active by calling `toas
 
 ### Delay notification appearance
 
-You can delay the notification appearance as shown below. Under the hood the lib simply use `setTimeout`. 
+You can delay the notification appearance as shown below. Under the hood, the library simply uses `setTimeout`. 
 
 ```js
 toast('Show now');
@@ -452,7 +455,9 @@ _Note: [toast.dismiss()](#remove-a-toast-programmatically) has no effect if call
 
 ### Use a controlled progress bar
 
+
 Imagine you want to see the progress of a file upload. The example below features [axios](https://github.com/axios/axios), but it works with anything!
+
 
 ```javascript
   import React, { Component } from 'react';
@@ -639,7 +644,7 @@ class Update extends Component {
 
 ### Define callback
 
-You can define two callbacks on `toast`. They are really useful when the toast are not used only to display messages.
+You can define two callbacks on `toast`. They are really useful when the toast is not used only to display messages.
 
 - onOpen is called inside componentDidMount
 - onClose is called inside componentWillUnmount
@@ -660,14 +665,14 @@ You can define two callbacks on `toast`. They are really useful when the toast a
   }
 ```
 
-### Listen for change
+### Listen for changes
 
 If you want to know when a toast is displayed or removed, `toast` expose a `onChange` method:
 
 ```js
 toast.onChange( (numberOfToastDisplayed, containerId) => {
   // Do whatever you want
-  // The containerId is usefull when working with multiple containers
+  // The containerId is useful when working with multiple containers
 });
 ```
 
@@ -678,7 +683,7 @@ toast.onChange( (numberOfToastDisplayed, containerId) => {
 You can pass a custom close button to the `ToastContainer` to replace the default one.
 
 ⚠️ **When you use a custom close button, your button will receive a ```closeToast``` function.
-You need to call it in order to close the toast.** ⚠️
+You need to call it to close the toast.** ⚠️
 
 ```javascript
   import React, { Component } from 'react';
@@ -756,7 +761,7 @@ Sometimes you don't want to display a close button. It can be removed globally o
     })
 ```
 
-### Add an undo option to a toast like google drive
+### Add an undo option to a toast (like Google Drive)
 
 See it in action:
 
@@ -856,7 +861,7 @@ class App extends Component {
 
 ### Replace the default transition
 
-There is 4 built-in transitions provided:
+There are 4 built-in transitions provided:
 
 <details>
   <summary>Bounce</summary>
@@ -877,7 +882,7 @@ There is 4 built-in transitions provided:
   <img src ="https://user-images.githubusercontent.com/5574267/38770380-9877dde4-4012-11e8-9485-0dc43346ce30.gif" />
 </details>
 
-Bounce is used by default but you can replace it by your own transition or by one of the list above:
+Bounce is used by default, but you can replace it with your own transition, or with one from the list above:
 
 
 ```js
@@ -896,7 +901,7 @@ You get the idea...
 
 ### Define a custom enter and exit transition
 
-The toast relies on `react-transition-group` for the enter and exit transition. Any transition built with react-transition-group should work !
+The toast relies on `react-transition-group` for the enter and exit transition. Any transition built with react-transition-group should work!
 
 ![toastify_custom_trans](https://user-images.githubusercontent.com/5574267/31049179-0d52e14c-a62e-11e7-9abd-b0d169a0fadc.gif)
 
@@ -1161,7 +1166,7 @@ toast("Custom style",{
 
 #### Right to left support
 
-Your app need to support rtl content? Set the rtl props to `true`:
+Does your app need to support rtl content? Set the rtl props to `true`:
 
 ```javascript
   render(){
@@ -1183,11 +1188,11 @@ import 'react-toastify/dist/ReactToastify.minimal.css';
 
 ### Mobile
 
-On mobile the toast will take all the available width.
+On mobile, the toast will take all the available width.
 
 ![react toastiy mobile](https://user-images.githubusercontent.com/5574267/28754040-ae7195ea-753d-11e7-86e1-f23c5e6bc531.gif)
 
-## Api
+## API
 
 ### ToastContainer
 
@@ -1337,7 +1342,7 @@ You can browse them all [here](https://github.com/fkhadra/react-toastify/release
 
 ## Contribute
 
-Show your ❤️ and support by giving a ⭐. Any suggestions are welcome ! Take a look at the contributing guide.
+Show your ❤️ and support by giving a ⭐. Any suggestions are welcome! Take a look at the contributing guide.
 
 You can also find me on [reactiflux](https://www.reactiflux.com/). My pseudo is Fadi.
 
