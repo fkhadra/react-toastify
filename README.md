@@ -1,5 +1,7 @@
 # React-Toastify
 
+> 🚀 Hey v6 release candidate is out! Wanna try it? You can try it [now](https://github.com/fkhadra/react-toastify/releases/tag/v6.0.0-rc.0)!
+
 [![Financial Contributors on Open Collective](https://opencollective.com/react-toastify/all/badge.svg?label=financial+contributors)](https://opencollective.com/react-toastify) ![Travis (.org)](https://img.shields.io/travis/fkhadra/react-toastify.svg?label=%F0%9F%9A%A7Build&style=for-the-badge)
 ![npm](https://img.shields.io/npm/dm/react-toastify.svg?label=%E2%8F%ACdownloads&style=for-the-badge)
 ![npm](https://img.shields.io/npm/v/react-toastify.svg?style=for-the-badge)
