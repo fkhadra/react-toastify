@@ -52,7 +52,7 @@ function reducer(state: State, action: Action) {
 
 export interface ContainerInstance {
   toastKey: number;
-  toastCount: number;
+  displayedToast: number;
   props: ToastContainerProps;
   containerId?: Id | null;
   isToastActive: (toastId: Id) => boolean;
@@ -66,7 +66,7 @@ export function useToastContainer(props: ToastContainerProps) {
   const collection = useKeeper<CollectionItem>({});
   const instance = useKeeper<ContainerInstance>({
     toastKey: 1,
-    toastCount: 0,
+    displayedToast: 0,
     props,
     containerId: null,
     isToastActive: isToastActive,
@@ -90,7 +90,7 @@ export function useToastContainer(props: ToastContainerProps) {
 
   useEffect(() => {
     instance.isToastActive = isToastActive;
-    instance.toastCount = toast.length;
+    instance.displayedToast = toast.length;
     eventManager.emit(Event.Change, toast.length, props.containerId);
   }, [toast]);
 
@@ -144,7 +144,7 @@ export function useToastContainer(props: ToastContainerProps) {
     if (!canBeRendered(content) || isNotValid(options)) return;
 
     const { toastId, updateId } = options;
-    const { props, toastCount, isToastActive } = instance;
+    const { props, displayedToast, isToastActive } = instance;
     const closeToast = () => removeToast(toastId);
     const toastOptions: WithInjectedOptions = {
       toastId,
@@ -217,7 +217,7 @@ export function useToastContainer(props: ToastContainerProps) {
     if (
       props.limit &&
       props.limit > 0 &&
-      toastCount === props.limit &&
+      displayedToast === props.limit &&
       !isToastActive(toastId)
     ) {
       queue.push({ toastContent, toastOptions, staleId });
