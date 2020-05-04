@@ -39,12 +39,16 @@ interface QueuedToast {
   staleId?: Id;
 }
 
+function hasToastId(toastId?: Id) {
+  return toastId === 0 || toastId;
+}
+
 function reducer(state: State, action: Action) {
   switch (action.type) {
     case 'ADD':
       return [...state, action.toastId].filter(id => id !== action.staleId);
     case 'REMOVE':
-      return action.toastId === 0 || action.toastId
+      return hasToastId(action.toastId)
         ? state.filter(id => id !== action.toastId)
         : [];
   }
@@ -62,6 +66,7 @@ export interface ContainerInstance {
 export function useToastContainer(props: ToastContainerProps) {
   const [toast, dispatch] = useReducer(reducer, []);
   const containerRef = useRef(null);
+  const toastCount = useRef(0);
   const queue = useKeeper<QueuedToast[]>([]);
   const collection = useKeeper<CollectionItem>({});
   const instance = useKeeper<ContainerInstance>({
@@ -85,34 +90,55 @@ export function useToastContainer(props: ToastContainerProps) {
   }, []);
 
   useEffect(() => {
-    instance.props = props;
-  });
-
-  useEffect(() => {
     instance.isToastActive = isToastActive;
     instance.displayedToast = toast.length;
     eventManager.emit(Event.Change, toast.length, props.containerId);
   }, [toast]);
+
+  useEffect(() => {
+    instance.props = props;
+  });
 
   function isToastActive(id: Id) {
     return toast.indexOf(id) !== -1;
   }
 
   function removeToast(toastId?: Id) {
-    dispatch({ type: 'REMOVE', toastId });
+    const queueLen = queue.length;
+    toastCount.current = hasToastId(toastId)
+      ? toastCount.current - 1
+      : toastCount.current - instance.displayedToast;
 
-    if (queue.length > 0) {
-      const {
-        toastContent,
-        toastOptions,
-        staleId
-      } = queue.shift() as QueuedToast;
-      // ensure that exit transition has been completed
-      // this could be tweaked
-      setTimeout(() => {
-        appendToast(toastContent, toastOptions, staleId);
-      }, 500);
+    if (toastCount.current < 0) toastCount.current = 0;
+
+    if (queueLen > 0) {
+      const freeSlot = hasToastId(toastId) ? 1 : instance.props.limit!;
+
+      if (queueLen === 1 || freeSlot === 1) {
+        instance.displayedToast++;
+        dequeueToast();
+      } else {
+        const toDequeue = freeSlot > queueLen ? queueLen : freeSlot;
+        instance.displayedToast = toDequeue;
+
+        for (let i = 0; i < toDequeue; i++) dequeueToast();
+      }
     }
+
+    dispatch({ type: 'REMOVE', toastId });
+  }
+
+  function dequeueToast() {
+    const {
+      toastContent,
+      toastOptions,
+      staleId
+    } = queue.shift() as QueuedToast;
+
+    // ensure that exit transition has been completed, hence the timeout
+    setTimeout(() => {
+      appendToast(toastContent, toastOptions, staleId);
+    }, 500);
   }
 
   /**
@@ -144,7 +170,7 @@ export function useToastContainer(props: ToastContainerProps) {
     if (!canBeRendered(content) || isNotValid(options)) return;
 
     const { toastId, updateId } = options;
-    const { props, displayedToast, isToastActive } = instance;
+    const { props, isToastActive } = instance;
     const closeToast = () => removeToast(toastId);
     const toastOptions: WithInjectedOptions = {
       toastId,
@@ -212,13 +238,16 @@ export function useToastContainer(props: ToastContainerProps) {
     } else if (isFn(content)) {
       toastContent = content({ closeToast });
     }
+    const isNotAnUpdate = !isToastActive(toastId);
+
+    if (isNotAnUpdate) toastCount.current++;
 
     // not handling limit + delay by design. Waiting for user feedback first
     if (
       props.limit &&
       props.limit > 0 &&
-      displayedToast === props.limit &&
-      !isToastActive(toastId)
+      toastCount.current > props.limit &&
+      isNotAnUpdate
     ) {
       queue.push({ toastContent, toastOptions, staleId });
     } else if (isNum(delay) && (delay as number) > 0) {
