@@ -1,4 +1,9 @@
-import { WithInjectedOptions, Id, ToastContent } from '../types';
+import {
+  WithInjectedOptions,
+  Id,
+  ToastContent,
+  ClearWaitingQueueParams
+} from '../types';
 import { ContainerInstance } from '../hooks';
 
 export const enum Event {
@@ -6,7 +11,8 @@ export const enum Event {
   Clear,
   DidMount,
   WillUnmount,
-  Change
+  Change,
+  ClearWaitingQueue
 }
 
 type OnShowCallback = (
@@ -14,6 +20,7 @@ type OnShowCallback = (
   options: WithInjectedOptions
 ) => void;
 type OnClearCallback = (id?: Id) => void;
+type OnClearWaitingQueue = (params: ClearWaitingQueueParams) => void;
 type OnDidMountCallback = (containerInstance: ContainerInstance) => void;
 type OnWillUnmountCallback = OnDidMountCallback;
 export type OnChangeCallback = (
@@ -23,6 +30,7 @@ export type OnChangeCallback = (
 type Callback =
   | OnShowCallback
   | OnClearCallback
+  | OnClearWaitingQueue
   | OnDidMountCallback
   | OnWillUnmountCallback
   | OnChangeCallback;
@@ -33,6 +41,10 @@ export interface EventManager {
   emitQueue: Map<Event, TimeoutId[]>;
   on(event: Event.Show, callback: OnShowCallback): EventManager;
   on(event: Event.Clear, callback: OnClearCallback): EventManager;
+  on(
+    event: Event.ClearWaitingQueue,
+    callback: OnClearWaitingQueue
+  ): EventManager;
   on(event: Event.DidMount, callback: OnDidMountCallback): EventManager;
   on(event: Event.WillUnmount, callback: OnWillUnmountCallback): EventManager;
   on(event: Event.Change, callback: OnChangeCallback): EventManager;
@@ -44,6 +56,7 @@ export interface EventManager {
     options: WithInjectedOptions
   ): void;
   emit(event: Event.Clear, id?: string | number): void;
+  emit(event: Event.ClearWaitingQueue, params: ClearWaitingQueueParams): void;
   emit(event: Event.DidMount, containerInstance: ContainerInstance): void;
   emit(event: Event.WillUnmount, containerInstance: ContainerInstance): void;
   emit(event: Event.Change, toast: number, containerId?: number | string): void;

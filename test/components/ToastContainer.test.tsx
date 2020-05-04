@@ -447,5 +447,43 @@ describe('ToastContainer', () => {
       expect(queryByText('toast-2')).not.toBe(null);
       expect(queryByText('toast-3')).not.toBe(null);
     });
+
+    it("Should be possible to clear limit queue", () => {
+      const { queryByText } = render(<ToastContainer limit={2} />);
+      const toastId = 'id';
+
+      act(() => {
+        toast('toast-1', { toastId });
+        toast('toast-2');
+        jest.runAllTimers();
+      });
+
+      act(() => {
+        toast('toast-3');
+        jest.runAllTimers();
+      });
+
+      expect(queryByText('toast-1')).not.toBe(null);
+      expect(queryByText('toast-2')).not.toBe(null);
+
+      expect(queryByText('toast-3')).toBe(null);
+
+      act(() => {
+        toast.clearWaitingQueue();
+        jest.runAllTimers();
+      });
+
+      act(() => {
+        toast.dismiss(toastId);
+        jest.runAllTimers();
+      });
+
+      expect(queryByText('toast-1')).toBe(null);
+
+      expect(queryByText('toast-2')).not.toBe(null);
+      expect(queryByText('toast-3')).toBe(null);
+
+
+    })
   });
 });

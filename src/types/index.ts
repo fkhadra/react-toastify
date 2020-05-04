@@ -27,6 +27,10 @@ export interface Toast {
 export type Id = number | string;
 type ClassName = string | null;
 
+export interface ClearWaitingQueueParams {
+  containerId?: Id;
+}
+
 interface CommonOptions {
   /**
    * Pause the timer when the mouse hover the toast.

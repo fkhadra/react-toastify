@@ -9,7 +9,8 @@ import {
   WithInjectedOptions,
   Id,
   ToastContainerProps,
-  UpdateOptions
+  UpdateOptions,
+  ClearWaitingQueueParams
 } from '../types';
 import { ContainerInstance } from 'hooks';
 import { ToastContainer } from '../components';
@@ -133,6 +134,12 @@ toast.dismiss = (id?: Id) =>
   isAnyContainerMounted() && eventManager.emit(Event.Clear, id);
 
 /**
+ * Clear waiting queue when limit is used
+ */
+toast.clearWaitingQueue = (params: ClearWaitingQueueParams = {}) =>
+  isAnyContainerMounted() && eventManager.emit(Event.ClearWaitingQueue, params);
+
+/**
  * return true if one container is displaying the toast
  */
 toast.isActive = (id: Id) => {
@@ -227,7 +234,10 @@ eventManager
     containers.delete(containerInstance.containerId || containerInstance);
 
     if (containers.size === 0) {
-      eventManager.off(Event.Show).off(Event.Clear);
+      eventManager
+        .off(Event.Show)
+        .off(Event.Clear)
+        .off(Event.ClearWaitingQueue);
     }
 
     if (canUseDom && containerDomNode) {
