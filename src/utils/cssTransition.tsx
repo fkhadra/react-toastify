@@ -1,6 +1,5 @@
 import React from 'react';
 import { Transition } from 'react-transition-group';
-import { TransitionProps } from 'react-transition-group/Transition';
 
 export interface CSSTransitionProps {
   /**
@@ -39,7 +38,8 @@ export function cssTransition({
     position,
     preventExitTransition,
     ...props
-  }: Partial<TransitionProps>) => {
+  }: // Until typedef for react-transition-group is shipped
+  any) => {
     const enterClassName = appendPosition ? `${enter}--${position}` : enter;
     const exitClassName = appendPosition ? `${exit}--${position}` : exit;
     let enterDuration: number, exitDuration: number;
@@ -50,16 +50,19 @@ export function cssTransition({
       enterDuration = exitDuration = duration as number;
     }
 
-    const onEnter = (node: HTMLElement) => {
+    const onEnter = () => {
+      const node = props.nodeRef.current;
       node.classList.add(enterClassName);
       node.style.animationFillMode = 'forwards';
       node.style.animationDuration = `${enterDuration * 0.001}s`;
     };
-    const onEntered = (node: HTMLElement) => {
+    const onEntered = () => {
+      const node = props.nodeRef.current;
       node.classList.remove(enterClassName);
       node.style.cssText = '';
     };
-    const onExit = (node: HTMLElement) => {
+    const onExit = () => {
+      const node = props.nodeRef.current;
       node.classList.add(exitClassName);
       node.style.animationFillMode = 'forwards';
       node.style.animationDuration = `${exitDuration * 0.001}s`;

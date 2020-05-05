@@ -63,6 +63,7 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
       onExited={onExitTransitionEnd}
       position={position}
       preventExitTransition={preventExitTransition}
+      nodeRef={toastRef}
     >
       <div
         id={toastId as string}
