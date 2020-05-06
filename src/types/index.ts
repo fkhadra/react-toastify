@@ -201,7 +201,7 @@ export interface WithInjectedOptions extends ToastOptions {
   className?: ClassName;
   bodyClassName?: ClassName;
   onExited?: () => void;
-  // transition: Transition;
+  unmountToast?: (toastId: Id) => void;
 }
 
 export interface UpdateOptions extends Nullable<ToastOptions> {

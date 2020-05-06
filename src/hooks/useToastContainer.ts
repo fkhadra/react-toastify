@@ -138,7 +138,6 @@ export function useToastContainer(props: ToastContainerProps) {
         for (let i = 0; i < toDequeue; i++) dequeueToast();
       }
     }
-
     dispatch({ type: 'REMOVE', toastId });
   }
 
@@ -291,6 +290,10 @@ export function useToastContainer(props: ToastContainerProps) {
     });
   }
 
+  function unmountToast(toastId: Id) {
+    delete collection[toastId];
+  }
+
   function getToastToRender<T>(
     cb: (position: ToastPosition, toastList: Toast[]) => T
   ) {
@@ -301,12 +304,10 @@ export function useToastContainer(props: ToastContainerProps) {
 
     for (let i = 0; i < toastList.length; i++) {
       const toast = collection[toastList[i]];
-      const { position, toastId } = toast.options;
+      const { position } = toast.options;
       toastToRender[position] || (toastToRender[position] = []);
 
-      isToastActive(toastId)
-        ? toastToRender[position]!.push(toast)
-        : delete collection[toastId];
+      toastToRender[position]!.push(toast);
     }
 
     return (Object.keys(toastToRender) as Array<ToastPosition>).map(p =>
@@ -320,6 +321,7 @@ export function useToastContainer(props: ToastContainerProps) {
     collection,
     containerRef,
     isToastActive,
-    removeToast
+    removeToast,
+    unmountToast
   };
 }

@@ -9,13 +9,23 @@ import { Bounce } from './Transitions';
 import { POSITION, RT_NAMESPACE, parseClassName, objectValues } from '../utils';
 import { useToastContainer } from '../hooks';
 import { ToastContainerProps, ToastPosition } from '../types';
+import { ToastPositioner } from './ToastPositioner';
 
 export const ToastContainer: React.FC<ToastContainerProps> = props => {
-  const { getToastToRender, containerRef } = useToastContainer(props);
+  const {
+    getToastToRender,
+    containerRef,
+    isToastActive,
+    unmountToast
+  } = useToastContainer(props);
   const { className, style, rtl, containerId } = props;
 
   return (
-    <div ref={containerRef} className={RT_NAMESPACE} id={containerId as string}>
+    <TransitionGroup
+      ref={containerRef}
+      className={RT_NAMESPACE}
+      id={containerId as string}
+    >
       {getToastToRender((position, toastList) => {
         const swag = {
           className: cx(
@@ -31,24 +41,30 @@ export const ToastContainer: React.FC<ToastContainerProps> = props => {
         } as any;
 
         return (
-          <TransitionGroup {...swag} key={`container-${position}`}>
-            {toastList.map(({ content, options }) => (
-              <Toast
-                {...options}
-                key={`toast-${options.key}`}
-                closeButton={
-                  options.closeButton === true
-                    ? CloseButton
-                    : options.closeButton
-                }
-              >
-                {content}
-              </Toast>
-            ))}
-          </TransitionGroup>
+          <ToastPositioner {...swag} key={`container-${position}`}>
+            {toastList.map(toast => {
+              const { content, options } = toast;
+
+              return (
+                <Toast
+                  {...options}
+                  in={isToastActive(options.toastId)}
+                  unmountToast={unmountToast}
+                  key={`toast-${options.key}`}
+                  closeButton={
+                    options.closeButton === true
+                      ? CloseButton
+                      : options.closeButton
+                  }
+                >
+                  {content}
+                </Toast>
+              );
+            })}
+          </ToastPositioner>
         );
       })}
-    </div>
+    </TransitionGroup>
   );
 };
 

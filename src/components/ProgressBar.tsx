@@ -53,6 +53,11 @@ export interface ProgressBarProps {
    * Support rtl content
    */
   rtl?: boolean;
+
+  /**
+   * Tell if the component is visible on screen or not
+   */
+  isIn?: boolean;
 }
 
 export function ProgressBar({
@@ -65,7 +70,8 @@ export function ProgressBar({
   style: userStyle,
   controlledProgress,
   progress,
-  rtl
+  rtl,
+  isIn
 }: ProgressBarProps) {
   const style: CSSProperties = {
     ...userStyle,
@@ -95,7 +101,11 @@ export function ProgressBar({
     [controlledProgress && progress! >= 1
       ? 'onTransitionEnd'
       : 'onAnimationEnd']:
-      controlledProgress && progress! < 1 ? null : closeToast
+      controlledProgress && progress! < 1
+        ? null
+        : () => {
+            isIn && closeToast();
+          }
   };
 
   return <div className={classNames} style={style} {...animationEvent} />;

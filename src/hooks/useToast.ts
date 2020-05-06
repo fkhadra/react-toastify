@@ -187,6 +187,7 @@ export function useToast(props: WithInjectedOptions) {
   function onExitTransitionEnd() {
     if (iLoveInternetExplorer) {
       props.onExited!();
+      props.unmountToast!(props.toastId);
       return;
     }
     const toast = toastRef.current!;
@@ -203,7 +204,10 @@ export function useToast(props: WithInjectedOptions) {
         style.padding = '0';
         style.margin = '0';
       });
-      setTimeout(() => props.onExited!(), 400);
+      setTimeout(() => {
+        props.onExited!();
+        props.unmountToast!(props.toastId);
+      }, 500);
     });
   }
 

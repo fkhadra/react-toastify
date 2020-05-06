@@ -89,6 +89,7 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
             rtl={rtl}
             delay={autoClose as number}
             isRunning={isRunning}
+            isIn={props.in}
             closeToast={closeToast}
             hide={hideProgressBar}
             type={type}
