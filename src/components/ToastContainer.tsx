@@ -21,50 +21,48 @@ export const ToastContainer: React.FC<ToastContainerProps> = props => {
   const { className, style, rtl, containerId } = props;
 
   return (
-    <TransitionGroup
-      ref={containerRef}
-      className={RT_NAMESPACE}
-      id={containerId as string}
-    >
-      {getToastToRender((position, toastList) => {
-        const swag = {
-          className: cx(
-            `${RT_NAMESPACE}__toast-container`,
-            `${RT_NAMESPACE}__toast-container--${position}`,
-            { [`${RT_NAMESPACE}__toast-container--rtl`]: rtl },
-            parseClassName(className)
-          ),
-          style:
-            toastList.length === 0
-              ? { ...style, pointerEvents: 'none' }
-              : { ...style }
-        } as any;
+    <div ref={containerRef} className={RT_NAMESPACE} id={containerId as string}>
+      <TransitionGroup component={null}>
+        {getToastToRender((position, toastList) => {
+          const swag = {
+            className: cx(
+              `${RT_NAMESPACE}__toast-container`,
+              `${RT_NAMESPACE}__toast-container--${position}`,
+              { [`${RT_NAMESPACE}__toast-container--rtl`]: rtl },
+              parseClassName(className)
+            ),
+            style:
+              toastList.length === 0
+                ? { ...style, pointerEvents: 'none' }
+                : { ...style }
+          } as any;
 
-        return (
-          <ToastPositioner {...swag} key={`container-${position}`}>
-            {toastList.map(toast => {
-              const { content, options } = toast;
+          return (
+            <ToastPositioner {...swag} key={`container-${position}`}>
+              {toastList.map(toast => {
+                const { content, options } = toast;
 
-              return (
-                <Toast
-                  {...options}
-                  in={isToastActive(options.toastId)}
-                  unmountToast={unmountToast}
-                  key={`toast-${options.key}`}
-                  closeButton={
-                    options.closeButton === true
-                      ? CloseButton
-                      : options.closeButton
-                  }
-                >
-                  {content}
-                </Toast>
-              );
-            })}
-          </ToastPositioner>
-        );
-      })}
-    </TransitionGroup>
+                return (
+                  <Toast
+                    {...options}
+                    in={isToastActive(options.toastId)}
+                    unmountToast={unmountToast}
+                    key={`toast-${options.key}`}
+                    closeButton={
+                      options.closeButton === true
+                        ? CloseButton
+                        : options.closeButton
+                    }
+                  >
+                    {content}
+                  </Toast>
+                );
+              })}
+            </ToastPositioner>
+          );
+        })}
+      </TransitionGroup>
+    </div>
   );
 };
 

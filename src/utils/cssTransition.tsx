@@ -52,20 +52,26 @@ export function cssTransition({
 
     const onEnter = () => {
       const node = props.nodeRef.current;
-      node.classList.add(enterClassName);
-      node.style.animationFillMode = 'forwards';
-      node.style.animationDuration = `${enterDuration * 0.001}s`;
+      if (node) {
+        node.classList.add(enterClassName);
+        node.style.animationFillMode = 'forwards';
+        node.style.animationDuration = `${enterDuration * 0.001}s`;
+      }
     };
     const onEntered = () => {
       const node = props.nodeRef.current;
-      node.classList.remove(enterClassName);
-      node.style.cssText = '';
+      if (node) {
+        node.classList.remove(enterClassName);
+        node.style.cssText = '';
+      }
     };
     const onExit = () => {
       const node = props.nodeRef.current;
-      node.classList.add(exitClassName);
-      node.style.animationFillMode = 'forwards';
-      node.style.animationDuration = `${exitDuration * 0.001}s`;
+      if (node) {
+        node.classList.add(exitClassName);
+        node.style.animationFillMode = 'forwards';
+        node.style.animationDuration = `${exitDuration * 0.001}s`;
+      }
     };
 
     return (
