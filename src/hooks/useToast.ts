@@ -6,7 +6,7 @@ import {
   DOMAttributes
 } from 'react';
 
-import { canUseDom, isFn } from '../utils';
+import { isFn } from '../utils';
 import { WithInjectedOptions } from '../types';
 import { useKeeper } from './useKeeper';
 
@@ -34,9 +34,6 @@ function getY(e: DragEvent) {
     ? e.targetTouches[0].clientY
     : e.clientY;
 }
-
-const iLoveInternetExplorer =
-  canUseDom && /(msie|trident)/i.test(navigator.userAgent);
 
 export function useToast(props: WithInjectedOptions) {
   const [isRunning, setIsRunning] = useState(true);
@@ -181,36 +178,6 @@ export function useToast(props: WithInjectedOptions) {
     }
   }
 
-  // Maybe let the end user tweak it later on
-  // hmmm no comment about ie. I hope this browser die one day
-  // don't want to fix the issue on this browser, my head is hurting too much
-  function onExitTransitionEnd() {
-    if (iLoveInternetExplorer) {
-      props.onExited!();
-      props.unmountToast!(props.toastId);
-      return;
-    }
-    const toast = toastRef.current!;
-    const height = toast.scrollHeight;
-    const style = toast.style;
-
-    requestAnimationFrame(() => {
-      style.minHeight = 'initial';
-      style.height = height + 'px';
-      style.transition = 'all 0.4s ';
-
-      requestAnimationFrame(() => {
-        style.height = '0';
-        style.padding = '0';
-        style.margin = '0';
-      });
-      setTimeout(() => {
-        props.onExited!();
-        props.unmountToast!(props.toastId);
-      }, 500);
-    });
-  }
-
   const eventHandlers: DOMAttributes<HTMLElement> = {
     onMouseDown: onDragStart,
     onTouchStart: onDragStart,
@@ -238,7 +205,7 @@ export function useToast(props: WithInjectedOptions) {
     preventExitTransition,
     toastRef,
     drag,
-    onExitTransitionEnd,
+    unmountToast: () => props.unmountToast!(props.toastId),
     onDragStart,
     onDragTransitionEnd,
     eventHandlers

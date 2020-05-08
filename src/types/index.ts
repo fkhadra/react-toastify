@@ -107,7 +107,9 @@ interface CommonOptions {
   /**
    * Pass a custom transition built with react-transition-group.
    */
-  transition?: React.ReactNode;
+  transition?:
+    | React.FC<ToastTransitionProps>
+    | React.ComponentClass<ToastTransitionProps>;
 
   /**
    * Allow toast to be draggable
@@ -244,4 +246,14 @@ export interface ToastContainerProps extends CommonOptions {
    * Limit the number of toast displayed at the same time
    */
   limit?: number;
+}
+
+export interface ToastTransitionProps {
+  in: boolean;
+  appear: boolean;
+  done: () => void;
+  position: ToastPosition;
+  preventExitTransition: boolean;
+  nodeRef: React.RefObject<HTMLElement>;
+  children: React.ReactNode;
 }

@@ -12,7 +12,7 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
     isRunning,
     preventExitTransition,
     toastRef,
-    onExitTransitionEnd,
+    unmountToast,
     eventHandlers
   } = useToast(props);
   const {
@@ -23,7 +23,7 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
     type,
     hideProgressBar,
     closeToast,
-    transition,
+    transition: Transition,
     position,
     className,
     style,
@@ -46,7 +46,6 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
     className
   );
   const controlledProgress = !!progress;
-  const Transition = transition as React.FC<Partial<TransitionProps>>;
 
   function renderCloseButton(closeButton: any) {
     if (!closeButton) return null;
@@ -58,9 +57,9 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
 
   return (
     <Transition
-      in={props.in}
+      in={props.in!}
       appear
-      onExited={onExitTransitionEnd}
+      done={unmountToast}
       position={position}
       preventExitTransition={preventExitTransition}
       nodeRef={toastRef}

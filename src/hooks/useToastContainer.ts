@@ -3,7 +3,9 @@ import {
   useRef,
   useReducer,
   cloneElement,
-  isValidElement
+  isValidElement,
+  useState,
+  useCallback
 } from 'react';
 import { eventManager, Event } from '../core';
 import {
@@ -29,7 +31,8 @@ import { useKeeper } from './useKeeper';
 type State = Array<Id>;
 type Action =
   | { type: 'ADD'; toastId: Id; staleId?: Id }
-  | { type: 'REMOVE'; toastId?: Id };
+  | { type: 'REMOVE'; toastId?: Id }
+  | { type: 'UNMOUNT' };
 
 type CollectionItem = Record<Id, Toast>;
 type ToastToRender = Partial<Record<ToastPosition, Toast[]>>;
@@ -52,6 +55,8 @@ function reducer(state: State, action: Action) {
       return hasToastId(action.toastId)
         ? state.filter(id => id !== action.toastId)
         : [];
+    case 'UNMOUNT':
+      return state;
   }
 }
 
@@ -63,6 +68,14 @@ export interface ContainerInstance {
   isToastActive: (toastId: Id) => boolean;
   getToast: (id: Id) => Toast | null;
 }
+
+// function useForceUpdate() {
+//   const [, setTick] = useState(0);
+//   const update = useCallback(() => {
+//     setTick(tick => tick + 1);
+//   }, [])
+//   return update;
+// }
 
 export function useToastContainer(props: ToastContainerProps) {
   const [toast, dispatch] = useReducer(reducer, []);

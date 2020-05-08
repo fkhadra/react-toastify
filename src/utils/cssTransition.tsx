@@ -1,5 +1,6 @@
 import React from 'react';
 import { Transition } from 'react-transition-group';
+import { ToastTransitionProps } from 'types';
 
 export interface CSSTransitionProps {
   /**
@@ -25,21 +26,28 @@ export interface CSSTransitionProps {
    * `Default: false`
    */
   appendPosition?: boolean;
+
+  /**
+   * Called after the exit transition has been performed
+   * the html node and a done callback is passed as a parameter
+   */
+  onExited?: ((node: HTMLElement, done: () => void) => void) | null;
 }
 
 export function cssTransition({
   enter,
   exit,
   duration = 750,
-  appendPosition = false
+  appendPosition = false,
+  onExited = null
 }: CSSTransitionProps) {
   return ({
     children,
     position,
     preventExitTransition,
+    done,
     ...props
-  }: // Until typedef for react-transition-group is shipped
-  any) => {
+  }: ToastTransitionProps) => {
     const enterClassName = appendPosition ? `${enter}--${position}` : enter;
     const exitClassName = appendPosition ? `${exit}--${position}` : exit;
     let enterDuration: number, exitDuration: number;
@@ -58,6 +66,7 @@ export function cssTransition({
         node.style.animationDuration = `${enterDuration * 0.001}s`;
       }
     };
+
     const onEntered = () => {
       const node = props.nodeRef.current;
       if (node) {
@@ -65,6 +74,7 @@ export function cssTransition({
         node.style.cssText = '';
       }
     };
+
     const onExit = () => {
       const node = props.nodeRef.current;
       if (node) {
@@ -73,6 +83,9 @@ export function cssTransition({
         node.style.animationDuration = `${exitDuration * 0.001}s`;
       }
     };
+
+    const unmountToast = () =>
+      onExited ? onExited(props.nodeRef.current!, done) : done();
 
     return (
       <Transition
@@ -88,6 +101,7 @@ export function cssTransition({
         onEnter={onEnter}
         onEntered={onEntered}
         onExit={preventExitTransition ? undefined : onExit}
+        onExited={unmountToast}
       >
         {children}
       </Transition>
