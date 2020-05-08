@@ -1,5 +1,7 @@
 import { isValidElement } from 'react';
 
+import { Id } from 'types';
+
 export function isNum(v: any): v is Number {
   return typeof v === 'number' && !isNaN(v);
 }
@@ -22,6 +24,10 @@ export function parseClassName(v: any) {
 
 export function objectValues<T>(obj: Record<string, T>) {
   return Object.keys(obj).map(key => obj[key]);
+}
+
+export function hasToastId(toastId?: Id) {
+  return toastId === 0 || toastId;
 }
 
 export const canUseDom = !!(
