@@ -6,7 +6,7 @@ import '../__mocks__/react-transition-group';
 import { cssClasses } from '../helpers';
 import { eventManager, toast, Event } from '../../src/core';
 import { ContainerInstance } from '../../src/hooks';
-import { DEFAULT } from '../../src/utils';
+import { DEFAULT, cssTransition } from '../../src/utils';
 import { Id } from '../../src/types';
 import { ToastContainer } from '../../src/components';
 
@@ -306,6 +306,10 @@ describe('toastify', () => {
       expect(queryByText('hello')).toBe(null);
     });
 
+    /**
+     * This test trigger a warning but it's a false positif
+     *  Warning: Encountered two children with the same key, `.$toast-1`. ...
+     */
     it('Should be able to update the toastId', () => {
       const { queryByText } = render(<ToastContainer />);
       const toastId = 'bar';
@@ -433,6 +437,7 @@ describe('toastify', () => {
       toast.warning('warning');
       toast.info('info');
       toast.warn('warn');
+      toast.dark("dark");
       jest.runAllTimers();
     });
     expect(queryByText('default')).not.toBe(null);
@@ -440,6 +445,7 @@ describe('toastify', () => {
     expect(queryByText('error')).not.toBe(null);
     expect(queryByText('warning')).not.toBe(null);
     expect(queryByText('info')).not.toBe(null);
+    expect(queryByText('dark')).not.toBe(null);
     expect(queryByText('warn')).not.toBe(null);
   });
 
@@ -477,4 +483,29 @@ describe('toastify', () => {
       expect(container.innerHTML).toMatch(/transform:(\s)?scaleX\(1\)/);
     });
   });
+
+  it("should remove toast even when not collapsing on exit", () => {
+    const Transition = cssTransition({
+      enter: 'foo',
+      exit: 'bar',
+      duration: [300, 500],
+      collapse: false
+    });
+    
+    const { queryByText } = render(<ToastContainer transition={Transition}/>);
+    let id: Id;
+    act(() => {
+      id = toast('hello');
+      jest.runAllTimers();
+    });
+
+    expect(queryByText('hello')).not.toBe(null);
+
+    act(() => {
+      toast.dismiss(id);
+      jest.runAllTimers();
+    });
+
+    expect(queryByText('hello')).toBe(null);
+  })
 });
