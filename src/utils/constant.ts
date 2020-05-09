@@ -25,8 +25,7 @@ export const TYPE = {
   DARK: 'dark'
 };
 
-export const RT_NAMESPACE = 'Toastify';
-
 export const enum DEFAULT {
-  COLLAPSE_DURATION = 300
+  COLLAPSE_DURATION = 300,
+  CSS_NAMESPACE = 'Toastify'
 }

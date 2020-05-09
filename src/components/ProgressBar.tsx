@@ -1,7 +1,7 @@
 import React, { CSSProperties } from 'react';
 import cx from 'classnames';
 
-import { TYPE, RT_NAMESPACE, TypeOptions } from './../utils';
+import { TYPE, DEFAULT, TypeOptions } from './../utils';
 
 export interface ProgressBarProps {
   /**
@@ -83,13 +83,13 @@ export function ProgressBar({
   if (controlledProgress) style.transform = `scaleX(${progress})`;
 
   const classNames = cx(
-    `${RT_NAMESPACE}__progress-bar`,
+    `${DEFAULT.CSS_NAMESPACE}__progress-bar`,
     controlledProgress
-      ? `${RT_NAMESPACE}__progress-bar--controlled`
-      : `${RT_NAMESPACE}__progress-bar--animated`,
-    `${RT_NAMESPACE}__progress-bar--${type}`,
+      ? `${DEFAULT.CSS_NAMESPACE}__progress-bar--controlled`
+      : `${DEFAULT.CSS_NAMESPACE}__progress-bar--animated`,
+    `${DEFAULT.CSS_NAMESPACE}__progress-bar--${type}`,
     {
-      [`${RT_NAMESPACE}__progress-bar--rtl`]: rtl
+      [`${DEFAULT.CSS_NAMESPACE}__progress-bar--rtl`]: rtl
     },
     className
   );

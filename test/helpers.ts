@@ -1,9 +1,9 @@
-import { RT_NAMESPACE } from '../src/utils';
+import { DEFAULT } from '../src/utils';
 
 export const cssClasses = {
-  rtl: `.${RT_NAMESPACE}__toast--rtl`,
-  progressBar: `.${RT_NAMESPACE}__progress-bar`,
-  progressBarController: `.${RT_NAMESPACE}__progress-bar--controlled`,
-  closeButton: `.${RT_NAMESPACE}__close-button`,
-  container: `.${RT_NAMESPACE}__toast-container`,
+  rtl: `.${DEFAULT.CSS_NAMESPACE}__toast--rtl`,
+  progressBar: `.${DEFAULT.CSS_NAMESPACE}__progress-bar`,
+  progressBarController: `.${DEFAULT.CSS_NAMESPACE}__progress-bar--controlled`,
+  closeButton: `.${DEFAULT.CSS_NAMESPACE}__close-button`,
+  container: `.${DEFAULT.CSS_NAMESPACE}__toast-container`,
 };

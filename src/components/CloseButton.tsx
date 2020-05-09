@@ -1,5 +1,5 @@
 import React from 'react';
-import { RT_NAMESPACE, TypeOptions } from '../utils';
+import { DEFAULT, TypeOptions } from '../utils';
 
 export interface CloseButtonProps {
   closeToast: (e: React.MouseEvent<HTMLElement>) => void;
@@ -10,7 +10,7 @@ export interface CloseButtonProps {
 export function CloseButton({ closeToast, type, ariaLabel }: CloseButtonProps) {
   return (
     <button
-      className={`${RT_NAMESPACE}__close-button ${RT_NAMESPACE}__close-button--${type}`}
+      className={`${DEFAULT.CSS_NAMESPACE}__close-button ${DEFAULT.CSS_NAMESPACE}__close-button--${type}`}
       type="button"
       onClick={e => {
         e.stopPropagation();

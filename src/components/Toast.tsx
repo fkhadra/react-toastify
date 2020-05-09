@@ -3,7 +3,7 @@ import cx from 'classnames';
 
 import { ProgressBar } from './ProgressBar';
 import { ToastProps } from '../types';
-import { RT_NAMESPACE, isFn } from '../utils';
+import { DEFAULT, isFn } from '../utils';
 import { useToast } from '../hooks';
 
 export const Toast: React.FC<ToastProps> = props => {
@@ -37,10 +37,10 @@ export const Toast: React.FC<ToastProps> = props => {
     deleteToast
   } = props;
   const cssClasses = cx(
-    `${RT_NAMESPACE}__toast`,
-    `${RT_NAMESPACE}__toast--${type}`,
+    `${DEFAULT.CSS_NAMESPACE}__toast`,
+    `${DEFAULT.CSS_NAMESPACE}__toast--${type}`,
     {
-      [`${RT_NAMESPACE}__toast--rtl`]: rtl
+      [`${DEFAULT.CSS_NAMESPACE}__toast--rtl`]: rtl
     },
     className
   );
@@ -73,7 +73,7 @@ export const Toast: React.FC<ToastProps> = props => {
       >
         <div
           {...(props.in && { role: role })}
-          className={cx(`${RT_NAMESPACE}__toast-body`, bodyClassName)}
+          className={cx(`${DEFAULT.CSS_NAMESPACE}__toast-body`, bodyClassName)}
           style={bodyStyle}
         >
           {children}

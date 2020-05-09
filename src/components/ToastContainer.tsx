@@ -6,7 +6,7 @@ import { TransitionGroup } from 'react-transition-group';
 import { Toast } from './Toast';
 import { CloseButton } from './CloseButton';
 import { Bounce } from './Transitions';
-import { POSITION, RT_NAMESPACE, parseClassName, objectValues } from '../utils';
+import { POSITION, DEFAULT, parseClassName, objectValues } from '../utils';
 import { useToastContainer } from '../hooks';
 import { ToastContainerProps, ToastPosition } from '../types';
 import { ToastPositioner } from './ToastPositioner';
@@ -18,14 +18,18 @@ export const ToastContainer: React.FC<ToastContainerProps> = props => {
   const { className, style, rtl, containerId } = props;
 
   return (
-    <div ref={containerRef} className={RT_NAMESPACE} id={containerId as string}>
+    <div
+      ref={containerRef}
+      className={DEFAULT.CSS_NAMESPACE as string}
+      id={containerId as string}
+    >
       <TransitionGroup component={null}>
         {getToastToRender((position, toastList) => {
           const swag = {
             className: cx(
-              `${RT_NAMESPACE}__toast-container`,
-              `${RT_NAMESPACE}__toast-container--${position}`,
-              { [`${RT_NAMESPACE}__toast-container--rtl`]: rtl },
+              `${DEFAULT.CSS_NAMESPACE}__toast-container`,
+              `${DEFAULT.CSS_NAMESPACE}__toast-container--${position}`,
+              { [`${DEFAULT.CSS_NAMESPACE}__toast-container--rtl`]: rtl },
               parseClassName(className)
             ),
             style:

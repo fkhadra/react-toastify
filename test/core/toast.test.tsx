@@ -6,7 +6,7 @@ import '../__mocks__/react-transition-group';
 import { cssClasses } from '../helpers';
 import { eventManager, toast, Event } from '../../src/core';
 import { ContainerInstance } from '../../src/hooks';
-import { RT_NAMESPACE } from '../../src/utils';
+import { DEFAULT } from '../../src/utils';
 import { Id } from '../../src/types';
 import { ToastContainer } from '../../src/components';
 
@@ -96,7 +96,7 @@ describe('toastify', () => {
 
     expectContainerToBeMounted();
     expect(
-      document.querySelector(`.${RT_NAMESPACE}__toast-container--rtl`)
+      document.querySelector(`.${DEFAULT.CSS_NAMESPACE}__toast-container--rtl`)
     ).not.toBe(null);
     unmountLazyContainer();
   });
