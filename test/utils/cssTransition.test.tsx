@@ -11,7 +11,9 @@ const transitionProps: ToastTransitionProps = {
   in: true,
   preventExitTransition: false,
   position: POSITION.TOP_RIGHT,
-  nodeRef: React.useRef(document.createElement('div'))
+  nodeRef: {
+    current: document.createElement('div')
+  }
 }
 
 // TODO: write better tests 😜
@@ -55,6 +57,42 @@ describe('cssTransition helper', () => {
       enter: 'foo',
       exit: 'bar',
       duration: [300, 500]
+    });
+
+    const Child = () => <div>Plop</div>;
+    const { container, getByText } = render(
+      <Transition {...transitionProps} preventExitTransition>
+        <Child />
+      </Transition>
+    );
+    expect(getByText('Plop').textContent).toContain('Plop');
+    expect(container).toMatchSnapshot();
+  });
+
+  it('Should be possible to disable collapse animation', () => {
+    const Transition = cssTransition({
+      enter: 'foo',
+      exit: 'bar',
+      duration: [300, 500],
+      collapse: false
+    });
+
+    const Child = () => <div>Plop</div>;
+    const { container, getByText } = render(
+      <Transition {...transitionProps} preventExitTransition>
+        <Child />
+      </Transition>
+    );
+    expect(getByText('Plop').textContent).toContain('Plop');
+    expect(container).toMatchSnapshot();
+  });
+
+  it('Should be possible to change  collapse duration', () => {
+    const Transition = cssTransition({
+      enter: 'foo',
+      exit: 'bar',
+      duration: [300, 500],
+      collapseDuration: 200
     });
 
     const Child = () => <div>Plop</div>;
