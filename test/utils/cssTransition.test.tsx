@@ -2,7 +2,17 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import '../__mocks__/react-transition-group';
-import { cssTransition } from '../../src/utils';
+import { cssTransition, POSITION } from '../../src/utils';
+import { ToastTransitionProps } from "../../src/types";
+
+const transitionProps: ToastTransitionProps = {
+  appear: true,
+  done: jest.fn(),
+  in: true,
+  preventExitTransition: false,
+  position: POSITION.TOP_RIGHT,
+  nodeRef: React.useRef(document.createElement('div'))
+}
 
 // TODO: write better tests 😜
 describe('cssTransition helper', () => {
@@ -14,7 +24,7 @@ describe('cssTransition helper', () => {
 
     const Child = () => <div>Plop</div>;
     const { container, getByText } = render(
-      <Transition>
+      <Transition {...transitionProps}>
         <Child />
       </Transition>
     );
@@ -32,7 +42,7 @@ describe('cssTransition helper', () => {
 
     const Child = () => <div>Plop</div>;
     const { container, getByText } = render(
-      <Transition>
+      <Transition {...transitionProps}>
         <Child />
       </Transition>
     );
@@ -49,7 +59,7 @@ describe('cssTransition helper', () => {
 
     const Child = () => <div>Plop</div>;
     const { container, getByText } = render(
-      <Transition preventExitTransition>
+      <Transition {...transitionProps} preventExitTransition>
         <Child />
       </Transition>
     );

@@ -3,39 +3,43 @@ import { render, fireEvent } from '@testing-library/react';
 
 import { ProgressBar } from '../../src/components';
 
-const REQUIRED_PROPS = {
+const getProps = () => ({
   delay: 5000,
   isRunning: true,
   rtl: false,
-  closeToast: jest.fn()
-};
+  closeToast: jest.fn(),
+  isIn: true
+});
 
 describe('ProgressBar', () => {
   it('Should merge className', () => {
     const { container } = render(
-      <ProgressBar {...REQUIRED_PROPS} className="test" />
+      <ProgressBar {...getProps()} className="test" />
     );
 
     expect((container.firstChild! as HTMLElement).className).toContain('test');
   });
 
   it('Should call closeToast function when animation end', () => {
-    const { container } = render(<ProgressBar {...REQUIRED_PROPS} />);
+    const closeToast = jest.fn();
+    const { container } = render(
+      <ProgressBar {...getProps()} closeToast={closeToast} />
+    );
 
-    expect(REQUIRED_PROPS.closeToast).not.toHaveBeenCalled();
+    expect(closeToast).not.toHaveBeenCalled();
     fireEvent.animationEnd(container.firstChild as HTMLElement);
-    expect(REQUIRED_PROPS.closeToast).toHaveBeenCalled();
+    expect(closeToast).toHaveBeenCalled();
   });
 
   it('Should be able to hide the progress bar', () => {
-    const { container } = render(<ProgressBar {...REQUIRED_PROPS} hide />);
+    const { container } = render(<ProgressBar {...getProps()} hide />);
     expect((container.firstChild! as HTMLElement).style.opacity).toBe('0');
     expect(container).toMatchSnapshot();
   });
 
   it('Should be able to pause animation', () => {
     const { container } = render(
-      <ProgressBar {...REQUIRED_PROPS} isRunning={false} />
+      <ProgressBar {...getProps()} isRunning={false} />
     );
     expect(
       (container.firstChild! as HTMLElement).style.animationPlayState
@@ -45,7 +49,7 @@ describe('ProgressBar', () => {
 
   it('Should render controlled progress bar', () => {
     const { container } = render(
-      <ProgressBar {...REQUIRED_PROPS} controlledProgress progress={0.7} />
+      <ProgressBar {...getProps()} controlledProgress progress={0.7} />
     );
     expect((container.firstChild! as HTMLElement).style.transform).toBe(
       'scaleX(0.7)'

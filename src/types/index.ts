@@ -263,8 +263,8 @@ export interface ToastTransitionProps {
   in: boolean;
   appear: boolean;
   done: () => void;
-  position: ToastPosition;
+  position: ToastPosition | string;
   preventExitTransition: boolean;
   nodeRef: React.RefObject<HTMLElement>;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
