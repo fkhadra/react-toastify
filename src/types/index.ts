@@ -191,6 +191,9 @@ export interface ToastOptions extends CommonOptions {
   delay?: number;
 }
 
+/**
+ * @INTERNAL
+ */
 export interface ToastProps extends ToastOptions {
   in?: boolean;
   staleId?: Id;
@@ -207,6 +210,9 @@ export interface ToastProps extends ToastOptions {
   deleteToast: () => void;
 }
 
+/**
+ * @INTERNAL
+ */
 export interface NotValidatedToastProps extends Partial<ToastProps> {
   toastId: Id;
 }

@@ -10,14 +10,15 @@ import {
   Id,
   ToastContainerProps,
   UpdateOptions,
-  ClearWaitingQueueParams
+  ClearWaitingQueueParams,
+  NotValidatedToastProps
 } from '../types';
 import { ContainerInstance } from 'hooks';
 import { ToastContainer } from '../components';
 
 interface EnqueuedToast {
   content: ToastContent;
-  options: ToastProps;
+  options: NotValidatedToastProps;
 }
 
 let containers = new Map<ContainerInstance | Id, ContainerInstance>();
@@ -74,7 +75,10 @@ function getToastId(options?: ToastOptions) {
  * If the container is not mounted, the toast is enqueued and
  * the container lazy mounted
  */
-function dispatchToast(content: ToastContent, options: ToastProps): Id {
+function dispatchToast(
+  content: ToastContent,
+  options: NotValidatedToastProps
+): Id {
   if (isAnyContainerMounted()) {
     eventManager.emit(Event.Show, content, options);
   } else {
@@ -98,7 +102,7 @@ function mergeOptions(type: string, options?: ToastOptions) {
     ...options,
     type: (options && options.type) || type,
     toastId: getToastId(options)
-  } as ToastProps;
+  } as NotValidatedToastProps;
 }
 
 const toast = (content: ToastContent, options?: ToastOptions) =>
