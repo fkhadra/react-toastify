@@ -2,6 +2,9 @@ import React from 'react';
 import { Transition } from 'react-transition-group';
 import { ToastTransitionProps } from 'types';
 
+import { collapseToast } from './collapseToast';
+import { DEFAULT } from './constant';
+
 export interface CSSTransitionProps {
   /**
    * Css class to apply when toast enter
@@ -28,10 +31,16 @@ export interface CSSTransitionProps {
   appendPosition?: boolean;
 
   /**
-   * Called after the exit transition has been performed
-   * the html node and a done callback is passed as a parameter
+   * Collapse toast smoothly when animation end
+   * `Default: true`
    */
-  onExited?: ((node: HTMLElement, done: () => void) => void) | null;
+  collapse?: boolean;
+
+  /**
+   * Collapse transition duration
+   * `Default: 300`
+   */
+  collapseDuration?: number;
 }
 
 export function cssTransition({
@@ -39,31 +48,33 @@ export function cssTransition({
   exit,
   duration = 750,
   appendPosition = false,
-  onExited = null
+  collapse = true,
+  collapseDuration = DEFAULT.COLLAPSE_DURATION
 }: CSSTransitionProps) {
-  return ({
+  let enterDuration: number, exitDuration: number;
+
+  if (Array.isArray(duration) && duration.length === 2) {
+    [enterDuration, exitDuration] = duration;
+  } else {
+    enterDuration = exitDuration = duration as number;
+  }
+
+  return function ToastTransition({
     children,
     position,
     preventExitTransition,
     done,
     ...props
-  }: ToastTransitionProps) => {
+  }: ToastTransitionProps) {
     const enterClassName = appendPosition ? `${enter}--${position}` : enter;
     const exitClassName = appendPosition ? `${exit}--${position}` : exit;
-    let enterDuration: number, exitDuration: number;
-
-    if (Array.isArray(duration) && duration.length === 2) {
-      [enterDuration, exitDuration] = duration;
-    } else {
-      enterDuration = exitDuration = duration as number;
-    }
 
     const onEnter = () => {
       const node = props.nodeRef.current;
       if (node) {
         node.classList.add(enterClassName);
         node.style.animationFillMode = 'forwards';
-        node.style.animationDuration = `${enterDuration * 0.001}s`;
+        node.style.animationDuration = `${enterDuration}ms`;
       }
     };
 
@@ -75,17 +86,25 @@ export function cssTransition({
       }
     };
 
+    const onCollapseStart = () => {
+      const node = props.nodeRef.current;
+      if (node) {
+        collapseToast(node, done, collapseDuration);
+        node.removeEventListener('animationend', onCollapseStart);
+      }
+    };
+
     const onExit = () => {
       const node = props.nodeRef.current;
       if (node) {
         node.classList.add(exitClassName);
         node.style.animationFillMode = 'forwards';
-        node.style.animationDuration = `${exitDuration * 0.001}s`;
+        node.style.animationDuration = `${exitDuration}ms`;
+        collapse
+          ? node.addEventListener('animationend', onCollapseStart)
+          : done();
       }
     };
-
-    const unmountToast = () =>
-      onExited ? onExited(props.nodeRef.current!, done) : done();
 
     return (
       <Transition
@@ -95,13 +114,13 @@ export function cssTransition({
             ? 0
             : {
                 enter: enterDuration,
-                exit: exitDuration
+                exit: collapse ? exitDuration + collapseDuration : exitDuration
               }
         }
         onEnter={onEnter}
         onEntered={onEntered}
-        onExit={preventExitTransition ? undefined : onExit}
-        onExited={unmountToast}
+        onExit={preventExitTransition ? done : onExit}
+        unmountOnExit
       >
         {children}
       </Transition>
