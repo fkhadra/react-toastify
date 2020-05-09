@@ -26,3 +26,7 @@ export const TYPE = {
 };
 
 export const RT_NAMESPACE = 'Toastify';
+
+export const enum DEFAULT {
+  COLLAPSE_DURATION = 300
+}
