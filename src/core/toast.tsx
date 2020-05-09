@@ -2,11 +2,11 @@ import React from 'react';
 import { render } from 'react-dom';
 
 import { POSITION, TYPE, canUseDom, isStr, isNum, isFn } from '../utils';
-import { eventManager, OnChangeCallback, Event } from '.';
+import { eventManager, OnChangeCallback, Event } from './eventManager';
 import {
   ToastContent,
   ToastOptions,
-  WithInjectedOptions,
+  ToastProps,
   Id,
   ToastContainerProps,
   UpdateOptions,
@@ -17,7 +17,7 @@ import { ToastContainer } from '../components';
 
 interface EnqueuedToast {
   content: ToastContent;
-  options: WithInjectedOptions;
+  options: ToastProps;
 }
 
 let containers = new Map<ContainerInstance | Id, ContainerInstance>();
@@ -74,10 +74,7 @@ function getToastId(options?: ToastOptions) {
  * If the container is not mounted, the toast is enqueued and
  * the container lazy mounted
  */
-function dispatchToast(
-  content: ToastContent,
-  options: WithInjectedOptions
-): Id {
+function dispatchToast(content: ToastContent, options: ToastProps): Id {
   if (isAnyContainerMounted()) {
     eventManager.emit(Event.Show, content, options);
   } else {
@@ -101,7 +98,7 @@ function mergeOptions(type: string, options?: ToastOptions) {
     ...options,
     type: (options && options.type) || type,
     toastId: getToastId(options)
-  } as WithInjectedOptions;
+  } as ToastProps;
 }
 
 const toast = (content: ToastContent, options?: ToastOptions) =>
@@ -160,14 +157,14 @@ toast.update = (toastId: Id, options: UpdateOptions = {}) => {
   setTimeout(() => {
     const toast = getToast(toastId, options as ToastOptions);
     if (toast) {
-      const { options: oldOptions, content: oldContent } = toast;
+      const { props: oldOptions, content: oldContent } = toast;
 
       const nextOptions = {
         ...oldOptions,
         ...options,
         toastId: options.toastId || toastId,
         updateId: generateToastId()
-      } as WithInjectedOptions & UpdateOptions;
+      } as ToastProps & UpdateOptions;
 
       if (nextOptions.toastId !== toastId) nextOptions.staleId = toastId;
 

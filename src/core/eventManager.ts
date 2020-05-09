@@ -1,5 +1,5 @@
 import {
-  WithInjectedOptions,
+  ToastProps,
   Id,
   ToastContent,
   ClearWaitingQueueParams
@@ -15,10 +15,7 @@ export const enum Event {
   ClearWaitingQueue
 }
 
-type OnShowCallback = (
-  content: ToastContent,
-  options: WithInjectedOptions
-) => void;
+type OnShowCallback = (content: ToastContent, options: ToastProps) => void;
 type OnClearCallback = (id?: Id) => void;
 type OnClearWaitingQueue = (params: ClearWaitingQueueParams) => void;
 type OnDidMountCallback = (containerInstance: ContainerInstance) => void;
@@ -50,11 +47,7 @@ export interface EventManager {
   on(event: Event.Change, callback: OnChangeCallback): EventManager;
   off(event: Event, callback?: Callback): EventManager;
   cancelEmit(event: Event): EventManager;
-  emit(
-    event: Event.Show,
-    content: React.ReactNode,
-    options: WithInjectedOptions
-  ): void;
+  emit(event: Event.Show, content: React.ReactNode, options: ToastProps): void;
   emit(event: Event.Clear, id?: string | number): void;
   emit(event: Event.ClearWaitingQueue, params: ClearWaitingQueueParams): void;
   emit(event: Event.DidMount, containerInstance: ContainerInstance): void;

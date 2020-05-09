@@ -21,10 +21,13 @@ export type ToastContent =
   | ((props: ToastContentProps) => React.ReactNode);
 export interface Toast {
   content: ToastContent;
-  options: WithInjectedOptions;
+  props: ToastProps;
 }
 
 export type Id = number | string;
+export type ToastTransition =
+  | React.FC<ToastTransitionProps>
+  | React.ComponentClass<ToastTransitionProps>;
 type ClassName = string | null;
 
 export interface ClearWaitingQueueParams {
@@ -107,9 +110,7 @@ interface CommonOptions {
   /**
    * Pass a custom transition built with react-transition-group.
    */
-  transition?:
-    | React.FC<ToastTransitionProps>
-    | React.ComponentClass<ToastTransitionProps>;
+  transition?: ToastTransition;
 
   /**
    * Allow toast to be draggable
@@ -190,20 +191,24 @@ export interface ToastOptions extends CommonOptions {
   delay?: number;
 }
 
-export interface WithInjectedOptions extends ToastOptions {
+export interface ToastProps extends ToastOptions {
+  in?: boolean;
   staleId?: Id;
   toastId: Id;
   key: Id;
+  transition: ToastTransition;
   closeToast: () => void;
   position: ToastPosition;
   children?: ToastContent;
   draggablePercent: number;
-  in?: boolean;
   progressClassName?: ClassName;
   className?: ClassName;
   bodyClassName?: ClassName;
-  onExited?: () => void;
-  unmountToast?: (toastId: Id) => void;
+  deleteToast: () => void;
+}
+
+export interface NotValidatedToastProps extends Partial<ToastProps> {
+  toastId: Id;
 }
 
 export interface UpdateOptions extends Nullable<ToastOptions> {

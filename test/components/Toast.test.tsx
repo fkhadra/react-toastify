@@ -5,7 +5,7 @@ import { act } from 'react-dom/test-utils';
 import '../__mocks__/react-transition-group';
 import { cssClasses } from '../helpers';
 import { Toast, ToastContainer } from '../../src/components';
-import { WithInjectedOptions } from '../../src/types';
+import { ToastProps } from '../../src/types';
 
 const REQUIRED_PROPS = {
   ...ToastContainer.defaultProps,
@@ -14,7 +14,7 @@ const REQUIRED_PROPS = {
   type: 'default',
   toastId: 'id',
   key: 'key'
-} as WithInjectedOptions;
+} as ToastProps;
 
 function getProgressBar(container: HTMLElement) {
   const progressBar = container.querySelector(

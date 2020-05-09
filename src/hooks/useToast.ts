@@ -7,7 +7,7 @@ import {
 } from 'react';
 
 import { isFn } from '../utils';
-import { WithInjectedOptions } from '../types';
+import { ToastProps } from '../types';
 import { useKeeper } from './useKeeper';
 
 interface Draggable {
@@ -35,7 +35,7 @@ function getY(e: DragEvent) {
     : e.clientY;
 }
 
-export function useToast(props: WithInjectedOptions) {
+export function useToast(props: ToastProps) {
   const [isRunning, setIsRunning] = useState(true);
   const [preventExitTransition, setPreventExitTransition] = useState(false);
   const toastRef = useRef<HTMLDivElement>(null);
@@ -205,7 +205,6 @@ export function useToast(props: WithInjectedOptions) {
     preventExitTransition,
     toastRef,
     drag,
-    unmountToast: () => props.unmountToast!(props.toastId),
     onDragStart,
     onDragTransitionEnd,
     eventHandlers

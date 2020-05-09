@@ -12,12 +12,9 @@ import { ToastContainerProps, ToastPosition } from '../types';
 import { ToastPositioner } from './ToastPositioner';
 
 export const ToastContainer: React.FC<ToastContainerProps> = props => {
-  const {
-    getToastToRender,
-    containerRef,
-    isToastActive,
-    unmountToast
-  } = useToastContainer(props);
+  const { getToastToRender, containerRef, isToastActive } = useToastContainer(
+    props
+  );
   const { className, style, rtl, containerId } = props;
 
   return (
@@ -39,19 +36,16 @@ export const ToastContainer: React.FC<ToastContainerProps> = props => {
 
           return (
             <ToastPositioner {...swag} key={`container-${position}`}>
-              {toastList.map(toast => {
-                const { content, options } = toast;
-
+              {toastList.map(({ content, props: toastProps }) => {
                 return (
                   <Toast
-                    {...options}
-                    in={isToastActive(options.toastId)}
-                    unmountToast={unmountToast}
-                    key={`toast-${options.key}`}
+                    {...toastProps}
+                    in={isToastActive(toastProps.toastId)}
+                    key={`toast-${toastProps.key}`}
                     closeButton={
-                      options.closeButton === true
+                      toastProps.closeButton === true
                         ? CloseButton
-                        : options.closeButton
+                        : toastProps.closeButton
                     }
                   >
                     {content}
@@ -66,40 +60,42 @@ export const ToastContainer: React.FC<ToastContainerProps> = props => {
   );
 };
 
-// @ts-ignore
-ToastContainer.propTypes = {
+if (process.env.NODE_ENV !== 'production') {
   // @ts-ignore
-  position: PropTypes.oneOf(objectValues(POSITION)),
+  ToastContainer.propTypes = {
+    // @ts-ignore
+    position: PropTypes.oneOf(objectValues(POSITION)),
 
-  // @ts-ignore
-  autoClose: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
+    // @ts-ignore
+    autoClose: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
 
-  // @ts-ignore
-  closeButton: PropTypes.oneOfType([
-    PropTypes.node,
-    PropTypes.bool,
-    PropTypes.func
-  ]),
-  hideProgressBar: PropTypes.bool,
-  pauseOnHover: PropTypes.bool,
-  closeOnClick: PropTypes.bool,
-  newestOnTop: PropTypes.bool,
-  className: PropTypes.string,
-  style: PropTypes.object,
-  toastClassName: PropTypes.string,
-  bodyClassName: PropTypes.string,
-  progressClassName: PropTypes.string,
-  progressStyle: PropTypes.object,
-  transition: PropTypes.func,
-  rtl: PropTypes.bool,
-  draggable: PropTypes.bool,
-  draggablePercent: PropTypes.number,
-  pauseOnFocusLoss: PropTypes.bool,
-  enableMultiContainer: PropTypes.bool,
-  containerId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  role: PropTypes.string,
-  onClick: PropTypes.func
-};
+    // @ts-ignore
+    closeButton: PropTypes.oneOfType([
+      PropTypes.node,
+      PropTypes.bool,
+      PropTypes.func
+    ]),
+    hideProgressBar: PropTypes.bool,
+    pauseOnHover: PropTypes.bool,
+    closeOnClick: PropTypes.bool,
+    newestOnTop: PropTypes.bool,
+    className: PropTypes.string,
+    style: PropTypes.object,
+    toastClassName: PropTypes.string,
+    bodyClassName: PropTypes.string,
+    progressClassName: PropTypes.string,
+    progressStyle: PropTypes.object,
+    transition: PropTypes.func,
+    rtl: PropTypes.bool,
+    draggable: PropTypes.bool,
+    draggablePercent: PropTypes.number,
+    pauseOnFocusLoss: PropTypes.bool,
+    enableMultiContainer: PropTypes.bool,
+    containerId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    role: PropTypes.string,
+    onClick: PropTypes.func
+  };
+}
 
 ToastContainer.defaultProps = {
   position: POSITION.TOP_RIGHT as ToastPosition,

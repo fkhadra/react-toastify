@@ -30,6 +30,16 @@ export function hasToastId(toastId?: Id) {
   return toastId === 0 || toastId;
 }
 
+export function getAutoCloseDelay(
+  toastAutoClose?: false | number,
+  containerAutoClose?: false | number
+) {
+  return toastAutoClose === false ||
+    (isNum(toastAutoClose) && toastAutoClose > 0)
+    ? toastAutoClose
+    : containerAutoClose;
+}
+
 export const canUseDom = !!(
   typeof window !== 'undefined' &&
   window.document &&

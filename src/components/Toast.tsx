@@ -1,18 +1,16 @@
 import React, { isValidElement, cloneElement } from 'react';
-import { TransitionProps } from 'react-transition-group/Transition';
 import cx from 'classnames';
 
 import { ProgressBar } from './ProgressBar';
-import { WithInjectedOptions } from '../types';
+import { ToastProps } from '../types';
 import { RT_NAMESPACE, isFn } from '../utils';
 import { useToast } from '../hooks';
 
-export const Toast: React.FC<WithInjectedOptions> = props => {
+export const Toast: React.FC<ToastProps> = props => {
   const {
     isRunning,
     preventExitTransition,
     toastRef,
-    unmountToast,
     eventHandlers
   } = useToast(props);
   const {
@@ -35,8 +33,9 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
     role,
     progress,
     rtl,
-    toastId
-  } = props as Required<WithInjectedOptions>;
+    toastId,
+    deleteToast
+  } = props;
   const cssClasses = cx(
     `${RT_NAMESPACE}__toast`,
     `${RT_NAMESPACE}__toast--${type}`,
@@ -59,7 +58,7 @@ export const Toast: React.FC<WithInjectedOptions> = props => {
     <Transition
       in={props.in!}
       appear
-      done={unmountToast}
+      done={deleteToast}
       position={position}
       preventExitTransition={preventExitTransition}
       nodeRef={toastRef}

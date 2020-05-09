@@ -1,10 +1,7 @@
 import React from 'react';
-import { WithInjectedOptions } from 'types';
+import { ToastProps } from 'types';
 
-type ToastPositionerProps = Pick<
-  WithInjectedOptions,
-  'className' | 'style' | 'in'
->;
+type ToastPositionerProps = Pick<ToastProps, 'className' | 'style' | 'in'>;
 
 export const ToastPositioner: React.FC<ToastPositionerProps> = ({
   children,
