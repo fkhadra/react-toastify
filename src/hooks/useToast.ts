@@ -204,9 +204,6 @@ export function useToast(props: ToastProps) {
     isRunning,
     preventExitTransition,
     toastRef,
-    drag,
-    onDragStart,
-    onDragTransitionEnd,
     eventHandlers
   };
 }

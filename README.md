@@ -17,6 +17,26 @@ $ npm install --save react-toastify
 $ yarn add react-toastify
 ```
 
+## The gist
+
+```jsx
+  import React from 'react';
+
+  import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
+  
+  function App(){
+    const notify = () => toast("Wow so easy !");
+
+    return (
+      <div>
+        <button onClick={notify}>Notify !</button>
+        <ToastContainer />
+      </div>
+    );
+  }
+```
+
 ## Demo
 
 [A demo is worth a thousand words](https://fkhadra.github.io/react-toastify/introduction)
