@@ -39,7 +39,7 @@ export const Header = () => (
     <h1>Welcome to React-toastify</h1>
     <h5>React notification made easy !</h5>
     <div>
-      <a className="btn" href="https://github.com/fkhadra/react-toastify">
+      <a className="btn" href="https://fkhadra.github.io/react-toastify">
         <span role="img" aria-label="link to github">
           📖
         </span>{' '}
