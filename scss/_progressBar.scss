@@ -31,10 +31,15 @@
     left: initial;
     transform-origin: right;
   }
+
   &--default{
     background: $rt-color-progress-default;
   }
 
+  &--dark{
+    background: $rt-color-progress-dark;
+  }
+  
   &--info{}
   &--success{}
   &--warning{}

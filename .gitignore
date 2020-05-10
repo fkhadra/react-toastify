@@ -9,3 +9,4 @@ yarn-error.log
 cjs/
 esm/
 dist/
+.cache

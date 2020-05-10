@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProgressBar Should be able to hide the progress bar 1`] = `
+<div>
+  <div
+    class="Toastify__progress-bar Toastify__progress-bar--animated Toastify__progress-bar--default"
+    style="animation-duration: 5000ms; animation-play-state: running; opacity: 0;"
+  />
+</div>
+`;
+
+exports[`ProgressBar Should be able to pause animation 1`] = `
+<div>
+  <div
+    class="Toastify__progress-bar Toastify__progress-bar--animated Toastify__progress-bar--default"
+    style="animation-duration: 5000ms; animation-play-state: paused; opacity: 1;"
+  />
+</div>
+`;
+
+exports[`ProgressBar Should render controlled progress bar 1`] = `
+<div>
+  <div
+    class="Toastify__progress-bar Toastify__progress-bar--controlled Toastify__progress-bar--default"
+    style="animation-duration: 5000ms; animation-play-state: running; opacity: 1; transform: scaleX(0.7);"
+  />
+</div>
+`;

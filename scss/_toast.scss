@@ -16,6 +16,10 @@
     &--rtl {
         direction: rtl;
     }
+    &--dark {
+        background: $rt-color-dark;
+        color: $rt-text-color-dark;
+    }
     &--default {
         background: $rt-color-default;
         color: $rt-text-color-default;
@@ -34,7 +38,7 @@
     }
     &-body {
         margin: auto 0;
-        flex: 1;
+        flex: 1 1 auto;
     }
 }
 

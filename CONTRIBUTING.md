@@ -10,8 +10,7 @@ Please note we have a code of conduct, please follow it in all your interactions
 
 - If adding a new feature, write the corresponding test
 - Ensure that nothing get broke. You can use the playground for that
-- If applicable, update the readme
-- If applicable, update the typescript definition
+- If applicable, update the [documentation](https://github.com/fkhadra/react-toastify-doc)
 - Use prettier before commiting 😭
 - When solving a bug, please provide the steps to reproduce it(codesandbox is our best friend for that)
 - Tchill 👌
@@ -62,18 +61,15 @@ yarn prettier-all
 
 All the style rules lives in the `scss` directory. The filename are self-explanatory about their content. 
 
-#### Playground
+#### Example dir
 
 The playground let you test your changes, it's like the demo of react-toastify. Most of the time you don't need to modify it unless you add new features.
 
 #### Src
 
-- [toast:](https://github.com/fkhadra/react-toastify/blob/master/src/toast.js) Contain the exposed api (`toast.success...`).
+- [toast:](https://github.com/fkhadra/react-toastify/blob/master/src/core/toast.tsx) Contain the exposed api (`toast.success...`).
 
-- [ToastContainer:](https://github.com/fkhadra/react-toastify/blob/master/src/components/ToastContainer.js) 
-This is the presentation layer. His responsibility is to display the notifications.
-
-- [eventManager:](https://github.com/fkhadra/react-toastify/blob/master/src/utils/eventManager.js) 
+- [eventManager:](https://github.com/fkhadra/react-toastify/blob/master/src/core/eventManager.ts) 
 This is the glue between `toast` and `ToastContainer`. In fact, it is just a dead simple pubsub.
 
 ## License

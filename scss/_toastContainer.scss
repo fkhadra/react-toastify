@@ -13,7 +13,7 @@
     &--top-center {
         top: 1em;
         left: 50%;
-        margin-left: -($rt-toast-width / 2);
+        transform: translateX(-50%);
     }
     &--top-right {
         top: 1em;
@@ -26,7 +26,7 @@
     &--bottom-center {
         bottom: 1em;
         left: 50%;
-        margin-left: -($rt-toast-width / 2);
+        transform: translateX(-50%);
     }
     &--bottom-right {
         bottom: 1em;
