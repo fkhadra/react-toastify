@@ -15,4 +15,12 @@ describe('CloseButton', () => {
     fireEvent.click(container.firstChild as HTMLElement);
     expect(closeToast).toHaveBeenCalled();
   });
+
+  it('Should have default aria-label set to close', () => {
+    const { getByLabelText } = render(
+      <CloseButton closeToast={closeToast} type="default" />
+    );
+
+    expect(getByLabelText('close')).not.toBe(null);
+  });
 });

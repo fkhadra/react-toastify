@@ -4,10 +4,14 @@ import { DEFAULT, TypeOptions } from '../utils';
 export interface CloseButtonProps {
   closeToast: (e: React.MouseEvent<HTMLElement>) => void;
   type: TypeOptions;
-  ariaLabel: string;
+  ariaLabel?: string;
 }
 
-export function CloseButton({ closeToast, type, ariaLabel }: CloseButtonProps) {
+export function CloseButton({
+  closeToast,
+  type,
+  ariaLabel = 'close'
+}: CloseButtonProps) {
   return (
     <button
       className={`${DEFAULT.CSS_NAMESPACE}__close-button ${DEFAULT.CSS_NAMESPACE}__close-button--${type}`}
@@ -27,7 +31,3 @@ export function CloseButton({ closeToast, type, ariaLabel }: CloseButtonProps) {
     </button>
   );
 }
-
-CloseButton.defaultProps = {
-  ariaLabel: 'close'
-};
