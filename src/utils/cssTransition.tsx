@@ -1,6 +1,6 @@
 import React from 'react';
 import { Transition } from 'react-transition-group';
-import { ToastTransitionProps } from 'types';
+import { ToastTransitionProps } from '../types';
 
 import { collapseToast } from './collapseToast';
 import { DEFAULT } from './constant';

@@ -1,6 +1,6 @@
 import { isValidElement } from 'react';
 
-import { Id } from 'types';
+import { Id } from '../types';
 
 export function isNum(v: any): v is Number {
   return typeof v === 'number' && !isNaN(v);
