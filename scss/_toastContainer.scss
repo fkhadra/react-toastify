@@ -44,11 +44,13 @@
         &--top-center,
         &--top-right {
             top: 0;
+            transform: translateX(0);
         }
         &--bottom-left,
         &--bottom-center,
         &--bottom-right {
             bottom: 0;
+            transform: translateX(0);
         }
         &--rtl{
           right: 0;
