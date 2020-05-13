@@ -14,7 +14,7 @@ export const POSITION = {
   BOTTOM_LEFT: 'bottom-left',
   BOTTOM_RIGHT: 'bottom-right',
   BOTTOM_CENTER: 'bottom-center'
-};
+} as const;
 
 export const TYPE = {
   INFO: 'info',
