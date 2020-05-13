@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { render } from 'react-dom';
 
 import { POSITION, TYPE, canUseDom, isStr, isNum, isFn } from '../utils';

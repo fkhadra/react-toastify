@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { isFn } from '../../src/utils';
 
 jest.mock('react-transition-group', () => {

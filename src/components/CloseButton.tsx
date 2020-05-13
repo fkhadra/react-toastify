@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { DEFAULT, TypeOptions } from '../utils';
 
 export interface CloseButtonProps {

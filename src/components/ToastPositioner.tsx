@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { ToastProps } from '../types';
 
 type ToastPositionerProps = Pick<ToastProps, 'className' | 'style' | 'in'>;

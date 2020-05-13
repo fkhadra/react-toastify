@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Transition } from 'react-transition-group';
 import { ToastTransitionProps } from '../types';
 

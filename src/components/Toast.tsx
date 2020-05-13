@@ -1,4 +1,4 @@
-import React, { isValidElement, cloneElement } from 'react';
+import * as React from 'react';
 import cx from 'classnames';
 
 import { ProgressBar } from './ProgressBar';
@@ -51,7 +51,8 @@ export const Toast: React.FC<ToastProps> = props => {
 
     const props = { closeToast, type };
     if (isFn(closeButton)) return closeButton(props);
-    if (isValidElement(closeButton)) return cloneElement(closeButton, props);
+    if (React.isValidElement(closeButton))
+      return React.cloneElement(closeButton, props);
   }
 
   return (

@@ -1,4 +1,4 @@
-import React, { CSSProperties } from 'react';
+import * as React from 'react';
 import cx from 'classnames';
 
 import { TYPE, DEFAULT, TypeOptions } from './../utils';
@@ -37,7 +37,7 @@ export interface ProgressBarProps {
   /**
    * Optionnal inline style
    */
-  style?: CSSProperties;
+  style?: React.CSSProperties;
 
   /**
    * Tell wether or not controlled progress bar is used
@@ -73,7 +73,7 @@ export function ProgressBar({
   rtl,
   isIn
 }: ProgressBarProps) {
-  const style: CSSProperties = {
+  const style: React.CSSProperties = {
     ...userStyle,
     animationDuration: `${delay}ms`,
     animationPlayState: isRunning ? 'running' : 'paused',
