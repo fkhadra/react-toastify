@@ -14,7 +14,8 @@ import {
   isNum,
   isStr,
   hasToastId,
-  getAutoCloseDelay
+  getAutoCloseDelay,
+  ToastPosition
 } from '../utils';
 
 import {
@@ -23,7 +24,6 @@ import {
   ToastProps,
   ToastContent,
   Toast,
-  ToastPosition,
   ClearWaitingQueueParams,
   NotValidatedToastProps,
   ToastTransition
@@ -175,7 +175,7 @@ export function useToastContainer(props: ToastContainerProps) {
       closeToast: closeToast,
       closeButton: options.closeButton,
       rtl: props.rtl,
-      position: options.position || (props.position as ToastPosition),
+      position: options.position || props.position,
       transition: options.transition || (props.transition as ToastTransition),
       className: parseClassName(options.className || props.toastClassName),
       bodyClassName: parseClassName(
@@ -287,9 +287,10 @@ export function useToastContainer(props: ToastContainerProps) {
     for (let i = 0; i < toastList.length; i++) {
       const toast = collection[toastList[i]];
       const { position } = toast.props;
-      toastToRender[position] || (toastToRender[position] = []);
-
-      toastToRender[position]!.push(toast);
+      if (position) {
+        toastToRender[position] || (toastToRender[position] = []);
+        toastToRender[position]!.push(toast);
+      }
     }
 
     return (Object.keys(toastToRender) as Array<ToastPosition>).map(p =>

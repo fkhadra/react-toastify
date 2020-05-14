@@ -51,8 +51,8 @@ yarn start
 # Run tests 💩
 yarn test
 
-# Prettify all the things
-yarn prettier-all
+# Lint all the things
+yarn lint
 ```
 
 ### Project structure

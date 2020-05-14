@@ -1,21 +1,14 @@
 import * as React from 'react';
+import { ToastPosition, TypeOptions } from '../utils';
 
 type Nullable<T> = {
   [P in keyof T]: T[P] | null;
 };
 
-export type ToastPosition =
-  | 'top-right'
-  | 'top-center'
-  | 'top-left'
-  | 'bottom-right'
-  | 'bottom-center'
-  | 'bottom-left';
-
 export interface ToastContentProps {
   closeToast?: () => void;
 }
-export type TypeOptions = 'info' | 'success' | 'warning' | 'error' | 'default';
+
 export type ToastContent =
   | React.ReactNode
   | ((props: ToastContentProps) => React.ReactNode);
@@ -201,7 +194,7 @@ export interface ToastProps extends ToastOptions {
   key: Id;
   transition: ToastTransition;
   closeToast: () => void;
-  position: ToastPosition;
+  position?: ToastPosition;
   children?: ToastContent;
   draggablePercent: number;
   progressClassName?: ClassName;
@@ -263,7 +256,7 @@ export interface ToastTransitionProps {
   in: boolean;
   appear: boolean;
   done: () => void;
-  position: ToastPosition | string;
+  position?: ToastPosition | string;
   preventExitTransition: boolean;
   nodeRef: React.RefObject<HTMLElement>;
   children?: React.ReactNode;

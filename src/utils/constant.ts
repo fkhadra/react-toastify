@@ -1,22 +1,29 @@
-export type TypeOptions = 'info' | 'success' | 'warning' | 'error' | 'default';
-export type Positons =
-  | 'top-left'
+export type ToastPosition =
   | 'top-right'
   | 'top-center'
-  | 'bottom-left'
+  | 'top-left'
   | 'bottom-right'
-  | 'bottom-center';
+  | 'bottom-center'
+  | 'bottom-left';
 
-export const POSITION = {
+export type TypeOptions =
+  | 'info'
+  | 'success'
+  | 'warning'
+  | 'error'
+  | 'dark'
+  | 'default';
+
+export const POSITION: { [key: string]: ToastPosition } = {
   TOP_LEFT: 'top-left',
   TOP_RIGHT: 'top-right',
   TOP_CENTER: 'top-center',
   BOTTOM_LEFT: 'bottom-left',
   BOTTOM_RIGHT: 'bottom-right',
   BOTTOM_CENTER: 'bottom-center'
-} as const;
+};
 
-export const TYPE = {
+export const TYPE: { [key: string]: TypeOptions } = {
   INFO: 'info',
   SUCCESS: 'success',
   WARNING: 'warning',

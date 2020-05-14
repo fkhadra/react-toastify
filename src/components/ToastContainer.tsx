@@ -8,7 +8,7 @@ import { CloseButton } from './CloseButton';
 import { Bounce } from './Transitions';
 import { POSITION, DEFAULT, parseClassName, objectValues } from '../utils';
 import { useToastContainer } from '../hooks';
-import { ToastContainerProps, ToastPosition } from '../types';
+import { ToastContainerProps } from '../types';
 import { ToastPositioner } from './ToastPositioner';
 
 export const ToastContainer: React.FC<ToastContainerProps> = props => {
@@ -102,7 +102,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 ToastContainer.defaultProps = {
-  position: POSITION.TOP_RIGHT as ToastPosition,
+  position: POSITION.TOP_RIGHT,
   transition: Bounce,
   rtl: false,
   autoClose: 5000,
