@@ -86,11 +86,12 @@ export function cssTransition({
       }
     };
 
-    const onCollapseStart = () => {
+    const onExited = () => {
       const node = props.nodeRef.current;
+
       if (node) {
-        collapseToast(node, done, collapseDuration);
-        node.removeEventListener('animationend', onCollapseStart);
+        node.removeEventListener('animationend', onExited);
+        collapse ? collapseToast(node, done, collapseDuration) : done();
       }
     };
 
@@ -100,9 +101,7 @@ export function cssTransition({
         node.classList.add(exitClassName);
         node.style.animationFillMode = 'forwards';
         node.style.animationDuration = `${exitDuration}ms`;
-        collapse
-          ? node.addEventListener('animationend', onCollapseStart)
-          : done();
+        node.addEventListener('animationend', onExited);
       }
     };
 
@@ -114,7 +113,9 @@ export function cssTransition({
             ? 0
             : {
                 enter: enterDuration,
-                exit: collapse ? exitDuration + collapseDuration : exitDuration
+                exit: collapse
+                  ? exitDuration + collapseDuration
+                  : exitDuration + DEFAULT.DEBOUNCE_DURATION
               }
         }
         onEnter={onEnter}

@@ -27,5 +27,6 @@ export const TYPE = {
 
 export const enum DEFAULT {
   COLLAPSE_DURATION = 300,
+  DEBOUNCE_DURATION = 50,
   CSS_NAMESPACE = 'Toastify'
 }
