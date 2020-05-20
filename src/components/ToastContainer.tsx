@@ -1,7 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import { TransitionGroup } from 'react-transition-group';
 
 import { Toast } from './Toast';
 import { CloseButton } from './CloseButton';
@@ -23,43 +22,41 @@ export const ToastContainer: React.FC<ToastContainerProps> = props => {
       className={DEFAULT.CSS_NAMESPACE as string}
       id={containerId as string}
     >
-      <TransitionGroup component={null}>
-        {getToastToRender((position, toastList) => {
-          const swag = {
-            className: cx(
-              `${DEFAULT.CSS_NAMESPACE}__toast-container`,
-              `${DEFAULT.CSS_NAMESPACE}__toast-container--${position}`,
-              { [`${DEFAULT.CSS_NAMESPACE}__toast-container--rtl`]: rtl },
-              parseClassName(className)
-            ),
-            style:
-              toastList.length === 0
-                ? { ...style, pointerEvents: 'none' }
-                : { ...style }
-          } as any;
+      {getToastToRender((position, toastList) => {
+        const swag = {
+          className: cx(
+            `${DEFAULT.CSS_NAMESPACE}__toast-container`,
+            `${DEFAULT.CSS_NAMESPACE}__toast-container--${position}`,
+            { [`${DEFAULT.CSS_NAMESPACE}__toast-container--rtl`]: rtl },
+            parseClassName(className)
+          ),
+          style:
+            toastList.length === 0
+              ? { ...style, pointerEvents: 'none' }
+              : { ...style }
+        } as any;
 
-          return (
-            <ToastPositioner {...swag} key={`container-${position}`}>
-              {toastList.map(({ content, props: toastProps }) => {
-                return (
-                  <Toast
-                    {...toastProps}
-                    in={isToastActive(toastProps.toastId)}
-                    key={`toast-${toastProps.key}`}
-                    closeButton={
-                      toastProps.closeButton === true
-                        ? CloseButton
-                        : toastProps.closeButton
-                    }
-                  >
-                    {content}
-                  </Toast>
-                );
-              })}
-            </ToastPositioner>
-          );
-        })}
-      </TransitionGroup>
+        return (
+          <ToastPositioner {...swag} key={`container-${position}`}>
+            {toastList.map(({ content, props: toastProps }) => {
+              return (
+                <Toast
+                  {...toastProps}
+                  in={isToastActive(toastProps.toastId)}
+                  key={`toast-${toastProps.key}`}
+                  closeButton={
+                    toastProps.closeButton === true
+                      ? CloseButton
+                      : toastProps.closeButton
+                  }
+                >
+                  {content}
+                </Toast>
+              );
+            })}
+          </ToastPositioner>
+        );
+      })}
     </div>
   );
 };

@@ -11,11 +11,6 @@ export function collapseToast(
   const height = node.scrollHeight;
   const style = node.style;
 
-  function onCollapseEnd() {
-    node.removeEventListener('transitionend', onCollapseEnd);
-    done();
-  }
-
   requestAnimationFrame(() => {
     style.minHeight = 'initial';
     style.height = height + 'px';
@@ -25,7 +20,7 @@ export function collapseToast(
       style.height = '0';
       style.padding = '0';
       style.margin = '0';
+      setTimeout(() => done(), duration as number);
     });
-    node.addEventListener('transitionend', onCollapseEnd);
   });
 }

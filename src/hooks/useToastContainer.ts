@@ -50,6 +50,7 @@ export interface ContainerInstance {
 }
 
 export function useToastContainer(props: ToastContainerProps) {
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
   const [toast, dispatch] = useReducer(reducer, []);
   const containerRef = useRef(null);
   let toastCount = useKeeper(0);
@@ -274,6 +275,7 @@ export function useToastContainer(props: ToastContainerProps) {
 
   function removeFromCollection(toastId: Id) {
     delete collection[toastId];
+    forceUpdate();
   }
 
   function getToastToRender<T>(

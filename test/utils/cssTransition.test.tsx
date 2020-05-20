@@ -79,7 +79,7 @@ describe('cssTransition helper', () => {
 
     const Child = () => <div>Plop</div>;
     const { container, getByText } = render(
-      <Transition {...transitionProps} preventExitTransition>
+      <Transition {...transitionProps}>
         <Child />
       </Transition>
     );
@@ -97,7 +97,7 @@ describe('cssTransition helper', () => {
 
     const Child = () => <div>Plop</div>;
     const { container, getByText } = render(
-      <Transition {...transitionProps} preventExitTransition>
+      <Transition {...transitionProps}>
         <Child />
       </Transition>
     );
