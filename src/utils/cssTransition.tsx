@@ -110,7 +110,9 @@ export function cssTransition({
         {...props}
         timeout={
           preventExitTransition
-            ? 0
+            ? collapse
+              ? collapseDuration
+              : DEFAULT.DEBOUNCE_DURATION
             : {
                 enter: enterDuration,
                 exit: collapse
@@ -120,7 +122,7 @@ export function cssTransition({
         }
         onEnter={onEnter}
         onEntered={onEntered}
-        onExit={preventExitTransition ? done : onExit}
+        onExit={preventExitTransition ? onExited : onExit}
         unmountOnExit
       >
         {children}
