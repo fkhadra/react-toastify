@@ -1,22 +1,25 @@
-export type TypeOptions = 'info' | 'success' | 'warning' | 'error' | 'default';
-export type Positons =
-  | 'top-left'
-  | 'top-right'
-  | 'top-center'
-  | 'bottom-left'
-  | 'bottom-right'
-  | 'bottom-center';
+import { ToastPosition, TypeOptions } from '../types';
 
-export const POSITION = {
+type KeyOfPosition =
+  | 'TOP_LEFT'
+  | 'TOP_RIGHT'
+  | 'TOP_CENTER'
+  | 'BOTTOM_LEFT'
+  | 'BOTTOM_RIGHT'
+  | 'BOTTOM_CENTER';
+
+type KeyOfType = 'INFO' | 'SUCCESS' | 'WARNING' | 'ERROR' | 'DEFAULT' | 'DARK';
+
+export const POSITION: { [key in KeyOfPosition]: ToastPosition } = {
   TOP_LEFT: 'top-left',
   TOP_RIGHT: 'top-right',
   TOP_CENTER: 'top-center',
   BOTTOM_LEFT: 'bottom-left',
   BOTTOM_RIGHT: 'bottom-right',
   BOTTOM_CENTER: 'bottom-center'
-} as const;
+};
 
-export const TYPE = {
+export const TYPE: { [key in KeyOfType]: TypeOptions } = {
   INFO: 'info',
   SUCCESS: 'success',
   WARNING: 'warning',

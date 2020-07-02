@@ -4,6 +4,14 @@ type Nullable<T> = {
   [P in keyof T]: T[P] | null;
 };
 
+export type TypeOptions =
+  | 'info'
+  | 'success'
+  | 'warning'
+  | 'error'
+  | 'default'
+  | 'dark';
+
 export type ToastPosition =
   | 'top-right'
   | 'top-center'
@@ -15,7 +23,6 @@ export type ToastPosition =
 export interface ToastContentProps {
   closeToast?: () => void;
 }
-export type TypeOptions = 'info' | 'success' | 'warning' | 'error' | 'default';
 export type ToastContent =
   | React.ReactNode
   | ((props: ToastContentProps) => React.ReactNode);
