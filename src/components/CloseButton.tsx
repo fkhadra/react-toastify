@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { DEFAULT, TypeOptions } from '../utils';
+import { DEFAULT } from '../utils';
+import { TypeOptions } from '../types';
 
 export interface CloseButtonProps {
   closeToast: (e: React.MouseEvent<HTMLElement>) => void;

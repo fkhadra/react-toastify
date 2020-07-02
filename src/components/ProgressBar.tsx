@@ -1,7 +1,8 @@
 import * as React from 'react';
 import cx from 'classnames';
 
-import { TYPE, DEFAULT, TypeOptions } from './../utils';
+import { TYPE, DEFAULT } from './../utils';
+import { TypeOptions } from "../types";
 
 export interface ProgressBarProps {
   /**
