@@ -232,10 +232,11 @@ export function useToastContainer(props: ToastContainerProps) {
 
     if (isValidElement(content) && !isStr(content.type)) {
       toastContent = cloneElement(content, {
-        closeToast
+        closeToast,
+        toastProps
       });
     } else if (isFn(content)) {
-      toastContent = content({ closeToast });
+      toastContent = content({ closeToast, toastProps });
     }
 
     // not handling limit + delay by design. Waiting for user feedback first
