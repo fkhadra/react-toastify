@@ -5,7 +5,7 @@ import {
   cloneElement,
   isValidElement
 } from 'react';
-import { eventManager, Event } from '../core';
+import { Event, eventManager } from '../core';
 import {
   parseClassName,
   canBeRendered,
@@ -50,6 +50,8 @@ export interface ContainerInstance {
 }
 
 export function useToastContainer(props: ToastContainerProps) {
+  const evtManager = props.eventManager ?? eventManager;
+
   const [, forceUpdate] = useReducer(x => x + 1, 0);
   const [toast, dispatch] = useReducer(reducer, []);
   const containerRef = useRef(null);
@@ -67,20 +69,20 @@ export function useToastContainer(props: ToastContainerProps) {
 
   useEffect(() => {
     instance.containerId = props.containerId;
-    eventManager
+    evtManager
       .cancelEmit(Event.WillUnmount)
       .on(Event.Show, buildToast)
       .on(Event.Clear, toastId => containerRef.current && removeToast(toastId))
       .on(Event.ClearWaitingQueue, clearWaitingQueue)
       .emit(Event.DidMount, instance);
 
-    return () => eventManager.emit(Event.WillUnmount, instance);
+    return () => evtManager.emit(Event.WillUnmount, instance);
   }, []);
 
   useEffect(() => {
     instance.isToastActive = isToastActive;
     instance.displayedToast = toast.length;
-    eventManager.emit(Event.Change, toast.length, props.containerId);
+    evtManager.emit(Event.Change, toast.length, props.containerId);
   }, [toast]);
 
   useEffect(() => {
@@ -146,12 +148,12 @@ export function useToastContainer(props: ToastContainerProps) {
     toastId,
     updateId
   }: NotValidatedToastProps) {
-    return !containerRef.current ||
+    return (
+      !containerRef.current ||
       (instance.props.enableMultiContainer &&
         containerId !== instance.props.containerId) ||
       (instance.isToastActive(toastId) && updateId == null)
-      ? true
-      : false;
+    );
   }
 
   // this function and all the function called inside needs to rely on ref(`useKeeper`)

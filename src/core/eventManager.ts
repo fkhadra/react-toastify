@@ -62,7 +62,7 @@ export interface EventManager {
   emit(event: Event.Change, toast: number, containerId?: number | string): void;
 }
 
-export const eventManager: EventManager = {
+export const createEventManager = () => ({
   list: new Map(),
   emitQueue: new Map(),
 
@@ -72,9 +72,11 @@ export const eventManager: EventManager = {
     return this;
   },
 
-  off(event, callback) {
+  off(event: Event, callback: Callback) {
     if (callback) {
-      const cb = this.list.get(event)!.filter(cb => cb !== callback);
+      const cb = this.list
+        .get(event)!
+        .filter((cb: Callback) => cb !== callback);
       this.list.set(event, cb);
       return this;
     }
@@ -82,7 +84,7 @@ export const eventManager: EventManager = {
     return this;
   },
 
-  cancelEmit(event) {
+  cancelEmit(event: Event) {
     const timers = this.emitQueue.get(event);
     if (timers) {
       timers.forEach((timer: TimeoutId) => clearTimeout(timer));
@@ -112,4 +114,6 @@ export const eventManager: EventManager = {
         this.emitQueue.get(event)!.push(timer);
       });
   }
-};
+});
+
+export const eventManager: EventManager = createEventManager();

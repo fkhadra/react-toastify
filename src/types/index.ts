@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { EventManager } from 'core';
+import { CloseButtonProps } from 'components';
 
 type Nullable<T> = {
   [P in keyof T]: T[P] | null;
@@ -80,7 +82,7 @@ interface CommonOptions {
    */
   closeButton?:
     | React.ReactElement
-    | ((props: any) => React.ReactElement)
+    | ((props: CloseButtonProps) => React.ReactElement)
     | boolean;
 
   /**
@@ -264,6 +266,11 @@ export interface ToastContainerProps extends CommonOptions {
    * Limit the number of toast displayed at the same time
    */
   limit?: number;
+
+  /**
+   * Event manager to handle the toasts appearance. Omit to use default global
+   */
+  eventManager?: EventManager;
 }
 
 export interface ToastTransitionProps {
