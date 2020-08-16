@@ -28,135 +28,207 @@ interface EnqueuedToast {
   options: NotValidatedToastProps;
 }
 
-const createToastManager = (
-  evtManager: EventManager = createEventManager()
-) => {
-  let containers = new Map<ContainerInstance | Id, ContainerInstance>();
-  let latestInstance: ContainerInstance | Id;
-  let containerDomNode: HTMLElement;
-  let containerConfig: ToastContainerProps;
-  let queue: EnqueuedToast[] = [];
-  let lazy = false;
-
-  /**
-   * Check whether any container is currently mounted in the DOM
-   */
-  function isAnyContainerMounted() {
-    return containers.size > 0;
-  }
-
-  /**
-   * Get the container by id. Returns the last container declared when no id is given.
-   */
-  function getContainer(containerId?: Id) {
-    if (!isAnyContainerMounted()) return null;
-    return containers.get(!containerId ? latestInstance : containerId);
-  }
-
-  /**
-   * Get the toast by id, given it's in the DOM, otherwise returns null
-   */
-  function getToast(toastId: Id, { containerId }: ToastOptions) {
-    const container = getContainer(containerId);
-    if (!container) return null;
-
-    return container.getToast(toastId);
-  }
-
+class ToastManager extends Function {
   /**
    * Generate a random toastId
    */
-  function generateToastId() {
+  private static generateToastId() {
     return (Math.random().toString(36) + Date.now().toString(36)).substr(2, 10);
   }
 
   /**
    * Generate a toastId or use the one provided
    */
-  function getToastId(options?: ToastOptions) {
+  private static getToastId(options?: ToastOptions) {
     if (options && (isStr(options.toastId) || isNum(options.toastId))) {
       return options.toastId;
     }
 
-    return generateToastId();
-  }
-
-  /**
-   * If the container is not mounted, the toast is enqueued and
-   * the container lazy mounted
-   */
-  function dispatchToast(
-    content: ToastContent,
-    options: NotValidatedToastProps
-  ): Id {
-    if (isAnyContainerMounted()) {
-      evtManager.emit(Event.Show, content, options);
-    } else {
-      queue.push({ content, options });
-      if (lazy && canUseDom) {
-        lazy = false;
-        containerDomNode = document.createElement('div');
-        document.body.appendChild(containerDomNode);
-        render(<ToastContainer {...containerConfig} />, containerDomNode);
-      }
-    }
-
-    return options.toastId;
+    return ToastManager.generateToastId();
   }
 
   /**
    * Merge provided options with the defaults settings and generate the toastId
    */
-  function mergeOptions(type: string, options?: ToastOptions) {
+  private static mergeOptions(type: string, options?: ToastOptions) {
     return {
       ...options,
       type: (options && options.type) || type,
-      toastId: getToastId(options)
+      toastId: ToastManager.getToastId(options)
     } as NotValidatedToastProps;
   }
 
-  const toast = (content: ToastContent, options?: ToastOptions) =>
-    dispatchToast(content, mergeOptions(TYPE.DEFAULT, options));
+  private containers = new Map<ContainerInstance | Id, ContainerInstance>();
+  private latestInstance!: ContainerInstance | Id;
+  private containerDomNode!: HTMLElement;
+  private containerConfig!: ToastContainerProps;
+  private queue: EnqueuedToast[] = [];
+  private lazy = false;
 
-  toast.success = (content: ToastContent, options?: ToastOptions) =>
-    dispatchToast(content, mergeOptions(TYPE.SUCCESS, options));
+  constructor(private readonly evtManager: EventManager) {
+    super();
+    this.evtManager
+      .on(Event.DidMount, (containerInstance: ContainerInstance) => {
+        this.latestInstance =
+          containerInstance.containerId || containerInstance;
 
-  toast.info = (content: ToastContent, options?: ToastOptions) =>
-    dispatchToast(content, mergeOptions(TYPE.INFO, options));
+        this.containers.set(this.latestInstance, containerInstance);
 
-  toast.error = (content: ToastContent, options?: ToastOptions) =>
-    dispatchToast(content, mergeOptions(TYPE.ERROR, options));
+        this.queue.forEach(item => {
+          this.evtManager.emit(Event.Show, item.content, item.options);
+        });
 
-  toast.warning = (content: ToastContent, options?: ToastOptions) =>
-    dispatchToast(content, mergeOptions(TYPE.WARNING, options));
+        this.queue = [];
+      })
+      .on(Event.WillUnmount, (containerInstance: ContainerInstance) => {
+        this.containers.delete(
+          containerInstance.containerId || containerInstance
+        );
 
-  toast.dark = (content: ToastContent, options?: ToastOptions) =>
-    dispatchToast(content, mergeOptions(TYPE.DARK, options));
+        if (this.containers.size === 0) {
+          this.evtManager
+            .off(Event.Show)
+            .off(Event.Clear)
+            .off(Event.ClearWaitingQueue);
+        }
+
+        if (canUseDom && this.containerDomNode) {
+          document.body.removeChild(this.containerDomNode);
+        }
+      });
+  }
+
+  /**
+   * Check whether any container is currently mounted in the DOM
+   */
+  private isAnyContainerMounted = () => {
+    return this.containers.size > 0;
+  };
+
+  /**
+   * Get the container by id. Returns the last container declared when no id is given.
+   */
+  private getContainer = (containerId?: Id) => {
+    if (!this.isAnyContainerMounted()) return null;
+    return this.containers.get(
+      !containerId ? this.latestInstance : containerId
+    );
+  };
+
+  /**
+   * Get the toast by id, given it's in the DOM, otherwise returns null
+   */
+  private getToast = (toastId: Id, { containerId }: ToastOptions) => {
+    const container = this.getContainer(containerId);
+    if (!container) return null;
+
+    return container.getToast(toastId);
+  };
+
+  /**
+   * If the container is not mounted, the toast is enqueued and
+   * the container lazy mounted
+   */
+  private dispatchToast = (
+    content: ToastContent,
+    options: NotValidatedToastProps
+  ): Id => {
+    if (this.isAnyContainerMounted()) {
+      this.evtManager.emit(Event.Show, content, options);
+    } else {
+      this.queue.push({ content, options });
+      if (this.lazy && canUseDom) {
+        this.lazy = false;
+        this.containerDomNode = document.createElement('div');
+        document.body.appendChild(this.containerDomNode);
+        render(
+          <ToastContainer
+            eventManager={this.evtManager}
+            {...this.containerConfig}
+          />,
+          this.containerDomNode
+        );
+      }
+    }
+
+    return options.toastId;
+  };
+
+  public default = (content: ToastContent, options?: ToastOptions) => {
+    return this.dispatchToast(
+      content,
+      ToastManager.mergeOptions(TYPE.DEFAULT, options)
+    );
+  };
+
+  public success = (content: ToastContent, options?: ToastOptions) => {
+    return this.dispatchToast(
+      content,
+      ToastManager.mergeOptions(TYPE.SUCCESS, options)
+    );
+  };
+
+  public info = (content: ToastContent, options?: ToastOptions) => {
+    return this.dispatchToast(
+      content,
+      ToastManager.mergeOptions(TYPE.INFO, options)
+    );
+  };
+
+  public error = (content: ToastContent, options?: ToastOptions) => {
+    return this.dispatchToast(
+      content,
+      ToastManager.mergeOptions(TYPE.ERROR, options)
+    );
+  };
+
+  public warning = (content: ToastContent, options?: ToastOptions) => {
+    return this.dispatchToast(
+      content,
+      ToastManager.mergeOptions(TYPE.WARNING, options)
+    );
+  };
+
+  public dark = (content: ToastContent, options?: ToastOptions) => {
+    return this.dispatchToast(
+      content,
+      ToastManager.mergeOptions(TYPE.DARK, options)
+    );
+  };
 
   /**
    * Maybe I should remove warning in favor of warn, I don't know
    */
-  toast.warn = toast.warning;
+  public warn = (content: ToastContent, options?: ToastOptions) => {
+    return this.warning(content, options);
+  };
 
   /**
    * Remove toast programmaticaly
    */
-  toast.dismiss = (id?: Id) =>
-    isAnyContainerMounted() && evtManager.emit(Event.Clear, id);
+  public dismiss = (id?: Id) => {
+    return (
+      this.isAnyContainerMounted() && this.evtManager.emit(Event.Clear, id)
+    );
+  };
 
   /**
    * Clear waiting queue when limit is used
    */
-  toast.clearWaitingQueue = (params: ClearWaitingQueueParams = {}) =>
-    isAnyContainerMounted() && evtManager.emit(Event.ClearWaitingQueue, params);
+  public clearWaitingQueue = (params: ClearWaitingQueueParams = {}) => {
+    return (
+      this.isAnyContainerMounted() &&
+      this.evtManager.emit(Event.ClearWaitingQueue, params)
+    );
+  };
 
   /**
    * return true if one container is displaying the toast
    */
-  toast.isActive = (id: Id) => {
+  public isActive = (id: Id) => {
     let isToastActive = false;
 
-    containers.forEach(container => {
+    this.containers.forEach(container => {
       if (container.isToastActive && container.isToastActive(id)) {
         isToastActive = true;
       }
@@ -165,11 +237,11 @@ const createToastManager = (
     return isToastActive;
   };
 
-  toast.update = (toastId: Id, options: UpdateOptions = {}) => {
+  public update = (toastId: Id, options: UpdateOptions = {}) => {
     // if you call toast and toast.update directly nothing will be displayed
     // this is why I defered the update
     setTimeout(() => {
-      const toast = getToast(toastId, options as ToastOptions);
+      const toast = this.getToast(toastId, options as ToastOptions);
       if (toast) {
         const { props: oldOptions, content: oldContent } = toast;
 
@@ -177,7 +249,7 @@ const createToastManager = (
           ...oldOptions,
           ...options,
           toastId: options.toastId || toastId,
-          updateId: generateToastId()
+          updateId: ToastManager.generateToastId()
         } as ToastProps & UpdateOptions;
 
         if (nextOptions.toastId !== toastId) nextOptions.staleId = toastId;
@@ -188,7 +260,7 @@ const createToastManager = (
             : oldContent;
         delete nextOptions.render;
 
-        dispatchToast(content, nextOptions);
+        this.dispatchToast(content, nextOptions);
       }
     }, 0);
   };
@@ -196,8 +268,8 @@ const createToastManager = (
   /**
    * Used for controlled progress bar.
    */
-  toast.done = (id: Id) => {
-    toast.update(id, {
+  public done = (id: Id) => {
+    this.update(id, {
       progress: 1
     });
   };
@@ -206,75 +278,74 @@ const createToastManager = (
    * Track changes. The callback get the number of toast displayed
    *
    */
-  toast.onChange = (callback: OnChangeCallback) => {
+  public onChange = (callback: OnChangeCallback) => {
     if (isFn(callback)) {
-      evtManager.on(Event.Change, callback);
+      this.evtManager.on(Event.Change, callback);
     }
     return () => {
-      isFn(callback) && evtManager.off(Event.Change, callback);
+      isFn(callback) && this.evtManager.off(Event.Change, callback);
     };
   };
 
   /**
    * Configure the ToastContainer when lazy mounted
    */
-  toast.configure = (config: ToastContainerProps = {}) => {
-    lazy = true;
-    containerConfig = config;
+  public configure = (config: ToastContainerProps = {}) => {
+    this.lazy = true;
+    this.containerConfig = config;
   };
 
-  toast.POSITION = POSITION;
-  toast.TYPE = TYPE;
+  public POSITION = POSITION;
+  public TYPE = TYPE;
+}
 
-  /**
-   * Wait until the ToastContainer is mounted to dispatch the toast
-   * and attach isActive method
-   */
-  evtManager
-    .on(Event.DidMount, (containerInstance: ContainerInstance) => {
-      latestInstance = containerInstance.containerId || containerInstance;
-      containers.set(latestInstance, containerInstance);
+type ToastManagerProviderProps = PropsWithChildren<
+  Omit<ToastContainerProps, 'eventManager'>
+>;
 
-      queue.forEach(item => {
-        evtManager.emit(Event.Show, item.content, item.options);
-      });
+type ToastManagerProviderMixin = {
+  Provider: React.FC<ToastManagerProviderProps>;
+};
 
-      queue = [];
-    })
-    .on(Event.WillUnmount, (containerInstance: ContainerInstance) => {
-      containers.delete(containerInstance.containerId || containerInstance);
+interface ToastManagerWithProvider
+  extends ToastManager,
+    ToastManagerProviderMixin {
+  (content: ToastContent, options?: ToastOptions): Id;
+}
 
-      if (containers.size === 0) {
-        evtManager
-          .off(Event.Show)
-          .off(Event.Clear)
-          .off(Event.ClearWaitingQueue);
-      }
+const createToastManager = (
+  evtManager: EventManager = createEventManager()
+): ToastManagerWithProvider => {
+  const instance = new ToastManager(evtManager);
 
-      if (canUseDom && containerDomNode) {
-        document.body.removeChild(containerDomNode);
-      }
-    });
+  const callable = new Proxy(instance, {
+    apply(
+      target,
+      // @ts-ignore
+      thisArg: unknown,
+      [content, options]: [ToastContent, ToastOptions?]
+    ): Id {
+      return target.default(content, options);
+    }
+  });
 
-  toast.Provider = (
-    props: PropsWithChildren<Omit<ToastContainerProps, 'eventManager'>>
-  ) => {
-    const { children, ...rest } = props;
+  Object.assign(callable, {
+    Provider: (props: ToastManagerProviderProps) => {
+      const { children, ...rest } = props;
 
-    return (
-      <ToastManagerContext.Provider value={toast}>
-        {children}
-        <ToastContainer {...rest} eventManager={evtManager} />
-      </ToastManagerContext.Provider>
-    );
-  };
+      return (
+        <ToastManagerContext.Provider value={callable}>
+          {children}
+          <ToastContainer {...rest} eventManager={evtManager} />
+        </ToastManagerContext.Provider>
+      );
+    }
+  });
 
-  return toast;
+  return callable as ToastManagerWithProvider;
 };
 
 const toast = createToastManager(eventManager);
-
-export type ToastManager = ReturnType<typeof createToastManager>;
 
 const ToastManagerContext = React.createContext<ToastManager>(toast);
 

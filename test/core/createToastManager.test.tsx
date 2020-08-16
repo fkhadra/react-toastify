@@ -3,7 +3,7 @@ import { act } from 'react-dom/test-utils';
 import { render, fireEvent, RenderResult } from '@testing-library/react';
 import '../__mocks__/react-transition-group';
 
-import { createToastManager, ToastManager, useToastManager } from '../../src/core';
+import { createToastManager, useToastManager } from '../../src/core';
 
 jest.useFakeTimers();
 
@@ -12,7 +12,7 @@ enum TestId {
   FirstTriggerBtn = 'button-a',
   FirstClearAllBtn = 'clear-all-a',
   SecondTriggerBtn = 'button-b',
-  SecondCloseBtn = 'close-b-notif',
+  SecondCloseBtn = 'close-b-notif'
 }
 
 const FirstInnerComponent = () => {
@@ -28,9 +28,12 @@ const FirstInnerComponent = () => {
       </button>
       <button
         data-testid={TestId.FirstTriggerBtn}
-        onClick={() =>
-          toast(<div data-testid={TestId.Notification}>Notify A</div>)
-        }
+        onClick={() => {
+          // @ts-ignore
+          console.log('>__::: containers', toast.containers.size);
+
+          toast(<div data-testid={TestId.Notification}>Notify A</div>);
+        }}
       >
         Notify for A
       </button>
@@ -55,10 +58,10 @@ const SecondInnerComponent = () => {
   );
 };
 
-describe('createToastManager', () => {
+describe('ToastManager', () => {
   let rr: RenderResult;
-  let firstToastManager: ToastManager;
-  let secondToastManager: ToastManager;
+  let firstToastManager: ReturnType<typeof createToastManager>;
+  let secondToastManager: ReturnType<typeof createToastManager>;
 
   beforeEach(() => {
     firstToastManager = createToastManager();
@@ -86,6 +89,19 @@ describe('createToastManager', () => {
           </div>
         </secondToastManager.Provider>
       </div>
+    );
+  });
+
+  it('should show toaster using old api', () => {
+    act(() => {
+      firstToastManager(
+        <div data-testid={TestId.Notification}>Some notification</div>
+      );
+      jest.runTimersToTime(0);
+    });
+
+    expect(rr.getByTestId(TestId.Notification).textContent).toContain(
+      'Some notification'
     );
   });
 
