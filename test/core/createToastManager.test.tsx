@@ -28,12 +28,7 @@ const FirstInnerComponent = () => {
       </button>
       <button
         data-testid={TestId.FirstTriggerBtn}
-        onClick={() => {
-          // @ts-ignore
-          console.log('>__::: containers', toast.containers.size);
-
-          toast(<div data-testid={TestId.Notification}>Notify A</div>);
-        }}
+        onClick={() => toast(<div data-testid={TestId.Notification}>Notify A</div>)}
       >
         Notify for A
       </button>
