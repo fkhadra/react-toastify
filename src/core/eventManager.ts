@@ -62,15 +62,15 @@ export interface EventManager {
   emit(event: Event.Change, toast: number, containerId?: number | string): void;
 }
 
-export const createEventManager = () => ({
-  list: new Map(),
-  emitQueue: new Map(),
+class EvtManager implements EventManager {
+  list = new Map();
+  emitQueue = new Map();
 
   on(event: Event, callback: Callback) {
     this.list.has(event) || this.list.set(event, []);
     this.list.get(event)!.push(callback);
     return this;
-  },
+  }
 
   off(event: Event, callback: Callback) {
     if (callback) {
@@ -82,7 +82,7 @@ export const createEventManager = () => ({
     }
     this.list.delete(event);
     return this;
-  },
+  }
 
   cancelEmit(event: Event) {
     const timers = this.emitQueue.get(event);
@@ -92,7 +92,7 @@ export const createEventManager = () => ({
     }
 
     return this;
-  },
+  }
 
   /**
    * Enqueue the event at the end of the call stack
@@ -114,6 +114,8 @@ export const createEventManager = () => ({
         this.emitQueue.get(event)!.push(timer);
       });
   }
-});
+}
 
-export const eventManager: EventManager = createEventManager();
+export const createEventManager = (): EventManager => new EvtManager();
+
+export const eventManager = createEventManager();
