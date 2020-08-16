@@ -28,36 +28,36 @@ interface EnqueuedToast {
   options: NotValidatedToastProps;
 }
 
+/**
+ * Generate a random toastId
+ */
+function generateToastId() {
+  return (Math.random().toString(36) + Date.now().toString(36)).substr(2, 10);
+}
+
+/**
+ * Generate a toastId or use the one provided
+ */
+function getToastId(options?: ToastOptions) {
+  if (options && (isStr(options.toastId) || isNum(options.toastId))) {
+    return options.toastId;
+  }
+
+  return generateToastId();
+}
+
+/**
+ * Merge provided options with the defaults settings and generate the toastId
+ */
+function mergeOptions(type: string, options?: ToastOptions) {
+  return {
+    ...options,
+    type: (options && options.type) || type,
+    toastId: getToastId(options)
+  } as NotValidatedToastProps;
+}
+
 class ToastManager extends Function {
-  /**
-   * Generate a random toastId
-   */
-  private static generateToastId() {
-    return (Math.random().toString(36) + Date.now().toString(36)).substr(2, 10);
-  }
-
-  /**
-   * Generate a toastId or use the one provided
-   */
-  private static getToastId(options?: ToastOptions) {
-    if (options && (isStr(options.toastId) || isNum(options.toastId))) {
-      return options.toastId;
-    }
-
-    return ToastManager.generateToastId();
-  }
-
-  /**
-   * Merge provided options with the defaults settings and generate the toastId
-   */
-  private static mergeOptions(type: string, options?: ToastOptions) {
-    return {
-      ...options,
-      type: (options && options.type) || type,
-      toastId: ToastManager.getToastId(options)
-    } as NotValidatedToastProps;
-  }
-
   private containers = new Map<ContainerInstance | Id, ContainerInstance>();
   private latestInstance!: ContainerInstance | Id;
   private containerDomNode!: HTMLElement;
@@ -155,45 +155,27 @@ class ToastManager extends Function {
   };
 
   public default = (content: ToastContent, options?: ToastOptions) => {
-    return this.dispatchToast(
-      content,
-      ToastManager.mergeOptions(TYPE.DEFAULT, options)
-    );
+    return this.dispatchToast(content, mergeOptions(TYPE.DEFAULT, options));
   };
 
   public success = (content: ToastContent, options?: ToastOptions) => {
-    return this.dispatchToast(
-      content,
-      ToastManager.mergeOptions(TYPE.SUCCESS, options)
-    );
+    return this.dispatchToast(content, mergeOptions(TYPE.SUCCESS, options));
   };
 
   public info = (content: ToastContent, options?: ToastOptions) => {
-    return this.dispatchToast(
-      content,
-      ToastManager.mergeOptions(TYPE.INFO, options)
-    );
+    return this.dispatchToast(content, mergeOptions(TYPE.INFO, options));
   };
 
   public error = (content: ToastContent, options?: ToastOptions) => {
-    return this.dispatchToast(
-      content,
-      ToastManager.mergeOptions(TYPE.ERROR, options)
-    );
+    return this.dispatchToast(content, mergeOptions(TYPE.ERROR, options));
   };
 
   public warning = (content: ToastContent, options?: ToastOptions) => {
-    return this.dispatchToast(
-      content,
-      ToastManager.mergeOptions(TYPE.WARNING, options)
-    );
+    return this.dispatchToast(content, mergeOptions(TYPE.WARNING, options));
   };
 
   public dark = (content: ToastContent, options?: ToastOptions) => {
-    return this.dispatchToast(
-      content,
-      ToastManager.mergeOptions(TYPE.DARK, options)
-    );
+    return this.dispatchToast(content, mergeOptions(TYPE.DARK, options));
   };
 
   /**
@@ -249,7 +231,7 @@ class ToastManager extends Function {
           ...oldOptions,
           ...options,
           toastId: options.toastId || toastId,
-          updateId: ToastManager.generateToastId()
+          updateId: generateToastId()
         } as ToastProps & UpdateOptions;
 
         if (nextOptions.toastId !== toastId) nextOptions.staleId = toastId;
