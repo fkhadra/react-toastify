@@ -15,7 +15,6 @@ export const Toast: React.FC<ToastProps> = props => {
   } = useToast(props);
   const {
     children,
-    title,
     autoClose,
     onClick,
     type,
@@ -29,11 +28,12 @@ export const Toast: React.FC<ToastProps> = props => {
     progressClassName,
     progressStyle,
     updateId,
-    color = 'red',
     progress,
     rtl,
     toastId,
-    deleteToast
+    deleteToast,
+    title,
+    color
   } = props;
   const cssClasses = cx(
     `${DEFAULT.CSS_NAMESPACE}__toast`,

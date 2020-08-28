@@ -73,7 +73,7 @@ class App extends React.Component {
       transition: 'bounce',
       type: 'default',
       progress: '',
-      disableAutoClose: false,
+      disableAutoClose: true,
       limit: 0
     };
   }
@@ -87,8 +87,8 @@ class App extends React.Component {
 
   showToast = () => {
     this.toastId = this.state.type === 'default'
-      ? toast('1,000 포인트 지급되었습니다.', { progress: this.state.progress, color: 'yellow'  })
-      : toast[this.state.type]('🚀 Wow so easy !', { progress: this.state.progress,  });
+      ? toast('1,000 포인트 지급되었습니다.', { progress: this.state.progress, color: 'green'  })
+      : toast[this.state.type]('🚀 Wow so easy !', { progress: this.state.progress, color: 'yellow'  });
   }
 
   updateToast = () => toast.update(this.toastId, { progress: this.state.progress })

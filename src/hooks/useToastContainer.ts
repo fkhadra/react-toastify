@@ -212,7 +212,9 @@ export function useToastContainer(props: ToastContainerProps) {
       role: isStr(options.role) ? options.role : props.role,
       deleteToast() {
         removeFromCollection(toastId);
-      }
+      },
+      title: options.title ? options.title : '',
+      color: options.color ? options.color : 'red'
     };
 
     if (isFn(options.onOpen)) toastProps.onOpen = options.onOpen;
