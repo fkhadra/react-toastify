@@ -102,7 +102,7 @@ ToastContainer.defaultProps = {
   position: POSITION.TOP_RIGHT as ToastPosition,
   transition: Bounce,
   rtl: false,
-  autoClose: 5000,
+  autoClose: 3000,
   hideProgressBar: false,
   closeButton: CloseButton,
   pauseOnHover: true,
