@@ -95,6 +95,7 @@
   },
   "dependencies": {
     "classnames": "^2.2.6",
+    "parcel": "^1.12.4",
     "prop-types": "^15.7.2",
     "react-transition-group": "^4.4.1"
   }
