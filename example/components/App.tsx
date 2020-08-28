@@ -87,8 +87,8 @@ class App extends React.Component {
 
   showToast = () => {
     this.toastId = this.state.type === 'default'
-      ? toast('🦄 Wow so easy !', { progress: this.state.progress })
-      : toast[this.state.type]('🚀 Wow so easy !', { progress: this.state.progress });
+      ? toast('1,000 포인트 지급되었습니다.', { progress: this.state.progress, color: 'yellow'  })
+      : toast[this.state.type]('🚀 Wow so easy !', { progress: this.state.progress,  });
   }
 
   updateToast = () => toast.update(this.toastId, { progress: this.state.progress })
@@ -149,14 +149,6 @@ class App extends React.Component {
           <section className="container__options">
             <div>
               <h3>Position</h3>
-              <ul>
-                <Radio
-                  options={toast.POSITION}
-                  name="position"
-                  checked={this.state.position}
-                  onChange={this.handleRadioOrSelect}
-                />
-              </ul>
             </div>
             <div>
               <h3>Type</h3>
@@ -172,18 +164,6 @@ class App extends React.Component {
             <div>
               <h3>Options</h3>
               <div>
-                <label htmlFor="autoClose">
-                  Delay
-                  <input
-                    type="number"
-                    name="autoClose"
-                    id="autoClose"
-                    value={this.state.autoClose}
-                    onChange={this.handleAutoCloseDelay}
-                    disabled={this.state.disableAutoClose}
-                  />
-                  ms
-                </label>
                 <label htmlFor="transition">
                   Transition
                   <select
@@ -256,11 +236,6 @@ class App extends React.Component {
             </div>
           </section>
           <section>
-            <ContainerCode
-              {...this.state}
-              isDefaultProps={this.isDefaultProps()}
-            />
-            <ToastCode {...this.state} />
           </section>
         </div>
         <ToastContainer

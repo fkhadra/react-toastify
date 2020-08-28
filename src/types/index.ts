@@ -196,6 +196,10 @@ export interface ToastOptions extends CommonOptions {
    * Add a delay in ms before the toast appear.
    */
   delay?: number;
+
+  title?: string;
+
+  color?: 'red' | 'yellow' | 'green';
 }
 
 /**

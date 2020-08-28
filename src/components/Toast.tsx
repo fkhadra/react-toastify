@@ -16,6 +16,7 @@ export const Toast: React.FC<ToastProps> = props => {
   const {
     closeButton,
     children,
+    title,
     autoClose,
     onClick,
     type,
@@ -31,6 +32,7 @@ export const Toast: React.FC<ToastProps> = props => {
     progressStyle,
     updateId,
     role,
+    color = 'red',
     progress,
     rtl,
     toastId,
@@ -72,14 +74,18 @@ export const Toast: React.FC<ToastProps> = props => {
         style={style}
         ref={toastRef}
       >
-        <div
+        <div id={`toast-${toastId}`} className={cx(`${DEFAULT.CSS_NAMESPACE}__toast-body`, bodyClassName)} style={bodyStyle}>
+          {title && <h1>{title}</h1>}
+          <div className={`circle ${color}`}></div>
+          <p className='toast-content'>{children}</p>
+        </div>
+        {/* <div
           {...(props.in && { role: role })}
           className={cx(`${DEFAULT.CSS_NAMESPACE}__toast-body`, bodyClassName)}
           style={bodyStyle}
         >
-          {children}
-        </div>
-        {renderCloseButton(closeButton)}
+          {children}ㄴㅇㄹㅇㄹㅇ
+        </div> */}
         {(autoClose || controlledProgress) && (
           <ProgressBar
             {...(updateId && !controlledProgress
@@ -90,7 +96,7 @@ export const Toast: React.FC<ToastProps> = props => {
             isRunning={isRunning}
             isIn={props.in}
             closeToast={closeToast}
-            hide={hideProgressBar}
+            hide={true}
             type={type}
             style={progressStyle}
             className={progressClassName}
