@@ -1,3 +1,5 @@
+@import "../scss/color.scss";
+
 .#{$rt-namespace}__toast {
     position: relative;
     box-sizing: border-box;
@@ -24,20 +26,20 @@
         border-radius: 50%;
 
         &.red {
-            background-color: red;
+            background-color: $red60;
         }
         &.green {
-            background-color: green;
+            background-color: $green60;
         }
         &.yellow {
-            background-color: yellow;
+            background-color: $yellow60;
         }
     }
 
     .toast-content {
         margin: 4px 12px;
         font-size: 13px;
-        // color: $gray100;
+        color: $gray100;
         line-height: 1.5;
     }
 
