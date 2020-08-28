@@ -3,7 +3,7 @@ import cx from 'classnames';
 
 import { ProgressBar } from './ProgressBar';
 import { ToastProps } from '../types';
-import { DEFAULT, isFn } from '../utils';
+import { DEFAULT } from '../utils';
 import { useToast } from '../hooks';
 
 export const Toast: React.FC<ToastProps> = props => {
@@ -14,13 +14,11 @@ export const Toast: React.FC<ToastProps> = props => {
     eventHandlers
   } = useToast(props);
   const {
-    closeButton,
     children,
     title,
     autoClose,
     onClick,
     type,
-    hideProgressBar,
     closeToast,
     transition: Transition,
     position,
@@ -31,7 +29,6 @@ export const Toast: React.FC<ToastProps> = props => {
     progressClassName,
     progressStyle,
     updateId,
-    role,
     color = 'red',
     progress,
     rtl,
@@ -47,15 +44,6 @@ export const Toast: React.FC<ToastProps> = props => {
     className
   );
   const controlledProgress = !!progress;
-
-  function renderCloseButton(closeButton: any) {
-    if (!closeButton) return null;
-
-    const props = { closeToast, type };
-    if (isFn(closeButton)) return closeButton(props);
-    if (React.isValidElement(closeButton))
-      return React.cloneElement(closeButton, props);
-  }
 
   return (
     <Transition
@@ -74,10 +62,14 @@ export const Toast: React.FC<ToastProps> = props => {
         style={style}
         ref={toastRef}
       >
-        <div id={`toast-${toastId}`} className={cx(`${DEFAULT.CSS_NAMESPACE}__toast-body`, bodyClassName)} style={bodyStyle}>
+        <div
+          id={`toast-${toastId}`}
+          className={cx(`${DEFAULT.CSS_NAMESPACE}__toast-body`, bodyClassName)}
+          style={bodyStyle}
+        >
           {title && <h1>{title}</h1>}
           <div className={`circle ${color}`}></div>
-          <p className='toast-content'>{children}</p>
+          <p className="toast-content">{children}</p>
         </div>
         {/* <div
           {...(props.in && { role: role })}
