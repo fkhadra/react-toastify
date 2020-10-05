@@ -5,7 +5,6 @@ import {
   cloneElement,
   isValidElement
 } from 'react';
-import { eventManager, Event } from '../core';
 import {
   parseClassName,
   canBeRendered,
@@ -16,6 +15,7 @@ import {
   hasToastId,
   getAutoCloseDelay
 } from '../utils';
+import { eventManager, Event } from '../core/eventManager';
 
 import {
   Id,
