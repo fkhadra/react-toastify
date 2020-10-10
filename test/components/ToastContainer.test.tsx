@@ -261,6 +261,19 @@ describe('ToastContainer', () => {
     expect(container.innerHTML).toMatch(/foo/);
     expect(container.innerHTML).toMatch(/style="background: red;"/);
   });
+  it('Should merge className and style when className is functional', () => {
+    const { container } = render(
+      <ToastContainer className={() => 'foo'} style={{ background: 'red' }} />
+    );
+
+    act(() => {
+      toast('hello');
+      jest.runAllTimers();
+    });
+
+    expect(container.innerHTML).toMatch(/foo/);
+    expect(container.innerHTML).toMatch(/style="background: red;"/);
+  });
 
   it('Should pass a closeToast function when displaying a react component', done => {
     render(<ToastContainer />);
@@ -448,7 +461,7 @@ describe('ToastContainer', () => {
       expect(queryByText('toast-3')).not.toBe(null);
     });
 
-    it("Should be possible to clear limit queue", () => {
+    it('Should be possible to clear limit queue', () => {
       const { queryByText } = render(<ToastContainer limit={2} />);
       const toastId = 'id';
 
@@ -482,8 +495,6 @@ describe('ToastContainer', () => {
 
       expect(queryByText('toast-2')).not.toBe(null);
       expect(queryByText('toast-3')).toBe(null);
-
-
-    })
+    });
   });
 });
