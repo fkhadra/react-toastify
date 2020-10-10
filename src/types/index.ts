@@ -35,7 +35,12 @@ export type Id = number | string;
 export type ToastTransition =
   | React.FC<ToastTransitionProps>
   | React.ComponentClass<ToastTransitionProps>;
-type ClassName = string | null;
+/**
+ * ClassName for the elements - can take a function to build a classname or a raw string that is cx'ed to defaults
+ */
+export type ClassName =
+  | ((context: { type?: TypeOptions; defaultClassName?: string }) => string)
+  | string;
 
 export interface ClearWaitingQueueParams {
   containerId?: Id;

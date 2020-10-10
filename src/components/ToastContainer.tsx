@@ -24,18 +24,20 @@ export const ToastContainer: React.FC<ToastContainerProps> = props => {
     >
       {getToastToRender((position, toastList) => {
         const swag = {
-          className: cx(
-            `${DEFAULT.CSS_NAMESPACE}__toast-container`,
-            `${DEFAULT.CSS_NAMESPACE}__toast-container--${position}`,
-            { [`${DEFAULT.CSS_NAMESPACE}__toast-container--rtl`]: rtl },
-            parseClassName(className)
-          ),
+          className:
+            typeof className === 'function'
+              ? className({})
+              : cx(
+                  `${DEFAULT.CSS_NAMESPACE}__toast-container`,
+                  `${DEFAULT.CSS_NAMESPACE}__toast-container--${position}`,
+                  { [`${DEFAULT.CSS_NAMESPACE}__toast-container--rtl`]: rtl },
+                  parseClassName(className)
+                ),
           style:
             toastList.length === 0
               ? { ...style, pointerEvents: 'none' }
               : { ...style }
         } as any;
-
         return (
           <ToastPositioner {...swag} key={`container-${position}`}>
             {toastList.map(({ content, props: toastProps }) => {
@@ -80,11 +82,11 @@ if (process.env.NODE_ENV !== 'production') {
     pauseOnHover: PropTypes.bool,
     closeOnClick: PropTypes.bool,
     newestOnTop: PropTypes.bool,
-    className: PropTypes.string,
+    className: PropTypes.any, //oneOfType([PropTypes.func, PropTypes.string]),
     style: PropTypes.object,
-    toastClassName: PropTypes.string,
-    bodyClassName: PropTypes.string,
-    progressClassName: PropTypes.string,
+    toastClassName: Toast.propTypes?.className,
+    bodyClassName: PropTypes.any, //oneOfType([PropTypes.func, PropTypes.string]),
+    progressClassName: PropTypes.any, //oneOfType([PropTypes.func, PropTypes.string]),
     progressStyle: PropTypes.object,
     transition: PropTypes.func,
     rtl: PropTypes.bool,
