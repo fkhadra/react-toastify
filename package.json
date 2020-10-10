@@ -58,16 +58,16 @@
       "/src/index.tsx"
     ]
   },
-  "name": "@raydeck/react-toastify",
+  "name": "react-toastify",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rhdeck/react-toastify.git"
+    "url": "git+https://github.com/fkhadra/react-toastify.git"
   },
   "author": "Fadi Khadra  <fdkhadra@gmail.com> (https://fkhadra.github.io)",
   "bugs": {
-    "url": "https://github.com/rhdeck/react-toastify/issues"
+    "url": "https://github.com/fkhadra/react-toastify/issues"
   },
-  "homepage": "https://github.com/rhdeck/react-toastify#readme",
+  "homepage": "https://github.com/fkhadra/react-toastify#readme",
   "module": "dist/react-toastify.esm.js",
   "devDependencies": {
     "@babel/core": "^7.0.0-0",
@@ -94,14 +94,8 @@
     "typescript": "^3.7.5"
   },
   "dependencies": {
-    "@raydeck/livelink": "^2.0.0",
     "classnames": "^2.2.6",
     "prop-types": "^15.7.2",
     "react-transition-group": "^4.4.1"
-  },
-  "liveLink": {
-    "liveLinks": {
-      "@raydeck/livelink": "../livelink"
-    }
   }
 }
