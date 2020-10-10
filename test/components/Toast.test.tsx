@@ -56,7 +56,20 @@ describe('Toast Component', () => {
     expect(container.querySelector('.container-class')).not.toBe(null);
     expect(container.querySelector('.body-class')).not.toBe(null);
   });
-
+  it('Should merge container and body className when functional', () => {
+    const { container } = render(
+      <Toast
+        {...REQUIRED_PROPS}
+        autoClose={false}
+        className={() => 'container-class'}
+        bodyClassName={() => 'body-class'}
+      >
+        FooBar
+      </Toast>
+    );
+    expect(container.querySelector('.container-class')).not.toBe(null);
+    expect(container.querySelector('.body-class')).not.toBe(null);
+  });
   it('Should support Rtl display', () => {
     const { container } = render(
       <Toast {...REQUIRED_PROPS} autoClose={false} rtl>

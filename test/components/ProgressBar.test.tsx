@@ -19,7 +19,15 @@ describe('ProgressBar', () => {
 
     expect((container.firstChild! as HTMLElement).className).toContain('test');
   });
+  it('Should merge className in function form', () => {
+    const { container } = render(
+      <ProgressBar {...getProps()} className={() => 'testClassName'} />
+    );
 
+    expect((container.firstChild! as HTMLElement).className).toContain(
+      'testClassName'
+    );
+  });
   it('Should call closeToast function when animation end', () => {
     const closeToast = jest.fn();
     const { container } = render(
