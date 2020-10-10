@@ -39,7 +39,7 @@ export type ToastTransition =
  * ClassName for the elements - can take a function to build a classname or a raw string that is cx'ed to defaults
  */
 export type ClassName =
-  | ((context: { type?: TypeOptions; defaultClassName?: string }) => string)
+  | ((context?: { type?: TypeOptions; defaultClassName?: string }) => string)
   | string;
 
 export interface ClearWaitingQueueParams {
