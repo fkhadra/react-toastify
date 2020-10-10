@@ -19,7 +19,7 @@ export function isFn(v: any): v is Function {
 }
 
 export function parseClassName(v: any) {
-  return typeof v === 'string' ? v : null;
+  return isStr(v) || isFn(v) ? v : null;
 }
 
 export function objectValues<T>(obj: Record<string, T>) {

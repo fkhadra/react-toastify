@@ -14,7 +14,10 @@ export const ToastPositioner: React.FC<ToastPositionerProps> = ({
   delete rest.in;
 
   return (
-    <div className={className!} style={style}>
+    <div
+      className={typeof className === 'function' ? className({}) : className}
+      style={style}
+    >
       {React.Children.map(children, child =>
         React.cloneElement(child as React.ReactElement<any>, rest)
       )}
