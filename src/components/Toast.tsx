@@ -45,7 +45,12 @@ export const Toast: React.FC<ToastProps> = props => {
   ];
   const cssClasses =
     typeof className === 'function'
-      ? className({ type, defaultClassName: cx(...defaultClassArr) })
+      ? className({
+          rtl,
+          position,
+          type,
+          defaultClassName: cx(...defaultClassArr)
+        })
       : cx(...[...defaultClassArr, className]);
   const controlledProgress = !!progress;
 
