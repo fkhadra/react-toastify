@@ -94,7 +94,11 @@ export function ProgressBar({
   ];
   const classNames =
     typeof className === 'function'
-      ? className({ type, defaultClassName: cx(...defaultClassArr) })
+      ? className({
+          rtl: rtl,
+          type,
+          defaultClassName: cx(...defaultClassArr)
+        })
       : cx(...[...defaultClassArr, className]);
 
   // 🧐 controlledProgress is derived from progress
