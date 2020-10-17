@@ -5,7 +5,13 @@ import cx from 'classnames';
 import { Toast } from './Toast';
 import { CloseButton } from './CloseButton';
 import { Bounce } from './Transitions';
-import { POSITION, DEFAULT, parseClassName, objectValues } from '../utils';
+import {
+  POSITION,
+  DEFAULT,
+  parseClassName,
+  objectValues,
+  isFn
+} from '../utils';
 import { useToastContainer } from '../hooks';
 import { ToastContainerProps, ToastPosition } from '../types';
 import { ToastPositioner } from './ToastPositioner';
@@ -24,15 +30,21 @@ export const ToastContainer: React.FC<ToastContainerProps> = props => {
     >
       {getToastToRender((position, toastList) => {
         const swag = {
-          className:
-            typeof className === 'function'
-              ? className({})
-              : cx(
+          className: isFn(className)
+            ? className({
+                rtl,
+                defaultClassName: cx(
                   `${DEFAULT.CSS_NAMESPACE}__toast-container`,
                   `${DEFAULT.CSS_NAMESPACE}__toast-container--${position}`,
-                  { [`${DEFAULT.CSS_NAMESPACE}__toast-container--rtl`]: rtl },
-                  parseClassName(className)
-                ),
+                  { [`${DEFAULT.CSS_NAMESPACE}__toast-container--rtl`]: rtl }
+                )
+              })
+            : cx(
+                `${DEFAULT.CSS_NAMESPACE}__toast-container`,
+                `${DEFAULT.CSS_NAMESPACE}__toast-container--${position}`,
+                { [`${DEFAULT.CSS_NAMESPACE}__toast-container--rtl`]: rtl },
+                parseClassName(className)
+              ),
           style:
             toastList.length === 0
               ? { ...style, pointerEvents: 'none' }
@@ -84,9 +96,9 @@ if (process.env.NODE_ENV !== 'production') {
     newestOnTop: PropTypes.bool,
     className: PropTypes.any, //oneOfType([PropTypes.func, PropTypes.string]),
     style: PropTypes.object,
-    toastClassName: Toast.propTypes?.className,
-    bodyClassName: PropTypes.any, //oneOfType([PropTypes.func, PropTypes.string]),
-    progressClassName: PropTypes.any, //oneOfType([PropTypes.func, PropTypes.string]),
+    toastClassName: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+    bodyClassName: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+    progressClassName: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
     progressStyle: PropTypes.object,
     transition: PropTypes.func,
     rtl: PropTypes.bool,

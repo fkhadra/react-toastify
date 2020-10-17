@@ -1,7 +1,7 @@
 import * as React from 'react';
 import cx from 'classnames';
 
-import { TYPE, DEFAULT } from './../utils';
+import { TYPE, DEFAULT, isFn } from './../utils';
 import { TypeOptions, ClassName } from '../types';
 
 export interface ProgressBarProps {
@@ -92,14 +92,13 @@ export function ProgressBar({
       [`${DEFAULT.CSS_NAMESPACE}__progress-bar--rtl`]: rtl
     }
   ];
-  const classNames =
-    typeof className === 'function'
-      ? className({
-          rtl: rtl,
-          type,
-          defaultClassName: cx(...defaultClassArr)
-        })
-      : cx(...[...defaultClassArr, className]);
+  const classNames = isFn(className)
+    ? className({
+        rtl,
+        type,
+        defaultClassName: cx(...defaultClassArr)
+      })
+    : cx(...[...defaultClassArr, className]);
 
   // 🧐 controlledProgress is derived from progress
   // so if controlledProgress is set
