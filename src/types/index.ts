@@ -47,7 +47,7 @@ export type ClassName =
   | string;
 export type ToastClassName =
   | ((context?: {
-      type?: string;
+      type?: TypeOptions;
       defaultClassName?: string;
       position?: ToastPosition;
       rtl?: boolean;
