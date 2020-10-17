@@ -40,7 +40,14 @@ export type ToastTransition =
  */
 export type ClassName =
   | ((context?: {
-      type?: TypeOptions;
+      defaultClassName?: string;
+      position?: ToastPosition;
+      rtl?: boolean;
+    }) => string)
+  | string;
+export type ToastClassName =
+  | ((context?: {
+      type: string;
       defaultClassName?: string;
       position?: ToastPosition;
       rtl?: boolean;
@@ -96,7 +103,7 @@ interface CommonOptions {
   /**
    * An optional css class to set for the progress bar.
    */
-  progressClassName?: ClassName;
+  progressClassName?: ToastClassName;
 
   /**
    * An optional style to set for the progress bar.
@@ -111,7 +118,7 @@ interface CommonOptions {
   /**
    * An optional css class to set for the toast content.
    */
-  bodyClassName?: ClassName;
+  bodyClassName?: ToastClassName;
 
   /**
    * An optional inline style to apply for the toast content.
@@ -221,9 +228,9 @@ export interface ToastProps extends ToastOptions {
   position: ToastPosition;
   children?: ToastContent;
   draggablePercent: number;
-  progressClassName?: ClassName;
-  className?: ClassName;
-  bodyClassName?: ClassName;
+  progressClassName?: ToastClassName;
+  className?: ToastClassName;
+  bodyClassName?: ToastClassName;
   deleteToast: () => void;
 }
 
@@ -262,7 +269,7 @@ export interface ToastContainerProps extends CommonOptions {
   /**
    * An optional css class for the toast.
    */
-  toastClassName?: ClassName;
+  toastClassName?: ToastClassName;
 
   /**
    * Show the toast only if it includes containerId and it's the same as containerId
