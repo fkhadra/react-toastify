@@ -47,7 +47,7 @@ export type ClassName =
   | string;
 export type ToastClassName =
   | ((context?: {
-      type: string;
+      type?: string;
       defaultClassName?: string;
       position?: ToastPosition;
       rtl?: boolean;
@@ -111,11 +111,6 @@ interface CommonOptions {
   progressStyle?: React.CSSProperties;
 
   /**
-   * An optional css class to set.
-   */
-  className?: ClassName;
-
-  /**
    * An optional css class to set for the toast content.
    */
   bodyClassName?: ToastClassName;
@@ -173,6 +168,11 @@ interface CommonOptions {
 }
 
 export interface ToastOptions extends CommonOptions {
+  /**
+   * An optional css class to set.
+   */
+  className?: ToastClassName;
+
   /**
    * Called when toast is mounted.
    */
@@ -250,6 +250,11 @@ export interface UpdateOptions extends Nullable<ToastOptions> {
 }
 
 export interface ToastContainerProps extends CommonOptions {
+  /**
+   * An optional css class to set.
+   */
+  className?: ClassName;
+
   /**
    * Whether or not to display the newest toast on top.
    * `Default: false`
