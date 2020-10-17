@@ -2,7 +2,7 @@ import * as React from 'react';
 import cx from 'classnames';
 
 import { TYPE, DEFAULT, isFn } from './../utils';
-import { TypeOptions, ClassName } from '../types';
+import { TypeOptions, ToastClassName } from '../types';
 
 export interface ProgressBarProps {
   /**
@@ -33,7 +33,7 @@ export interface ProgressBarProps {
   /**
    * Optionnal className
    */
-  className?: ClassName;
+  className?: ToastClassName;
 
   /**
    * Optionnal inline style
