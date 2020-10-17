@@ -42,7 +42,7 @@ export type ClassName =
   | ((context?: {
       type?: TypeOptions;
       defaultClassName?: string;
-      position?: Position;
+      position?: ToastPosition;
       rtl?: boolean;
     }) => string)
   | string;

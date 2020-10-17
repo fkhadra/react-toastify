@@ -43,15 +43,14 @@ export const Toast: React.FC<ToastProps> = props => {
       [`${DEFAULT.CSS_NAMESPACE}__toast--rtl`]: rtl
     }
   ];
-  const cssClasses =
-    typeof className === 'function'
-      ? className({
-          rtl,
-          position,
-          type,
-          defaultClassName: cx(...defaultClassArr)
-        })
-      : cx(...[...defaultClassArr, className]);
+  const cssClasses = isFn(className)
+    ? className({
+        rtl,
+        position,
+        type,
+        defaultClassName: cx(...defaultClassArr)
+      })
+    : cx(...[...defaultClassArr, className]);
   const controlledProgress = !!progress;
 
   function renderCloseButton(closeButton: any) {
@@ -83,7 +82,7 @@ export const Toast: React.FC<ToastProps> = props => {
         <div
           {...(props.in && { role: role })}
           className={
-            typeof bodyClassName === 'function'
+            isFn(bodyClassName)
               ? bodyClassName({ type })
               : cx(`${DEFAULT.CSS_NAMESPACE}__toast-body`, bodyClassName)
           }
