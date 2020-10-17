@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { ToastProps } from '../types';
-import { isFn } from '../utils';
-type ToastPositionerProps = Pick<ToastProps, 'className' | 'style' | 'in'>;
+type ToastPositionerProps = Pick<ToastProps, 'className' | 'style' | 'in'> & {
+  className: string;
+};
 
 export const ToastPositioner: React.FC<ToastPositionerProps> = ({
   children,
@@ -14,7 +15,7 @@ export const ToastPositioner: React.FC<ToastPositionerProps> = ({
   delete rest.in;
 
   return (
-    <div className={isFn(className) ? className({}) : className} style={style}>
+    <div className={className} style={style}>
       {React.Children.map(children, child =>
         React.cloneElement(child as React.ReactElement<any>, rest)
       )}
