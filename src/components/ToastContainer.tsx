@@ -32,6 +32,7 @@ export const ToastContainer: React.FC<ToastContainerProps> = props => {
         const swag = {
           className: isFn(className)
             ? className({
+                position,
                 rtl,
                 defaultClassName: cx(
                   `${DEFAULT.CSS_NAMESPACE}__toast-container`,
