@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ToastProps } from '../types';
-type ToastPositionerProps = Pick<ToastProps, 'className' | 'style' | 'in'> & {
-  className: string;
+type ToastPositionerProps = Pick<ToastProps, 'style' | 'in'> & {
+  className?: string;
 };
 
 export const ToastPositioner: React.FC<ToastPositionerProps> = ({
