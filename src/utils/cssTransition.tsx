@@ -82,7 +82,7 @@ export function cssTransition({
       const node = props.nodeRef.current;
       if (node) {
         node.classList.remove(enterClassName);
-        node.style.cssText = '';
+//         node.style.cssText = '';
       }
     };
 
