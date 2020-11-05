@@ -15,5 +15,9 @@ jobs:
         run: yarn 
       - name: Lint
         run: yarn lint
-      - name: Test and coverage
-        run: yarn run test:coverage && cat ./coverage/lcov.info | coveralls
+      - name: Test
+        run: yarn run test:coverage 
+      - name: Coveralls GitHub Action
+        uses: coverallsapp/github-action@v1.1.2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
