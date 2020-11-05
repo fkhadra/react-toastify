@@ -1,3 +1,4 @@
+name: React-toastify CI
 
 on: [pull_request, push]
 
