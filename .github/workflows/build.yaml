@@ -1,0 +1,12 @@
+
+on: [pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+  
+    steps:
+      - name: Install dependencies
+        run: yarn 
+      - name: Lint
+        run: yarn lint
