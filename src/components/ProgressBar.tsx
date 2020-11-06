@@ -1,8 +1,8 @@
 import * as React from 'react';
-import cx from 'classnames';
+import cx from 'clsx';
 
-import { TYPE, DEFAULT } from './../utils';
-import { TypeOptions } from '../types';
+import { TYPE, DEFAULT, isFn } from './../utils';
+import { TypeOptions, ToastClassName } from '../types';
 
 export interface ProgressBarProps {
   /**
@@ -33,7 +33,7 @@ export interface ProgressBarProps {
   /**
    * Optionnal className
    */
-  className?: string | null;
+  className?: ToastClassName;
 
   /**
    * Optionnal inline style
@@ -82,8 +82,7 @@ export function ProgressBar({
   };
 
   if (controlledProgress) style.transform = `scaleX(${progress})`;
-
-  const classNames = cx(
+  const defaultClassArr = [
     `${DEFAULT.CSS_NAMESPACE}__progress-bar`,
     controlledProgress
       ? `${DEFAULT.CSS_NAMESPACE}__progress-bar--controlled`
@@ -91,9 +90,15 @@ export function ProgressBar({
     `${DEFAULT.CSS_NAMESPACE}__progress-bar--${type}`,
     {
       [`${DEFAULT.CSS_NAMESPACE}__progress-bar--rtl`]: rtl
-    },
-    className
-  );
+    }
+  ];
+  const classNames = isFn(className)
+    ? className({
+        rtl,
+        type,
+        defaultClassName: cx(...defaultClassArr)
+      })
+    : cx(...[...defaultClassArr, className]);
 
   // 🧐 controlledProgress is derived from progress
   // so if controlledProgress is set

@@ -35,7 +35,24 @@ export type Id = number | string;
 export type ToastTransition =
   | React.FC<ToastTransitionProps>
   | React.ComponentClass<ToastTransitionProps>;
-type ClassName = string | null;
+/**
+ * ClassName for the elements - can take a function to build a classname or a raw string that is cx'ed to defaults
+ */
+export type ClassName =
+  | ((context?: {
+      defaultClassName?: string;
+      position?: ToastPosition;
+      rtl?: boolean;
+    }) => string)
+  | string;
+export type ToastClassName =
+  | ((context?: {
+      type?: TypeOptions;
+      defaultClassName?: string;
+      position?: ToastPosition;
+      rtl?: boolean;
+    }) => string)
+  | string;
 
 export interface ClearWaitingQueueParams {
   containerId?: Id;
@@ -86,7 +103,7 @@ interface CommonOptions {
   /**
    * An optional css class to set for the progress bar.
    */
-  progressClassName?: ClassName;
+  progressClassName?: ToastClassName;
 
   /**
    * An optional style to set for the progress bar.
@@ -94,14 +111,9 @@ interface CommonOptions {
   progressStyle?: React.CSSProperties;
 
   /**
-   * An optional css class to set.
-   */
-  className?: ClassName;
-
-  /**
    * An optional css class to set for the toast content.
    */
-  bodyClassName?: ClassName;
+  bodyClassName?: ToastClassName;
 
   /**
    * An optional inline style to apply for the toast content.
@@ -157,6 +169,11 @@ interface CommonOptions {
 
 export interface ToastOptions extends CommonOptions {
   /**
+   * An optional css class to set.
+   */
+  className?: ToastClassName;
+
+  /**
    * Called when toast is mounted.
    */
   onOpen?: <T = {}>(props: T) => void;
@@ -211,9 +228,9 @@ export interface ToastProps extends ToastOptions {
   position: ToastPosition;
   children?: ToastContent;
   draggablePercent: number;
-  progressClassName?: ClassName;
-  className?: ClassName;
-  bodyClassName?: ClassName;
+  progressClassName?: ToastClassName;
+  className?: ToastClassName;
+  bodyClassName?: ToastClassName;
   deleteToast: () => void;
 }
 
@@ -234,6 +251,11 @@ export interface UpdateOptions extends Nullable<ToastOptions> {
 
 export interface ToastContainerProps extends CommonOptions {
   /**
+   * An optional css class to set.
+   */
+  className?: ClassName;
+
+  /**
    * Whether or not to display the newest toast on top.
    * `Default: false`
    */
@@ -252,7 +274,7 @@ export interface ToastContainerProps extends CommonOptions {
   /**
    * An optional css class for the toast.
    */
-  toastClassName?: ClassName;
+  toastClassName?: ToastClassName;
 
   /**
    * Show the toast only if it includes containerId and it's the same as containerId
