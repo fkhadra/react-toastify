@@ -74,7 +74,6 @@
     "@babel/preset-env": "^7.8.4",
     "@babel/preset-react": "^7.8.3",
     "@testing-library/react": "^9.4.0",
-    "@types/classnames": "^2.2.9",
     "@types/jest": "^24.9.0",
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.6",
@@ -93,7 +92,7 @@
     "typescript": "^3.7.5"
   },
   "dependencies": {
-    "classnames": "^2.2.6",
+    "clsx": "^1.1.1",
     "prop-types": "^15.7.2",
     "react-transition-group": "^4.4.1"
   }

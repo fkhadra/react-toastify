@@ -1,5 +1,5 @@
 import * as React from 'react';
-import cx from 'classnames';
+import cx from 'clsx';
 
 import { TYPE, DEFAULT, isFn } from './../utils';
 import { TypeOptions, ToastClassName } from '../types';
