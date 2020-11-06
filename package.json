@@ -25,7 +25,6 @@
     "build": "npm run prepare",
     "test": "tsdx test --passWithNoTests",
     "test:coverage": "tsdx test --coverage",
-    "ci": "npm run lint && npm run test:coverage && cat ./coverage/lcov.info | coveralls",
     "lint": "tsdx lint src",
     "prepare": "tsdx build && npm run style",
     "sass": "sass scss/main.scss dist/ReactToastify.css",
