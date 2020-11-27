@@ -114,11 +114,11 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 ToastContainer.defaultProps = {
-  position: POSITION.TOP_RIGHT as ToastPosition,
+  position: POSITION.BOTTOM_LEFT as ToastPosition,
   transition: Bounce,
   rtl: false,
-  autoClose: 5000,
-  hideProgressBar: false,
+  autoClose: 3000,
+  hideProgressBar: true,
   closeButton: CloseButton,
   pauseOnHover: true,
   pauseOnFocusLoss: true,

@@ -1,25 +1,7 @@
 {
-  "version": "6.1.0",
-  "license": "MIT",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
-  "description": "React notification made easy",
-  "keywords": [
-    "react",
-    "notification",
-    "toast",
-    "react-component",
-    "react-toastify",
-    "push",
-    "alert"
-  ],
-  "files": [
-    "dist",
-    "scss"
-  ],
-  "sideEffects": [
-    "*.css"
-  ],
+  "name": "material-react-toastify",
+  "version": "0.0.1",
+  "description": "React Material-UI Snackbars made easy",
   "scripts": {
     "start": "cd example && npm run start",
     "build": "npm run prepare",
@@ -33,6 +15,69 @@
     "postsass-minimal": "cssnano dist/ReactToastify.minimal.css dist/ReactToastify.minimal.css --no-zindex --no-reduceIdents",
     "style": "npm run sass && npm run sass-minimal && cssnano dist/ReactToastify.css dist/ReactToastify.min.css --no-zindex --no-reduceIdents"
   },
+  "devDependencies": {
+    "@babel/core": "^7.0.0-0",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/preset-env": "^7.8.4",
+    "@babel/preset-react": "^7.8.3",
+    "@testing-library/react": "^9.4.0",
+    "@types/jest": "^24.9.0",
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.6",
+    "@types/react-transition-group": "^4.2.4",
+    "coveralls": "^3.0.9",
+    "cssnano": "^4.1.10",
+    "cssnano-cli": "^1.0.5",
+    "husky": "^4.2.0",
+    "parcel": "^2.0.0-beta.1",
+    "postcss": "^7.0.27",
+    "postcss-cli": "^7.1.0",
+    "react": "^16.13.1",
+    "react-app-polyfill": "^2.0.0",
+    "react-dom": "^16.13.1",
+    "sass": "^1.26.0",
+    "tsdx": "^0.12.3",
+    "tslib": "^1.10.0",
+    "typescript": "^3.7.5"
+  },
+  "dependencies": {
+    "clsx": "^1.1.1",
+    "prop-types": "^15.7.2",
+    "react-transition-group": "^4.4.1"
+  },
+  "license": "MIT",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "author": "Shivansh Tyagi  <stshivansh9@gmail.com> (https://github.com/shivanshBTW/)",
+  "homepage": "https://github.com/shivanshBTW/material-react-toastify#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shivanshBTW/material-react-toastify.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shivanshBTW/material-react-toastify/issues"
+  },
+  "module": "dist/react-toastify.esm.js",
+  "keywords": [
+    "react",
+    "notification",
+    "toast",
+    "react-component",
+    "material-react-toastify",
+    "material-ui-snackbars",
+    "snackbars",
+    "material-ui-toast",
+    "react-toastify",
+    "push",
+    "alert"
+  ],
+  "files": [
+    "dist",
+    "scss"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
   "peerDependencies": {
     "react": ">=16"
   },
@@ -56,44 +101,5 @@
     "coveragePathIgnorePatterns": [
       "/src/index.tsx"
     ]
-  },
-  "name": "react-toastify",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/fkhadra/react-toastify.git"
-  },
-  "author": "Fadi Khadra  <fdkhadra@gmail.com> (https://fkhadra.github.io)",
-  "bugs": {
-    "url": "https://github.com/fkhadra/react-toastify/issues"
-  },
-  "homepage": "https://github.com/fkhadra/react-toastify#readme",
-  "module": "dist/react-toastify.esm.js",
-  "devDependencies": {
-    "@babel/core": "^7.0.0-0",
-    "@babel/plugin-proposal-class-properties": "^7.8.3",
-    "@babel/preset-env": "^7.8.4",
-    "@babel/preset-react": "^7.8.3",
-    "@testing-library/react": "^9.4.0",
-    "@types/jest": "^24.9.0",
-    "@types/react": "^16.9.34",
-    "@types/react-dom": "^16.9.6",
-    "@types/react-transition-group": "^4.2.4",
-    "coveralls": "^3.0.9",
-    "cssnano": "^4.1.10",
-    "cssnano-cli": "^1.0.5",
-    "husky": "^4.2.0",
-    "postcss": "^7.0.27",
-    "postcss-cli": "^7.1.0",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "sass": "^1.26.0",
-    "tsdx": "^0.12.3",
-    "tslib": "^1.10.0",
-    "typescript": "^3.7.5"
-  },
-  "dependencies": {
-    "clsx": "^1.1.1",
-    "prop-types": "^15.7.2",
-    "react-transition-group": "^4.4.1"
   }
 }
