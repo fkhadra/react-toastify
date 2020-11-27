@@ -1,19 +1,17 @@
 {
   "name": "material-react-toastify",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "React Material-UI Snackbars made easy",
-  "scripts": {
-    "start": "cd example && npm run start",
-    "build": "npm run prepare",
-    "test": "tsdx test --passWithNoTests",
-    "test:coverage": "tsdx test --coverage",
-    "lint": "tsdx lint src",
-    "prepare": "tsdx build && npm run style",
-    "sass": "sass scss/main.scss dist/ReactToastify.css",
-    "sass-minimal": "sass scss/minimal.scss dist/ReactToastify.minimal.css",
-    "postsass": "postcss dist/ReactToastify.css --use autoprefixer -m -o dist/ReactToastify.css",
-    "postsass-minimal": "cssnano dist/ReactToastify.minimal.css dist/ReactToastify.minimal.css --no-zindex --no-reduceIdents",
-    "style": "npm run sass && npm run sass-minimal && cssnano dist/ReactToastify.css dist/ReactToastify.min.css --no-zindex --no-reduceIdents"
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "directories": {
+    "example": "example",
+    "test": "test"
+  },
+  "dependencies": {
+    "clsx": "^1.1.1",
+    "prop-types": "^15.7.2",
+    "react-transition-group": "^4.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-0",
@@ -40,24 +38,19 @@
     "tslib": "^1.10.0",
     "typescript": "^3.7.5"
   },
-  "dependencies": {
-    "clsx": "^1.1.1",
-    "prop-types": "^15.7.2",
-    "react-transition-group": "^4.4.1"
+  "scripts": {
+    "start": "cd example && npm run start",
+    "build": "npm run prepare",
+    "test": "tsdx test --passWithNoTests",
+    "test:coverage": "tsdx test --coverage",
+    "lint": "tsdx lint src",
+    "prepare": "tsdx build && npm run style",
+    "sass": "sass scss/main.scss dist/ReactToastify.css",
+    "sass-minimal": "sass scss/minimal.scss dist/ReactToastify.minimal.css",
+    "postsass": "postcss dist/ReactToastify.css --use autoprefixer -m -o dist/ReactToastify.css",
+    "postsass-minimal": "cssnano dist/ReactToastify.minimal.css dist/ReactToastify.minimal.css --no-zindex --no-reduceIdents",
+    "style": "npm run sass && npm run sass-minimal && cssnano dist/ReactToastify.css dist/ReactToastify.min.css --no-zindex --no-reduceIdents"
   },
-  "license": "MIT",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
-  "author": "Shivansh Tyagi  <stshivansh9@gmail.com> (https://github.com/shivanshBTW/)",
-  "homepage": "https://github.com/shivanshBTW/material-react-toastify#readme",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/shivanshBTW/material-react-toastify.git"
-  },
-  "bugs": {
-    "url": "https://github.com/shivanshBTW/material-react-toastify/issues"
-  },
-  "module": "dist/react-toastify.esm.js",
   "keywords": [
     "react",
     "notification",
@@ -71,16 +64,16 @@
     "push",
     "alert"
   ],
-  "files": [
-    "dist",
-    "scss"
-  ],
-  "sideEffects": [
-    "*.css"
-  ],
-  "peerDependencies": {
-    "react": ">=16"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shivanshBTW/material-react-toastify.git"
   },
+  "author": "Shivansh Tyagi <stshivansh9@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shivanshBTW/material-react-toastify/issues"
+  },
+  "homepage": "https://github.com/shivanshBTW/material-react-toastify#readme",
   "husky": {
     "hooks": {
       "pre-commit": "npm run lint"
@@ -101,5 +94,15 @@
     "coveragePathIgnorePatterns": [
       "/src/index.tsx"
     ]
+  },
+  "files": [
+    "dist",
+    "scss"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "peerDependencies": {
+    "react": ">=16"
   }
 }

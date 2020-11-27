@@ -6,7 +6,7 @@ import {
 } from '../types';
 import { ContainerInstance } from '../hooks';
 
-export enum  Event {
+export enum Event {
   Show,
   Clear,
   DidMount,

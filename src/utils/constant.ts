@@ -28,7 +28,7 @@ export const TYPE: { [key in KeyOfType]: TypeOptions } = {
   DARK: 'dark'
 };
 
-export enum  DEFAULT {
+export enum DEFAULT {
   COLLAPSE_DURATION = 300,
   DEBOUNCE_DURATION = 50,
   CSS_NAMESPACE = 'Toastify'

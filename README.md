@@ -1,20 +1,20 @@
-# React-Toastify
+# Material-react-toastify
 
-[![Financial Contributors on Open Collective](https://opencollective.com/react-toastify/all/badge.svg?label=financial+contributors)](https://opencollective.com/react-toastify) ![React-toastify CI](https://github.com/fkhadra/react-toastify/workflows/React-toastify%20CI/badge.svg)
+[![Financial Contributors on Open Collective](https://opencollective.com/react-toastify/all/badge.svg?label=financial+contributors)](https://opencollective.com/react-toastify) ![Material-react-toastify CI](https://github.com/fkhadra/react-toastify/workflows/React-toastify%20CI/badge.svg)
 ![npm](https://img.shields.io/npm/dm/react-toastify.svg?label=%E2%8F%ACdownloads&style=for-the-badge)
 ![npm](https://img.shields.io/npm/v/react-toastify.svg?style=for-the-badge)
 ![NPM](https://img.shields.io/npm/l/react-toastify.svg?label=%F0%9F%93%9Clicense&style=for-the-badge)
-![Coveralls github](https://img.shields.io/coveralls/github/fkhadra/react-toastify.svg?label=%E2%9B%B1coverage&style=for-the-badge)
+![Coveralls github](https://img.shields.io/coveralls/github/shivanshBTW/react-toastify.svg?label=%E2%9B%B1coverage&style=for-the-badge)
 ![React toastify](https://user-images.githubusercontent.com/5574267/35336500-e58f35b6-0118-11e8-800b-2da6594fc700.gif "React toastify")
 
 
-🎉 React-Toastify allows you to add notifications to your app with ease. No more nonsense!
+🎉 Material-react-toastify allows you to add notifications to your app with ease. No more nonsense!
 
 ## Installation
 
 ```
-$ npm install --save react-toastify
-$ yarn add react-toastify
+$ npm install --save material-react-toastify
+$ yarn add material-react-toastify
 ```
 
 ## The gist
@@ -22,8 +22,8 @@ $ yarn add react-toastify
 ```jsx
   import React from 'react';
 
-  import { ToastContainer, toast } from 'react-toastify';
-  import 'react-toastify/dist/ReactToastify.css';
+  import { ToastContainer, toast } from 'material-react-toastify';
+  import 'material-react-toastify/dist/ReactToastify.css';
   
   function App(){
     const notify = () => toast("Wow so easy !");
@@ -39,11 +39,11 @@ $ yarn add react-toastify
 
 ## Demo
 
-[A demo is worth a thousand words](https://fkhadra.github.io/react-toastify/introduction)
+[A demo is worth a thousand words](https://shivanshBTW.github.io/material-react-toastify/introduction)
 
 ## Documentation
 
-Check the [documentation](https://fkhadra.github.io/react-toastify/introduction) to get you started !
+Check the [documentation](https://shivanshBTW.github.io/material-react-toastify/introduction) to get you started !
 
 ## Contribute
 
@@ -56,7 +56,7 @@ You can also find me on [reactiflux](https://www.reactiflux.com/). My pseudo is 
 ### Code Contributors
 
 This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
-<a href="https://github.com/fkhadra/react-toastify/graphs/contributors"><img src="https://opencollective.com/react-toastify/contributors.svg?width=890&button=false" /></a>
+<a href="https://github.com/shivanshBTW/material-react-toastify/graphs/contributors"><img src="https://opencollective.com/react-toastify/contributors.svg?width=890&button=false" /></a>
 
 ### Financial Contributors
 
@@ -83,9 +83,9 @@ Support this project with your organization. Your logo will show up here with a 
 
 ## Release Notes
 
-You can find the release note for the latest release [here](https://github.com/fkhadra/react-toastify/releases/latest)
+You can find the release note for the latest release [here](https://github.com/shivanshBTW/material-react-toastify/releases/latest)
 
-You can browse them all [here](https://github.com/fkhadra/react-toastify/releases)
+You can browse them all [here](https://github.com/shivanshBTW/material-react-toastify/releases)
 
 ## License
 
