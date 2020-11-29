@@ -1,22 +1,45 @@
 $rt-namespace: 'Toastify';
-$rt-toast-width: 320px !default;
+$rt-toast-width: 344px !default;
 $rt-toast-background: #fff !default;
-$rt-toast-min-height: 64px !default;
+$rt-toast-min-height: 48px !default;
 $rt-toast-max-height: 800px !default;
+$rt-toast-border-radius: 8px !default;
+$rt-toast-left-right-padding: 16px !default;
+$rt-toast-top-bottom-padding: 6px !default;
 
-$rt-color-default: #fff !default;
-$rt-color-dark: #121212 !default;
-$rt-color-info: #3498db !default;
-$rt-color-success: #07bc0c !default;
-$rt-color-warning: #f1c40f !default;
-$rt-color-error: #e74c3c !default;
+$rt-color-default: #fafafa !default;
+$rt-color-dark: #323232 !default;
+$rt-color-info: #2196f3 !default;
+$rt-color-success: #4caf50 !default;
+$rt-color-warning: #ff9800 !default;
+$rt-color-error: #f44336 !default;
+
+//$rt-color-default: #323232 !default;
+//$rt-color-dark: #323232 !default;
+//$rt-color-info: #323232 !default;
+//$rt-color-success: #323232 !default;
+//$rt-color-warning: #323232 !default;
+//$rt-color-error: #323232 !default;
 
 $rt-text-color-default: #aaa !default;
 $rt-text-color-dark: #fff !default;
+$rt-text-color-info: #fff !default;
+$rt-text-color-success: #fff !default;
+$rt-text-color-warning: #fff !default;
+$rt-text-color-error: #fff !default;
+
+$rt-close-button-color-default: #aaa !default;
+$rt-close-button-color-dark: #fff !default;
+$rt-close-button-color-info: #fff !default;
+$rt-close-button-color-success: #fff !default;
+$rt-close-button-color-warning: #fff !default;
+$rt-close-button-color-error: #fff !default;
 
 $rt-color-progress-default: linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55) !default;
 $rt-color-progress-dark: #bb86fc !default;
 $rt-mobile: "only screen and (max-width : 480px)" !default;
-$rt-font-family: sans-serif !default;
+$rt-font-family: Roboto, Helvetica, Arial, sans-serif !default;
+$rt-font-size: 0.875rem !default;
+$rt-line-height: 14px !default;
 $rt-z-index: 9999 !default;
 

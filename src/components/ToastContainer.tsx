@@ -4,7 +4,7 @@ import cx from 'clsx';
 
 import { Toast } from './Toast';
 import { CloseButton } from './CloseButton';
-import { Bounce } from './Transitions';
+import { Slide } from './Transitions';
 import {
   POSITION,
   DEFAULT,
@@ -115,7 +115,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 ToastContainer.defaultProps = {
   position: POSITION.BOTTOM_LEFT as ToastPosition,
-  transition: Bounce,
+  transition: Slide,
   rtl: false,
   autoClose: 3000,
   hideProgressBar: true,
@@ -125,6 +125,6 @@ ToastContainer.defaultProps = {
   closeOnClick: true,
   newestOnTop: false,
   draggable: true,
-  draggablePercent: 80,
+  draggablePercent: 40,
   role: 'alert'
 };

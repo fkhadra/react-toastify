@@ -1,16 +1,19 @@
 .#{$rt-namespace}__toast {
-    position: relative;
     min-height: $rt-toast-min-height;
+    max-height: $rt-toast-max-height;
+    padding: $rt-toast-top-bottom-padding $rt-toast-left-right-padding;
+    border-radius: $rt-toast-border-radius;
+    font-family: $rt-font-family;
+    font-size: $rt-font-size;
+    line-height: $rt-line-height;
+
+    position: relative;
     box-sizing: border-box;
     margin-bottom: 1rem;
-    padding: 8px;
-    border-radius: 1px;
     box-shadow: 0 1px 10px 0 rgba(0, 0, 0, .1), 0 2px 15px 0 rgba(0, 0, 0, .05);
     display: flex;
     justify-content: space-between;
-    max-height: $rt-toast-max-height;
     overflow: hidden;
-    font-family: $rt-font-family;
     cursor: pointer;
     direction: ltr;
     &--rtl {
@@ -26,15 +29,19 @@
     }
     &--info {
         background: $rt-color-info;
+        color: $rt-text-color-info;
     }
     &--success {
         background: $rt-color-success;
+        color: $rt-text-color-success;
     }
     &--warning {
         background: $rt-color-warning;
+        color: $rt-text-color-warning;
     }
     &--error {
         background: $rt-color-error;
+        color: $rt-text-color-error;
     }
     &-body {
         margin: auto 0;
