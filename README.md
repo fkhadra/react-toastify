@@ -1,5 +1,5 @@
 # Material-react-toastify
-### I am still working on the Readme, you can try the readme in the meanwhile
+### I am still working on the Readme, you can try the using the module in the meanwhile
 ##### Next thing I am working on is getting a live demo to work 
 ##### This is a fork from react-toastify, all props and documentation will work with this module too.
 
