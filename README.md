@@ -1,14 +1,18 @@
 # Material-react-toastify
+### I am still working on the Readme, you can try the readme in the meanwhile
+##### Next thing I am working on is getting a live demo to work 
+##### This is a fork from react-toastify, all props and documentation will work with this module too.
 
-[![Financial Contributors on Open Collective](https://opencollective.com/react-toastify/all/badge.svg?label=financial+contributors)](https://opencollective.com/react-toastify) ![Material-react-toastify CI](https://github.com/fkhadra/react-toastify/workflows/React-toastify%20CI/badge.svg)
+
+<!--[![Financial Contributors on Open Collective](https://opencollective.com/react-toastify/all/badge.svg?label=financial+contributors)](https://opencollective.com/react-toastify) ![Material-react-toastify CI](https://github.com/fkhadra/react-toastify/workflows/React-toastify%20CI/badge.svg)
 ![npm](https://img.shields.io/npm/dm/react-toastify.svg?label=%E2%8F%ACdownloads&style=for-the-badge)
 ![npm](https://img.shields.io/npm/v/react-toastify.svg?style=for-the-badge)
 ![NPM](https://img.shields.io/npm/l/react-toastify.svg?label=%F0%9F%93%9Clicense&style=for-the-badge)
 ![Coveralls github](https://img.shields.io/coveralls/github/shivanshBTW/react-toastify.svg?label=%E2%9B%B1coverage&style=for-the-badge)
-![React toastify](https://user-images.githubusercontent.com/5574267/35336500-e58f35b6-0118-11e8-800b-2da6594fc700.gif "React toastify")
+![React toastify](https://user-images.githubusercontent.com/5574267/35336500-e58f35b6-0118-11e8-800b-2da6594fc700.gif "React toastify")--->
 
 
-🎉 Material-react-toastify allows you to add notifications to your app with ease. No more nonsense!
+🎉 material-react-toastify allows you to add notification snackbars to your app with ease. No more nonsense!
 
 ## Installation
 
