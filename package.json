@@ -1,6 +1,6 @@
 {
   "name": "material-react-toastify",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "React Material-UI Snackbars made easy",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",

@@ -1,4 +1,5 @@
-# Material-react-toastify
+# [material-react-toastify](https://www.npmjs.com/package/material-react-toastify)
+
 ### I am still working on the Readme, you can try the [demo](https://material-react-toastify.surge.sh) in the meanwhile
 
 Next thing I am working on is getting a live demo to work [done].
