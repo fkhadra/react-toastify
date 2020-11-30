@@ -1,19 +1,22 @@
 # Material-react-toastify
-### I am still working on the Readme, you can try the using the module in the meanwhile
-##### Next thing I am working on is getting a live demo to work 
-##### This is a fork from react-toastify, all props and documentation will work with this module too.
+### I am still working on the Readme, you can try the [demo](https://material-react-toastify.surge.sh) in the meanwhile
+Next thing I am working on is getting a live demo to work [done].
+
+This is a fork from [react-toastify](https://www.npmjs.com/package/react-toastify) v6.1.0, all its props and documentation will work with this module too.
 
 
-<!--[![Financial Contributors on Open Collective](https://opencollective.com/react-toastify/all/badge.svg?label=financial+contributors)](https://opencollective.com/react-toastify) ![Material-react-toastify CI](https://github.com/fkhadra/react-toastify/workflows/React-toastify%20CI/badge.svg)
-![npm](https://img.shields.io/npm/dm/react-toastify.svg?label=%E2%8F%ACdownloads&style=for-the-badge)
-![npm](https://img.shields.io/npm/v/react-toastify.svg?style=for-the-badge)
+<!--![Financial Contributors on Open Collective](https://opencollective.com/react-toastify/all/badge.svg?label=financial+contributors)](https://opencollective.com/react-toastify)-->
+<!--![material-react-toastify CI](https://github.com/fkhadra/react-toastify/workflows/React-toastify%20CI/badge.svg)--->
+![npm](https://img.shields.io/npm/dm/material-react-toastify.svg?label=%E2%8F%ACdownloads&style=for-the-badge)
+![npm](https://img.shields.io/npm/v/material-react-toastify.svg?style=for-the-badge)
 ![NPM](https://img.shields.io/npm/l/react-toastify.svg?label=%F0%9F%93%9Clicense&style=for-the-badge)
-![Coveralls github](https://img.shields.io/coveralls/github/shivanshBTW/react-toastify.svg?label=%E2%9B%B1coverage&style=for-the-badge)
-![React toastify](https://user-images.githubusercontent.com/5574267/35336500-e58f35b6-0118-11e8-800b-2da6594fc700.gif "React toastify")--->
+![Coveralls github](https://img.shields.io/coveralls/github/fkhadra/react-toastify?label=%E2%9B%B1coverage&style=for-the-badge)
+<!--![React toastify](https://user-images.githubusercontent.com/5574267/35336500-e58f35b6-0118-11e8-800b-2da6594fc700.gif "React toastify")--->
 
 
-🎉 material-react-toastify allows you to add notification snackbars to your app with ease. No more nonsense!
+🎉 material-react-toastify allows you to add notification snackbars to your app with ease. No need to maintain multiple states anymore!
 
+This component has been made in compliance with Material.io design spec-sheet. You can check it out [here](https://material.io/components/snackbars/)
 ## Installation
 
 ```
@@ -41,28 +44,40 @@ $ yarn add material-react-toastify
   }
 ```
 
+```js
+  toast("It's that easy");  // or toast.default()
+  toast.success("to create");
+  toast.error("different types");
+  toast.dark("of notifications");
+  toast.light("just execute one of these functions");
+```
+
 ## Demo
 
-[A demo is worth a thousand words](https://shivanshBTW.github.io/material-react-toastify/introduction)
+[A demo is worth a thousand words](https://material-react-toastify.surge.sh)
 
 ## Documentation
 
-Check the [documentation](https://shivanshBTW.github.io/material-react-toastify/introduction) to get you started !
+Just replace all module usage with material-react-toastify, I have made this component to be highly compatible with the docs.
+
+Check the [react-toastify documentation](https://fkhadra.github.io/react-toastify/introduction) to get you started !
 
 ## Contribute
 
 Show your ❤️ and support by giving a ⭐. Any suggestions are welcome! Take a look at the contributing guide.
 
-You can also find me on [reactiflux](https://www.reactiflux.com/). My pseudo is Fadi.
+You can also find me on [reactiflux](https://www.reactiflux.com/). My pseudo is shivanshBTW.
 
 ## Contributors
 
 ### Code Contributors
 
 This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
-<a href="https://github.com/shivanshBTW/material-react-toastify/graphs/contributors"><img src="https://opencollective.com/react-toastify/contributors.svg?width=890&button=false" /></a>
+<a href="https://github.com/shivanshBTW/material-react-toastify/graphs/contributors">
+    <img src="https://opencollective.com/react-toastify/contributors.svg?width=890&button=false" />
+</a>
 
-### Financial Contributors
+<!--### Financial Contributors
 
 Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/react-toastify/contribute)]
 
@@ -90,6 +105,7 @@ Support this project with your organization. Your logo will show up here with a 
 You can find the release note for the latest release [here](https://github.com/shivanshBTW/material-react-toastify/releases/latest)
 
 You can browse them all [here](https://github.com/shivanshBTW/material-react-toastify/releases)
+-->
 
 ## License
 
