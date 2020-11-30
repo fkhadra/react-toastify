@@ -1,8 +1,12 @@
 # Material-react-toastify
 ### I am still working on the Readme, you can try the [demo](https://material-react-toastify.surge.sh) in the meanwhile
+
 Next thing I am working on is getting a live demo to work [done].
 
+After that I'll work on is changing the original docs to help install this module faster [done].
+
 This is a fork from [react-toastify](https://www.npmjs.com/package/react-toastify) v6.1.0, all its props and documentation will work with this module too.
+
 
 
 <!--![Financial Contributors on Open Collective](https://opencollective.com/react-toastify/all/badge.svg?label=financial+contributors)](https://opencollective.com/react-toastify)-->
@@ -12,6 +16,12 @@ This is a fork from [react-toastify](https://www.npmjs.com/package/react-toastif
 ![NPM](https://img.shields.io/npm/l/react-toastify.svg?label=%F0%9F%93%9Clicense&style=for-the-badge)
 ![Coveralls github](https://img.shields.io/coveralls/github/fkhadra/react-toastify?label=%E2%9B%B1coverage&style=for-the-badge)
 <!--![React toastify](https://user-images.githubusercontent.com/5574267/35336500-e58f35b6-0118-11e8-800b-2da6594fc700.gif "React toastify")--->
+
+<div style="text-align:center">
+  <img 
+    src="https://user-images.githubusercontent.com/35040146/100596753-851b5e00-3322-11eb-9073-1a50e5adcb53.png"
+  />
+</div>
 
 
 🎉 material-react-toastify allows you to add notification snackbars to your app with ease. No need to maintain multiple states anymore!
@@ -49,7 +59,7 @@ $ yarn add material-react-toastify
   toast.success("to create");
   toast.error("different types");
   toast.dark("of notifications");
-  toast.light("just execute one of these functions");
+  toast.info("just execute one of these functions");
 ```
 
 ## Demo
@@ -58,9 +68,12 @@ $ yarn add material-react-toastify
 
 ## Documentation
 
-Just replace all module usage with material-react-toastify, I have made this component to be highly compatible with the docs.
+Here's the [documentation](https://material-react-toastify.netlify.app/introduction) to get you started !
 
-Check the [react-toastify documentation](https://fkhadra.github.io/react-toastify/introduction) to get you started !
+**I edited the original documentation to change it according to material-react-toastify
+
+
+You can also check-out the original react-toastify documentation [here](https://fkhadra.github.io/react-toastify/introduction) for further reference.
 
 ## Contribute
 
