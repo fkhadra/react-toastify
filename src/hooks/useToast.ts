@@ -143,6 +143,8 @@ export function useToast(props: ToastProps) {
   }
 
   function onDragMove(e: MouseEvent | TouchEvent) {
+    e.preventDefault();
+
     const toast = toastRef.current!;
 
     if (drag.canDrag) {
