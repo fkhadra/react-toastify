@@ -22,6 +22,7 @@ export type ToastPosition =
 
 export interface ToastContentProps {
   closeToast?: () => void;
+  toastProps: ToastProps;
 }
 export type ToastContent =
   | React.ReactNode
