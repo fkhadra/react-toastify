@@ -26,11 +26,11 @@ $ yarn add react-toastify
   import 'react-toastify/dist/ReactToastify.css';
   
   function App(){
-    const notify = () => toast("Wow so easy !");
+    const notify = () => toast("Wow so easy!");
 
     return (
       <div>
-        <button onClick={notify}>Notify !</button>
+        <button onClick={notify}>Notify!</button>
         <ToastContainer />
       </div>
     );
@@ -43,7 +43,7 @@ $ yarn add react-toastify
 
 ## Documentation
 
-Check the [documentation](https://fkhadra.github.io/react-toastify/introduction) to get you started !
+Check the [documentation](https://fkhadra.github.io/react-toastify/introduction) to get you started!
 
 ## Contribute
 
