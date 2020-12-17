@@ -1,10 +1,8 @@
 # [material-react-toastify](https://www.npmjs.com/package/material-react-toastify)
 
-### I am still working on the Readme, you can try the [demo](https://material-react-toastify.surge.sh) in the meanwhile
+### You can try the [demo here](https://material-react-toastify.surge.sh).
 
-Next thing I am working on is getting a live demo to work [done].
-
-After that I'll work on is changing the original docs to help install this module faster [done].
+<h4>v1 is out 🎉 🎉</h5>
 
 This is a fork from [react-toastify](https://www.npmjs.com/package/react-toastify) v6.1.0, all its props and documentation will work with this module too.
 
@@ -18,7 +16,7 @@ This is a fork from [react-toastify](https://www.npmjs.com/package/react-toastif
 ![Coveralls github](https://img.shields.io/coveralls/github/fkhadra/react-toastify?label=%E2%9B%B1coverage&style=for-the-badge)
 <!--![React toastify](https://user-images.githubusercontent.com/5574267/35336500-e58f35b6-0118-11e8-800b-2da6594fc700.gif "React toastify")--->
 
-<div style="text-align:center">
+<div style="text-align:center; margin-bottom:10px; max-height:100px">
   <img 
     src="https://user-images.githubusercontent.com/35040146/100596753-851b5e00-3322-11eb-9073-1a50e5adcb53.png"
   />
@@ -55,12 +53,21 @@ $ yarn add material-react-toastify
   }
 ```
 
+### Example: 
+
+<div style="text-align:center; margin-bottom:10px; max-height:100px">
+  <img 
+    src="https://user-images.githubusercontent.com/35040146/100720655-54036200-33e4-11eb-9b08-357077675ff2.png"
+  />
+</div>
+
 ```js
-  toast("It's that easy");  // or toast.default()
-  toast.success("to create");
-  toast.error("different types");
-  toast.dark("of notifications");
-  toast.info("just execute one of these functions");
+   toast("It's that easy");  // or toast.default()
+   toast.success("to create");
+   toast.error("different types");
+   toast.dark("of notifications.");
+   toast.warning("You just need to");
+   toast.info("execute one of these functions");
 ```
 
 ## Demo
