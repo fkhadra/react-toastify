@@ -57,7 +57,9 @@ function getToast(toastId: Id, { containerId }: ToastOptions) {
  * Generate a random toastId
  */
 function generateToastId() {
-  return (Math.random().toString(36) + Date.now().toString(36)).substr(2, 10);
+  return Math.random()
+    .toString(36)
+    .substr(2, 9);
 }
 
 /**
