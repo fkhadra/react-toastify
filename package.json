@@ -34,7 +34,8 @@
     "style": "npm run sass && npm run sass-minimal && cssnano dist/ReactToastify.css dist/ReactToastify.min.css --no-zindex --no-reduceIdents"
   },
   "peerDependencies": {
-    "react": ">=16"
+    "react": ">=16",
+    "react-dom": ">=16"
   },
   "husky": {
     "hooks": {
@@ -84,8 +85,8 @@
     "husky": "^4.2.0",
     "postcss": "^7.0.27",
     "postcss-cli": "^7.1.0",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "sass": "^1.26.0",
     "tsdx": "^0.12.3",
     "tslib": "^1.10.0",
