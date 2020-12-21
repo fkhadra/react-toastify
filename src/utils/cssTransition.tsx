@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { Transition } from 'react-transition-group';
+import React, { useEffect, useLayoutEffect } from 'react';
 import { ToastTransitionProps } from '../types';
 
 import { collapseToast } from './collapseToast';
@@ -69,18 +68,28 @@ export function cssTransition({
     const enterClassName = appendPosition ? `${enter}--${position}` : enter;
     const exitClassName = appendPosition ? `${exit}--${position}` : exit;
 
+    useLayoutEffect(() => {
+      onEnter();
+    }, []);
+
+    useEffect(() => {
+      if (!props.in) preventExitTransition ? onExited() : onExit();
+    }, [props.in]);
+
     const onEnter = () => {
       const node = props.nodeRef.current;
       if (node) {
         node.classList.add(enterClassName);
         node.style.animationFillMode = 'forwards';
         node.style.animationDuration = `${enterDuration}ms`;
+        node.addEventListener('animationend', onEntered);
       }
     };
 
     const onEntered = () => {
       const node = props.nodeRef.current;
       if (node) {
+        node.removeEventListener('animationend', onEntered);
         node.classList.remove(enterClassName);
         node.style.removeProperty('animationFillMode');
         node.style.removeProperty('animationDuration');
@@ -106,28 +115,6 @@ export function cssTransition({
       }
     };
 
-    return (
-      <Transition
-        {...props}
-        timeout={
-          preventExitTransition
-            ? collapse
-              ? collapseDuration
-              : DEFAULT.DEBOUNCE_DURATION
-            : {
-                enter: enterDuration,
-                exit: collapse
-                  ? exitDuration + collapseDuration
-                  : exitDuration + DEFAULT.DEBOUNCE_DURATION
-              }
-        }
-        onEnter={onEnter}
-        onEntered={onEntered}
-        onExit={preventExitTransition ? onExited : onExit}
-        unmountOnExit
-      >
-        {children}
-      </Transition>
-    );
+    return <>{children}</>;
   };
 }
