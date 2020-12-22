@@ -1,15 +1,24 @@
 import * as React from 'react';
-import { render, fireEvent } from '@testing-library/react';
-import { act } from 'react-dom/test-utils';
+import { render, fireEvent, act, screen } from '@testing-library/react';
 
-import '../__mocks__/react-transition-group';
 import { ToastContainer } from '../../src/components/ToastContainer';
 import { toast, eventManager, Event } from '../../src/core';
 import { ToastOptions } from '../../src/types';
 
-import { cssClasses } from '../helpers';
+import { triggerAnimationEnd } from '../helpers';
 
 jest.useFakeTimers();
+
+beforeEach(() => {
+  jest.spyOn(window, 'requestAnimationFrame').mockImplementation(callback => {
+    callback(1);
+    return 1;
+  });
+});
+
+afterEach(() => {
+  (window.requestAnimationFrame as jest.Mock).mockRestore();
+});
 
 describe('ToastContainer', () => {
   it('Should bind events when mounted and unbind them when unmounted', () => {
@@ -46,25 +55,29 @@ describe('ToastContainer', () => {
   });
 
   it('Should clear all toast when clear is called without id', () => {
-    const { queryAllByText } = render(<ToastContainer />);
+    render(<ToastContainer />);
 
     act(() => {
-      toast('coucou');
-      toast('coucou');
+      toast('coucou1');
+      toast('coucou2');
       jest.runAllTimers();
     });
 
-    expect(queryAllByText('coucou').length).toBe(2);
+    const toasts = screen.queryAllByText(/coucou/);
+    expect(toasts.length).toBe(2);
 
     act(() => {
       toast.dismiss();
       jest.runAllTimers();
+
+      triggerAnimationEnd(toasts);
     });
-    expect(queryAllByText('coucou').length).toBe(0);
+
+    expect(screen.queryAllByText(/coucou/).length).toBe(0);
   });
 
   it('Should dismiss toast with id == 0 only', () => {
-    const { getAllByText } = render(<ToastContainer />);
+    render(<ToastContainer />);
 
     act(() => {
       toast('toast id 0', {
@@ -76,17 +89,19 @@ describe('ToastContainer', () => {
 
       jest.runAllTimers();
     });
-    expect(getAllByText(/toast id/).length).toBe(2);
+    expect(screen.getAllByText(/toast id/).length).toBe(2);
     act(() => {
       toast.dismiss(0);
       jest.runAllTimers();
+
+      triggerAnimationEnd(screen.getByText('toast id 0'));
     });
 
-    expect(getAllByText(/toast id/).length).toBe(1);
+    expect(screen.getAllByText(/toast id/).length).toBe(1);
   });
 
   it('Should prevent duplicate toast when same id is used', () => {
-    const { queryByText } = render(<ToastContainer />);
+    render(<ToastContainer />);
 
     act(() => {
       toast('REAL_TOAST', {
@@ -102,12 +117,12 @@ describe('ToastContainer', () => {
       jest.runAllTimers();
     });
 
-    expect(queryByText('REAL_TOAST')).not.toBe(null);
-    expect(queryByText('DUPLICATE_TOAST')).toBe(null);
+    expect(screen.queryByText('REAL_TOAST')).not.toBe(null);
+    expect(screen.queryByText('DUPLICATE_TOAST')).toBe(null);
   });
 
   it('Should be able to render a react element, a string, a number, a render props without crashing', () => {
-    const { getByText } = render(<ToastContainer />);
+    render(<ToastContainer />);
     act(() => {
       toast('coucou');
       toast(123);
@@ -116,14 +131,14 @@ describe('ToastContainer', () => {
       jest.runAllTimers();
     });
 
-    expect(getByText('coucou')).not.toBe(null);
-    expect(getByText('123')).not.toBe(null);
-    expect(getByText('foo')).not.toBe(null);
-    expect(getByText('bar')).not.toBe(null);
+    expect(screen.getByText('coucou')).not.toBe(null);
+    expect(screen.getByText('123')).not.toBe(null);
+    expect(screen.getByText('foo')).not.toBe(null);
+    expect(screen.getByText('bar')).not.toBe(null);
   });
 
   it('Should be able to display new toast on top', () => {
-    const { getAllByText } = render(<ToastContainer newestOnTop />);
+    render(<ToastContainer newestOnTop />);
     const toastValues = ['t 1', 't 2', 't 3'];
 
     act(() => {
@@ -133,14 +148,14 @@ describe('ToastContainer', () => {
       jest.runAllTimers();
     });
 
-    expect(getAllByText(/t [1,2,3]/).map(el => el.textContent)).toEqual(
+    expect(screen.getAllByText(/t [1,2,3]/).map(el => el.textContent)).toEqual(
       toastValues.reverse()
     );
   });
 
   // this test could be improved by checking all the options
   it('Toast options should supersede ToastContainer props', () => {
-    const { getByText, container } = render(<ToastContainer />);
+    const { container } = render(<ToastContainer />);
     const CloseBtn = () => <div>Close</div>;
     const fn = () => {};
     const desiredProps: ToastOptions = {
@@ -159,7 +174,7 @@ describe('ToastContainer', () => {
       jest.runAllTimers();
     });
 
-    expect(getByText('Close')).not.toBe(null);
+    expect(screen.getByText('Close')).not.toBe(null);
     expect(container.innerHTML).toMatch(/top-left/);
   });
 
@@ -183,7 +198,7 @@ describe('ToastContainer', () => {
   });
 
   it('Should be able to disable the close button', () => {
-    const { container } = render(<ToastContainer />);
+    render(<ToastContainer />);
 
     act(() => {
       toast('hello');
@@ -191,32 +206,44 @@ describe('ToastContainer', () => {
     });
 
     // ensure that close button is present by default
-    expect(container.querySelector(cssClasses.closeButton)).not.toBe(null);
+    expect(screen.getByLabelText('close')).not.toBe(null);
 
     act(() => {
       toast.dismiss();
+      jest.runAllTimers();
+      triggerAnimationEnd(screen.getByText('hello'));
+    });
+
+    act(() => {
       toast('hello', {
         closeButton: false
       });
       jest.runAllTimers();
     });
 
-    expect(container.querySelector(cssClasses.closeButton)).toBe(null);
+    expect(screen.getByText('hello')).not.toBe(null);
+    expect(screen.queryByLabelText('close')).toBe(null);
   });
 
   it('Should be able to delay toast rendering', () => {
-    const { getByText } = render(<ToastContainer />);
+    render(<ToastContainer />);
     act(() => {
       toast('hello', { delay: 1000 });
+      jest.runOnlyPendingTimers();
+    });
+
+    expect(screen.queryByText('hello')).toBe(null);
+
+    act(() => {
       jest.runAllTimers();
     });
 
-    expect(getByText('hello')).not.toBe(null);
+    expect(screen.getByText('hello')).not.toBe(null);
   });
 
   it('Should use default CloseButton when toast option set to true and ToastContainer options is false', () => {
     // set closeButton to false to remove it by default
-    const { container } = render(<ToastContainer closeButton={false} />);
+    render(<ToastContainer closeButton={false} />);
 
     act(() => {
       toast('hello');
@@ -224,7 +251,7 @@ describe('ToastContainer', () => {
     });
 
     // ensure that close button is NOT present by default
-    expect(container.querySelector(cssClasses.closeButton)).toBe(null);
+    expect(screen.queryByLabelText('close')).toBe(null);
 
     act(() => {
       toast('hello', { closeButton: true });
@@ -232,12 +259,12 @@ describe('ToastContainer', () => {
     });
 
     // now the close button should be present
-    expect(container.querySelector(cssClasses.closeButton)).not.toBe(null);
+    expect(screen.queryByLabelText('close')).not.toBe(null);
   });
 
   it('Should use custom CloseButton when toast option set to true and ToastContainer options is custom', () => {
-    const CloseBtn = () => <div>CUSTOM_BUTTON</div>;
-    const { getByText } = render(<ToastContainer closeButton={CloseBtn} />);
+    const CloseBtn = () => <div aria-label="close">CUSTOM_BUTTON</div>;
+    render(<ToastContainer closeButton={CloseBtn} />);
 
     act(() => {
       toast('hello', { closeButton: true });
@@ -245,7 +272,7 @@ describe('ToastContainer', () => {
     });
 
     // now the close button should be present
-    expect(getByText('CUSTOM_BUTTON')).not.toBe(null);
+    expect(screen.getByText('CUSTOM_BUTTON')).not.toBe(null);
   });
 
   it('Should merge className and style', () => {
@@ -261,6 +288,7 @@ describe('ToastContainer', () => {
     expect(container.innerHTML).toMatch(/foo/);
     expect(container.innerHTML).toMatch(/style="background: red;"/);
   });
+
   it('Should merge className and style when className is functional', () => {
     const { container } = render(
       <ToastContainer className={() => 'foo'} style={{ background: 'red' }} />
@@ -291,24 +319,27 @@ describe('ToastContainer', () => {
   });
 
   it('Should remove toast when closeToast is called', () => {
-    const { container, queryByText } = render(<ToastContainer />);
+    render(<ToastContainer />);
 
     act(() => {
-      toast('Holy');
+      toast('hello');
       jest.runAllTimers();
     });
 
-    expect(queryByText('Holy')).not.toBe(null);
-    fireEvent.click(
-      container.querySelector(cssClasses.closeButton) as HTMLElement
-    );
+    expect(screen.getByText('hello')).not.toBe(null);
 
-    expect(queryByText('Holy')).toBe(null);
+    act(() => {
+      fireEvent.click(screen.getByLabelText('close'));
+      jest.runAllTimers();
+      triggerAnimationEnd(screen.getByText('hello'));
+    });
+
+    expect(screen.queryByText('hello')).toBe(null);
   });
 
   describe('Multiple container support', () => {
     it('Should render toasts in all container if enableMultiContainer is not set/false', () => {
-      const { getAllByText } = render(
+      render(
         <>
           <ToastContainer enableMultiContainer={false} />
           <ToastContainer />
@@ -322,12 +353,12 @@ describe('ToastContainer', () => {
         jest.runAllTimers();
       });
 
-      expect(getAllByText('Toast 1').length).toBe(3);
-      expect(getAllByText('Toast 2').length).toBe(3);
+      expect(screen.getAllByText('Toast 1').length).toBe(3);
+      expect(screen.getAllByText('Toast 2').length).toBe(3);
     });
 
     it('Should show only related toasts aka- same containerId and containerId', () => {
-      const { getAllByText } = render(
+      render(
         <>
           <ToastContainer containerId={1} enableMultiContainer />
           <ToastContainer containerId={2} enableMultiContainer />
@@ -340,58 +371,56 @@ describe('ToastContainer', () => {
         jest.runAllTimers();
       });
 
-      expect(getAllByText('containerId 1').length).toBe(1);
-      expect(getAllByText('containerId 2').length).toBe(1);
+      expect(screen.getAllByText('containerId 1').length).toBe(1);
+      expect(screen.getAllByText('containerId 2').length).toBe(1);
     });
 
     it('Should not display unrelated toasts', () => {
-      const { queryByText } = render(
-        <ToastContainer containerId={1} enableMultiContainer />
-      );
+      render(<ToastContainer containerId={1} enableMultiContainer />);
 
       act(() => {
         toast('hello', { containerId: 2 });
         jest.runAllTimers();
       });
 
-      expect(queryByText('hello')).toBe(null);
+      expect(screen.queryByText('hello')).toBe(null);
     });
 
     it('Should display toasts when no containerId is set on the container', () => {
-      const { getByText } = render(<ToastContainer enableMultiContainer />);
+      render(<ToastContainer enableMultiContainer />);
       act(() => {
         toast('hello');
         jest.runAllTimers();
       });
-      expect(getByText('hello')).not.toBe(null);
+      expect(screen.getByText('hello')).not.toBe(null);
     });
 
     it('Should not display any toasts with containerId', () => {
-      const { queryByText } = render(<ToastContainer enableMultiContainer />);
+      render(<ToastContainer enableMultiContainer />);
 
       act(() => {
         toast('hello', { containerId: 1 });
         jest.runAllTimers();
       });
 
-      expect(queryByText('hello')).toBe(null);
+      expect(screen.queryByText('hello')).toBe(null);
     });
   });
 
   describe('Limit number of toast displayed', () => {
     it('Should not crash when using limit', () => {
-      const { queryByText } = render(<ToastContainer limit={2} />);
+      render(<ToastContainer limit={2} />);
 
       act(() => {
         toast('Hello');
         jest.runAllTimers();
       });
 
-      expect(queryByText('Hello')).not.toBe(null);
+      expect(screen.queryByText('Hello')).not.toBe(null);
     });
 
     it('Should be possible to limit the number of toast visible', () => {
-      const { queryByText } = render(<ToastContainer limit={2} />);
+      render(<ToastContainer limit={2} />);
 
       act(() => {
         toast('toast-1');
@@ -404,14 +433,14 @@ describe('ToastContainer', () => {
         jest.runAllTimers();
       });
 
-      expect(queryByText('toast-1')).not.toBe(null);
-      expect(queryByText('toast-2')).not.toBe(null);
+      expect(screen.queryByText('toast-1')).not.toBe(null);
+      expect(screen.queryByText('toast-2')).not.toBe(null);
 
-      expect(queryByText('toast-3')).toBe(null);
+      expect(screen.queryByText('toast-3')).toBe(null);
     });
 
     it('Should handle only limit that are > 0', () => {
-      const { queryByText } = render(<ToastContainer limit={0} />);
+      render(<ToastContainer limit={0} />);
 
       act(() => {
         toast('toast-1');
@@ -424,14 +453,14 @@ describe('ToastContainer', () => {
         jest.runAllTimers();
       });
 
-      expect(queryByText('toast-1')).not.toBe(null);
-      expect(queryByText('toast-2')).not.toBe(null);
+      expect(screen.queryByText('toast-1')).not.toBe(null);
+      expect(screen.queryByText('toast-2')).not.toBe(null);
 
-      expect(queryByText('toast-3')).not.toBe(null);
+      expect(screen.queryByText('toast-3')).not.toBe(null);
     });
 
-    it('Should display a new toast as soon as the limit is not reached', () => {
-      const { queryByText } = render(<ToastContainer limit={2} />);
+    it('Should display a new toast as soon as a slot is available', () => {
+      render(<ToastContainer limit={2} />);
       const toastId = 'id';
 
       act(() => {
@@ -445,24 +474,25 @@ describe('ToastContainer', () => {
         jest.runAllTimers();
       });
 
-      expect(queryByText('toast-1')).not.toBe(null);
-      expect(queryByText('toast-2')).not.toBe(null);
+      expect(screen.queryByText('toast-1')).not.toBe(null);
+      expect(screen.queryByText('toast-2')).not.toBe(null);
 
-      expect(queryByText('toast-3')).toBe(null);
+      expect(screen.queryByText('toast-3')).toBe(null);
 
       act(() => {
         toast.dismiss(toastId);
         jest.runAllTimers();
+        triggerAnimationEnd(screen.getByText('toast-1'));
       });
 
-      expect(queryByText('toast-1')).toBe(null);
+      expect(screen.queryByText('toast-1')).toBe(null);
 
-      expect(queryByText('toast-2')).not.toBe(null);
-      expect(queryByText('toast-3')).not.toBe(null);
+      expect(screen.queryByText('toast-2')).not.toBe(null);
+      expect(screen.queryByText('toast-3')).not.toBe(null);
     });
 
     it('Should be possible to clear limit queue', () => {
-      const { queryByText } = render(<ToastContainer limit={2} />);
+      render(<ToastContainer limit={2} />);
       const toastId = 'id';
 
       act(() => {
@@ -476,10 +506,10 @@ describe('ToastContainer', () => {
         jest.runAllTimers();
       });
 
-      expect(queryByText('toast-1')).not.toBe(null);
-      expect(queryByText('toast-2')).not.toBe(null);
+      expect(screen.queryByText('toast-1')).not.toBe(null);
+      expect(screen.queryByText('toast-2')).not.toBe(null);
 
-      expect(queryByText('toast-3')).toBe(null);
+      expect(screen.queryByText('toast-3')).toBe(null);
 
       act(() => {
         toast.clearWaitingQueue();
@@ -489,12 +519,13 @@ describe('ToastContainer', () => {
       act(() => {
         toast.dismiss(toastId);
         jest.runAllTimers();
+        triggerAnimationEnd(screen.getByText('toast-1'));
       });
 
-      expect(queryByText('toast-1')).toBe(null);
+      expect(screen.queryByText('toast-1')).toBe(null);
 
-      expect(queryByText('toast-2')).not.toBe(null);
-      expect(queryByText('toast-3')).toBe(null);
+      expect(screen.queryByText('toast-2')).not.toBe(null);
+      expect(screen.queryByText('toast-3')).toBe(null);
     });
   });
 });
