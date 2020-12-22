@@ -114,7 +114,16 @@ export function ProgressBar({
           }
   };
 
-  return <div className={classNames} style={style} {...animationEvent} />;
+  // TODO: add aria-valuenow, aria-valuemax, aria-valuemin
+
+  return (
+    <div
+      role="progressbar"
+      className={classNames}
+      style={style}
+      {...animationEvent}
+    />
+  );
 }
 
 ProgressBar.defaultProps = {
