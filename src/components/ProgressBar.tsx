@@ -82,7 +82,7 @@ export function ProgressBar({
   };
 
   if (controlledProgress) style.transform = `scaleX(${progress})`;
-  const defaultClassArr = [
+  const defaultClassName = cx(
     `${DEFAULT.CSS_NAMESPACE}__progress-bar`,
     controlledProgress
       ? `${DEFAULT.CSS_NAMESPACE}__progress-bar--controlled`
@@ -91,14 +91,14 @@ export function ProgressBar({
     {
       [`${DEFAULT.CSS_NAMESPACE}__progress-bar--rtl`]: rtl
     }
-  ];
+  );
   const classNames = isFn(className)
     ? className({
         rtl,
         type,
-        defaultClassName: cx(...defaultClassArr)
+        defaultClassName
       })
-    : cx(...[...defaultClassArr, className]);
+    : cx(defaultClassName, className);
 
   // 🧐 controlledProgress is derived from progress
   // so if controlledProgress is set

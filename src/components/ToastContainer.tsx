@@ -14,13 +14,27 @@ import {
 } from '../utils';
 import { useToastContainer } from '../hooks';
 import { ToastContainerProps, ToastPosition } from '../types';
-import { ToastPositioner } from './ToastPositioner';
 
 export const ToastContainer: React.FC<ToastContainerProps> = props => {
   const { getToastToRender, containerRef, isToastActive } = useToastContainer(
     props
   );
   const { className, style, rtl, containerId } = props;
+
+  function getClassName(position: ToastPosition) {
+    const defaultClassName = cx(
+      `${DEFAULT.CSS_NAMESPACE}__toast-container`,
+      `${DEFAULT.CSS_NAMESPACE}__toast-container--${position}`,
+      { [`${DEFAULT.CSS_NAMESPACE}__toast-container--rtl`]: rtl }
+    );
+    return isFn(className)
+      ? className({
+          position,
+          rtl,
+          defaultClassName
+        })
+      : cx(defaultClassName, parseClassName(className));
+  }
 
   return (
     <div
@@ -29,35 +43,22 @@ export const ToastContainer: React.FC<ToastContainerProps> = props => {
       id={containerId as string}
     >
       {getToastToRender((position, toastList) => {
-        const swag = {
-          className: isFn(className)
-            ? className({
-                position,
-                rtl,
-                defaultClassName: cx(
-                  `${DEFAULT.CSS_NAMESPACE}__toast-container`,
-                  `${DEFAULT.CSS_NAMESPACE}__toast-container--${position}`,
-                  { [`${DEFAULT.CSS_NAMESPACE}__toast-container--rtl`]: rtl }
-                )
-              })
-            : cx(
-                `${DEFAULT.CSS_NAMESPACE}__toast-container`,
-                `${DEFAULT.CSS_NAMESPACE}__toast-container--${position}`,
-                { [`${DEFAULT.CSS_NAMESPACE}__toast-container--rtl`]: rtl },
-                parseClassName(className)
-              ),
-          style:
-            toastList.length === 0
-              ? { ...style, pointerEvents: 'none' }
-              : { ...style }
-        } as any;
+        const containerStyle: React.CSSProperties =
+          toastList.length === 0
+            ? { ...style, pointerEvents: 'none' }
+            : { ...style };
+
         return (
-          <ToastPositioner {...swag} key={`container-${position}`}>
+          <div
+            className={getClassName(position)}
+            style={containerStyle}
+            key={`container-${position}`}
+          >
             {toastList.map(({ content, props: toastProps }) => {
               return (
                 <Toast
                   {...toastProps}
-                  in={isToastActive(toastProps.toastId)}
+                  isIn={isToastActive(toastProps.toastId)}
                   key={`toast-${toastProps.key}`}
                   closeButton={
                     toastProps.closeButton === true
@@ -69,7 +70,7 @@ export const ToastContainer: React.FC<ToastContainerProps> = props => {
                 </Toast>
               );
             })}
-          </ToastPositioner>
+          </div>
         );
       })}
     </div>

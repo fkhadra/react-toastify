@@ -7,7 +7,7 @@ import { ToastProps } from '../../src/types';
 
 const REQUIRED_PROPS = {
   ...ToastContainer.defaultProps,
-  in: true,
+  isIn: true,
   closeToast: () => {},
   type: 'default',
   toastId: 'id',
@@ -270,117 +270,117 @@ describe('Toast Component', () => {
     );
     expect(document.getElementById('foo')).not.toBe(null);
   });
-});
 
-describe('Drag event', () => {
-  it('Should handle drag start on mousedown', () => {
-    const mockClientRect = jest.fn();
-    Element.prototype.getBoundingClientRect = mockClientRect;
+  describe('Drag event', () => {
+    it('Should handle drag start on mousedown', () => {
+      const mockClientRect = jest.fn();
+      Element.prototype.getBoundingClientRect = mockClientRect;
 
-    render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+      render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
 
-    expect(mockClientRect).not.toHaveBeenCalled();
+      expect(mockClientRect).not.toHaveBeenCalled();
 
-    fireEvent.mouseDown(screen.getByRole('alert'));
-    expect(mockClientRect).toHaveBeenCalled();
-  });
-
-  it('Should handle drag start on touchstart', () => {
-    const mockClientRect = jest.fn();
-    Element.prototype.getBoundingClientRect = mockClientRect;
-
-    render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
-
-    expect(mockClientRect).not.toHaveBeenCalled();
-
-    fireEvent.touchStart(screen.getByRole('alert'));
-    expect(mockClientRect).toHaveBeenCalled();
-  });
-
-  it('Should pause toast duration on drag move', async () => {
-    render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
-    const progressBar = getProgressBar();
-    const notification = screen.getByRole('alert');
-
-    progressBar.isRunning();
-    fireEvent.mouseDown(notification);
-    fireEvent.mouseMove(notification);
-    progressBar.isPaused();
-  });
-
-  it('Should prevent the timer from running on drag end if the mouse hover the toast', () => {
-    render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
-    const notification = screen.getByRole('alert');
-
-    // BoundingClientRect for Position top right
-    Element.prototype.getBoundingClientRect = () => {
-      return {
-        top: 20,
-        right: 846,
-        bottom: 84,
-        left: 534
-      } as DOMRect;
-    };
-    const progressBar = getProgressBar();
-
-    progressBar.isRunning();
-
-    fireEvent.mouseDown(notification);
-    // Cursor inside the toast
-    fireEvent.mouseMove(notification, {
-      clientX: 600,
-      clientY: 30
+      fireEvent.mouseDown(screen.getByRole('alert'));
+      expect(mockClientRect).toHaveBeenCalled();
     });
-    progressBar.isPaused();
-    fireEvent.mouseUp(notification);
-    progressBar.isPaused();
-  });
 
-  it('Should resume the timer on drag end if the mouse is not hovering the toast', () => {
-    render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
-    const notification = screen.getByRole('alert');
-    // BoundingClientRect for Position top right
-    Element.prototype.getBoundingClientRect = () => {
-      return {
-        top: 20,
-        right: 846,
-        bottom: 84,
-        left: 534
-      } as DOMRect;
-    };
-    const progressBar = getProgressBar();
+    it('Should handle drag start on touchstart', () => {
+      const mockClientRect = jest.fn();
+      Element.prototype.getBoundingClientRect = mockClientRect;
 
-    progressBar.isRunning();
+      render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
 
-    fireEvent.mouseDown(notification);
-    // Cursor inside the toast
-    fireEvent.mouseMove(notification, {
-      clientX: 400,
-      clientY: 30
+      expect(mockClientRect).not.toHaveBeenCalled();
+
+      fireEvent.touchStart(screen.getByRole('alert'));
+      expect(mockClientRect).toHaveBeenCalled();
     });
-    progressBar.isPaused();
-    fireEvent.mouseUp(notification);
-    progressBar.isRunning();
-  });
 
-  it('Should support style attribute', () => {
-    const style: React.CSSProperties = {
-      background: 'purple'
-    };
-    const bodyStyle: React.CSSProperties = {
-      fontWeight: 'bold'
-    };
-    const { queryByRole } = render(
-      <Toast {...REQUIRED_PROPS} style={style} bodyStyle={bodyStyle}>
-        FooBar
-      </Toast>
-    );
+    it('Should pause toast duration on drag move', async () => {
+      render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+      const progressBar = getProgressBar();
+      const notification = screen.getByRole('alert');
 
-    const notification = queryByRole('alert') as HTMLElement;
+      progressBar.isRunning();
+      fireEvent.mouseDown(notification);
+      fireEvent.mouseMove(notification);
+      progressBar.isPaused();
+    });
 
-    expect((notification.parentNode as HTMLElement).style.background).toBe(
-      'purple'
-    );
-    expect(notification.style.fontWeight).toBe('bold');
+    it('Should prevent the timer from running on drag end if the mouse hover the toast', () => {
+      render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+      const notification = screen.getByRole('alert');
+
+      // BoundingClientRect for Position top right
+      Element.prototype.getBoundingClientRect = () => {
+        return {
+          top: 20,
+          right: 846,
+          bottom: 84,
+          left: 534
+        } as DOMRect;
+      };
+      const progressBar = getProgressBar();
+
+      progressBar.isRunning();
+
+      fireEvent.mouseDown(notification);
+      // Cursor inside the toast
+      fireEvent.mouseMove(notification, {
+        clientX: 600,
+        clientY: 30
+      });
+      progressBar.isPaused();
+      fireEvent.mouseUp(notification);
+      progressBar.isPaused();
+    });
+
+    it('Should resume the timer on drag end if the mouse is not hovering the toast', () => {
+      render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+      const notification = screen.getByRole('alert');
+      // BoundingClientRect for Position top right
+      Element.prototype.getBoundingClientRect = () => {
+        return {
+          top: 20,
+          right: 846,
+          bottom: 84,
+          left: 534
+        } as DOMRect;
+      };
+      const progressBar = getProgressBar();
+
+      progressBar.isRunning();
+
+      fireEvent.mouseDown(notification);
+      // Cursor inside the toast
+      fireEvent.mouseMove(notification, {
+        clientX: 400,
+        clientY: 30
+      });
+      progressBar.isPaused();
+      fireEvent.mouseUp(notification);
+      progressBar.isRunning();
+    });
+
+    it('Should support style attribute', () => {
+      const style: React.CSSProperties = {
+        background: 'purple'
+      };
+      const bodyStyle: React.CSSProperties = {
+        fontWeight: 'bold'
+      };
+      const { queryByRole } = render(
+        <Toast {...REQUIRED_PROPS} style={style} bodyStyle={bodyStyle}>
+          FooBar
+        </Toast>
+      );
+
+      const notification = queryByRole('alert') as HTMLElement;
+
+      expect((notification.parentNode as HTMLElement).style.background).toBe(
+        'purple'
+      );
+      expect(notification.style.fontWeight).toBe('bold');
+    });
   });
 });

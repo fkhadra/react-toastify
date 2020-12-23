@@ -220,7 +220,7 @@ export interface ToastOptions extends CommonOptions {
  * @INTERNAL
  */
 export interface ToastProps extends ToastOptions {
-  in?: boolean;
+  isIn: boolean;
   staleId?: Id;
   toastId: Id;
   key: Id;
@@ -290,8 +290,7 @@ export interface ToastContainerProps extends CommonOptions {
 }
 
 export interface ToastTransitionProps {
-  in: boolean;
-  appear: boolean;
+  isIn: boolean;
   done: () => void;
   position: ToastPosition | string;
   preventExitTransition: boolean;

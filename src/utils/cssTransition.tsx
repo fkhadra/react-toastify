@@ -63,7 +63,8 @@ export function cssTransition({
     position,
     preventExitTransition,
     done,
-    ...props
+    nodeRef,
+    isIn
   }: ToastTransitionProps) {
     const enterClassName = appendPosition ? `${enter}--${position}` : enter;
     const exitClassName = appendPosition ? `${exit}--${position}` : exit;
@@ -73,46 +74,40 @@ export function cssTransition({
     }, []);
 
     useEffect(() => {
-      if (!props.in) preventExitTransition ? onExited() : onExit();
-    }, [props.in]);
+      if (!isIn) preventExitTransition ? onExited() : onExit();
+    }, [isIn]);
 
     const onEnter = () => {
-      const node = props.nodeRef.current;
-      if (node) {
-        node.classList.add(enterClassName);
-        node.style.animationFillMode = 'forwards';
-        node.style.animationDuration = `${enterDuration}ms`;
-        node.addEventListener('animationend', onEntered);
-      }
+      const node = nodeRef.current!;
+      node.classList.add(enterClassName);
+      node.style.animationFillMode = 'forwards';
+      node.style.animationDuration = `${enterDuration}ms`;
+      node.addEventListener('animationend', onEntered);
     };
 
     const onEntered = () => {
-      const node = props.nodeRef.current;
-      if (node) {
-        node.removeEventListener('animationend', onEntered);
-        node.classList.remove(enterClassName);
-        node.style.removeProperty('animationFillMode');
-        node.style.removeProperty('animationDuration');
-      }
+      const node = nodeRef.current!;
+
+      node.removeEventListener('animationend', onEntered);
+      node.classList.remove(enterClassName);
+      node.style.removeProperty('animationFillMode');
+      node.style.removeProperty('animationDuration');
     };
 
     const onExited = () => {
-      const node = props.nodeRef.current;
+      const node = nodeRef.current!;
 
-      if (node) {
-        node.removeEventListener('animationend', onExited);
-        collapse ? collapseToast(node, done, collapseDuration) : done();
-      }
+      node.removeEventListener('animationend', onExited);
+      collapse ? collapseToast(node, done, collapseDuration) : done();
     };
 
     const onExit = () => {
-      const node = props.nodeRef.current;
-      if (node) {
-        node.classList.add(exitClassName);
-        node.style.animationFillMode = 'forwards';
-        node.style.animationDuration = `${exitDuration}ms`;
-        node.addEventListener('animationend', onExited);
-      }
+      const node = nodeRef.current!;
+
+      node.classList.add(exitClassName);
+      node.style.animationFillMode = 'forwards';
+      node.style.animationDuration = `${exitDuration}ms`;
+      node.addEventListener('animationend', onExited);
     };
 
     return <>{children}</>;
