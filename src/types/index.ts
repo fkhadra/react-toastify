@@ -146,6 +146,11 @@ interface CommonOptions {
    */
   draggablePercent?: number;
 
+  /**
+   * Specify in which direction should you swipe to dismiss the toast
+   * `Default: "x"`
+   */
+
   draggableDirection?: DraggableDirection;
 
   /**
