@@ -8,6 +8,7 @@ import { Bounce } from './Transitions';
 import {
   POSITION,
   DEFAULT,
+  DIRECTION,
   parseClassName,
   objectValues,
   isFn
@@ -105,6 +106,7 @@ if (process.env.NODE_ENV !== 'production') {
     rtl: PropTypes.bool,
     draggable: PropTypes.bool,
     draggablePercent: PropTypes.number,
+    draggableDirection: PropTypes.oneOf(objectValues(DIRECTION)),
     pauseOnFocusLoss: PropTypes.bool,
     enableMultiContainer: PropTypes.bool,
     containerId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -126,5 +128,6 @@ ToastContainer.defaultProps = {
   newestOnTop: false,
   draggable: true,
   draggablePercent: 80,
+  draggableDirection: DIRECTION.X,
   role: 'alert'
 };
