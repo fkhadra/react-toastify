@@ -162,15 +162,16 @@ export function useToastContainer(props: ToastContainerProps) {
     if (!canBeRendered(content) || isNotValid(options)) return;
 
     const { toastId, updateId } = options;
-    const { props, isToastActive } = instance;
+    const { props } = instance;
     const closeToast = () => removeToast(toastId);
-    const isNotAnUpdate = !isToastActive(toastId);
+    const isNotAnUpdate = options.updateId == null; //!isToastActive(toastId);
 
     if (isNotAnUpdate) toastCount++;
 
     const toastProps: ToastProps = {
       toastId,
       updateId,
+      isIn: false,
       key: options.key || instance.toastKey++,
       type: options.type,
       closeToast: closeToast,
@@ -262,6 +263,8 @@ export function useToastContainer(props: ToastContainerProps) {
     staleId?: Id
   ) {
     const { toastId } = toastProps;
+
+    if (staleId) delete collection[staleId];
 
     collection[toastId] = {
       content,

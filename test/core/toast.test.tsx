@@ -313,12 +313,8 @@ describe('toastify', () => {
       expect(screen.queryByText('hello')).toBe(null);
     });
 
-    /**
-     * This test trigger a warning but it's a false positif
-     *  Warning: Encountered two children with the same key, `.$toast-1`. ...
-     */
-    it.skip('Should be able to update the toastId', () => {
-      const { container } = render(<ToastContainer />);
+    it('Should be able to update the toastId', () => {
+      render(<ToastContainer />);
       const toastId = 'bar';
       const updateId = 'foo';
 
@@ -336,19 +332,17 @@ describe('toastify', () => {
 
       act(() => {
         toast.update(toastId, {
-          // toastId: updateId,
+          toastId: updateId,
           render: 'foo'
         });
         jest.runAllTimers();
       });
 
-      screen.debug(container);
+      expect(screen.queryByText('hello')).toBe(null);
 
-      // expect(screen.queryByText('hello')).toBe(null);
-
-      // expect(screen.getByText('foo')).not.toBe(null);
-      // expect(toast.isActive(toastId)).toBe(false);
-      // expect(toast.isActive(updateId)).toBe(true);
+      expect(screen.getByText('foo')).not.toBe(null);
+      expect(toast.isActive(toastId)).toBe(false);
+      expect(toast.isActive(updateId)).toBe(true);
     });
 
     it('Should be able to update a toast even when using multi containers', () => {
