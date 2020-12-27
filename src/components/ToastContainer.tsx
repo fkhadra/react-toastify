@@ -1,17 +1,10 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import cx from 'clsx';
 
 import { Toast } from './Toast';
 import { CloseButton } from './CloseButton';
 import { Bounce } from './Transitions';
-import {
-  POSITION,
-  DEFAULT,
-  parseClassName,
-  objectValues,
-  isFn
-} from '../utils';
+import { POSITION, DEFAULT, parseClassName, isFn } from '../utils';
 import { useToastContainer } from '../hooks';
 import { ToastContainerProps, ToastPosition } from '../types';
 
@@ -76,43 +69,6 @@ export const ToastContainer: React.FC<ToastContainerProps> = props => {
     </div>
   );
 };
-
-if (process.env.NODE_ENV !== 'production') {
-  // @ts-ignore
-  ToastContainer.propTypes = {
-    // @ts-ignore
-    position: PropTypes.oneOf(objectValues(POSITION)),
-
-    // @ts-ignore
-    autoClose: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
-
-    // @ts-ignore
-    closeButton: PropTypes.oneOfType([
-      PropTypes.node,
-      PropTypes.bool,
-      PropTypes.func
-    ]),
-    hideProgressBar: PropTypes.bool,
-    pauseOnHover: PropTypes.bool,
-    closeOnClick: PropTypes.bool,
-    newestOnTop: PropTypes.bool,
-    className: PropTypes.any, //oneOfType([PropTypes.func, PropTypes.string]),
-    style: PropTypes.object,
-    toastClassName: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-    bodyClassName: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-    progressClassName: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-    progressStyle: PropTypes.object,
-    transition: PropTypes.func,
-    rtl: PropTypes.bool,
-    draggable: PropTypes.bool,
-    draggablePercent: PropTypes.number,
-    pauseOnFocusLoss: PropTypes.bool,
-    enableMultiContainer: PropTypes.bool,
-    containerId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    role: PropTypes.string,
-    onClick: PropTypes.func
-  };
-}
 
 ToastContainer.defaultProps = {
   position: POSITION.TOP_RIGHT as ToastPosition,

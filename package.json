@@ -92,7 +92,6 @@
     "typescript": "^3.7.5"
   },
   "dependencies": {
-    "clsx": "^1.1.1",
-    "prop-types": "^15.7.2"
+    "clsx": "^1.1.1"
   }
 }
