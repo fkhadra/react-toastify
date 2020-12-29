@@ -117,6 +117,8 @@ export function useToast(props: ToastProps) {
   }
 
   function bindFocusEvents() {
+    if (!document.hasFocus()) pauseToast();
+
     window.addEventListener('focus', playToast);
     window.addEventListener('blur', pauseToast);
   }
