@@ -29,12 +29,20 @@ function getProgressBar() {
   };
 }
 
+const documentHasFocus = jest
+  .spyOn(document, 'hasFocus')
+  .mockImplementation(() => true);
+
 const defaultEvents = [document.addEventListener, document.removeEventListener];
 
 beforeEach(() => {
   const [add, remove] = defaultEvents;
   document.addEventListener = add;
   document.removeEventListener = remove;
+});
+
+afterAll(() => {
+  documentHasFocus.mockRestore();
 });
 
 describe('Toast Component', () => {
