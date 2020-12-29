@@ -31,7 +31,8 @@
     "sass-minimal": "sass scss/minimal.scss dist/ReactToastify.minimal.css",
     "postsass": "postcss dist/ReactToastify.css --use autoprefixer -m -o dist/ReactToastify.css",
     "postsass-minimal": "cssnano dist/ReactToastify.minimal.css dist/ReactToastify.minimal.css --no-zindex --no-reduceIdents",
-    "style": "npm run sass && npm run sass-minimal && cssnano dist/ReactToastify.css dist/ReactToastify.min.css --no-zindex --no-reduceIdents"
+    "style": "npm run sass && npm run sass-minimal && cssnano dist/ReactToastify.css dist/ReactToastify.min.css --no-zindex --no-reduceIdents && npm run style-injector",
+    "style-injector": "style2js --out-dir dist dist/ReactToastify.min.css"
   },
   "peerDependencies": {
     "react": ">=16",
@@ -49,7 +50,7 @@
   },
   "eslint": {
     "rules": {
-      "react-hooks/exhaustive-deps": "off"
+      "react-hooks/exhaustive-deps": "warn"
     }
   },
   "jest": {
@@ -87,6 +88,7 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "sass": "^1.26.0",
+    "style2js": "^1.0.0",
     "tsdx": "^0.12.3",
     "tslib": "^1.10.0",
     "typescript": "^3.7.5"
