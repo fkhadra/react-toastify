@@ -149,7 +149,7 @@ export function useToastContainer(props: ToastContainerProps) {
     return !containerRef.current ||
       (instance.props.enableMultiContainer &&
         containerId !== instance.props.containerId) ||
-      (instance.isToastActive(toastId) && updateId == null)
+      (collection[toastId] && updateId == null)
       ? true
       : false;
   }
@@ -164,7 +164,7 @@ export function useToastContainer(props: ToastContainerProps) {
     const { toastId, updateId } = options;
     const { props } = instance;
     const closeToast = () => removeToast(toastId);
-    const isNotAnUpdate = options.updateId == null; //!isToastActive(toastId);
+    const isNotAnUpdate = options.updateId == null;
 
     if (isNotAnUpdate) toastCount++;
 
