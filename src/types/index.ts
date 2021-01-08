@@ -59,6 +59,8 @@ export interface ClearWaitingQueueParams {
   containerId?: Id;
 }
 
+export type DraggableDirection = 'x' | 'y';
+
 interface CommonOptions {
   /**
    * Pause the timer when the mouse hover the toast.
@@ -145,6 +147,13 @@ interface CommonOptions {
   draggablePercent?: number;
 
   /**
+   * Specify in which direction should you swipe to dismiss the toast
+   * `Default: "x"`
+   */
+
+  draggableDirection?: DraggableDirection;
+
+  /**
    * Define the ARIA role for the toast
    * `Default: alert`
    *  https://www.w3.org/WAI/PF/aria/roles
@@ -229,6 +238,7 @@ export interface ToastProps extends ToastOptions {
   position: ToastPosition;
   children?: ToastContent;
   draggablePercent: number;
+  draggableDirection: DraggableDirection;
   progressClassName?: ToastClassName;
   className?: ToastClassName;
   bodyClassName?: ToastClassName;

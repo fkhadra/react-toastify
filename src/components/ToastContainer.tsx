@@ -4,7 +4,7 @@ import cx from 'clsx';
 import { Toast } from './Toast';
 import { CloseButton } from './CloseButton';
 import { Bounce } from './Transitions';
-import { POSITION, DEFAULT, parseClassName, isFn } from '../utils';
+import { POSITION, DIRECTION, DEFAULT, parseClassName, isFn } from '../utils';
 import { useToastContainer } from '../hooks';
 import { ToastContainerProps, ToastPosition } from '../types';
 
@@ -83,5 +83,6 @@ ToastContainer.defaultProps = {
   newestOnTop: false,
   draggable: true,
   draggablePercent: 80,
+  draggableDirection: DIRECTION.X,
   role: 'alert'
 };

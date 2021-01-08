@@ -1,4 +1,4 @@
-import { ToastPosition, TypeOptions } from '../types';
+import { ToastPosition, TypeOptions, DraggableDirection } from '../types';
 
 type KeyOfPosition =
   | 'TOP_LEFT'
@@ -10,6 +10,8 @@ type KeyOfPosition =
 
 type KeyOfType = 'INFO' | 'SUCCESS' | 'WARNING' | 'ERROR' | 'DEFAULT' | 'DARK';
 
+type KeyOfDirection = 'X' | 'Y';
+
 export const POSITION: { [key in KeyOfPosition]: ToastPosition } = {
   TOP_LEFT: 'top-left',
   TOP_RIGHT: 'top-right',
@@ -17,6 +19,11 @@ export const POSITION: { [key in KeyOfPosition]: ToastPosition } = {
   BOTTOM_LEFT: 'bottom-left',
   BOTTOM_RIGHT: 'bottom-right',
   BOTTOM_CENTER: 'bottom-center'
+};
+
+export const DIRECTION: { [key in KeyOfDirection]: DraggableDirection } = {
+  X: 'x',
+  Y: 'y'
 };
 
 export const TYPE: { [key in KeyOfType]: TypeOptions } = {
