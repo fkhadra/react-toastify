@@ -4,7 +4,7 @@ import cx from 'clsx';
 import { Toast } from './Toast';
 import { CloseButton } from './CloseButton';
 import { Bounce } from './Transitions';
-import { POSITION, DIRECTION, DEFAULT, parseClassName, isFn } from '../utils';
+import { POSITION, Direction, Default, parseClassName, isFn } from '../utils';
 import { useToastContainer } from '../hooks';
 import { ToastContainerProps, ToastPosition } from '../types';
 
@@ -16,9 +16,9 @@ export const ToastContainer: React.FC<ToastContainerProps> = props => {
 
   function getClassName(position: ToastPosition) {
     const defaultClassName = cx(
-      `${DEFAULT.CSS_NAMESPACE}__toast-container`,
-      `${DEFAULT.CSS_NAMESPACE}__toast-container--${position}`,
-      { [`${DEFAULT.CSS_NAMESPACE}__toast-container--rtl`]: rtl }
+      `${Default.CSS_NAMESPACE}__toast-container`,
+      `${Default.CSS_NAMESPACE}__toast-container--${position}`,
+      { [`${Default.CSS_NAMESPACE}__toast-container--rtl`]: rtl }
     );
     return isFn(className)
       ? className({
@@ -32,7 +32,7 @@ export const ToastContainer: React.FC<ToastContainerProps> = props => {
   return (
     <div
       ref={containerRef}
-      className={DEFAULT.CSS_NAMESPACE as string}
+      className={Default.CSS_NAMESPACE as string}
       id={containerId as string}
     >
       {getToastToRender((position, toastList) => {
@@ -83,6 +83,6 @@ ToastContainer.defaultProps = {
   newestOnTop: false,
   draggable: true,
   draggablePercent: 80,
-  draggableDirection: DIRECTION.X,
+  draggableDirection: Direction.X,
   role: 'alert'
 };

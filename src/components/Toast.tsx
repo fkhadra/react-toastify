@@ -3,7 +3,7 @@ import cx from 'clsx';
 
 import { ProgressBar } from './ProgressBar';
 import { ToastProps } from '../types';
-import { DEFAULT, isFn } from '../utils';
+import { Default, isFn } from '../utils';
 import { useToast } from '../hooks';
 
 export const Toast: React.FC<ToastProps> = props => {
@@ -38,10 +38,10 @@ export const Toast: React.FC<ToastProps> = props => {
     isIn
   } = props;
   const defaultClassName = cx(
-    `${DEFAULT.CSS_NAMESPACE}__toast`,
-    `${DEFAULT.CSS_NAMESPACE}__toast--${type}`,
+    `${Default.CSS_NAMESPACE}__toast`,
+    `${Default.CSS_NAMESPACE}__toast--${type}`,
     {
-      [`${DEFAULT.CSS_NAMESPACE}__toast--rtl`]: rtl
+      [`${Default.CSS_NAMESPACE}__toast--rtl`]: rtl
     }
   );
   const cssClasses = isFn(className)
@@ -86,7 +86,7 @@ export const Toast: React.FC<ToastProps> = props => {
           className={
             isFn(bodyClassName)
               ? bodyClassName({ type })
-              : cx(`${DEFAULT.CSS_NAMESPACE}__toast-body`, bodyClassName)
+              : cx(`${Default.CSS_NAMESPACE}__toast-body`, bodyClassName)
           }
           style={bodyStyle}
         >

@@ -9,7 +9,7 @@ import {
 import { isFn } from '../utils';
 import { ToastProps } from '../types';
 import { useKeeper } from './useKeeper';
-import { DIRECTION } from '../utils/constant';
+import { Direction } from '../utils/constant';
 
 interface Draggable {
   start: number;
@@ -88,7 +88,7 @@ export function useToast(props: ToastProps) {
     drag.boundingRect = toast.getBoundingClientRect();
     toast.style.transition = '';
 
-    if (props.draggableDirection === DIRECTION.X) {
+    if (props.draggableDirection === Direction.X) {
       drag.start = drag.x = getX(e.nativeEvent as DragEvent);
       drag.removalDistance = toast.offsetWidth * (props.draggablePercent / 100);
     } else {
@@ -163,7 +163,7 @@ export function useToast(props: ToastProps) {
       drag.x = getX(e as DragEvent);
       drag.y = getY(e as DragEvent);
 
-      if (props.draggableDirection === DIRECTION.X) {
+      if (props.draggableDirection === Direction.X) {
         drag.delta = drag.x - drag.start;
       } else {
         drag.delta = drag.y - drag.start;

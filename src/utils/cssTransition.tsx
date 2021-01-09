@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect } from 'react';
 import { ToastTransitionProps } from '../types';
 
 import { collapseToast } from './collapseToast';
-import { DEFAULT } from './constant';
+import { Default } from './constant';
 
 export interface CSSTransitionProps {
   /**
@@ -48,7 +48,7 @@ export function cssTransition({
   duration = 750,
   appendPosition = false,
   collapse = true,
-  collapseDuration = DEFAULT.COLLAPSE_DURATION
+  collapseDuration = Default.COLLAPSE_DURATION
 }: CSSTransitionProps) {
   let enterDuration: number, exitDuration: number;
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import cx from 'clsx';
 
-import { TYPE, DEFAULT, isFn } from './../utils';
+import { TYPE, Default, isFn } from './../utils';
 import { TypeOptions, ToastClassName } from '../types';
 
 export interface ProgressBarProps {
@@ -83,13 +83,13 @@ export function ProgressBar({
 
   if (controlledProgress) style.transform = `scaleX(${progress})`;
   const defaultClassName = cx(
-    `${DEFAULT.CSS_NAMESPACE}__progress-bar`,
+    `${Default.CSS_NAMESPACE}__progress-bar`,
     controlledProgress
-      ? `${DEFAULT.CSS_NAMESPACE}__progress-bar--controlled`
-      : `${DEFAULT.CSS_NAMESPACE}__progress-bar--animated`,
-    `${DEFAULT.CSS_NAMESPACE}__progress-bar--${type}`,
+      ? `${Default.CSS_NAMESPACE}__progress-bar--controlled`
+      : `${Default.CSS_NAMESPACE}__progress-bar--animated`,
+    `${Default.CSS_NAMESPACE}__progress-bar--${type}`,
     {
-      [`${DEFAULT.CSS_NAMESPACE}__progress-bar--rtl`]: rtl
+      [`${Default.CSS_NAMESPACE}__progress-bar--rtl`]: rtl
     }
   );
   const classNames = isFn(className)

@@ -1,12 +1,12 @@
 import { fireEvent } from '@testing-library/react';
-import { DEFAULT } from '../src/utils';
+import { Default } from '../src/utils';
 
 export const cssClasses = {
-  rtl: `.${DEFAULT.CSS_NAMESPACE}__toast--rtl`,
-  progressBar: `.${DEFAULT.CSS_NAMESPACE}__progress-bar`,
-  progressBarController: `.${DEFAULT.CSS_NAMESPACE}__progress-bar--controlled`,
-  closeButton: `.${DEFAULT.CSS_NAMESPACE}__close-button`,
-  container: `.${DEFAULT.CSS_NAMESPACE}__toast-container`
+  rtl: `.${Default.CSS_NAMESPACE}__toast--rtl`,
+  progressBar: `.${Default.CSS_NAMESPACE}__progress-bar`,
+  progressBarController: `.${Default.CSS_NAMESPACE}__progress-bar--controlled`,
+  closeButton: `.${Default.CSS_NAMESPACE}__close-button`,
+  container: `.${Default.CSS_NAMESPACE}__toast-container`
 };
 
 export function triggerAnimationEnd(node: HTMLElement | HTMLElement[]) {

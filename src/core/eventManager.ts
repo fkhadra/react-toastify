@@ -85,7 +85,7 @@ export const eventManager: EventManager = {
   cancelEmit(event) {
     const timers = this.emitQueue.get(event);
     if (timers) {
-      timers.forEach((timer: TimeoutId) => clearTimeout(timer));
+      timers.forEach(clearTimeout);
       this.emitQueue.delete(event);
     }
 

@@ -1,4 +1,4 @@
-import { DEFAULT } from './constant';
+import { Default } from './constant';
 
 /**
  * Used to collapse toast after exit animation
@@ -6,7 +6,7 @@ import { DEFAULT } from './constant';
 export function collapseToast(
   node: HTMLElement,
   done: () => void,
-  duration = DEFAULT.COLLAPSE_DURATION
+  duration = Default.COLLAPSE_DURATION
 ) {
   const height = node.scrollHeight;
   const style = node.style;

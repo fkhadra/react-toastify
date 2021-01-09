@@ -36,18 +36,10 @@ function isAnyContainerMounted() {
 }
 
 /**
- * Get the container by id. Returns the last container declared when no id is given.
- */
-function getContainer(containerId?: Id) {
-  if (!isAnyContainerMounted()) return null;
-  return containers.get(!containerId ? latestInstance : containerId);
-}
-
-/**
  * Get the toast by id, given it's in the DOM, otherwise returns null
  */
 function getToast(toastId: Id, { containerId }: ToastOptions) {
-  const container = getContainer(containerId);
+  const container = containers.get(containerId || latestInstance);
   if (!container) return null;
 
   return container.getToast(toastId);
@@ -107,40 +99,31 @@ function mergeOptions(type: string, options?: ToastOptions) {
   } as NotValidatedToastProps;
 }
 
+const createToastByType = (type: string) => (
+  content: ToastContent,
+  options?: ToastOptions
+) => dispatchToast(content, mergeOptions(type, options));
+
 const toast = (content: ToastContent, options?: ToastOptions) =>
   dispatchToast(content, mergeOptions(TYPE.DEFAULT, options));
 
-toast.success = (content: ToastContent, options?: ToastOptions) =>
-  dispatchToast(content, mergeOptions(TYPE.SUCCESS, options));
-
-toast.info = (content: ToastContent, options?: ToastOptions) =>
-  dispatchToast(content, mergeOptions(TYPE.INFO, options));
-
-toast.error = (content: ToastContent, options?: ToastOptions) =>
-  dispatchToast(content, mergeOptions(TYPE.ERROR, options));
-
-toast.warning = (content: ToastContent, options?: ToastOptions) =>
-  dispatchToast(content, mergeOptions(TYPE.WARNING, options));
-
-toast.dark = (content: ToastContent, options?: ToastOptions) =>
-  dispatchToast(content, mergeOptions(TYPE.DARK, options));
-
-/**
- * Maybe I should remove warning in favor of warn, I don't know
- */
+toast.success = createToastByType(TYPE.SUCCESS);
+toast.info = createToastByType(TYPE.INFO);
+toast.error = createToastByType(TYPE.ERROR);
+toast.warning = createToastByType(TYPE.WARNING);
+toast.dark = createToastByType(TYPE.DARK);
 toast.warn = toast.warning;
 
 /**
  * Remove toast programmaticaly
  */
-toast.dismiss = (id?: Id) =>
-  isAnyContainerMounted() && eventManager.emit(Event.Clear, id);
+toast.dismiss = (id?: Id) => eventManager.emit(Event.Clear, id);
 
 /**
  * Clear waiting queue when limit is used
  */
 toast.clearWaitingQueue = (params: ClearWaitingQueueParams = {}) =>
-  isAnyContainerMounted() && eventManager.emit(Event.ClearWaitingQueue, params);
+  eventManager.emit(Event.ClearWaitingQueue, params);
 
 /**
  * return true if one container is displaying the toast
@@ -174,10 +157,7 @@ toast.update = (toastId: Id, options: UpdateOptions = {}) => {
 
       if (nextOptions.toastId !== toastId) nextOptions.staleId = toastId;
 
-      const content =
-        typeof nextOptions.render !== 'undefined'
-          ? nextOptions.render
-          : oldContent;
+      const content = nextOptions.render || oldContent;
       delete nextOptions.render;
 
       dispatchToast(content, nextOptions);

@@ -14,7 +14,7 @@ import {
   isStr,
   hasToastId,
   getAutoCloseDelay,
-  DIRECTION
+  Direction
 } from '../utils';
 import { eventManager, Event } from '../core/eventManager';
 
@@ -199,7 +199,7 @@ export function useToastContainer(props: ToastContainerProps) {
       draggablePercent: isNum(options.draggablePercent)
         ? options.draggablePercent
         : (props.draggablePercent as number),
-      draggableDirection: props.draggableDirection || DIRECTION.X,
+      draggableDirection: props.draggableDirection || Direction.X,
       closeOnClick: isBool(options.closeOnClick)
         ? options.closeOnClick
         : props.closeOnClick,
