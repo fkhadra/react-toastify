@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import { ToastTransitionProps } from '../types';
 
 import { collapseToast } from './collapseToast';
@@ -16,21 +16,15 @@ export interface CSSTransitionProps {
   exit: string;
 
   /**
-   * Define the duration of the transition in ms
-   * You can also pass an array `[enterDuration, exitDuration]`
-   * `Default: 750`
-   */
-  duration?: number | [number, number];
-
-  /**
    * Append current toast position to the classname.
+   * If multiple classes are provided, only the last one will get the position
    * For instance `myclass--top-center`...
    * `Default: false`
    */
   appendPosition?: boolean;
 
   /**
-   * Collapse toast smoothly when animation end
+   * Collapse toast smoothly when exit animation end
    * `Default: true`
    */
   collapse?: boolean;
@@ -42,22 +36,26 @@ export interface CSSTransitionProps {
   collapseDuration?: number;
 }
 
+/**
+ * Css animation that just work.
+ * You could use animate.css for instance
+ *
+ *
+ * ```
+ * cssTransition({
+ *   enter: "animate__animated animate__bounceIn",
+ *   exit: "animate__animated animate__bounceOut"
+ * })
+ * ```
+ *
+ */
 export function cssTransition({
   enter,
   exit,
-  duration = 750,
   appendPosition = false,
   collapse = true,
   collapseDuration = Default.COLLAPSE_DURATION
 }: CSSTransitionProps) {
-  let enterDuration: number, exitDuration: number;
-
-  if (Array.isArray(duration) && duration.length === 2) {
-    [enterDuration, exitDuration] = duration;
-  } else {
-    enterDuration = exitDuration = duration as number;
-  }
-
   return function ToastTransition({
     children,
     position,
@@ -68,6 +66,7 @@ export function cssTransition({
   }: ToastTransitionProps) {
     const enterClassName = appendPosition ? `${enter}--${position}` : enter;
     const exitClassName = appendPosition ? `${exit}--${position}` : exit;
+    const baseClassName = useRef<string>();
 
     useLayoutEffect(() => {
       onEnter();
@@ -79,19 +78,22 @@ export function cssTransition({
 
     const onEnter = () => {
       const node = nodeRef.current!;
-      node.classList.add(enterClassName);
-      node.style.animationFillMode = 'forwards';
-      node.style.animationDuration = `${enterDuration}ms`;
+      baseClassName.current = node.className;
+      node.className += ` ${enterClassName}`;
       node.addEventListener('animationend', onEntered);
     };
 
     const onEntered = () => {
       const node = nodeRef.current!;
-
       node.removeEventListener('animationend', onEntered);
-      node.classList.remove(enterClassName);
-      node.style.removeProperty('animationFillMode');
-      node.style.removeProperty('animationDuration');
+      node.className = baseClassName.current!;
+    };
+
+    const onExit = () => {
+      const node = nodeRef.current!;
+
+      node.className += ` ${exitClassName}`;
+      node.addEventListener('animationend', onExited);
     };
 
     const onExited = () => {
@@ -99,15 +101,6 @@ export function cssTransition({
 
       node.removeEventListener('animationend', onExited);
       collapse ? collapseToast(node, done, collapseDuration) : done();
-    };
-
-    const onExit = () => {
-      const node = nodeRef.current!;
-
-      node.classList.add(exitClassName);
-      node.style.animationFillMode = 'forwards';
-      node.style.animationDuration = `${exitDuration}ms`;
-      node.addEventListener('animationend', onExited);
     };
 
     return <>{children}</>;

@@ -492,7 +492,6 @@ describe('toastify', () => {
     const Transition = cssTransition({
       enter: 'foo',
       exit: 'bar',
-      duration: [300, 500],
       collapse: false
     });
 

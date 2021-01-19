@@ -33,28 +33,10 @@ describe('cssTransition helper', () => {
     expect(container).toMatchSnapshot();
   });
 
-  it('Should be possible to specify different duration for enter and exit', () => {
-    const Transition = cssTransition({
-      enter: 'foo',
-      exit: 'bar',
-      duration: [300, 500]
-    });
-
-    const Child = () => <div>Plop</div>;
-    const { container, getByText } = render(
-      <Transition {...transitionProps}>
-        <Child />
-      </Transition>
-    );
-    expect(getByText('Plop').textContent).toContain('Plop');
-    expect(container).toMatchSnapshot();
-  });
-
   it('Should be possible to prevent exit transition', () => {
     const Transition = cssTransition({
       enter: 'foo',
-      exit: 'bar',
-      duration: [300, 500]
+      exit: 'bar'
     });
 
     const Child = () => <div>Plop</div>;
@@ -71,7 +53,6 @@ describe('cssTransition helper', () => {
     const Transition = cssTransition({
       enter: 'foo',
       exit: 'bar',
-      duration: [300, 500],
       collapse: false
     });
 
@@ -89,7 +70,6 @@ describe('cssTransition helper', () => {
     const Transition = cssTransition({
       enter: 'foo',
       exit: 'bar',
-      duration: [300, 500],
       collapseDuration: 200
     });
 
