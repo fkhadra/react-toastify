@@ -279,7 +279,29 @@ describe('Toast Component', () => {
     expect(document.getElementById('foo')).not.toBe(null);
   });
 
+  it('Should support style attribute', () => {
+    const style: React.CSSProperties = {
+      background: 'purple'
+    };
+    const bodyStyle: React.CSSProperties = {
+      fontWeight: 'bold'
+    };
+    const { queryByRole } = render(
+      <Toast {...REQUIRED_PROPS} style={style} bodyStyle={bodyStyle}>
+        FooBar
+      </Toast>
+    );
+
+    const notification = queryByRole('alert') as HTMLElement;
+
+    expect((notification.parentNode as HTMLElement).style.background).toBe(
+      'purple'
+    );
+    expect(notification.style.fontWeight).toBe('bold');
+  });
+
   describe('Drag event', () => {
+    // target parent node due to text selection disabling drag event
     it('Should handle drag start on mousedown', () => {
       const mockClientRect = jest.fn();
       Element.prototype.getBoundingClientRect = mockClientRect;
@@ -288,7 +310,7 @@ describe('Toast Component', () => {
 
       expect(mockClientRect).not.toHaveBeenCalled();
 
-      fireEvent.mouseDown(screen.getByRole('alert'));
+      fireEvent.mouseDown(screen.getByRole('alert').parentNode!);
       expect(mockClientRect).toHaveBeenCalled();
     });
 
@@ -300,14 +322,14 @@ describe('Toast Component', () => {
 
       expect(mockClientRect).not.toHaveBeenCalled();
 
-      fireEvent.touchStart(screen.getByRole('alert'));
+      fireEvent.touchStart(screen.getByRole('alert').parentNode!);
       expect(mockClientRect).toHaveBeenCalled();
     });
 
     it('Should pause toast duration on drag move', async () => {
       render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
       const progressBar = getProgressBar();
-      const notification = screen.getByRole('alert');
+      const notification = screen.getByRole('alert').parentNode!;
 
       progressBar.isRunning();
       fireEvent.mouseDown(notification);
@@ -317,7 +339,7 @@ describe('Toast Component', () => {
 
     it('Should prevent the timer from running on drag end if the mouse hover the toast', () => {
       render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
-      const notification = screen.getByRole('alert');
+      const notification = screen.getByRole('alert').parentNode!;
 
       // BoundingClientRect for Position top right
       Element.prototype.getBoundingClientRect = () => {
@@ -345,7 +367,7 @@ describe('Toast Component', () => {
 
     it('Should resume the timer on drag end if the mouse is not hovering the toast', () => {
       render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
-      const notification = screen.getByRole('alert');
+      const notification = screen.getByRole('alert').parentNode!;
       // BoundingClientRect for Position top right
       Element.prototype.getBoundingClientRect = () => {
         return {
@@ -368,27 +390,6 @@ describe('Toast Component', () => {
       progressBar.isPaused();
       fireEvent.mouseUp(notification);
       progressBar.isRunning();
-    });
-
-    it('Should support style attribute', () => {
-      const style: React.CSSProperties = {
-        background: 'purple'
-      };
-      const bodyStyle: React.CSSProperties = {
-        fontWeight: 'bold'
-      };
-      const { queryByRole } = render(
-        <Toast {...REQUIRED_PROPS} style={style} bodyStyle={bodyStyle}>
-          FooBar
-        </Toast>
-      );
-
-      const notification = queryByRole('alert') as HTMLElement;
-
-      expect((notification.parentNode as HTMLElement).style.background).toBe(
-        'purple'
-      );
-      expect(notification.style.fontWeight).toBe('bold');
     });
   });
 });
