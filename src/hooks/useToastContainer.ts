@@ -14,7 +14,8 @@ import {
   isStr,
   hasToastId,
   getAutoCloseDelay,
-  Direction
+  Direction,
+  Default
 } from '../utils';
 import { eventManager, Event } from '../core/eventManager';
 
@@ -30,7 +31,7 @@ import {
   ToastTransition
 } from '../types';
 import { useKeeper } from './useKeeper';
-import { reducer } from './toastContainerReducer';
+import { ActionType, reducer } from './toastContainerReducer';
 
 type CollectionItem = Record<Id, Toast>;
 type ToastToRender = Partial<Record<ToastPosition, Toast[]>>;
@@ -125,7 +126,7 @@ export function useToastContainer(props: ToastContainerProps) {
         for (let i = 0; i < toDequeue; i++) dequeueToast();
       }
     }
-    dispatch({ type: 'REMOVE', toastId });
+    dispatch({ type: ActionType.REMOVE, toastId });
   }
 
   function dequeueToast() {
@@ -199,7 +200,8 @@ export function useToastContainer(props: ToastContainerProps) {
       draggablePercent: isNum(options.draggablePercent)
         ? options.draggablePercent
         : (props.draggablePercent as number),
-      draggableDirection: props.draggableDirection || Direction.X,
+      draggableDirection:
+        options.draggableDirection || props.draggableDirection,
       closeOnClick: isBool(options.closeOnClick)
         ? options.closeOnClick
         : props.closeOnClick,
@@ -220,6 +222,14 @@ export function useToastContainer(props: ToastContainerProps) {
 
     if (isFn(options.onOpen)) toastProps.onOpen = options.onOpen;
     if (isFn(options.onClose)) toastProps.onClose = options.onClose;
+
+    //  tweak for vertical dragging
+    if (
+      toastProps.draggableDirection === Direction.Y &&
+      toastProps.draggablePercent === Default.DRAGGABLE_PERCENT
+    ) {
+      (toastProps.draggablePercent as number) *= 1.5;
+    }
 
     let closeButton = props.closeButton;
 
@@ -273,7 +283,7 @@ export function useToastContainer(props: ToastContainerProps) {
       props: toastProps
     };
     dispatch({
-      type: 'ADD',
+      type: ActionType.ADD,
       toastId,
       staleId
     });

@@ -31,7 +31,8 @@ export const TYPE: { [key in KeyOfType]: TypeOptions } = {
 export const enum Default {
   COLLAPSE_DURATION = 300,
   DEBOUNCE_DURATION = 50,
-  CSS_NAMESPACE = 'Toastify'
+  CSS_NAMESPACE = 'Toastify',
+  DRAGGABLE_PERCENT = 80
 }
 
 export const enum Direction {

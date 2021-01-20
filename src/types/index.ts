@@ -238,7 +238,7 @@ export interface ToastProps extends ToastOptions {
   position: ToastPosition;
   children?: ToastContent;
   draggablePercent: number;
-  draggableDirection: DraggableDirection;
+  draggableDirection?: DraggableDirection;
   progressClassName?: ToastClassName;
   className?: ToastClassName;
   bodyClassName?: ToastClassName;
