@@ -4,7 +4,7 @@
   box-sizing: border-box;
   margin-bottom: 1rem;
   padding: 8px;
-  border-radius: 1px;
+  border-radius: 4px;
   box-shadow: 0 1px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 15px 0 rgba(0, 0, 0, 0.05);
   display: flex;
   justify-content: space-between;
@@ -38,7 +38,8 @@
   }
   &-body {
     margin: auto 0;
-    flex: 1 1 auto;
+    padding: 6px;
+    cursor: text;
   }
 }
 
