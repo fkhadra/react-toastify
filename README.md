@@ -24,7 +24,7 @@ $ yarn add react-toastify
 - RTL support
 - Swipe to close 👌
 - Can choose swipe direction
-- Super easy to use an animation of your choice
+- Super easy to use an animation of your choice. Works well with animate.css for example
 - Can display a react component inside the toast!
 - Has ```onOpen``` and ```onClose``` hooks. Both can access the props passed to the react component rendered inside the toast
 - Can remove a toast programmatically
