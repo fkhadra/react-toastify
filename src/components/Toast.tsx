@@ -65,10 +65,6 @@ export const Toast: React.FC<ToastProps> = props => {
       return React.cloneElement(closeButton, props);
   }
 
-  function stopPropagation(e: React.MouseEvent) {
-    e.stopPropagation();
-  }
-
   return (
     <Transition
       isIn={isIn}
@@ -86,8 +82,6 @@ export const Toast: React.FC<ToastProps> = props => {
         ref={toastRef}
       >
         <div
-          onClick={stopPropagation}
-          onMouseDown={stopPropagation}
           {...(isIn && { role: role })}
           className={
             isFn(bodyClassName)
