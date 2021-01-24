@@ -82,19 +82,22 @@ export function useToast(props: ToastProps) {
   function onDragStart(
     e: React.MouseEvent<HTMLElement, MouseEvent> | React.TouchEvent<HTMLElement>
   ) {
-    const toast = toastRef.current!;
-    drag.canCloseOnClick = true;
-    drag.canDrag = true;
-    drag.boundingRect = toast.getBoundingClientRect();
-    toast.style.transition = '';
+    if (props.draggable) {
+      const toast = toastRef.current!;
+      drag.canCloseOnClick = true;
+      drag.canDrag = true;
+      drag.boundingRect = toast.getBoundingClientRect();
+      toast.style.transition = '';
 
-    if (props.draggableDirection === Direction.X) {
-      drag.start = drag.x = getX(e.nativeEvent as DragEvent);
-      drag.removalDistance = toast.offsetWidth * (props.draggablePercent / 100);
-    } else {
-      drag.start = drag.y = getY(e.nativeEvent as DragEvent);
-      drag.removalDistance =
-        toast.offsetHeight * (props.draggablePercent / 100);
+      if (props.draggableDirection === Direction.X) {
+        drag.start = drag.x = getX(e.nativeEvent as DragEvent);
+        drag.removalDistance =
+          toast.offsetWidth * (props.draggablePercent / 100);
+      } else {
+        drag.start = drag.y = getY(e.nativeEvent as DragEvent);
+        drag.removalDistance =
+          toast.offsetHeight * (props.draggablePercent / 100);
+      }
     }
   }
 
@@ -153,11 +156,10 @@ export function useToast(props: ToastProps) {
   }
 
   function onDragMove(e: MouseEvent | TouchEvent) {
-    e.preventDefault();
-
-    const toast = toastRef.current!;
-
     if (drag.canDrag) {
+      e.preventDefault();
+
+      const toast = toastRef.current!;
       if (isRunning) pauseToast();
 
       drag.x = getX(e as DragEvent);
