@@ -13,20 +13,18 @@ const getProps = () => ({
 
 describe('ProgressBar', () => {
   it('Should merge className', () => {
-    const { container } = render(
-      <ProgressBar {...getProps()} className="test" />
-    );
+    render(<ProgressBar {...getProps()} className="test" />);
 
-    expect((container.firstChild! as HTMLElement).className).toContain('test');
+    expect(document.querySelector('.test')?.classList.contains('test')).toBe(
+      true
+    );
   });
   it('Should merge className in function form', () => {
-    const { container } = render(
-      <ProgressBar {...getProps()} className={() => 'testClassName'} />
-    );
+    render(<ProgressBar {...getProps()} className={() => 'testClassName'} />);
 
-    expect((container.firstChild! as HTMLElement).className).toContain(
-      'testClassName'
-    );
+    expect(
+      document.querySelector('.testClassName')?.classList.contains('testClassName')
+    ).toBe(true);
   });
   it('Should call closeToast function when animation end', () => {
     const closeToast = jest.fn();

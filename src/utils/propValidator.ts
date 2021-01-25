@@ -22,10 +22,6 @@ export function parseClassName(v: any) {
   return isStr(v) || isFn(v) ? v : null;
 }
 
-export function objectValues<T>(obj: Record<string, T>) {
-  return Object.keys(obj).map(key => obj[key]);
-}
-
 export function hasToastId(toastId?: Id) {
   return toastId === 0 || toastId;
 }

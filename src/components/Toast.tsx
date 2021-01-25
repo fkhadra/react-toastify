@@ -3,7 +3,7 @@ import cx from 'clsx';
 
 import { ProgressBar } from './ProgressBar';
 import { ToastProps } from '../types';
-import { DEFAULT, isFn } from '../utils';
+import { Default, isFn } from '../utils';
 import { useToast } from '../hooks';
 
 export const Toast: React.FC<ToastProps> = props => {
@@ -34,38 +34,40 @@ export const Toast: React.FC<ToastProps> = props => {
     progress,
     rtl,
     toastId,
-    deleteToast
+    deleteToast,
+    isIn
   } = props;
-  const defaultClassArr = [
-    `${DEFAULT.CSS_NAMESPACE}__toast`,
-    `${DEFAULT.CSS_NAMESPACE}__toast--${type}`,
+  const defaultClassName = cx(
+    `${Default.CSS_NAMESPACE}__toast`,
+    `${Default.CSS_NAMESPACE}__toast--${type}`,
     {
-      [`${DEFAULT.CSS_NAMESPACE}__toast--rtl`]: rtl
+      [`${Default.CSS_NAMESPACE}__toast--rtl`]: rtl
     }
-  ];
+  );
   const cssClasses = isFn(className)
     ? className({
         rtl,
         position,
         type,
-        defaultClassName: cx(...defaultClassArr)
+        defaultClassName
       })
-    : cx(...[...defaultClassArr, className]);
-  const controlledProgress = !!progress;
+    : cx(defaultClassName, className);
+  const isProgressControlled = !!progress;
 
   function renderCloseButton(closeButton: any) {
     if (!closeButton) return;
 
     const props = { closeToast, type };
+
     if (isFn(closeButton)) return closeButton(props);
+
     if (React.isValidElement(closeButton))
       return React.cloneElement(closeButton, props);
   }
 
   return (
     <Transition
-      in={props.in!}
-      appear
+      isIn={isIn}
       done={deleteToast}
       position={position}
       preventExitTransition={preventExitTransition}
@@ -74,38 +76,38 @@ export const Toast: React.FC<ToastProps> = props => {
       <div
         id={toastId as string}
         onClick={onClick}
-        className={cssClasses || undefined}
+        className={cssClasses}
         {...eventHandlers}
         style={style}
         ref={toastRef}
       >
         <div
-          {...(props.in && { role: role })}
+          {...(isIn && { role: role })}
           className={
             isFn(bodyClassName)
               ? bodyClassName({ type })
-              : cx(`${DEFAULT.CSS_NAMESPACE}__toast-body`, bodyClassName)
+              : cx(`${Default.CSS_NAMESPACE}__toast-body`, bodyClassName)
           }
           style={bodyStyle}
         >
           {children}
         </div>
         {renderCloseButton(closeButton)}
-        {(autoClose || controlledProgress) && (
+        {(autoClose || isProgressControlled) && (
           <ProgressBar
-            {...(updateId && !controlledProgress
+            {...(updateId && !isProgressControlled
               ? { key: `pb-${updateId}` }
               : {})}
             rtl={rtl}
             delay={autoClose as number}
             isRunning={isRunning}
-            isIn={props.in}
+            isIn={isIn}
             closeToast={closeToast}
             hide={hideProgressBar}
             type={type}
             style={progressStyle}
             className={progressClassName}
-            controlledProgress={controlledProgress}
+            controlledProgress={isProgressControlled}
             progress={progress}
           />
         )}

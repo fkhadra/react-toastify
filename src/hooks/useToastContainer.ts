@@ -13,7 +13,9 @@ import {
   isNum,
   isStr,
   hasToastId,
-  getAutoCloseDelay
+  getAutoCloseDelay,
+  Direction,
+  Default
 } from '../utils';
 import { eventManager, Event } from '../core/eventManager';
 
@@ -29,7 +31,7 @@ import {
   ToastTransition
 } from '../types';
 import { useKeeper } from './useKeeper';
-import { reducer } from './toastContainerReducer';
+import { ActionType, reducer } from './toastContainerReducer';
 
 type CollectionItem = Record<Id, Toast>;
 type ToastToRender = Partial<Record<ToastPosition, Toast[]>>;
@@ -124,7 +126,7 @@ export function useToastContainer(props: ToastContainerProps) {
         for (let i = 0; i < toDequeue; i++) dequeueToast();
       }
     }
-    dispatch({ type: 'REMOVE', toastId });
+    dispatch({ type: ActionType.REMOVE, toastId });
   }
 
   function dequeueToast() {
@@ -149,7 +151,7 @@ export function useToastContainer(props: ToastContainerProps) {
     return !containerRef.current ||
       (instance.props.enableMultiContainer &&
         containerId !== instance.props.containerId) ||
-      (instance.isToastActive(toastId) && updateId == null)
+      (collection[toastId] && updateId == null)
       ? true
       : false;
   }
@@ -162,15 +164,16 @@ export function useToastContainer(props: ToastContainerProps) {
     if (!canBeRendered(content) || isNotValid(options)) return;
 
     const { toastId, updateId } = options;
-    const { props, isToastActive } = instance;
+    const { props } = instance;
     const closeToast = () => removeToast(toastId);
-    const isNotAnUpdate = !isToastActive(toastId);
+    const isNotAnUpdate = options.updateId == null;
 
     if (isNotAnUpdate) toastCount++;
 
     const toastProps: ToastProps = {
       toastId,
       updateId,
+      isIn: false,
       key: options.key || instance.toastKey++,
       type: options.type,
       closeToast: closeToast,
@@ -197,6 +200,8 @@ export function useToastContainer(props: ToastContainerProps) {
       draggablePercent: isNum(options.draggablePercent)
         ? options.draggablePercent
         : (props.draggablePercent as number),
+      draggableDirection:
+        options.draggableDirection || props.draggableDirection,
       closeOnClick: isBool(options.closeOnClick)
         ? options.closeOnClick
         : props.closeOnClick,
@@ -217,6 +222,14 @@ export function useToastContainer(props: ToastContainerProps) {
 
     if (isFn(options.onOpen)) toastProps.onOpen = options.onOpen;
     if (isFn(options.onClose)) toastProps.onClose = options.onClose;
+
+    //  tweak for vertical dragging
+    if (
+      toastProps.draggableDirection === Direction.Y &&
+      toastProps.draggablePercent === Default.DRAGGABLE_PERCENT
+    ) {
+      (toastProps.draggablePercent as number) *= 1.5;
+    }
 
     let closeButton = props.closeButton;
 
@@ -263,12 +276,14 @@ export function useToastContainer(props: ToastContainerProps) {
   ) {
     const { toastId } = toastProps;
 
+    if (staleId) delete collection[staleId];
+
     collection[toastId] = {
       content,
       props: toastProps
     };
     dispatch({
-      type: 'ADD',
+      type: ActionType.ADD,
       toastId,
       staleId
     });

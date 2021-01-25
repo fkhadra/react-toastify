@@ -1,37 +1,37 @@
 import * as React from 'react';
-import { render, fireEvent } from '@testing-library/react';
-import { act } from 'react-dom/test-utils';
+import { render, fireEvent, act, screen } from '@testing-library/react';
 
-import '../__mocks__/react-transition-group';
-import { cssClasses } from '../helpers';
+import { cssClasses, waitForUseEffectCleanup } from '../helpers';
 import { Toast, ToastContainer } from '../../src/components';
 import { ToastProps } from '../../src/types';
 
 const REQUIRED_PROPS = {
   ...ToastContainer.defaultProps,
-  in: true,
+  isIn: true,
   closeToast: () => {},
   type: 'default',
   toastId: 'id',
   key: 'key'
 } as ToastProps;
 
-function getProgressBar(container: HTMLElement) {
-  const progressBar = container.querySelector(
-    cssClasses.progressBar
-  ) as HTMLElement;
+function getProgressBar() {
+  const progressBar = screen.getByRole('progressbar');
   return {
     isRunning: () =>
       expect(progressBar.style.animationPlayState).toBe('running'),
     isPaused: () => expect(progressBar.style.animationPlayState).toBe('paused'),
     isControlled: (progress: number) => {
-      expect(
-        container.querySelector(cssClasses.progressBarController)
-      ).not.toBe(null);
+      expect(document.querySelector(cssClasses.progressBarController)).not.toBe(
+        null
+      );
       expect(progressBar.style.transform).toMatch(`scaleX(${progress})`);
     }
   };
 }
+
+const documentHasFocus = jest
+  .spyOn(document, 'hasFocus')
+  .mockImplementation(() => true);
 
 const defaultEvents = [document.addEventListener, document.removeEventListener];
 
@@ -41,9 +41,13 @@ beforeEach(() => {
   document.removeEventListener = remove;
 });
 
+afterAll(() => {
+  documentHasFocus.mockRestore();
+});
+
 describe('Toast Component', () => {
   it('Should merge container and body className', () => {
-    const { container } = render(
+    render(
       <Toast
         {...REQUIRED_PROPS}
         autoClose={false}
@@ -53,11 +57,11 @@ describe('Toast Component', () => {
         FooBar
       </Toast>
     );
-    expect(container.querySelector('.container-class')).not.toBe(null);
-    expect(container.querySelector('.body-class')).not.toBe(null);
+    expect(document.querySelector('.container-class')).not.toBe(null);
+    expect(document.querySelector('.body-class')).not.toBe(null);
   });
   it('Should merge container and body className when functional', () => {
-    const { container } = render(
+    render(
       <Toast
         {...REQUIRED_PROPS}
         autoClose={false}
@@ -67,40 +71,40 @@ describe('Toast Component', () => {
         FooBar
       </Toast>
     );
-    expect(container.querySelector('.container-class')).not.toBe(null);
-    expect(container.querySelector('.body-class')).not.toBe(null);
+    expect(document.querySelector('.container-class')).not.toBe(null);
+    expect(document.querySelector('.body-class')).not.toBe(null);
   });
   it('Should support Rtl display', () => {
-    const { container } = render(
+    render(
       <Toast {...REQUIRED_PROPS} autoClose={false} rtl>
         FooBar
       </Toast>
     );
 
-    expect(container.querySelector(cssClasses.rtl)).not.toBeNull();
+    expect(document.querySelector(cssClasses.rtl)).not.toBeNull();
   });
 
   it('Should not render ProgressBar if autoClose prop is set to false', () => {
-    const { container } = render(
+    render(
       <Toast {...REQUIRED_PROPS} autoClose={false}>
         FooBar
       </Toast>
     );
 
-    expect(container.querySelector(cssClasses.progressBar)).toBe(null);
+    expect(screen.queryByRole('progressbar')).toBe(null);
   });
 
   it('Should not render closeButton if closeButton prop is set to false', () => {
-    const { container } = render(
+    render(
       <Toast {...REQUIRED_PROPS} closeButton={false}>
         FooBar
       </Toast>
     );
 
-    expect(container.querySelector(cssClasses.closeButton)).toBe(null);
+    expect(screen.queryByLabelText('close')).toBe(null);
   });
 
-  it('Can call onOpen callback when component mount', () => {
+  it('Can call onOpen callback when toast is displayed', () => {
     const onOpen = jest.fn();
     render(
       <Toast {...REQUIRED_PROPS} onOpen={onOpen}>
@@ -111,47 +115,47 @@ describe('Toast Component', () => {
     expect(onOpen).toHaveBeenCalled();
   });
 
-  it('Can call onClose callback when component will unmount', () => {
+  it('Can call onClose callback when toast is removed', async done => {
     const onClose = jest.fn();
     const { unmount } = render(
       <Toast {...REQUIRED_PROPS} onClose={onClose}>
         FooBar
       </Toast>
     );
+
     unmount();
-    expect(onClose).toHaveBeenCalled();
+    waitForUseEffectCleanup(() => {
+      expect(onClose).toHaveBeenCalled();
+      done();
+    });
   });
 
   it('Can pause toast delay on mouse enter', () => {
-    const { container, queryByRole } = render(
-      <Toast {...REQUIRED_PROPS}>FooBar</Toast>
-    );
-    const progressBar = getProgressBar(container);
+    render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+    const progressBar = getProgressBar();
 
     progressBar.isRunning();
-    fireEvent.mouseOver(queryByRole('alert') as HTMLElement);
+    fireEvent.mouseOver(screen.getByRole('alert') as HTMLElement);
     progressBar.isPaused();
   });
 
   it('Can keep runing on mouse enter', () => {
-    const { container, queryByRole } = render(
+    render(
       <Toast {...REQUIRED_PROPS} pauseOnHover={false}>
         FooBar
       </Toast>
     );
-    const progressBar = getProgressBar(container);
+    const progressBar = getProgressBar();
 
     progressBar.isRunning();
-    fireEvent.mouseEnter(queryByRole('alert') as HTMLElement);
+    fireEvent.mouseEnter(screen.getByRole('alert'));
     progressBar.isRunning();
   });
 
   it('Should resume toast delay on mouse leave', () => {
-    const { container, queryByRole } = render(
-      <Toast {...REQUIRED_PROPS}>FooBar</Toast>
-    );
-    const progressBar = getProgressBar(container);
-    const notification = queryByRole('alert') as HTMLElement;
+    render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+    const progressBar = getProgressBar();
+    const notification = screen.getByRole('alert');
 
     progressBar.isRunning();
     fireEvent.mouseEnter(notification);
@@ -161,8 +165,8 @@ describe('Toast Component', () => {
   });
 
   it('Should pause Toast on window blur and resume Toast on focus', () => {
-    const { container } = render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
-    const progressBar = getProgressBar(container);
+    render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+    const progressBar = getProgressBar();
 
     progressBar.isRunning();
 
@@ -210,157 +214,69 @@ describe('Toast Component', () => {
   });
 
   it('Should render toast with controlled progress bar', () => {
-    const { container } = render(
+    render(
       <Toast {...REQUIRED_PROPS} progress={0.3}>
         FooBar
       </Toast>
     );
-    const progressBar = getProgressBar(container);
+    const progressBar = getProgressBar();
     progressBar.isControlled(0.3);
   });
 
   it('Should render toast with controlled progress bar even if autoClose is false', () => {
-    const { container } = render(
+    render(
       <Toast {...REQUIRED_PROPS} progress={0.3} autoClose={false}>
         FooBar
       </Toast>
     );
-    const progressBar = getProgressBar(container);
+    const progressBar = getProgressBar();
     progressBar.isControlled(0.3);
   });
 
   it('Should close the toast when progressBar animation end', () => {
     const closeToast = jest.fn();
-    const { container } = render(
+    render(
       <Toast {...REQUIRED_PROPS} closeToast={closeToast}>
         FooBar
       </Toast>
     );
 
-    fireEvent.animationEnd(
-      container.querySelector(cssClasses.progressBar) as HTMLElement
-    );
+    fireEvent.animationEnd(screen.getByRole('progressbar'));
 
     expect(closeToast).toHaveBeenCalled();
   });
 
   it('Should close the toast if progress value is >= 1 when the progress bar is controlled', () => {
     const closeToast = jest.fn();
-    const { container } = render(
+    render(
       <Toast {...REQUIRED_PROPS} closeToast={closeToast} progress={1}>
         FooBar
       </Toast>
     );
-    const progressBar = getProgressBar(container);
+    const progressBar = getProgressBar();
     progressBar.isControlled(1);
 
-    fireEvent.transitionEnd(
-      container.querySelector(cssClasses.progressBar) as HTMLElement
-    );
+    fireEvent.transitionEnd(screen.getByRole('progressbar'));
 
     expect(closeToast).toHaveBeenCalled();
   });
 
   it('Should add the role attribute to the toast body', () => {
-    const { container } = render(
+    render(
       <Toast {...REQUIRED_PROPS} role="status">
         FooBar
       </Toast>
     );
-    expect(container.querySelector('[role="status"]')).not.toBe(null);
-  });
-});
-
-describe('Drag event', () => {
-  it('Should handle drag start on mousedown', () => {
-    const mockClientRect = jest.fn();
-    Element.prototype.getBoundingClientRect = mockClientRect;
-    const { queryByRole } = render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
-    expect(mockClientRect).not.toHaveBeenCalled();
-
-    fireEvent.mouseDown(queryByRole('alert') as HTMLElement);
-    expect(mockClientRect).toHaveBeenCalled();
+    expect(screen.queryByRole('status')).not.toBe(null);
   });
 
-  it('Should handle drag start on touchstart', () => {
-    const mockClientRect = jest.fn();
-    Element.prototype.getBoundingClientRect = mockClientRect;
-    const { queryByRole } = render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
-    expect(mockClientRect).not.toHaveBeenCalled();
-    fireEvent.touchStart(queryByRole('alert') as HTMLElement);
-    expect(mockClientRect).toHaveBeenCalled();
-  });
-
-  it('Should pause toast duration on drag move', async () => {
-    const { container, queryByRole } = render(
-      <Toast {...REQUIRED_PROPS}>FooBar</Toast>
+  it('Should use toastId as node id', () => {
+    render(
+      <Toast {...REQUIRED_PROPS} toastId="foo">
+        FooBar
+      </Toast>
     );
-    const progressBar = getProgressBar(container);
-    const notification = queryByRole('alert') as HTMLElement;
-
-    progressBar.isRunning();
-    fireEvent.mouseDown(notification);
-    fireEvent.mouseMove(notification);
-    progressBar.isPaused();
-  });
-
-  it('Should prevent the timer from running on drag end if the mouse hover the toast', () => {
-    const { container, queryByRole } = render(
-      <Toast {...REQUIRED_PROPS}>FooBar</Toast>
-    );
-    const notification = queryByRole('alert') as HTMLElement;
-
-    // BoundingClientRect for Position top right
-    Element.prototype.getBoundingClientRect = () => {
-      return {
-        top: 20,
-        right: 846,
-        bottom: 84,
-        left: 534
-      } as DOMRect;
-    };
-    const progressBar = getProgressBar(container);
-
-    progressBar.isRunning();
-
-    fireEvent.mouseDown(notification);
-    // Cursor inside the toast
-    fireEvent.mouseMove(notification, {
-      clientX: 600,
-      clientY: 30
-    });
-    progressBar.isPaused();
-    fireEvent.mouseUp(notification);
-    progressBar.isPaused();
-  });
-
-  it('Should resume the timer on drag end if the mouse is not hovering the toast', () => {
-    const { container, queryByRole } = render(
-      <Toast {...REQUIRED_PROPS}>FooBar</Toast>
-    );
-    const notification = queryByRole('alert') as HTMLElement;
-    // BoundingClientRect for Position top right
-    Element.prototype.getBoundingClientRect = () => {
-      return {
-        top: 20,
-        right: 846,
-        bottom: 84,
-        left: 534
-      } as DOMRect;
-    };
-    const progressBar = getProgressBar(container);
-
-    progressBar.isRunning();
-
-    fireEvent.mouseDown(notification);
-    // Cursor inside the toast
-    fireEvent.mouseMove(notification, {
-      clientX: 400,
-      clientY: 30
-    });
-    progressBar.isPaused();
-    fireEvent.mouseUp(notification);
-    progressBar.isRunning();
+    expect(document.getElementById('foo')).not.toBe(null);
   });
 
   it('Should support style attribute', () => {
@@ -384,12 +300,96 @@ describe('Drag event', () => {
     expect(notification.style.fontWeight).toBe('bold');
   });
 
-  it('Should use toastId as node id', () => {
-    render(
-      <Toast {...REQUIRED_PROPS} toastId="foo">
-        FooBar
-      </Toast>
-    );
-    expect(document.getElementById('foo')).not.toBe(null);
+  describe('Drag event', () => {
+    // target parent node due to text selection disabling drag event
+    it('Should handle drag start on mousedown', () => {
+      const mockClientRect = jest.fn();
+      Element.prototype.getBoundingClientRect = mockClientRect;
+
+      render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+
+      expect(mockClientRect).not.toHaveBeenCalled();
+
+      fireEvent.mouseDown(screen.getByRole('alert').parentNode!);
+      expect(mockClientRect).toHaveBeenCalled();
+    });
+
+    it('Should handle drag start on touchstart', () => {
+      const mockClientRect = jest.fn();
+      Element.prototype.getBoundingClientRect = mockClientRect;
+
+      render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+
+      expect(mockClientRect).not.toHaveBeenCalled();
+
+      fireEvent.touchStart(screen.getByRole('alert').parentNode!);
+      expect(mockClientRect).toHaveBeenCalled();
+    });
+
+    it('Should pause toast duration on drag move', async () => {
+      render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+      const progressBar = getProgressBar();
+      const notification = screen.getByRole('alert').parentNode!;
+
+      progressBar.isRunning();
+      fireEvent.mouseDown(notification);
+      fireEvent.mouseMove(notification);
+      progressBar.isPaused();
+    });
+
+    it('Should prevent the timer from running on drag end if the mouse hover the toast', () => {
+      render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+      const notification = screen.getByRole('alert').parentNode!;
+
+      // BoundingClientRect for Position top right
+      Element.prototype.getBoundingClientRect = () => {
+        return {
+          top: 20,
+          right: 846,
+          bottom: 84,
+          left: 534
+        } as DOMRect;
+      };
+      const progressBar = getProgressBar();
+
+      progressBar.isRunning();
+
+      fireEvent.mouseDown(notification);
+      // Cursor inside the toast
+      fireEvent.mouseMove(notification, {
+        clientX: 600,
+        clientY: 30
+      });
+      progressBar.isPaused();
+      fireEvent.mouseUp(notification);
+      progressBar.isPaused();
+    });
+
+    it('Should resume the timer on drag end if the mouse is not hovering the toast', () => {
+      render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
+      const notification = screen.getByRole('alert').parentNode!;
+      // BoundingClientRect for Position top right
+      Element.prototype.getBoundingClientRect = () => {
+        return {
+          top: 20,
+          right: 846,
+          bottom: 84,
+          left: 534
+        } as DOMRect;
+      };
+      const progressBar = getProgressBar();
+
+      progressBar.isRunning();
+
+      fireEvent.mouseDown(notification);
+      // Cursor inside the toast
+      fireEvent.mouseMove(notification, {
+        clientX: 400,
+        clientY: 30
+      });
+      progressBar.isPaused();
+      fireEvent.mouseUp(notification);
+      progressBar.isRunning();
+    });
   });
 });

@@ -1,10 +1,10 @@
 import * as React from 'react';
 
-import {Header} from './Header';
-import {Radio} from './Radio';
-import {Checkbox} from './Checkbox';
-import {ContainerCode} from './ContainerCode';
-import {ToastCode} from './ToastCode';
+import { Header } from './Header';
+import { Radio } from './Radio';
+import { Checkbox } from './Checkbox';
+import { ContainerCode } from './ContainerCode';
+import { ToastCode } from './ToastCode';
 
 import {
   ToastContainer,
@@ -13,7 +13,8 @@ import {
   Slide,
   Flip,
   Zoom,
-  Id
+  Id,
+  cssTransition
 } from '../../src/index';
 import '../../scss/main.scss';
 
@@ -53,7 +54,7 @@ const flags = [
   {
     id: 'draggable',
     label: 'Allow to drag and close the toast'
-  },
+  }
 ];
 
 const transitions = {
@@ -63,10 +64,15 @@ const transitions = {
   flip: Flip
 };
 
+// const animateCss = cssTransition({
+//   enter: 'animate__animated animate__bounceIn',
+//   exit: 'animate__animated animate__bounceOut'
+// });
+
 class App extends React.Component {
   state = App.getDefaultState();
   toastId: Id;
-  
+
   static getDefaultState() {
     return {
       ...ToastContainer.defaultProps,
@@ -86,12 +92,16 @@ class App extends React.Component {
   clearAll = () => toast.dismiss();
 
   showToast = () => {
-    this.toastId = this.state.type === 'default'
-      ? toast('🦄 Wow so easy !', { progress: this.state.progress })
-      : toast[this.state.type]('🚀 Wow so easy !', { progress: this.state.progress });
-  }
+    this.toastId =
+      this.state.type === 'default'
+        ? toast('🦄 Wow so easy !', { progress: this.state.progress })
+        : toast[this.state.type]('🚀 Wow so easy !', {
+            progress: this.state.progress
+          });
+  };
 
-  updateToast = () => toast.update(this.toastId, { progress: this.state.progress })
+  updateToast = () =>
+    toast.update(this.toastId, { progress: this.state.progress });
 
   handleAutoCloseDelay = e =>
     this.setState({
@@ -101,7 +111,8 @@ class App extends React.Component {
   isDefaultProps() {
     return (
       this.state.position === 'top-right' &&
-      (this.state.autoClose === 5000 && !this.state.disableAutoClose) &&
+      this.state.autoClose === 5000 &&
+      !this.state.disableAutoClose &&
       !this.state.hideProgressBar &&
       !this.state.newestOnTop &&
       !this.state.rtl &&
@@ -114,7 +125,10 @@ class App extends React.Component {
 
   handleRadioOrSelect = e =>
     this.setState({
-      [e.target.name]: e.target.name === 'limit' ? parseInt(e.target.value,10) : e.target.value
+      [e.target.name]:
+        e.target.name === 'limit'
+          ? parseInt(e.target.value, 10)
+          : e.target.value
     });
 
   toggleCheckbox = e =>
@@ -273,4 +287,4 @@ class App extends React.Component {
   }
 }
 
-export {App};
+export { App };

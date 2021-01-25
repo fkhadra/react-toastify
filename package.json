@@ -1,5 +1,5 @@
 {
-  "version": "6.2.0",
+  "version": "7.0.0-rc3",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -31,10 +31,12 @@
     "sass-minimal": "sass scss/minimal.scss dist/ReactToastify.minimal.css",
     "postsass": "postcss dist/ReactToastify.css --use autoprefixer -m -o dist/ReactToastify.css",
     "postsass-minimal": "cssnano dist/ReactToastify.minimal.css dist/ReactToastify.minimal.css --no-zindex --no-reduceIdents",
-    "style": "npm run sass && npm run sass-minimal && cssnano dist/ReactToastify.css dist/ReactToastify.min.css --no-zindex --no-reduceIdents"
+    "style": "npm run sass && npm run sass-minimal && cssnano dist/ReactToastify.css dist/ReactToastify.min.css --no-zindex --no-reduceIdents && npm run style-injector",
+    "style-injector": "style2js --out-dir dist dist/ReactToastify.min.css"
   },
   "peerDependencies": {
-    "react": ">=16"
+    "react": ">=16",
+    "react-dom": ">=16"
   },
   "husky": {
     "hooks": {
@@ -48,7 +50,7 @@
   },
   "eslint": {
     "rules": {
-      "react-hooks/exhaustive-deps": "off"
+      "react-hooks/exhaustive-deps": "warn"
     }
   },
   "jest": {
@@ -77,23 +79,21 @@
     "@types/jest": "^24.9.0",
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.6",
-    "@types/react-transition-group": "^4.2.4",
     "coveralls": "^3.0.9",
     "cssnano": "^4.1.10",
     "cssnano-cli": "^1.0.5",
     "husky": "^4.2.0",
     "postcss": "^7.0.27",
     "postcss-cli": "^7.1.0",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "sass": "^1.26.0",
+    "style2js": "^1.0.0",
     "tsdx": "^0.12.3",
     "tslib": "^1.10.0",
     "typescript": "^3.7.5"
   },
   "dependencies": {
-    "clsx": "^1.1.1",
-    "prop-types": "^15.7.2",
-    "react-transition-group": "^4.4.1"
+    "clsx": "^1.1.1"
   }
 }

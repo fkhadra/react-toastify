@@ -1,49 +1,54 @@
 .#{$rt-namespace}__toast {
-    position: relative;
-    min-height: $rt-toast-min-height;
-    box-sizing: border-box;
-    margin-bottom: 1rem;
-    padding: 8px;
-    border-radius: 1px;
-    box-shadow: 0 1px 10px 0 rgba(0, 0, 0, .1), 0 2px 15px 0 rgba(0, 0, 0, .05);
-    display: flex;
-    justify-content: space-between;
-    max-height: $rt-toast-max-height;
-    overflow: hidden;
-    font-family: $rt-font-family;
-    cursor: pointer;
-    direction: ltr;
-    &--rtl {
-        direction: rtl;
-    }
-    &--dark {
-        background: $rt-color-dark;
-        color: $rt-text-color-dark;
-    }
-    &--default {
-        background: $rt-color-default;
-        color: $rt-text-color-default;
-    }
-    &--info {
-        background: $rt-color-info;
-    }
-    &--success {
-        background: $rt-color-success;
-    }
-    &--warning {
-        background: $rt-color-warning;
-    }
-    &--error {
-        background: $rt-color-error;
-    }
-    &-body {
-        margin: auto 0;
-        flex: 1 1 auto;
-    }
+  position: relative;
+  min-height: $rt-toast-min-height;
+  box-sizing: border-box;
+  margin-bottom: 1rem;
+  padding: 8px;
+  border-radius: 4px;
+  box-shadow: 0 1px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 15px 0 rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  max-height: $rt-toast-max-height;
+  overflow: hidden;
+  font-family: $rt-font-family;
+  cursor: pointer;
+  direction: ltr;
+  &--rtl {
+    direction: rtl;
+  }
+  &--dark {
+    background: $rt-color-dark;
+    color: $rt-text-color-dark;
+  }
+  &--default {
+    background: $rt-color-default;
+    color: $rt-text-color-default;
+  }
+  &--info {
+    background: $rt-color-info;
+  }
+  &--success {
+    background: $rt-color-success;
+  }
+  &--warning {
+    background: $rt-color-warning;
+  }
+  &--error {
+    background: $rt-color-error;
+  }
+  &-body {
+    margin: auto 0;
+    padding: 6px;
+  }
+}
+
+.#{$rt-namespace}--animate {
+  animation-fill-mode: both;
+  animation-duration: 0.7s;
 }
 
 @media #{$rt-mobile} {
-  .#{$rt-namespace}__toast{
-    margin-bottom: 0;  
+  .#{$rt-namespace}__toast {
+    margin-bottom: 0;
   }
 }

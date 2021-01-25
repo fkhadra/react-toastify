@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DEFAULT } from '../utils';
+import { Default } from '../utils';
 import { TypeOptions } from '../types';
 
 export interface CloseButtonProps {
@@ -15,7 +15,7 @@ export function CloseButton({
 }: CloseButtonProps) {
   return (
     <button
-      className={`${DEFAULT.CSS_NAMESPACE}__close-button ${DEFAULT.CSS_NAMESPACE}__close-button--${type}`}
+      className={`${Default.CSS_NAMESPACE}__close-button ${Default.CSS_NAMESPACE}__close-button--${type}`}
       type="button"
       onClick={e => {
         e.stopPropagation();

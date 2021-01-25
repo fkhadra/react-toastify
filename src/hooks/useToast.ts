@@ -9,12 +9,13 @@ import {
 import { isFn } from '../utils';
 import { ToastProps } from '../types';
 import { useKeeper } from './useKeeper';
+import { Direction } from '../utils/constant';
 
 interface Draggable {
   start: number;
   x: number;
   y: number;
-  deltaX: number;
+  delta: number;
   removalDistance: number;
   canCloseOnClick: boolean;
   canDrag: boolean;
@@ -43,7 +44,7 @@ export function useToast(props: ToastProps) {
     start: 0,
     x: 0,
     y: 0,
-    deltaX: 0,
+    delta: 0,
     removalDistance: 0,
     canCloseOnClick: true,
     canDrag: false,
@@ -81,13 +82,25 @@ export function useToast(props: ToastProps) {
   function onDragStart(
     e: React.MouseEvent<HTMLElement, MouseEvent> | React.TouchEvent<HTMLElement>
   ) {
-    const toast = toastRef.current!;
-    drag.canCloseOnClick = true;
-    drag.canDrag = true;
-    drag.boundingRect = toast.getBoundingClientRect();
-    toast.style.transition = '';
-    drag.start = drag.x = getX(e.nativeEvent as DragEvent);
-    drag.removalDistance = toast.offsetWidth * (props.draggablePercent / 100);
+    if (props.draggable) {
+      const toast = toastRef.current!;
+      drag.canCloseOnClick = true;
+      drag.canDrag = true;
+      drag.boundingRect = toast.getBoundingClientRect();
+      toast.style.transition = '';
+      drag.x = getX(e.nativeEvent as DragEvent);
+      drag.y = getY(e.nativeEvent as DragEvent);
+
+      if (props.draggableDirection === Direction.X) {
+        drag.start = drag.x;
+        drag.removalDistance =
+          toast.offsetWidth * (props.draggablePercent / 100);
+      } else {
+        drag.start = drag.y;
+        drag.removalDistance =
+          toast.offsetHeight * (props.draggablePercent / 100);
+      }
+    }
   }
 
   function onDragTransitionEnd() {
@@ -117,6 +130,8 @@ export function useToast(props: ToastProps) {
   }
 
   function bindFocusEvents() {
+    if (!document.hasFocus()) pauseToast();
+
     window.addEventListener('focus', playToast);
     window.addEventListener('blur', pauseToast);
   }
@@ -143,23 +158,27 @@ export function useToast(props: ToastProps) {
   }
 
   function onDragMove(e: MouseEvent | TouchEvent) {
-    e.preventDefault();
-
-    const toast = toastRef.current!;
-
     if (drag.canDrag) {
+      e.preventDefault();
+
+      const toast = toastRef.current!;
       if (isRunning) pauseToast();
 
       drag.x = getX(e as DragEvent);
-      drag.deltaX = drag.x - drag.start;
       drag.y = getY(e as DragEvent);
+
+      if (props.draggableDirection === Direction.X) {
+        drag.delta = drag.x - drag.start;
+      } else {
+        drag.delta = drag.y - drag.start;
+      }
 
       // prevent false positif during a toast click
       if (drag.start !== drag.x) drag.canCloseOnClick = false;
 
-      toast.style.transform = `translateX(${drag.deltaX}px)`;
+      toast.style.transform = `translate${props.draggableDirection}(${drag.delta}px)`;
       toast.style.opacity = `${1 -
-        Math.abs(drag.deltaX / drag.removalDistance)}`;
+        Math.abs(drag.delta / drag.removalDistance)}`;
     }
   }
 
@@ -168,14 +187,14 @@ export function useToast(props: ToastProps) {
     if (drag.canDrag) {
       drag.canDrag = false;
 
-      if (Math.abs(drag.deltaX) > drag.removalDistance) {
+      if (Math.abs(drag.delta) > drag.removalDistance) {
         setPreventExitTransition(true);
         props.closeToast();
         return;
       }
 
       toast.style.transition = 'transform 0.2s, opacity 0.2s';
-      toast.style.transform = 'translateX(0)';
+      toast.style.transform = `translate${props.draggableDirection}(0)`;
       toast.style.opacity = '1';
     }
   }
