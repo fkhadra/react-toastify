@@ -88,13 +88,15 @@ export function useToast(props: ToastProps) {
       drag.canDrag = true;
       drag.boundingRect = toast.getBoundingClientRect();
       toast.style.transition = '';
+      drag.x = getX(e.nativeEvent as DragEvent);
+      drag.y = getY(e.nativeEvent as DragEvent);
 
       if (props.draggableDirection === Direction.X) {
-        drag.start = drag.x = getX(e.nativeEvent as DragEvent);
+        drag.start = drag.x;
         drag.removalDistance =
           toast.offsetWidth * (props.draggablePercent / 100);
       } else {
-        drag.start = drag.y = getY(e.nativeEvent as DragEvent);
+        drag.start = drag.y;
         drag.removalDistance =
           toast.offsetHeight * (props.draggablePercent / 100);
       }
