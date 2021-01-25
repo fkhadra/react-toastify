@@ -1,5 +1,5 @@
 {
-  "version": "7.0.0-rc3",
+  "version": "7.0.0",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
