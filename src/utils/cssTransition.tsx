@@ -36,6 +36,11 @@ export interface CSSTransitionProps {
   collapseDuration?: number;
 }
 
+const enum AnimationStep {
+  Enter,
+  Exit
+}
+
 /**
  * Css animation that just work.
  * You could use animate.css for instance
@@ -67,6 +72,7 @@ export function cssTransition({
     const enterClassName = appendPosition ? `${enter}--${position}` : enter;
     const exitClassName = appendPosition ? `${exit}--${position}` : exit;
     const baseClassName = useRef<string>();
+    const animationStep = useRef(AnimationStep.Enter);
 
     useLayoutEffect(() => {
       onEnter();
@@ -76,32 +82,35 @@ export function cssTransition({
       if (!isIn) preventExitTransition ? onExited() : onExit();
     }, [isIn]);
 
-    const onEnter = () => {
+    function onEnter() {
       const node = nodeRef.current!;
       baseClassName.current = node.className;
       node.className += ` ${enterClassName}`;
       node.addEventListener('animationend', onEntered);
-    };
+    }
 
-    const onEntered = () => {
+    function onEntered() {
       const node = nodeRef.current!;
       node.removeEventListener('animationend', onEntered);
-      node.className = baseClassName.current!;
-    };
+      if (animationStep.current === AnimationStep.Enter) {
+        node.className = baseClassName.current!;
+      }
+    }
 
-    const onExit = () => {
+    function onExit() {
+      animationStep.current = AnimationStep.Exit;
       const node = nodeRef.current!;
 
       node.className += ` ${exitClassName}`;
       node.addEventListener('animationend', onExited);
-    };
+    }
 
-    const onExited = () => {
+    function onExited() {
       const node = nodeRef.current!;
 
       node.removeEventListener('animationend', onExited);
       collapse ? collapseToast(node, done, collapseDuration) : done();
-    };
+    }
 
     return <>{children}</>;
   };
