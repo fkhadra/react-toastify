@@ -22,7 +22,7 @@ export function parseClassName(v: any) {
   return isStr(v) || isFn(v) ? v : null;
 }
 
-export function hasToastId(toastId?: Id) {
+export function isToastIdValid(toastId?: Id) {
   return toastId === 0 || toastId;
 }
 

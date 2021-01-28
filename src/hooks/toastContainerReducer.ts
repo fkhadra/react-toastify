@@ -1,6 +1,6 @@
 import { Id } from '../types';
 
-import { hasToastId } from '../utils';
+import { isToastIdValid } from '../utils';
 
 export const enum ActionType {
   ADD,
@@ -16,7 +16,7 @@ export function reducer(state: State, action: Action) {
     case ActionType.ADD:
       return [...state, action.toastId].filter(id => id !== action.staleId);
     case ActionType.REMOVE:
-      return hasToastId(action.toastId)
+      return isToastIdValid(action.toastId)
         ? state.filter(id => id !== action.toastId)
         : [];
   }
