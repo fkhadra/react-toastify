@@ -12,7 +12,7 @@ import {
   isFn,
   isNum,
   isStr,
-  hasToastId,
+  isToastIdValid,
   getAutoCloseDelay,
   Direction,
   Default
@@ -106,36 +106,12 @@ export function useToastContainer(props: ToastContainerProps) {
   }
 
   function removeToast(toastId?: Id) {
-    const queueLen = queue.length;
-    toastCount = hasToastId(toastId)
-      ? toastCount - 1
-      : toastCount - instance.displayedToast;
-
-    if (toastCount < 0) toastCount = 0;
-
-    if (queueLen > 0) {
-      const freeSlot = hasToastId(toastId) ? 1 : instance.props.limit!;
-
-      if (queueLen === 1 || freeSlot === 1) {
-        instance.displayedToast++;
-        dequeueToast();
-      } else {
-        const toDequeue = freeSlot > queueLen ? queueLen : freeSlot;
-        instance.displayedToast = toDequeue;
-
-        for (let i = 0; i < toDequeue; i++) dequeueToast();
-      }
-    }
     dispatch({ type: ActionType.REMOVE, toastId });
   }
 
   function dequeueToast() {
     const { toastContent, toastProps, staleId } = queue.shift() as QueuedToast;
-
-    // ensure that exit transition has been completed, hence the timeout
-    setTimeout(() => {
-      appendToast(toastContent, toastProps, staleId);
-    }, 500);
+    appendToast(toastContent, toastProps, staleId);
   }
 
   /**
@@ -291,7 +267,28 @@ export function useToastContainer(props: ToastContainerProps) {
 
   function removeFromCollection(toastId: Id) {
     delete collection[toastId];
-    forceUpdate();
+    const queueLen = queue.length;
+    toastCount = isToastIdValid(toastId)
+      ? toastCount - 1
+      : toastCount - instance.displayedToast;
+
+    if (toastCount < 0) toastCount = 0;
+
+    if (queueLen > 0) {
+      const freeSlot = isToastIdValid(toastId) ? 1 : instance.props.limit!;
+
+      if (queueLen === 1 || freeSlot === 1) {
+        instance.displayedToast++;
+        dequeueToast();
+      } else {
+        const toDequeue = freeSlot > queueLen ? queueLen : freeSlot;
+        instance.displayedToast = toDequeue;
+
+        for (let i = 0; i < toDequeue; i++) dequeueToast();
+      }
+    } else {
+      forceUpdate();
+    }
   }
 
   function getToastToRender<T>(
