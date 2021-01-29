@@ -16,12 +16,12 @@ export interface ProgressBarProps {
   isRunning: boolean;
 
   /**
-   * Func to close the current toast
+   * Function to close the current toast
    */
   closeToast: () => void;
 
   /**
-   * Optional type : info, success ...
+   * Optional type : info, success, warning, error, default, dark.
    */
   type: TypeOptions;
 
@@ -31,12 +31,12 @@ export interface ProgressBarProps {
   hide?: boolean;
 
   /**
-   * Optionnal className
+   * Optional className
    */
   className?: ToastClassName;
 
   /**
-   * Optionnal inline style
+   * Optional inline style
    */
   style?: React.CSSProperties;
 
