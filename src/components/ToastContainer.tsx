@@ -8,7 +8,7 @@ import { POSITION, Direction, Default, parseClassName, isFn } from '../utils';
 import { useToastContainer } from '../hooks';
 import { ToastContainerProps, ToastPosition } from '../types';
 
-export const ToastContainer: React.FC<ToastContainerProps> = props => {
+const ToastContainer: React.FC<ToastContainerProps> = props => {
   const { getToastToRender, containerRef, isToastActive } = useToastContainer(
     props
   );
@@ -86,3 +86,5 @@ ToastContainer.defaultProps = {
   draggableDirection: Direction.X,
   role: 'alert'
 };
+
+export default ToastContainer;
