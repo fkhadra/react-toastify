@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { render, fireEvent, act, screen } from '@testing-library/react';
 
-import { ToastContainer } from '../../src/components/ToastContainer';
+import ToastContainer from '../../src/components/ToastContainer';
 import { toast, eventManager, Event } from '../../src/core';
 import { ToastOptions } from '../../src/types';
 
