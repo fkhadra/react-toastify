@@ -50,5 +50,6 @@
 @media #{$rt-mobile} {
   .#{$rt-namespace}__toast {
     margin-bottom: 0;
+    border-radius: 0;
   }
 }
