@@ -119,6 +119,7 @@ export function ProgressBar({
   return (
     <div
       role="progressbar"
+      aria-hidden={hide ? 'true' : 'false'}
       className={classNames}
       style={style}
       {...animationEvent}
