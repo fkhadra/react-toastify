@@ -94,12 +94,8 @@ export function useToastContainer(props: ToastContainerProps) {
   }
 
   function clearWaitingQueue({ containerId }: ClearWaitingQueueParams) {
-    const { limit, enableMultiContainer } = instance.props;
-    if (
-      limit &&
-      (!containerId ||
-        (instance.containerId === containerId && enableMultiContainer))
-    ) {
+    const { limit } = instance.props;
+    if (limit && (!containerId || instance.containerId === containerId)) {
       toastCount -= queue.length;
       queue = [];
     }

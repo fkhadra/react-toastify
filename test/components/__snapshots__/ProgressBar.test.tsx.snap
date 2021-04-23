@@ -3,6 +3,8 @@
 exports[`ProgressBar Should be able to hide the progress bar 1`] = `
 <div>
   <div
+    aria-hidden="true"
+    aria-label="notification timer"
     class="Toastify__progress-bar Toastify__progress-bar--animated Toastify__progress-bar--default"
     role="progressbar"
     style="animation-duration: 5000ms; animation-play-state: running; opacity: 0;"
@@ -13,6 +15,8 @@ exports[`ProgressBar Should be able to hide the progress bar 1`] = `
 exports[`ProgressBar Should be able to pause animation 1`] = `
 <div>
   <div
+    aria-hidden="false"
+    aria-label="notification timer"
     class="Toastify__progress-bar Toastify__progress-bar--animated Toastify__progress-bar--default"
     role="progressbar"
     style="animation-duration: 5000ms; animation-play-state: paused; opacity: 1;"
@@ -23,6 +27,8 @@ exports[`ProgressBar Should be able to pause animation 1`] = `
 exports[`ProgressBar Should render controlled progress bar 1`] = `
 <div>
   <div
+    aria-hidden="false"
+    aria-label="notification timer"
     class="Toastify__progress-bar Toastify__progress-bar--controlled Toastify__progress-bar--default"
     role="progressbar"
     style="animation-duration: 5000ms; animation-play-state: running; opacity: 1; transform: scaleX(0.7);"

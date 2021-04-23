@@ -38,6 +38,7 @@
   }
   &-body {
     margin: auto 0;
+    flex: 1 1 auto;
     padding: 6px;
   }
 }
@@ -50,5 +51,6 @@
 @media #{$rt-mobile} {
   .#{$rt-namespace}__toast {
     margin-bottom: 0;
+    border-radius: 0;
   }
 }
