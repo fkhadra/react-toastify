@@ -120,6 +120,7 @@ export function ProgressBar({
     <div
       role="progressbar"
       aria-hidden={hide ? 'true' : 'false'}
+      aria-label="notification timer"
       className={classNames}
       style={style}
       {...animationEvent}
