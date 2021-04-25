@@ -11,7 +11,7 @@ Please note we have a code of conduct, please follow it in all your interactions
 - If adding a new feature, write the corresponding test
 - Ensure that nothing get broke. You can use the playground for that
 - If applicable, update the [documentation](https://github.com/fkhadra/react-toastify-doc)
-- Use prettier before commiting 😭
+- Use prettier before committing 😭
 - When solving a bug, please provide the steps to reproduce it(codesandbox is our best friend for that)
 - Tchill 👌
 
