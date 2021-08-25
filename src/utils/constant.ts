@@ -8,7 +8,7 @@ type KeyOfPosition =
   | 'BOTTOM_RIGHT'
   | 'BOTTOM_CENTER';
 
-type KeyOfType = 'INFO' | 'SUCCESS' | 'WARNING' | 'ERROR' | 'DEFAULT' | 'DARK';
+type KeyOfType = 'INFO' | 'SUCCESS' | 'WARNING' | 'ERROR' | 'DEFAULT';
 
 export const POSITION: { [key in KeyOfPosition]: ToastPosition } = {
   TOP_LEFT: 'top-left',
@@ -24,8 +24,7 @@ export const TYPE: { [key in KeyOfType]: TypeOptions } = {
   SUCCESS: 'success',
   WARNING: 'warning',
   ERROR: 'error',
-  DEFAULT: 'default',
-  DARK: 'dark'
+  DEFAULT: 'default'
 };
 
 export const enum Default {
