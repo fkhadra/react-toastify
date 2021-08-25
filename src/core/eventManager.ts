@@ -34,7 +34,7 @@ type Callback =
   | OnDidMountCallback
   | OnWillUnmountCallback
   | OnChangeCallback;
-type TimeoutId = ReturnType<typeof window.setTimeout>;
+type TimeoutId = ReturnType<typeof setTimeout>;
 
 export interface EventManager {
   list: Map<Event, Callback[]>;

@@ -71,7 +71,7 @@
   "homepage": "https://github.com/fkhadra/react-toastify#readme",
   "module": "dist/react-toastify.esm.js",
   "devDependencies": {
-    "@testing-library/react": "^9.4.0",
+    "@testing-library/react": "^12.0.0",
     "@types/jest": "^24.9.0",
     "@types/react": "^17.0.19",
     "@types/react-dom": "^17.0.9",
