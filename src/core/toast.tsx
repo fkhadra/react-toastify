@@ -129,11 +129,15 @@ interface ToastPromiseParams {
 
 function handlePromise<T>(
   promise: Promise<T>,
-  { pending, error, success }: ToastPromiseParams
+  { pending, error, success }: ToastPromiseParams,
+  options?: ToastOptions
 ) {
   const id = isStr(pending)
-    ? toast.loading(pending)
-    : toast.loading(pending.render, { ...(pending as ToastOptions) });
+    ? toast.loading(pending, options)
+    : toast.loading(pending.render, {
+        ...options,
+        ...(pending as ToastOptions)
+      });
   const resetParams = {
     isLoading: null,
     autoClose: null,
@@ -142,7 +146,7 @@ function handlePromise<T>(
     draggable: null
   };
 
-  const handlePromise = (
+  const resolver = (
     type: TypeOptions,
     input: string | UpdateOptions,
     result: T
@@ -151,14 +155,15 @@ function handlePromise<T>(
     toast.update(id, {
       type,
       ...resetParams,
+      ...options,
       ...params,
       data: result
     });
     return result;
   };
   promise
-    .then(result => handlePromise('success', success, result))
-    .catch(err => handlePromise('error', error, err));
+    .then(result => resolver('success', success, result))
+    .catch(err => resolver('error', error, err));
 
   return promise;
 }
