@@ -2,8 +2,9 @@ import * as React from 'react';
 import cx from 'clsx';
 
 import { ProgressBar } from './ProgressBar';
+import { Icons } from './Icons';
 import { ToastProps } from '../types';
-import { Default, isFn } from '../utils';
+import { Default, isFn, isStr } from '../utils';
 import { useToast } from '../hooks';
 
 export const Toast: React.FC<ToastProps> = props => {
@@ -35,10 +36,14 @@ export const Toast: React.FC<ToastProps> = props => {
     rtl,
     toastId,
     deleteToast,
-    isIn
+    isIn,
+    isLoading,
+    icon,
+    theme
   } = props;
   const defaultClassName = cx(
     `${Default.CSS_NAMESPACE}__toast`,
+    `${Default.CSS_NAMESPACE}__toast-theme--${theme}`,
     `${Default.CSS_NAMESPACE}__toast--${type}`,
     {
       [`${Default.CSS_NAMESPACE}__toast--rtl`]: rtl
@@ -53,11 +58,26 @@ export const Toast: React.FC<ToastProps> = props => {
       })
     : cx(defaultClassName, className);
   const isProgressControlled = !!progress;
+  const maybeIcon = Icons[type as keyof typeof Icons];
+  const iconProps = { theme, type };
+  let Icon: React.ReactNode = maybeIcon && maybeIcon(iconProps);
+
+  if (icon === false) {
+    Icon = void 0;
+  } else if (isFn(icon)) {
+    Icon = icon(iconProps);
+  } else if (React.isValidElement(icon)) {
+    Icon = React.cloneElement(icon, iconProps);
+  } else if (isStr(icon)) {
+    Icon = icon;
+  } else if (isLoading) {
+    Icon = Icons.spinner();
+  }
 
   function renderCloseButton(closeButton: any) {
     if (!closeButton) return;
 
-    const props = { closeToast, type };
+    const props = { closeToast, type, theme };
 
     if (isFn(closeButton)) return closeButton(props);
 
@@ -90,7 +110,16 @@ export const Toast: React.FC<ToastProps> = props => {
           }
           style={bodyStyle}
         >
-          {children}
+          {Icon && (
+            <div
+              className={cx(`${Default.CSS_NAMESPACE}__toast-icon`, {
+                [`${Default.CSS_NAMESPACE}--animate-icon ${Default.CSS_NAMESPACE}__zoom-enter`]: !isLoading
+              })}
+            >
+              {Icon}
+            </div>
+          )}
+          <div>{children}</div>
         </div>
         {renderCloseButton(closeButton)}
         {(autoClose || isProgressControlled) && (
@@ -99,6 +128,7 @@ export const Toast: React.FC<ToastProps> = props => {
               ? { key: `pb-${updateId}` }
               : {})}
             rtl={rtl}
+            theme={theme}
             delay={autoClose as number}
             isRunning={isRunning}
             isIn={isIn}
