@@ -103,7 +103,7 @@ export const eventManager: EventManager = {
   emit(event: Event, ...args: any[]) {
     this.list.has(event) &&
       this.list.get(event)!.forEach((callback: Callback) => {
-        const timer = setTimeout(() => {
+        const timer: TimeoutId = setTimeout(() => {
           // @ts-ignore
           callback(...args);
         }, 0);

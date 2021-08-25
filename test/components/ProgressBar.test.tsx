@@ -2,7 +2,7 @@ import * as React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 
 import { ProgressBar } from '../../src/components';
-import { Theme } from 'types';
+import { Theme } from '../../src/types';
 
 const getProps = () => ({
   delay: 5000,

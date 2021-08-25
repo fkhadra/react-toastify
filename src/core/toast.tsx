@@ -14,7 +14,7 @@ import {
   NotValidatedToastProps,
   TypeOptions
 } from '../types';
-import { ContainerInstance } from 'hooks';
+import { ContainerInstance } from '../hooks';
 import { ToastContainer } from '../components';
 
 interface EnqueuedToast {
