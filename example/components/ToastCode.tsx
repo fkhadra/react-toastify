@@ -16,7 +16,7 @@ function getType(type: string) {
   }
 }
 
-interface ToastCodeProps {
+export interface ToastCodeProps {
   position: string;
   disableAutoClose: boolean;
   autoClose: boolean | number;

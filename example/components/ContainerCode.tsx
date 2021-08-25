@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { ToastContainerProps } from '../../react-toastify/src';
+import { ToastContainerProps } from '../../src';
 
-function getProp<L , R>(prop: L, value: R) {
+function getProp<L, R>(prop: L, value: R) {
   return value ? (
     <div>
       <span className="code__props">{prop}</span>
@@ -14,7 +14,7 @@ function getProp<L , R>(prop: L, value: R) {
   );
 }
 
-interface ContainerCodeProps extends Partial<ToastContainerProps> {
+export interface ContainerCodeProps extends Partial<ToastContainerProps> {
   isDefaultProps: boolean;
   disableAutoClose: boolean;
 }
@@ -62,7 +62,7 @@ export const ContainerCode: React.FC<ContainerCodeProps> = ({
           <div>{`{/* Same as */}`}</div>
           <span>{`<`}</span>
           <span className="code__component">ToastContainer</span>
-          <span> /></span>
+          <span>{'/>'}</span>
         </div>
       )}
     </div>

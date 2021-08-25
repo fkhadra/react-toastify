@@ -1,194 +1,202 @@
 @import url(https://fonts.googleapis.com/css?family=Titillium+Web);
 body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Titillium Web', sans-serif;
-    min-height: 100vh;
-    background: linear-gradient(110deg, #1d4350, #a43931);
-    color: #fff;
+  margin: 0;
+  padding: 0;
+  font-family: 'Titillium Web', sans-serif;
+  min-height: 100vh;
+  background: linear-gradient(110deg, #1d4350, #a43931);
+  color: #fff;
 }
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 main {
-    display: grid;
-    grid-template-rows: auto 1fr;
-    grid-gap: 20px;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-gap: 20px;
 }
 
 header {
-    background: #222;
-    text-align: center;
-    padding: 30px 0;
+  background: #222;
+  text-align: center;
+  padding: 30px 0;
 }
 
 h3 {
-    color: #fff;
+  color: #fff;
 }
 
 header h1 {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 ul {
-    list-style: none;
-    padding: 0;
+  list-style: none;
+  padding: 0;
 }
 
-input[type="number"] {
-    padding: 8px;
-    background-color: transparent;
-    box-shadow: none;
-    border: 1px solid;
-    margin: 0 5px;
-    border-radius: 5px;
-    border-color: #ac557b;
-    color: #fff;
-    width: 100px;
+input[type='number'] {
+  padding: 8px;
+  background-color: transparent;
+  box-shadow: none;
+  border: 1px solid;
+  margin: 0 5px;
+  border-radius: 5px;
+  border-color: #ac557b;
+  color: #fff;
+  width: 100px;
 }
 
-input[type="radio"] {
-    margin-right: 8px;
+input[type='radio'] {
+  margin-right: 8px;
 }
 
 select {
-    padding: 8px;
-    padding: 8px;
-    background-color: transparent;
-    box-shadow: none;
-    border: 1px solid;
-    border-top-color: currentcolor;
-    border-right-color: currentcolor;
-    border-bottom-color: currentcolor;
-    border-left-color: currentcolor;
-    border-top-color: currentcolor;
-    border-right-color: currentcolor;
-    border-bottom-color: currentcolor;
-    border-left-color: currentcolor;
-    margin: 0 5px;
-    border-radius: 5px;
-    border-color: #ac557b;
-    color: #fff;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-}
-
-label{
-    margin-right: 10px;
+  padding: 8px;
+  padding: 8px;
+  background-color: transparent;
+  box-shadow: none;
+  border: 1px solid;
+  border-top-color: currentcolor;
+  border-right-color: currentcolor;
+  border-bottom-color: currentcolor;
+  border-left-color: currentcolor;
+  border-top-color: currentcolor;
+  border-right-color: currentcolor;
+  border-bottom-color: currentcolor;
+  border-left-color: currentcolor;
+  margin: 0 5px;
+  border-radius: 5px;
+  border-color: #ac557b;
+  color: #fff;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
 .container {
-    max-width: 960px;
-    margin: auto;
-    width: 100%;
-    background: rgba(255, 255, 255, 0.1);
-    padding: 20px;
-    border-radius: 10px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+  max-width: 1080px;
+  margin: auto;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
 }
 
 .container p {
-    grid-column: 1 / -1;
-    font-size: 13px;
-    font-style: italic;
-    background: #222;
-    padding: 5px;
-    border-left: 3px solid #a9547e;
+  grid-column: 1 / -1;
+  font-size: 13px;
+  font-style: italic;
+  background: #222;
+  padding: 5px;
+  border-left: 3px solid #a9547e;
 }
 
 .container__options {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .container__options div:last-child {
-    grid-column: 1 / -1;
+  grid-column: 1 / -1;
 }
 
 .container__actions {
-    display: flex;
+  display: flex;
+}
+
+.cta__wrapper {
+    grid-column: span 2;
 }
 
 .btn {
-    color: #fff;
-    text-decoration: none;
-    padding: 8px 16px;
-    margin: 0 15px 0 0;
-    background: linear-gradient(100deg, #e96443, #904e95);
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12), 0 3px 1px -2px rgba(0, 0, 0, .2);
-    border: none;
-    text-transform: capitalize;
-    cursor: pointer;
-    transition: transform 0.3s;
-    min-width: 120px;
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 16px;
+  margin: 0 15px 0 0;
+  background: linear-gradient(100deg, #e96443, #904e95);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12),
+    0 3px 1px -2px rgba(0, 0, 0, 0.2);
+  border: none;
+  text-transform: capitalize;
+  cursor: pointer;
+  transition: transform 0.3s;
+  min-width: 120px;
 }
 
 .btn:hover {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
 
 .bg-red {
-    background: #d13c3c;
+  background: #d13c3c;
 }
 
 .bg-blue {
-    background: #3b4149;
+  background: #3b4149;
 }
 
 .code {
-    font-family: "Source Code Pro", Menlo, Monaco, Courier, monospace;
-    font-size: 12px;
-    line-height: 1.4;
-    font-style: normal;
-    border-left: 3px solid #a9547e;
-    padding-left: 20px;
-    background: #222;
+  font-family: 'Source Code Pro', Menlo, Monaco, Courier, monospace;
+  font-size: 12px;
+  line-height: 1.4;
+  font-style: normal;
+  border-left: 3px solid #a9547e;
+  padding-left: 20px;
+  background: #222;
 }
 
 .code__component {
-    color: #66d9ef;
+  color: #66d9ef;
 }
 
 .code__props {
-    color: #a6e22e;
+  color: #a6e22e;
 }
 
 .code div {
-    margin-left: 20px;
+  margin-left: 20px;
 }
 
 .code div:first-child,
 .code div:last-child {
-    margin: 0;
+  margin: 0;
 }
 
 .github-corner:hover .octo-arm {
-    animation: octocat-wave 560ms ease-in-out
+  animation: octocat-wave 560ms ease-in-out;
+}
+
+.options_wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: 18px;
 }
 
 @keyframes octocat-wave {
-    0%,
-    100% {
-        transform: rotate(0)
-    }
-    20%,
-    60% {
-        transform: rotate(-25deg)
-    }
-    40%,
-    80% {
-        transform: rotate(10deg)
-    }
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  20%,
+  60% {
+    transform: rotate(-25deg);
+  }
+  40%,
+  80% {
+    transform: rotate(10deg);
+  }
 }
 
-@media (max-width:500px) {
-    .github-corner:hover .octo-arm {
-        animation: none
-    }
-    .github-corner .octo-arm {
-        animation: octocat-wave 560ms ease-in-out
-    }
+@media (max-width: 500px) {
+  .github-corner:hover .octo-arm {
+    animation: none;
+  }
+  .github-corner .octo-arm {
+    animation: octocat-wave 560ms ease-in-out;
+  }
 }
