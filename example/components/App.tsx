@@ -1,68 +1,25 @@
+/**
+ * The playground could use some love 💖. To the brave soul reading this
+ * message, any help would be appreciated 🙏
+ * 
+ * The code is full of bad assertion 😆
+ */
+
 import * as React from 'react';
 
 import { Header } from './Header';
 import { Radio } from './Radio';
 import { Checkbox } from './Checkbox';
-import { ContainerCode } from './ContainerCode';
-import { ToastCode } from './ToastCode';
+import { ContainerCode, ContainerCodeProps } from './ContainerCode';
+import { ToastCode, ToastCodeProps } from './ToastCode';
+import { flags, transitions } from './constants';
 
-import {
-  ToastContainer,
-  toast,
-  Bounce,
-  Slide,
-  Flip,
-  Zoom,
-  Id,
-  cssTransition
-} from '../../src/index';
+import { ToastContainer, toast, Id } from '../../src/index';
 import '../../scss/main.scss';
 
 // Attach to window. Can be useful to debug
 // @ts-ignore
 window.toast = toast;
-
-const flags = [
-  {
-    id: 'disableAutoClose',
-    label: 'Disable auto-close'
-  },
-  {
-    id: 'hideProgressBar',
-    label: 'Hide progress bar(less fanciness!)'
-  },
-  {
-    id: 'newestOnTop',
-    label: 'Newest on top*'
-  },
-  {
-    id: 'closeOnClick',
-    label: 'Close on click'
-  },
-  {
-    id: 'pauseOnHover',
-    label: 'Pause delay on hover'
-  },
-  {
-    id: 'pauseOnFocusLoss',
-    label: 'Pause toast when the window loses focus'
-  },
-  {
-    id: 'rtl',
-    label: 'Right to left layout*'
-  },
-  {
-    id: 'draggable',
-    label: 'Allow to drag and close the toast'
-  }
-];
-
-const transitions = {
-  bounce: Bounce,
-  slide: Slide,
-  zoom: Zoom,
-  flip: Flip
-};
 
 // const animateCss = cssTransition({
 //   enter: 'animate__animated animate__bounceIn',
@@ -72,6 +29,7 @@ const transitions = {
 class App extends React.Component {
   state = App.getDefaultState();
   toastId: Id;
+  resolvePromise = true;
 
   static getDefaultState() {
     return {
@@ -80,7 +38,8 @@ class App extends React.Component {
       type: 'default',
       progress: '',
       disableAutoClose: false,
-      limit: 0
+      limit: 0,
+      theme: 'light'
     };
   }
 
@@ -98,6 +57,22 @@ class App extends React.Component {
         : toast[this.state.type]('🚀 Wow so easy !', {
             progress: this.state.progress
           });
+  };
+
+  firePromise = () => {
+    toast.promise(
+      new Promise((resolve, reject) => {
+        setTimeout(() => {
+          this.resolvePromise ? resolve(null) : reject(null);
+          this.resolvePromise = !this.resolvePromise;
+        }, 3000);
+      }),
+      {
+        pending: 'Promise is pending',
+        success: 'Promise resolved 👌',
+        error: 'Promise rejected 🤯'
+      }
+    );
   };
 
   updateToast = () =>
@@ -119,7 +94,8 @@ class App extends React.Component {
       this.state.pauseOnFocusLoss &&
       this.state.pauseOnHover &&
       this.state.closeOnClick &&
-      this.state.draggable
+      this.state.draggable &&
+      this.state.theme === 'light'
     );
   }
 
@@ -167,7 +143,7 @@ class App extends React.Component {
                 <Radio
                   options={toast.POSITION}
                   name="position"
-                  checked={this.state.position}
+                  checked={this.state.position as string}
                   onChange={this.handleRadioOrSelect}
                 />
               </ul>
@@ -185,14 +161,14 @@ class App extends React.Component {
             </div>
             <div>
               <h3>Options</h3>
-              <div>
+              <div className="options_wrapper">
                 <label htmlFor="autoClose">
                   Delay
                   <input
                     type="number"
                     name="autoClose"
                     id="autoClose"
-                    value={this.state.autoClose}
+                    value={(this.state.autoClose as unknown) as string}
                     onChange={this.handleAutoCloseDelay}
                     disabled={this.state.disableAutoClose}
                   />
@@ -213,7 +189,21 @@ class App extends React.Component {
                     ))}
                   </select>
                 </label>
-                <br />
+                <label htmlFor="theme">
+                  Theme
+                  <select
+                    name="theme"
+                    id="transthemeition"
+                    onChange={this.handleRadioOrSelect}
+                    value={this.state.theme}
+                  >
+                    {['light', 'dark', 'colored'].map(k => (
+                      <option key={k} value={k}>
+                        {k}
+                      </option>
+                    ))}
+                  </select>
+                </label>
                 <label htmlFor="progress">
                   Progress
                   <input
@@ -236,46 +226,53 @@ class App extends React.Component {
                 </label>
               </div>
               <ul>{this.renderFlags()}</ul>
-              <ul className="container__actions">
-                <li>
-                  <button className="btn" onClick={this.showToast}>
-                    <span role="img" aria-label="show alert">
-                      🚀
-                    </span>{' '}
-                    Show Toast
-                  </button>
-                </li>
-                <li>
-                  <button className="btn" onClick={this.updateToast}>
-                    Update
-                  </button>
-                </li>
-                <li>
-                  <button className="btn bg-red" onClick={this.clearAll}>
-                    <span role="img" aria-label="clear all">
-                      💩
-                    </span>{' '}
-                    Clear All
-                  </button>
-                </li>
-                <li>
-                  <button className="btn bg-blue" onClick={this.handleReset}>
-                    <span role="img" aria-label="reset options">
-                      🔄
-                    </span>{' '}
-                    Reset
-                  </button>
-                </li>
-              </ul>
             </div>
           </section>
           <section>
             <ContainerCode
-              {...this.state}
-              isDefaultProps={this.isDefaultProps()}
+              {...((this.state as unknown) as ContainerCodeProps)}
+              isDefaultProps={this.isDefaultProps() as boolean}
             />
-            <ToastCode {...this.state} />
+            <ToastCode {...((this.state as unknown) as ToastCodeProps)} />
           </section>
+          <div className="cta__wrapper">
+            <ul className="container__actions">
+              <li>
+                <button className="btn" onClick={this.showToast}>
+                  <span role="img" aria-label="show alert">
+                    🚀
+                  </span>{' '}
+                  Show Toast
+                </button>
+              </li>
+              <li>
+                <button className="btn" onClick={this.firePromise}>
+                  Promise
+                </button>
+              </li>
+              <li>
+                <button className="btn" onClick={this.updateToast}>
+                  Update
+                </button>
+              </li>
+              <li>
+                <button className="btn bg-red" onClick={this.clearAll}>
+                  <span role="img" aria-label="clear all">
+                    💩
+                  </span>{' '}
+                  Clear All
+                </button>
+              </li>
+              <li>
+                <button className="btn bg-blue" onClick={this.handleReset}>
+                  <span role="img" aria-label="reset options">
+                    🔄
+                  </span>{' '}
+                  Reset
+                </button>
+              </li>
+            </ul>
+          </div>
         </div>
         <ToastContainer
           {...this.state}

@@ -1,0 +1,58 @@
+.#{$rt-namespace}__toast {
+  &-theme--dark {
+    background: var(--toastify-color-dark);
+    color: var(--toastify-text-color-dark);
+  }
+  &-theme--light {
+    background: var(--toastify-color-light);
+    color: var(--toastify-text-color-light);
+  }
+  &-theme--colored#{&}--default {
+    background: var(--toastify-color-light);
+    color: var(--toastify-text-color-light);
+  }
+  &-theme--colored#{&}--info {
+    color: var(--toastify-text-color-info);
+    background: var(--toastify-color-info);
+  }
+  &-theme--colored#{&}--success {
+    color: var(--toastify-text-color-success);
+    background: var(--toastify-color-success);
+  }
+  &-theme--colored#{&}--warning {
+    color: var(--toastify-text-color-warning);
+    background: var(--toastify-color-warning);
+  }
+  &-theme--colored#{&}--error {
+    color: var(--toastify-text-color-error);
+    background: var(--toastify-color-error);
+  }
+}
+
+.#{$rt-namespace}__progress-bar {
+  &-theme--light {
+    background: var(--toastify-color-progress-light);
+  }
+  &-theme--dark {
+    background: var(--toastify-color-progress-dark);
+  }
+  &--info {
+    background: var(--toastify-color-progress-info);
+  }
+  &--success {
+    background: var(--toastify-color-progress-success);
+  }
+  &--warning {
+    background: var(--toastify-color-progress-warning);
+  }
+  &--error {
+    background: var(--toastify-color-progress-error);
+  }
+  &-theme--colored#{&}--info,
+  &-theme--colored#{&}--success,
+  &-theme--colored#{&}--warning,
+  &-theme--colored#{&}--error {
+    background: var(--toastify-color-transparent);
+  }
+}
+

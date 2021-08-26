@@ -1,6 +1,6 @@
 .#{$rt-namespace}__toast {
   position: relative;
-  min-height: $rt-toast-min-height;
+  min-height: var(--toastify-toast-min-height);
   box-sizing: border-box;
   margin-bottom: 1rem;
   padding: 8px;
@@ -8,44 +8,37 @@
   box-shadow: 0 1px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 15px 0 rgba(0, 0, 0, 0.05);
   display: flex;
   justify-content: space-between;
-  max-height: $rt-toast-max-height;
+  max-height: var(--toastify-toast-max-height);
   overflow: hidden;
-  font-family: $rt-font-family;
+  font-family: var(--toastify-font-family);
   cursor: pointer;
   direction: ltr;
   &--rtl {
     direction: rtl;
   }
-  &--dark {
-    background: $rt-color-dark;
-    color: $rt-text-color-dark;
-  }
-  &--default {
-    background: $rt-color-default;
-    color: $rt-text-color-default;
-  }
-  &--info {
-    background: $rt-color-info;
-  }
-  &--success {
-    background: $rt-color-success;
-  }
-  &--warning {
-    background: $rt-color-warning;
-  }
-  &--error {
-    background: $rt-color-error;
-  }
   &-body {
     margin: auto 0;
     flex: 1 1 auto;
     padding: 6px;
+    display: flex;
+    align-items: center;
+  }
+  &-icon {
+    margin-inline-end: 10px;
+    width: 20px;
+    flex-shrink: 0;
+    display: flex;
   }
 }
 
 .#{$rt-namespace}--animate {
   animation-fill-mode: both;
   animation-duration: 0.7s;
+}
+
+.#{$rt-namespace}--animate-icon {
+  animation-fill-mode: both;
+  animation-duration: 0.3s;
 }
 
 @media #{$rt-mobile} {

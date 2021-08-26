@@ -1,8 +1,8 @@
 @keyframes #{$rt-namespace}__trackProgress {
-  0%{
+  0% {
     transform: scaleX(1);
   }
-  100%{
+  100% {
     transform: scaleX(0);
   }
 }
@@ -13,9 +13,8 @@
   left: 0;
   width: 100%;
   height: 5px;
-  z-index: $rt-z-index;
+  z-index: var(--toastify-z-index);
   opacity: 0.7;
-  background-color: rgba(255,255,255,.7);
   transform-origin: left;
 
   &--animated {
@@ -23,7 +22,7 @@
   }
 
   &--controlled {
-    transition: transform .2s;
+    transition: transform 0.2s;
   }
 
   &--rtl {
@@ -31,17 +30,4 @@
     left: initial;
     transform-origin: right;
   }
-
-  &--default{
-    background: $rt-color-progress-default;
-  }
-
-  &--dark{
-    background: $rt-color-progress-dark;
-  }
-  
-  &--info{}
-  &--success{}
-  &--warning{}
-  &--error{}
 }

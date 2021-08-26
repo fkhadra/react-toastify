@@ -84,5 +84,6 @@ ToastContainer.defaultProps = {
   draggable: true,
   draggablePercent: Default.DRAGGABLE_PERCENT as number,
   draggableDirection: Direction.X,
-  role: 'alert'
+  role: 'alert',
+  theme: 'light'
 };

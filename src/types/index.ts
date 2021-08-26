@@ -4,13 +4,9 @@ type Nullable<T> = {
   [P in keyof T]: T[P] | null;
 };
 
-export type TypeOptions =
-  | 'info'
-  | 'success'
-  | 'warning'
-  | 'error'
-  | 'default'
-  | 'dark';
+export type TypeOptions = 'info' | 'success' | 'warning' | 'error' | 'default';
+
+export type Theme = 'light' | 'dark' | 'colored';
 
 export type ToastPosition =
   | 'top-right'
@@ -20,32 +16,25 @@ export type ToastPosition =
   | 'bottom-center'
   | 'bottom-left';
 
-export interface ToastContentProps {
+export interface ToastContentProps<Data = {}> {
   closeToast?: () => void;
   toastProps: ToastProps;
+  data?: Data;
 }
+
 export type ToastContent =
   | React.ReactNode
   | ((props: ToastContentProps) => React.ReactNode);
-export interface Toast {
-  content: ToastContent;
-  props: ToastProps;
-}
 
 export type Id = number | string;
+
 export type ToastTransition =
   | React.FC<ToastTransitionProps>
   | React.ComponentClass<ToastTransitionProps>;
+
 /**
  * ClassName for the elements - can take a function to build a classname or a raw string that is cx'ed to defaults
  */
-export type ClassName =
-  | ((context?: {
-      defaultClassName?: string;
-      position?: ToastPosition;
-      rtl?: boolean;
-    }) => string)
-  | string;
 export type ToastClassName =
   | ((context?: {
       type?: TypeOptions;
@@ -175,9 +164,22 @@ interface CommonOptions {
    * `Default: false`
    */
   rtl?: boolean;
+
+  /**
+   * Used to display a custom icon. Set it to `false` to prevent
+   * the icons from being displayed
+   */
+  icon?: React.ReactNode | false;
+
+  /**
+   * Theme to use.
+   * `One of: 'light', 'dark', 'colored'`
+   * `Default: 'light'`
+   */
+  theme?: Theme;
 }
 
-export interface ToastOptions extends CommonOptions {
+export interface ToastOptions<Data = {}> extends CommonOptions {
   /**
    * An optional css class to set.
    */
@@ -223,33 +225,10 @@ export interface ToastOptions extends CommonOptions {
    * Add a delay in ms before the toast appear.
    */
   delay?: number;
-}
 
-/**
- * @INTERNAL
- */
-export interface ToastProps extends ToastOptions {
-  isIn: boolean;
-  staleId?: Id;
-  toastId: Id;
-  key: Id;
-  transition: ToastTransition;
-  closeToast: () => void;
-  position: ToastPosition;
-  children?: ToastContent;
-  draggablePercent: number;
-  draggableDirection?: DraggableDirection;
-  progressClassName?: ToastClassName;
-  className?: ToastClassName;
-  bodyClassName?: ToastClassName;
-  deleteToast: () => void;
-}
+  isLoading?: boolean;
 
-/**
- * @INTERNAL
- */
-export interface NotValidatedToastProps extends Partial<ToastProps> {
-  toastId: Id;
+  data?: Data;
 }
 
 export interface UpdateOptions extends Nullable<ToastOptions> {
@@ -264,7 +243,7 @@ export interface ToastContainerProps extends CommonOptions {
   /**
    * An optional css class to set.
    */
-  className?: ClassName;
+  className?: ToastClassName;
 
   /**
    * Whether or not to display the newest toast on top.
@@ -306,4 +285,41 @@ export interface ToastTransitionProps {
   preventExitTransition: boolean;
   nodeRef: React.RefObject<HTMLElement>;
   children?: React.ReactNode;
+}
+
+/**
+ * @INTERNAL
+ */
+export interface ToastProps extends ToastOptions {
+  isIn: boolean;
+  staleId?: Id;
+  toastId: Id;
+  key: Id;
+  transition: ToastTransition;
+  closeToast: () => void;
+  position: ToastPosition;
+  children?: ToastContent;
+  draggablePercent: number;
+  draggableDirection?: DraggableDirection;
+  progressClassName?: ToastClassName;
+  className?: ToastClassName;
+  bodyClassName?: ToastClassName;
+  deleteToast: () => void;
+  theme: Theme;
+  type: TypeOptions;
+}
+
+/**
+ * @INTERNAL
+ */
+export interface NotValidatedToastProps extends Partial<ToastProps> {
+  toastId: Id;
+}
+
+/**
+ * @INTERAL
+ */
+export interface Toast {
+  content: ToastContent;
+  props: ToastProps;
 }

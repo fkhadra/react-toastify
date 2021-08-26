@@ -135,7 +135,7 @@ export function useToastContainer(props: ToastContainerProps) {
   ) {
     if (!canBeRendered(content) || isNotValid(options)) return;
 
-    const { toastId, updateId } = options;
+    const { toastId, updateId, data } = options;
     const { props } = instance;
     const closeToast = () => removeToast(toastId);
     const isNotAnUpdate = options.updateId == null;
@@ -145,9 +145,12 @@ export function useToastContainer(props: ToastContainerProps) {
     const toastProps: ToastProps = {
       toastId,
       updateId,
+      isLoading: options.isLoading,
+      theme: options.theme || props.theme!,
+      icon: options.icon || props.icon,
       isIn: false,
       key: options.key || instance.toastKey++,
-      type: options.type,
+      type: options.type!,
       closeToast: closeToast,
       closeButton: options.closeButton,
       rtl: props.rtl,
@@ -181,7 +184,9 @@ export function useToastContainer(props: ToastContainerProps) {
         options.progressClassName || props.progressClassName
       ),
       progressStyle: options.progressStyle || props.progressStyle,
-      autoClose: getAutoCloseDelay(options.autoClose, props.autoClose),
+      autoClose: options.isLoading
+        ? false
+        : getAutoCloseDelay(options.autoClose, props.autoClose),
       hideProgressBar: isBool(options.hideProgressBar)
         ? options.hideProgressBar
         : props.hideProgressBar,
@@ -218,10 +223,11 @@ export function useToastContainer(props: ToastContainerProps) {
     if (isValidElement(content) && !isStr(content.type)) {
       toastContent = cloneElement(content, {
         closeToast,
-        toastProps
+        toastProps,
+        data
       });
     } else if (isFn(content)) {
-      toastContent = content({ closeToast, toastProps });
+      toastContent = content({ closeToast, toastProps, data });
     }
 
     // not handling limit + delay by design. Waiting for user feedback first

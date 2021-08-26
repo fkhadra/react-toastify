@@ -11,9 +11,10 @@ import {
   ToastContainerProps,
   UpdateOptions,
   ClearWaitingQueueParams,
-  NotValidatedToastProps
+  NotValidatedToastProps,
+  TypeOptions
 } from '../types';
-import { ContainerInstance } from 'hooks';
+import { ContainerInstance } from '../hooks';
 import { ToastContainer } from '../components';
 
 interface EnqueuedToast {
@@ -107,12 +108,80 @@ const createToastByType = (type: string) => (
 const toast = (content: ToastContent, options?: ToastOptions) =>
   dispatchToast(content, mergeOptions(TYPE.DEFAULT, options));
 
+toast.loading = (content: ToastContent, options?: ToastOptions) =>
+  dispatchToast(
+    content,
+    mergeOptions(TYPE.DEFAULT, {
+      isLoading: true,
+      autoClose: false,
+      closeOnClick: false,
+      closeButton: false,
+      draggable: false,
+      ...options
+    })
+  );
+
+interface ToastPromiseParams {
+  pending: string | UpdateOptions;
+  success: string | UpdateOptions;
+  error: string | UpdateOptions;
+}
+
+function handlePromise<T>(
+  promise: Promise<T>,
+  { pending, error, success }: ToastPromiseParams,
+  options?: ToastOptions
+) {
+  const id = isStr(pending)
+    ? toast.loading(pending, options)
+    : toast.loading(pending.render, {
+        ...options,
+        ...(pending as ToastOptions)
+      });
+  const resetParams = {
+    isLoading: null,
+    autoClose: null,
+    closeOnClick: null,
+    closeButton: null,
+    draggable: null
+  };
+
+  const resolver = (
+    type: TypeOptions,
+    input: string | UpdateOptions,
+    result: T
+  ) => {
+    const params = isStr(input) ? { render: input } : input;
+    toast.update(id, {
+      type,
+      ...resetParams,
+      ...options,
+      ...params,
+      data: result
+    });
+    return result;
+  };
+  promise
+    .then(result => resolver('success', success, result))
+    .catch(err => resolver('error', error, err));
+
+  return promise;
+}
+
+toast.promise = handlePromise;
 toast.success = createToastByType(TYPE.SUCCESS);
 toast.info = createToastByType(TYPE.INFO);
 toast.error = createToastByType(TYPE.ERROR);
 toast.warning = createToastByType(TYPE.WARNING);
-toast.dark = createToastByType(TYPE.DARK);
 toast.warn = toast.warning;
+toast.dark = (content: ToastContent, options?: ToastOptions) =>
+  dispatchToast(
+    content,
+    mergeOptions(TYPE.DEFAULT, {
+      theme: 'dark',
+      ...options
+    })
+  );
 
 /**
  * Remove toast programmaticaly

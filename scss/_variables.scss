@@ -1,22 +1,53 @@
 $rt-namespace: 'Toastify';
-$rt-toast-width: 320px !default;
-$rt-toast-background: #fff !default;
-$rt-toast-min-height: 64px !default;
-$rt-toast-max-height: 800px !default;
+$rt-mobile: 'only screen and (max-width : 480px)' !default;
 
-$rt-color-default: #fff !default;
-$rt-color-dark: #121212 !default;
-$rt-color-info: #3498db !default;
-$rt-color-success: #07bc0c !default;
-$rt-color-warning: #f1c40f !default;
-$rt-color-error: #e74c3c !default;
+:root {
+  --toastify-color-light: #fff;
+  --toastify-color-dark: #121212;
+  --toastify-color-info: #3498db;
+  --toastify-color-success: #07bc0c;
+  --toastify-color-warning: #f1c40f;
+  --toastify-color-error: #e74c3c;
+  --toastify-color-transparent: rgba(255, 255, 255, 0.7);
 
-$rt-text-color-default: #aaa !default;
-$rt-text-color-dark: #fff !default;
+  --toastify-icon-color-info: var(--toastify-color-info);
+  --toastify-icon-color-success: var(--toastify-color-success);
+  --toastify-icon-color-warning: var(--toastify-color-warning);
+  --toastify-icon-color-error: var(--toastify-color-error);
 
-$rt-color-progress-default: linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55) !default;
-$rt-color-progress-dark: #bb86fc !default;
-$rt-mobile: "only screen and (max-width : 480px)" !default;
-$rt-font-family: sans-serif !default;
-$rt-z-index: 9999 !default;
+  --toastify-toast-width: 320px;
+  --toastify-toast-background: #fff;
+  --toastify-toast-min-height: 64px;
+  --toastify-toast-max-height: 800px;
+  --toastify-font-family: sans-serif;
+  --toastify-z-index: 9999;
 
+  --toastify-text-color-light: #757575;
+  --toastify-text-color-dark: #fff;
+
+  //Used only for colored theme
+  --toastify-text-color-info: #fff;
+  --toastify-text-color-success: #fff;
+  --toastify-text-color-warning: #fff;
+  --toastify-text-color-error: #fff;
+
+  --toastify-spinner-color: #616161;
+  --toastify-spinner-color-empty-area: #e0e0e0;
+
+  // Used when no type is provided
+  --toastify-color-progress-light: linear-gradient(
+    to right,
+    #4cd964,
+    #5ac8fa,
+    #007aff,
+    #34aadc,
+    #5856d6,
+    #ff2d55
+  );
+  // Used when no type is provided
+  --toastify-color-progress-dark: #bb86fc;
+  --toastify-color-progress-info: var(--toastify-color-info);
+  --toastify-color-progress-success: var(--toastify-color-success);
+  --toastify-color-progress-warning: var(--toastify-color-warning);
+  --toastify-color-progress-error: var(--toastify-color-error);
+}

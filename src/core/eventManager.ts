@@ -34,7 +34,7 @@ type Callback =
   | OnDidMountCallback
   | OnWillUnmountCallback
   | OnChangeCallback;
-type TimeoutId = ReturnType<typeof window.setTimeout>;
+type TimeoutId = ReturnType<typeof setTimeout>;
 
 export interface EventManager {
   list: Map<Event, Callback[]>;
@@ -103,7 +103,7 @@ export const eventManager: EventManager = {
   emit(event: Event, ...args: any[]) {
     this.list.has(event) &&
       this.list.get(event)!.forEach((callback: Callback) => {
-        const timer = setTimeout(() => {
+        const timer: TimeoutId = setTimeout(() => {
           // @ts-ignore
           callback(...args);
         }, 0);

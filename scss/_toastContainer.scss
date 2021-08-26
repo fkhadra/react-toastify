@@ -1,60 +1,60 @@
 .#{$rt-namespace}__toast-container {
-    z-index: $rt-z-index;
-    -webkit-transform: translate3d(0, 0, #{$rt-z-index}px);
-    position: fixed;
-    padding: 4px;
-    width: $rt-toast-width;
-    box-sizing: border-box;
-    color: #fff;
-    &--top-left {
-        top: 1em;
-        left: 1em;
-    }
-    &--top-center {
-        top: 1em;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    &--top-right {
-        top: 1em;
-        right: 1em;
-    }
-    &--bottom-left {
-        bottom: 1em;
-        left: 1em;
-    }
-    &--bottom-center {
-        bottom: 1em;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    &--bottom-right {
-        bottom: 1em;
-        right: 1em;
-    }
+  z-index: var(--toastify-z-index);
+  -webkit-transform: translate3d(0, 0, var(--toastify-z-index) px);
+  position: fixed;
+  padding: 4px;
+  width: var(--toastify-toast-width);
+  box-sizing: border-box;
+  color: #fff;
+  &--top-left {
+    top: 1em;
+    left: 1em;
+  }
+  &--top-center {
+    top: 1em;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  &--top-right {
+    top: 1em;
+    right: 1em;
+  }
+  &--bottom-left {
+    bottom: 1em;
+    left: 1em;
+  }
+  &--bottom-center {
+    bottom: 1em;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  &--bottom-right {
+    bottom: 1em;
+    right: 1em;
+  }
 }
 
 @media #{$rt-mobile} {
-    .#{$rt-namespace}__toast-container {
-        width: 100vw;
-        padding: 0;
-        left: 0;
-        margin: 0;
-        &--top-left,
-        &--top-center,
-        &--top-right {
-            top: 0;
-            transform: translateX(0);
-        }
-        &--bottom-left,
-        &--bottom-center,
-        &--bottom-right {
-            bottom: 0;
-            transform: translateX(0);
-        }
-        &--rtl{
-          right: 0;
-          left: initial;
-        }
+  .#{$rt-namespace}__toast-container {
+    width: 100vw;
+    padding: 0;
+    left: 0;
+    margin: 0;
+    &--top-left,
+    &--top-center,
+    &--top-right {
+      top: 0;
+      transform: translateX(0);
     }
+    &--bottom-left,
+    &--bottom-center,
+    &--bottom-right {
+      bottom: 0;
+      transform: translateX(0);
+    }
+    &--rtl {
+      right: 0;
+      left: initial;
+    }
+  }
 }

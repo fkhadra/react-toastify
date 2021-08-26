@@ -89,7 +89,9 @@ export function cssTransition({
       node.addEventListener('animationend', onEntered);
     }
 
-    function onEntered() {
+    function onEntered(e: AnimationEvent) {
+      if (e.target !== nodeRef.current) return;
+
       const node = nodeRef.current!;
       node.removeEventListener('animationend', onEntered);
       if (animationStep.current === AnimationStep.Enter) {

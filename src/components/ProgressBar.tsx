@@ -2,7 +2,7 @@ import * as React from 'react';
 import cx from 'clsx';
 
 import { TYPE, Default, isFn } from './../utils';
-import { TypeOptions, ToastClassName } from '../types';
+import { TypeOptions, ToastClassName, Theme } from '../types';
 
 export interface ProgressBarProps {
   /**
@@ -24,6 +24,11 @@ export interface ProgressBarProps {
    * Optional type : info, success ...
    */
   type: TypeOptions;
+
+  /**
+   * The theme that is currently used
+   */
+  theme: Theme;
 
   /**
    * Hide or not the progress bar
@@ -72,7 +77,8 @@ export function ProgressBar({
   controlledProgress,
   progress,
   rtl,
-  isIn
+  isIn,
+  theme
 }: ProgressBarProps) {
   const style: React.CSSProperties = {
     ...userStyle,
@@ -87,6 +93,7 @@ export function ProgressBar({
     controlledProgress
       ? `${Default.CSS_NAMESPACE}__progress-bar--controlled`
       : `${Default.CSS_NAMESPACE}__progress-bar--animated`,
+    `${Default.CSS_NAMESPACE}__progress-bar-theme--${theme}`,
     `${Default.CSS_NAMESPACE}__progress-bar--${type}`,
     {
       [`${Default.CSS_NAMESPACE}__progress-bar--rtl`]: rtl
