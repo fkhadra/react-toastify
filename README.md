@@ -6,7 +6,6 @@
 ![NPM](https://img.shields.io/npm/l/react-toastify.svg?label=%F0%9F%93%9Clicense&style=for-the-badge)
 ![Coveralls github](https://img.shields.io/coveralls/github/fkhadra/react-toastify.svg?label=%E2%9B%B1coverage&style=for-the-badge)
 
-## 🚀 v8 is coming 👇! Stay tuned! 
 
 ![React toastify](https://user-images.githubusercontent.com/5574267/130804494-a9d2d69c-f170-4576-b2e1-0bb7f13dd92d.gif "React toastify")
 
