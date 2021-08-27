@@ -128,7 +128,7 @@ interface ToastPromiseParams {
 }
 
 function handlePromise<T>(
-  promise: Promise<T>,
+  promise: Promise<T> | (() => Promise<T>),
   { pending, error, success }: ToastPromiseParams,
   options?: ToastOptions
 ) {
@@ -161,11 +161,12 @@ function handlePromise<T>(
     });
     return result;
   };
-  promise
-    .then(result => resolver('success', success, result))
-    .catch(err => resolver('error', error, err));
+  const p = isFn(promise) ? promise() : promise;
+  p.then(result => resolver('success', success, result)).catch(err =>
+    resolver('error', error, err)
+  );
 
-  return promise;
+  return p;
 }
 
 toast.promise = handlePromise;
