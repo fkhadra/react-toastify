@@ -116,7 +116,14 @@ export const Toast: React.FC<ToastProps> = props => {
                 [`${Default.CSS_NAMESPACE}--animate-icon ${Default.CSS_NAMESPACE}__zoom-enter`]: !isLoading
               })}
             >
-              {Icon}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center'
+                }}
+              >
+                {Icon}
+              </div>
             </div>
           )}
           <div>{children}</div>
