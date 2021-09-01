@@ -20,10 +20,11 @@
     "@babel/core": "^7.0.0-0",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/preset-react": "^7.8.3",
+    "@parcel/transformer-sass": "2.0.0-rc.0",
     "@types/react": "^16.9.11",
     "@types/react-dom": "^16.8.4",
     "@types/styled-components": "^5.0.1",
-    "parcel": "^1.12.3",
+    "parcel": "^2.0.0-rc.0",
     "sass": "^1.25.0",
     "typescript": "^3.4.5"
   }
