@@ -17,9 +17,7 @@
     "dist",
     "scss"
   ],
-  "sideEffects": [
-    "*.css"
-  ],
+  "sideEffects": true,
   "scripts": {
     "start": "cd example && npm run start",
     "build": "npm run prepare",
