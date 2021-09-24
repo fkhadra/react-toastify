@@ -22,6 +22,9 @@
     padding: 6px;
     display: flex;
     align-items: center;
+    & > div:last-child {
+      flex: 1;
+    }
   }
   &-icon {
     margin-inline-end: 10px;
