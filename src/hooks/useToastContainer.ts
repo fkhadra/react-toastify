@@ -147,7 +147,7 @@ export function useToastContainer(props: ToastContainerProps) {
       updateId,
       isLoading: options.isLoading,
       theme: options.theme || props.theme!,
-      icon: options.icon || props.icon,
+      icon: options.icon ?? props.icon,
       isIn: false,
       key: options.key || instance.toastKey++,
       type: options.type!,
