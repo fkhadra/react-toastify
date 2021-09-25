@@ -122,9 +122,9 @@ toast.loading = (content: ToastContent, options?: ToastOptions) =>
   );
 
 interface ToastPromiseParams {
-  pending: string | UpdateOptions;
-  success: string | UpdateOptions;
-  error: string | UpdateOptions;
+  pending?: string | UpdateOptions;
+  success?: string | UpdateOptions;
+  error?: string | UpdateOptions;
 }
 
 function handlePromise<T>(
@@ -132,12 +132,17 @@ function handlePromise<T>(
   { pending, error, success }: ToastPromiseParams,
   options?: ToastOptions
 ) {
-  const id = isStr(pending)
-    ? toast.loading(pending, options)
-    : toast.loading(pending.render, {
-        ...options,
-        ...(pending as ToastOptions)
-      });
+  let id: Id;
+
+  if (pending) {
+    id = isStr(pending)
+      ? toast.loading(pending, options)
+      : toast.loading(pending.render, {
+          ...options,
+          ...(pending as ToastOptions)
+        });
+  }
+
   const resetParams = {
     isLoading: null,
     autoClose: null,
@@ -151,19 +156,36 @@ function handlePromise<T>(
     input: string | UpdateOptions,
     result: T
   ) => {
-    const params = isStr(input) ? { render: input } : input;
-    toast.update(id, {
+    const baseParams = {
       type,
       ...resetParams,
       ...options,
-      ...params,
       data: result
-    });
+    };
+    const params = isStr(input) ? { render: input } : input;
+
+    // if the id is set we know that it's an update
+    if (id) {
+      toast.update(id, {
+        ...baseParams,
+        ...params
+      });
+    } else {
+      // using toast.promise without loading
+      toast(params.render, {
+        ...baseParams,
+        ...params
+      } as ToastOptions);
+    }
+
     return result;
   };
+
   const p = isFn(promise) ? promise() : promise;
-  p.then(result => resolver('success', success, result)).catch(err =>
-    resolver('error', error, err)
+
+  //call the resolvers only when needed
+  p.then(result => success && resolver('success', success, result)).catch(
+    err => error && resolver('error', error, err)
   );
 
   return p;
