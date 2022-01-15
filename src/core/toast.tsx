@@ -153,9 +153,16 @@ function handlePromise<T>(
 
   const resolver = (
     type: TypeOptions,
-    input: string | UpdateOptions,
+    input: string | UpdateOptions | undefined,
     result: T
   ) => {
+    // Remove the toast if the input has not been provided. This prevents the toast from hanging
+    // in the pending state if a success/error toast has been provided.
+    if (input == null) {
+      toast.dismiss(id);
+      return;
+    }
+
     const baseParams = {
       type,
       ...resetParams,
@@ -184,8 +191,8 @@ function handlePromise<T>(
   const p = isFn(promise) ? promise() : promise;
 
   //call the resolvers only when needed
-  p.then(result => success && resolver('success', success, result)).catch(
-    err => error && resolver('error', error, err)
+  p.then(result => resolver('success', success, result)).catch(err =>
+    resolver('error', error, err)
   );
 
   return p;
