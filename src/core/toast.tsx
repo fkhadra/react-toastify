@@ -157,7 +157,7 @@ function handlePromise<T>(
     result: T
   ) => {
     // Remove the toast if the input has not been provided. This prevents the toast from hanging
-    // in the pending state if a success/error toast has been provided.
+    // in the pending state if a success/error toast has not been provided.
     if (input == null) {
       toast.dismiss(id);
       return;
