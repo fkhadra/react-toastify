@@ -159,8 +159,6 @@ export function useToast(props: ToastProps) {
 
   function onDragMove(e: MouseEvent | TouchEvent) {
     if (drag.canDrag) {
-      e.preventDefault();
-
       const toast = toastRef.current!;
       if (isRunning) pauseToast();
 
