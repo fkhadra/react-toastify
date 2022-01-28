@@ -121,7 +121,7 @@ toast.loading = (content: ToastContent, options?: ToastOptions) =>
     })
   );
 
-interface ToastPromiseParams {
+export interface ToastPromiseParams {
   pending?: string | UpdateOptions;
   success?: string | UpdateOptions;
   error?: string | UpdateOptions;
