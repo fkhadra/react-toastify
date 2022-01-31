@@ -112,16 +112,12 @@ export function useToastContainer(props: ToastContainerProps) {
    * check for multi-container, build only if associated
    * check for duplicate toastId if no update
    */
-  function isNotValid({
-    containerId,
-    toastId,
-    updateId
-  }: NotValidatedToastProps) {
+  function isNotValid(options: NotValidatedToastProps) {
     return (
       !containerRef.current ||
       (instance.props.enableMultiContainer &&
-        containerId !== instance.props.containerId) ||
-      (toastToRender.has(toastId) && updateId == null)
+        options.containerId !== instance.props.containerId) ||
+      (toastToRender.has(options.toastId) && options.updateId == null)
     );
   }
 
