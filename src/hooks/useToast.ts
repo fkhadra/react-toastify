@@ -8,7 +8,6 @@ import {
 
 import { isFn, Default } from '../utils';
 import { ToastProps } from '../types';
-import { useKeeper } from './useKeeper';
 import { Direction } from '../utils/constant';
 
 interface Draggable {
@@ -40,7 +39,7 @@ export function useToast(props: ToastProps) {
   const [isRunning, setIsRunning] = useState(true);
   const [preventExitTransition, setPreventExitTransition] = useState(false);
   const toastRef = useRef<HTMLDivElement>(null);
-  const drag = useKeeper<Draggable>({
+  const drag = useRef<Draggable>({
     start: 0,
     x: 0,
     y: 0,
@@ -49,7 +48,7 @@ export function useToast(props: ToastProps) {
     canCloseOnClick: true,
     canDrag: false,
     boundingRect: null
-  });
+  }).current;
   const syncProps = useRef(props);
   const { autoClose, pauseOnHover, closeToast, onClick, closeOnClick } = props;
 

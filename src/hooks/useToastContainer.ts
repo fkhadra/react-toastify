@@ -28,7 +28,6 @@ import {
   NotValidatedToastProps,
   ToastTransition
 } from '../types';
-import { useKeeper } from './useKeeper';
 import { ActionType, reducer } from './toastContainerReducer';
 
 interface QueuedToast {
@@ -44,24 +43,26 @@ export interface ContainerInstance {
   containerId?: Id | null;
   isToastActive: (toastId: Id) => boolean;
   getToast: (id: Id) => Toast | null | undefined;
+  queue: QueuedToast[];
+  count: number;
 }
 
 export function useToastContainer(props: ToastContainerProps) {
   const [, forceUpdate] = useReducer(x => x + 1, 0);
   const [toastIds, dispatch] = useReducer(reducer, []);
   const containerRef = useRef(null);
-  let toastCount = useKeeper(0);
-  let queue = useKeeper<QueuedToast[]>([]);
   const toastToRender = useRef(new Map<Id, Toast>()).current;
   const isToastActive = (id: Id) => toastIds.indexOf(id) !== -1;
-  const instance = useKeeper<ContainerInstance>({
+  const instance = useRef<ContainerInstance>({
     toastKey: 1,
     displayedToast: 0,
+    count: 0,
+    queue: [],
     props,
     containerId: null,
     isToastActive,
     getToast: id => toastToRender.get(id)
-  });
+  }).current;
 
   useEffect(() => {
     instance.containerId = props.containerId;
@@ -88,8 +89,8 @@ export function useToastContainer(props: ToastContainerProps) {
   function clearWaitingQueue({ containerId }: ClearWaitingQueueParams) {
     const { limit } = instance.props;
     if (limit && (!containerId || instance.containerId === containerId)) {
-      toastCount -= queue.length;
-      queue = [];
+      instance.count -= instance.queue.length;
+      instance.queue = [];
     }
   }
 
@@ -98,7 +99,11 @@ export function useToastContainer(props: ToastContainerProps) {
   }
 
   function dequeueToast() {
-    const { toastContent, toastProps, staleId } = queue.shift() as QueuedToast;
+    const {
+      toastContent,
+      toastProps,
+      staleId
+    } = instance.queue.shift() as QueuedToast;
     appendToast(toastContent, toastProps, staleId);
   }
 
@@ -128,7 +133,7 @@ export function useToastContainer(props: ToastContainerProps) {
     const closeToast = () => removeToast(toastId);
     const isNotAnUpdate = updateId == null;
 
-    if (isNotAnUpdate) toastCount++;
+    if (isNotAnUpdate) instance.count++;
 
     const toastProps: ToastProps = {
       toastId,
@@ -214,10 +219,10 @@ export function useToastContainer(props: ToastContainerProps) {
     if (
       props.limit &&
       props.limit > 0 &&
-      toastCount > props.limit &&
+      instance.count > props.limit &&
       isNotAnUpdate
     ) {
-      queue.push({ toastContent, toastProps, staleId });
+      instance.queue.push({ toastContent, toastProps, staleId });
     } else if (isNum(delay) && (delay as number) > 0) {
       setTimeout(() => {
         appendToast(toastContent, toastProps, staleId);
@@ -249,12 +254,12 @@ export function useToastContainer(props: ToastContainerProps) {
 
   function removeFromCollection(toastId: Id) {
     toastToRender.delete(toastId);
-    const queueLen = queue.length;
-    toastCount = isToastIdValid(toastId)
-      ? toastCount - 1
-      : toastCount - instance.displayedToast;
+    const queueLen = instance.queue.length;
+    instance.count = isToastIdValid(toastId)
+      ? instance.count - 1
+      : instance.count - instance.displayedToast;
 
-    if (toastCount < 0) toastCount = 0;
+    if (instance.count < 0) instance.count = 0;
 
     if (queueLen > 0) {
       const freeSlot = isToastIdValid(toastId) ? 1 : instance.props.limit!;
