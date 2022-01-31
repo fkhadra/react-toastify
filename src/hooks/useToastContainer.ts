@@ -33,9 +33,6 @@ import {
 import { useKeeper } from './useKeeper';
 import { ActionType, reducer } from './toastContainerReducer';
 
-type CollectionItem = Record<Id, Toast>;
-type ToastToRender = Partial<Record<ToastPosition, Toast[]>>;
-
 interface QueuedToast {
   toastContent: ToastContent;
   toastProps: ToastProps;
@@ -48,23 +45,23 @@ export interface ContainerInstance {
   props: ToastContainerProps;
   containerId?: Id | null;
   isToastActive: (toastId: Id) => boolean;
-  getToast: (id: Id) => Toast | null;
+  getToast: (id: Id) => Toast | null | undefined;
 }
 
 export function useToastContainer(props: ToastContainerProps) {
   const [, forceUpdate] = useReducer(x => x + 1, 0);
-  const [toast, dispatch] = useReducer(reducer, []);
+  const [toastIds, dispatch] = useReducer(reducer, []);
   const containerRef = useRef(null);
   let toastCount = useKeeper(0);
   let queue = useKeeper<QueuedToast[]>([]);
-  const collection = useKeeper<CollectionItem>({});
+  const toastToRender = useRef(new Map<Id, Toast>()).current;
   const instance = useKeeper<ContainerInstance>({
     toastKey: 1,
     displayedToast: 0,
     props,
     containerId: null,
     isToastActive: isToastActive,
-    getToast: id => collection[id] || null
+    getToast: id => toastToRender.get(id)
   });
 
   useEffect(() => {
@@ -81,16 +78,16 @@ export function useToastContainer(props: ToastContainerProps) {
 
   useEffect(() => {
     instance.isToastActive = isToastActive;
-    instance.displayedToast = toast.length;
-    eventManager.emit(Event.Change, toast.length, props.containerId);
-  }, [toast]);
+    instance.displayedToast = toastIds.length;
+    eventManager.emit(Event.Change, toastIds.length, props.containerId);
+  }, [toastIds]);
 
   useEffect(() => {
     instance.props = props;
   });
 
   function isToastActive(id: Id) {
-    return toast.indexOf(id) !== -1;
+    return toastIds.indexOf(id) !== -1;
   }
 
   function clearWaitingQueue({ containerId }: ClearWaitingQueueParams) {
@@ -124,7 +121,7 @@ export function useToastContainer(props: ToastContainerProps) {
       !containerRef.current ||
       (instance.props.enableMultiContainer &&
         containerId !== instance.props.containerId) ||
-      (collection[toastId] && updateId == null)
+      (toastToRender.has(toastId) && updateId == null)
     );
   }
 
@@ -254,12 +251,12 @@ export function useToastContainer(props: ToastContainerProps) {
   ) {
     const { toastId } = toastProps;
 
-    if (staleId) delete collection[staleId];
+    if (staleId) toastToRender.delete(staleId);
 
-    collection[toastId] = {
+    toastToRender.set(toastId, {
       content,
       props: toastProps
-    };
+    });
     dispatch({
       type: ActionType.ADD,
       toastId,
@@ -268,7 +265,7 @@ export function useToastContainer(props: ToastContainerProps) {
   }
 
   function removeFromCollection(toastId: Id) {
-    delete collection[toastId];
+    toastToRender.delete(toastId);
     const queueLen = queue.length;
     toastCount = isToastIdValid(toastId)
       ? toastCount - 1
@@ -296,27 +293,22 @@ export function useToastContainer(props: ToastContainerProps) {
   function getToastToRender<T>(
     cb: (position: ToastPosition, toastList: Toast[]) => T
   ) {
-    const toastToRender: ToastToRender = {};
-    const toastList = props.newestOnTop
-      ? Object.keys(collection).reverse()
-      : Object.keys(collection);
+    const toRender = new Map<ToastPosition, Toast[]>();
+    const collection = Array.from(toastToRender.values());
 
-    for (let i = 0; i < toastList.length; i++) {
-      const toast = collection[toastList[i]];
+    if (props.newestOnTop) collection.reverse();
+
+    collection.forEach(toast => {
       const { position } = toast.props;
-      toastToRender[position] || (toastToRender[position] = []);
+      toRender.has(position) || toRender.set(position, []);
+      toRender.get(position)!.push(toast);
+    });
 
-      toastToRender[position]!.push(toast);
-    }
-
-    return (Object.keys(toastToRender) as Array<ToastPosition>).map(p =>
-      cb(p, toastToRender[p]!)
-    );
+    return Array.from(toRender, p => cb(p[0], p[1]));
   }
 
   return {
     getToastToRender,
-    collection,
     containerRef,
     isToastActive
   };
