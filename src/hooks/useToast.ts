@@ -6,7 +6,7 @@ import {
   DOMAttributes
 } from 'react';
 
-import { isFn } from '../utils';
+import { isFn, Default } from '../utils';
 import { ToastProps } from '../types';
 import { useKeeper } from './useKeeper';
 import { Direction } from '../utils/constant';
@@ -98,7 +98,10 @@ export function useToast(props: ToastProps) {
       } else {
         drag.start = drag.y;
         drag.removalDistance =
-          toast.offsetHeight * (props.draggablePercent / 100);
+          toast.offsetHeight *
+          (props.draggablePercent === Default.DRAGGABLE_PERCENT
+            ? props.draggablePercent * 1.5
+            : props.draggablePercent / 100);
       }
     }
   }

@@ -13,9 +13,7 @@ import {
   isNum,
   isStr,
   isToastIdValid,
-  getAutoCloseDelay,
-  Direction,
-  Default
+  getAutoCloseDelay
 } from '../utils';
 import { eventManager, Event } from '../core/eventManager';
 
@@ -121,7 +119,7 @@ export function useToastContainer(props: ToastContainerProps) {
     );
   }
 
-  // this function and all the function called inside needs to rely on ref(`useKeeper`)
+  // this function and all the function called inside needs to rely on refs
   function buildToast(
     content: ToastContent,
     { delay, staleId, ...options }: NotValidatedToastProps
@@ -131,7 +129,7 @@ export function useToastContainer(props: ToastContainerProps) {
     const { toastId, updateId, data } = options;
     const { props } = instance;
     const closeToast = () => removeToast(toastId);
-    const isNotAnUpdate = options.updateId == null;
+    const isNotAnUpdate = updateId == null;
 
     if (isNotAnUpdate) toastCount++;
 
@@ -140,7 +138,7 @@ export function useToastContainer(props: ToastContainerProps) {
       updateId,
       isLoading: options.isLoading,
       theme: options.theme || props.theme!,
-      icon: options.icon ?? props.icon,
+      icon: options.icon != null ? options.icon : props.icon,
       isIn: false,
       key: options.key || instance.toastKey++,
       type: options.type!,
@@ -193,23 +191,15 @@ export function useToastContainer(props: ToastContainerProps) {
     if (isFn(options.onOpen)) toastProps.onOpen = options.onOpen;
     if (isFn(options.onClose)) toastProps.onClose = options.onClose;
 
-    //  tweak for vertical dragging
-    if (
-      toastProps.draggableDirection === Direction.Y &&
-      toastProps.draggablePercent === Default.DRAGGABLE_PERCENT
-    ) {
-      (toastProps.draggablePercent as number) *= 1.5;
-    }
-
-    let closeButton = props.closeButton;
+    toastProps.closeButton = props.closeButton;
 
     if (options.closeButton === false || canBeRendered(options.closeButton)) {
-      closeButton = options.closeButton;
+      toastProps.closeButton = options.closeButton;
     } else if (options.closeButton === true) {
-      closeButton = canBeRendered(props.closeButton) ? props.closeButton : true;
+      toastProps.closeButton = canBeRendered(props.closeButton)
+        ? props.closeButton
+        : true;
     }
-
-    toastProps.closeButton = closeButton;
 
     let toastContent = content;
 
