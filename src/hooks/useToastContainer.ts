@@ -120,12 +120,12 @@ export function useToastContainer(props: ToastContainerProps) {
     toastId,
     updateId
   }: NotValidatedToastProps) {
-    return !containerRef.current ||
+    return (
+      !containerRef.current ||
       (instance.props.enableMultiContainer &&
         containerId !== instance.props.containerId) ||
       (collection[toastId] && updateId == null)
-      ? true
-      : false;
+    );
   }
 
   // this function and all the function called inside needs to rely on ref(`useKeeper`)
