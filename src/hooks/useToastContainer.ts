@@ -53,12 +53,13 @@ export function useToastContainer(props: ToastContainerProps) {
   let toastCount = useKeeper(0);
   let queue = useKeeper<QueuedToast[]>([]);
   const toastToRender = useRef(new Map<Id, Toast>()).current;
+  const isToastActive = (id: Id) => toastIds.indexOf(id) !== -1;
   const instance = useKeeper<ContainerInstance>({
     toastKey: 1,
     displayedToast: 0,
     props,
     containerId: null,
-    isToastActive: isToastActive,
+    isToastActive,
     getToast: id => toastToRender.get(id)
   });
 
@@ -83,10 +84,6 @@ export function useToastContainer(props: ToastContainerProps) {
   useEffect(() => {
     instance.props = props;
   });
-
-  function isToastActive(id: Id) {
-    return toastIds.indexOf(id) !== -1;
-  }
 
   function clearWaitingQueue({ containerId }: ClearWaitingQueueParams) {
     const { limit } = instance.props;
