@@ -50,18 +50,21 @@ export function useToast(props: ToastProps) {
     canDrag: false,
     boundingRect: null
   });
-  const syncProps = useKeeper(props, true);
+  const syncProps = useRef(props);
   const { autoClose, pauseOnHover, closeToast, onClick, closeOnClick } = props;
+
+  useEffect(() => {
+    syncProps.current = props;
+  });
 
   useEffect(() => {
     if (isFn(props.onOpen))
       props.onOpen(isValidElement(props.children) && props.children.props);
 
     return () => {
-      if (isFn(syncProps.onClose))
-        syncProps.onClose(
-          isValidElement(syncProps.children) && syncProps.children.props
-        );
+      const props = syncProps.current;
+      if (isFn(props.onClose))
+        props.onClose(isValidElement(props.children) && props.children.props);
     };
   }, []);
 
