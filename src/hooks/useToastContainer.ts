@@ -3,7 +3,8 @@ import {
   useRef,
   useReducer,
   cloneElement,
-  isValidElement
+  isValidElement,
+  useState
 } from 'react';
 import {
   parseClassName,
@@ -28,7 +29,6 @@ import {
   NotValidatedToastProps,
   ToastTransition
 } from '../types';
-import { ActionType, reducer } from './toastContainerReducer';
 
 interface QueuedToast {
   toastContent: ToastContent;
@@ -49,7 +49,7 @@ export interface ContainerInstance {
 
 export function useToastContainer(props: ToastContainerProps) {
   const [, forceUpdate] = useReducer(x => x + 1, 0);
-  const [toastIds, dispatch] = useReducer(reducer, []);
+  const [toastIds, setToastIds] = useState<Id[]>([]);
   const containerRef = useRef(null);
   const toastToRender = useRef(new Map<Id, Toast>()).current;
   const isToastActive = (id: Id) => toastIds.indexOf(id) !== -1;
@@ -95,7 +95,9 @@ export function useToastContainer(props: ToastContainerProps) {
   }
 
   function removeToast(toastId?: Id) {
-    dispatch({ type: ActionType.REMOVE, toastId });
+    setToastIds(state =>
+      isToastIdValid(toastId) ? state.filter(id => id !== toastId) : []
+    );
   }
 
   function dequeueToast() {
@@ -165,9 +167,8 @@ export function useToastContainer(props: ToastContainerProps) {
       draggable: isBool(options.draggable)
         ? options.draggable
         : props.draggable,
-      draggablePercent: isNum(options.draggablePercent)
-        ? options.draggablePercent
-        : (props.draggablePercent as number),
+      draggablePercent:
+        options.draggablePercent || (props.draggablePercent as number),
       draggableDirection:
         options.draggableDirection || props.draggableDirection,
       closeOnClick: isBool(options.closeOnClick)
@@ -184,9 +185,31 @@ export function useToastContainer(props: ToastContainerProps) {
         ? options.hideProgressBar
         : props.hideProgressBar,
       progress: options.progress,
-      role: isStr(options.role) ? options.role : props.role,
+      role: options.role || props.role,
       deleteToast() {
-        removeFromCollection(toastId);
+        toastToRender.delete(toastId);
+        const queueLen = instance.queue.length;
+        instance.count = isToastIdValid(toastId)
+          ? instance.count - 1
+          : instance.count - instance.displayedToast;
+
+        if (instance.count < 0) instance.count = 0;
+
+        if (queueLen > 0) {
+          const freeSlot = isToastIdValid(toastId) ? 1 : instance.props.limit!;
+
+          if (queueLen === 1 || freeSlot === 1) {
+            instance.displayedToast++;
+            dequeueToast();
+          } else {
+            const toDequeue = freeSlot > queueLen ? queueLen : freeSlot;
+            instance.displayedToast = toDequeue;
+
+            for (let i = 0; i < toDequeue; i++) dequeueToast();
+          }
+        } else {
+          forceUpdate();
+        }
       }
     };
 
@@ -245,37 +268,7 @@ export function useToastContainer(props: ToastContainerProps) {
       content,
       props: toastProps
     });
-    dispatch({
-      type: ActionType.ADD,
-      toastId,
-      staleId
-    });
-  }
-
-  function removeFromCollection(toastId: Id) {
-    toastToRender.delete(toastId);
-    const queueLen = instance.queue.length;
-    instance.count = isToastIdValid(toastId)
-      ? instance.count - 1
-      : instance.count - instance.displayedToast;
-
-    if (instance.count < 0) instance.count = 0;
-
-    if (queueLen > 0) {
-      const freeSlot = isToastIdValid(toastId) ? 1 : instance.props.limit!;
-
-      if (queueLen === 1 || freeSlot === 1) {
-        instance.displayedToast++;
-        dequeueToast();
-      } else {
-        const toDequeue = freeSlot > queueLen ? queueLen : freeSlot;
-        instance.displayedToast = toDequeue;
-
-        for (let i = 0; i < toDequeue; i++) dequeueToast();
-      }
-    } else {
-      forceUpdate();
-    }
+    setToastIds(state => [...state, toastId].filter(id => id !== staleId));
   }
 
   function getToastToRender<T>(
