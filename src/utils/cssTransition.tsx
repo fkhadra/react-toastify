@@ -86,29 +86,32 @@ export function cssTransition({
       const node = nodeRef.current!;
       baseClassName.current = node.className;
       node.className += ` ${enterClassName}`;
-      node.addEventListener('animationend', onEntered, { once: true });
+      node.addEventListener('animationend', onEntered);
     }
 
     function onEntered(e: AnimationEvent) {
       if (e.target !== nodeRef.current) return;
 
+      const node = nodeRef.current!;
+      node.removeEventListener('animationend', onEntered);
       if (animationStep.current === AnimationStep.Enter) {
-        nodeRef.current!.className = baseClassName.current!;
+        node.className = baseClassName.current!;
       }
     }
 
     function onExit() {
-      const node = nodeRef.current!;
       animationStep.current = AnimationStep.Exit;
+      const node = nodeRef.current!;
 
       node.className += ` ${exitClassName}`;
-      node.addEventListener('animationend', onExited, { once: true });
+      node.addEventListener('animationend', onExited);
     }
 
     function onExited() {
-      collapse
-        ? collapseToast(nodeRef.current!, done, collapseDuration)
-        : done();
+      const node = nodeRef.current!;
+
+      node.removeEventListener('animationend', onExited);
+      collapse ? collapseToast(node, done, collapseDuration) : done();
     }
 
     return <>{children}</>;
