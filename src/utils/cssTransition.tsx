@@ -1,8 +1,9 @@
 import React, { useEffect, useLayoutEffect, useRef } from 'react';
-import { ToastTransitionProps } from '../types';
 
 import { collapseToast } from './collapseToast';
-import { Default } from './constant';
+import { Default, SyntheticEvent } from './constant';
+
+import { ToastTransitionProps } from '../types';
 
 export interface CSSTransitionProps {
   /**
@@ -93,6 +94,7 @@ export function cssTransition({
       if (e.target !== nodeRef.current) return;
 
       const node = nodeRef.current!;
+      node.dispatchEvent(new Event(SyntheticEvent.ENTRANCE_ANIMATION_END));
       node.removeEventListener('animationend', onEntered);
       if (animationStep.current === AnimationStep.Enter) {
         node.className = baseClassName.current!;
