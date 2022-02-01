@@ -29,6 +29,8 @@ afterEach(() => {
 
 const containerId = 'foo';
 const containerInstance: ContainerInstance = {
+  count: 0,
+  queue: [],
   containerId,
   displayedToast: 0,
   props: {},
