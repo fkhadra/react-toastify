@@ -88,6 +88,7 @@ export function cssTransition({
       baseClassName.current = node.className;
       node.className += ` ${enterClassName}`;
       node.addEventListener('animationend', onEntered);
+      node.addEventListener('animationcancel', onEntered);
     }
 
     function onEntered(e: AnimationEvent) {
@@ -96,6 +97,7 @@ export function cssTransition({
       const node = nodeRef.current!;
       node.dispatchEvent(new Event(SyntheticEvent.ENTRANCE_ANIMATION_END));
       node.removeEventListener('animationend', onEntered);
+      node.removeEventListener('animationcancel', onEntered);
       if (animationStep.current === AnimationStep.Enter) {
         node.className = baseClassName.current!;
       }
