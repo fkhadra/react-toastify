@@ -268,8 +268,10 @@ toast.done = (id: Id) => {
 };
 
 /**
- * Track changes. The callback get the number of toast displayed
+ * @deprecated
+ * API will change in the next major release
  *
+ * Track changes. The callback get the number of toast displayed
  */
 toast.onChange = (callback: OnChangeCallback) => {
   if (isFn(callback)) {
@@ -281,6 +283,9 @@ toast.onChange = (callback: OnChangeCallback) => {
 };
 
 /**
+ * @deprecated
+ * will be removed in the next major release
+ *
  * Configure the ToastContainer when lazy mounted
  * Prefer ToastContainer over this one
  */
