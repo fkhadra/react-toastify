@@ -29,6 +29,10 @@ function getProgressBar() {
   };
 }
 
+function endEnterTransition(toastText: string) {
+  fireEvent.animationEnd(screen.getByText(toastText)!.parentNode!.parentNode!);
+}
+
 const documentHasFocus = jest
   .spyOn(document, 'hasFocus')
   .mockImplementation(() => true);
@@ -130,10 +134,10 @@ describe('Toast Component', () => {
     });
   });
 
-  it('Can pause toast delay on mouse enter', () => {
+  it('Can pause toast delay on mouse enter', async () => {
     render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
     const progressBar = getProgressBar();
-
+    endEnterTransition('FooBar');
     progressBar.isRunning();
     fireEvent.mouseOver(screen.getByRole('alert') as HTMLElement);
     progressBar.isPaused();
@@ -145,6 +149,7 @@ describe('Toast Component', () => {
         FooBar
       </Toast>
     );
+    endEnterTransition('FooBar');
     const progressBar = getProgressBar();
 
     progressBar.isRunning();
@@ -155,6 +160,7 @@ describe('Toast Component', () => {
   it('Should resume toast delay on mouse leave', () => {
     render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
     const progressBar = getProgressBar();
+    endEnterTransition('FooBar');
     const notification = screen.getByRole('alert');
 
     progressBar.isRunning();
@@ -167,49 +173,44 @@ describe('Toast Component', () => {
   it('Should pause Toast on window blur and resume Toast on focus', () => {
     render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
     const progressBar = getProgressBar();
-
+    endEnterTransition('FooBar');
     progressBar.isRunning();
 
-    let ev = new Event('blur');
     act(() => {
-      window.dispatchEvent(ev);
+      window.dispatchEvent(new Event('blur'));
     });
 
     progressBar.isPaused();
 
-    ev = new Event('focus');
     act(() => {
-      window.dispatchEvent(ev);
+      window.dispatchEvent(new Event('focus'));
     });
 
     progressBar.isRunning();
   });
 
-  it('Should bind or unbind dom events when `pauseOnFocusLoss` and `draggable` props are updated', () => {
+  it('Should bind or unbind dom events when `pauseOnFocusLoss` props are updated', () => {
     const { rerender } = render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
 
-    document.removeEventListener = jest.fn();
     window.removeEventListener = jest.fn();
 
     rerender(
-      <Toast {...REQUIRED_PROPS} draggable={false} pauseOnFocusLoss={false}>
+      <Toast {...REQUIRED_PROPS} pauseOnFocusLoss={false}>
         FooBar
       </Toast>
     );
 
-    expect(document.removeEventListener).toHaveBeenCalled();
     expect(window.removeEventListener).toHaveBeenCalled();
 
     document.addEventListener = jest.fn();
     window.addEventListener = jest.fn();
 
     rerender(
-      <Toast {...REQUIRED_PROPS} draggable={true} pauseOnFocusLoss={true}>
+      <Toast {...REQUIRED_PROPS} pauseOnFocusLoss={true}>
         FooBar
       </Toast>
     );
 
-    expect(document.addEventListener).toHaveBeenCalled();
     expect(window.addEventListener).toHaveBeenCalled();
   });
 
@@ -330,7 +331,7 @@ describe('Toast Component', () => {
       render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
       const progressBar = getProgressBar();
       const notification = screen.getByRole('alert').parentNode!;
-
+      endEnterTransition('FooBar');
       progressBar.isRunning();
       fireEvent.mouseDown(notification);
       fireEvent.mouseMove(notification);
@@ -351,7 +352,7 @@ describe('Toast Component', () => {
         } as DOMRect;
       };
       const progressBar = getProgressBar();
-
+      endEnterTransition('FooBar');
       progressBar.isRunning();
 
       fireEvent.mouseDown(notification);
@@ -378,7 +379,7 @@ describe('Toast Component', () => {
         } as DOMRect;
       };
       const progressBar = getProgressBar();
-
+      endEnterTransition('FooBar');
       progressBar.isRunning();
 
       fireEvent.mouseDown(notification);

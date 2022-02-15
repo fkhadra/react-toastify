@@ -30,13 +30,6 @@ let queue: EnqueuedToast[] = [];
 let lazy = false;
 
 /**
- * Check whether any container is currently mounted in the DOM
- */
-function isAnyContainerMounted() {
-  return containers.size > 0;
-}
-
-/**
  * Get the toast by id, given it's in the DOM, otherwise returns null
  */
 function getToast(toastId: Id, { containerId }: ToastOptions) {
@@ -52,7 +45,7 @@ function getToast(toastId: Id, { containerId }: ToastOptions) {
 function generateToastId() {
   return Math.random()
     .toString(36)
-    .substr(2, 9);
+    .substring(2, 9);
 }
 
 /**
@@ -74,7 +67,7 @@ function dispatchToast(
   content: ToastContent,
   options: NotValidatedToastProps
 ): Id {
-  if (isAnyContainerMounted()) {
+  if (containers.size > 0) {
     eventManager.emit(Event.Show, content, options);
   } else {
     queue.push({ content, options });
@@ -100,13 +93,14 @@ function mergeOptions(type: string, options?: ToastOptions) {
   } as NotValidatedToastProps;
 }
 
-const createToastByType = (type: string) => (
-  content: ToastContent,
-  options?: ToastOptions
-) => dispatchToast(content, mergeOptions(type, options));
+function createToastByType(type: string) {
+  return (content: ToastContent, options?: ToastOptions) =>
+    dispatchToast(content, mergeOptions(type, options));
+}
 
-const toast = (content: ToastContent, options?: ToastOptions) =>
-  dispatchToast(content, mergeOptions(TYPE.DEFAULT, options));
+function toast(content: ToastContent, options?: ToastOptions) {
+  return dispatchToast(content, mergeOptions(TYPE.DEFAULT, options));
+}
 
 toast.loading = (content: ToastContent, options?: ToastOptions) =>
   dispatchToast(
@@ -121,10 +115,10 @@ toast.loading = (content: ToastContent, options?: ToastOptions) =>
     })
   );
 
-interface ToastPromiseParams {
-  pending: string | UpdateOptions;
-  success: string | UpdateOptions;
-  error: string | UpdateOptions;
+export interface ToastPromiseParams {
+  pending?: string | UpdateOptions;
+  success?: string | UpdateOptions;
+  error?: string | UpdateOptions;
 }
 
 function handlePromise<T>(
@@ -132,12 +126,17 @@ function handlePromise<T>(
   { pending, error, success }: ToastPromiseParams,
   options?: ToastOptions
 ) {
-  const id = isStr(pending)
-    ? toast.loading(pending, options)
-    : toast.loading(pending.render, {
-        ...options,
-        ...(pending as ToastOptions)
-      });
+  let id: Id;
+
+  if (pending) {
+    id = isStr(pending)
+      ? toast.loading(pending, options)
+      : toast.loading(pending.render, {
+          ...options,
+          ...(pending as ToastOptions)
+        });
+  }
+
   const resetParams = {
     isLoading: null,
     autoClose: null,
@@ -148,20 +147,44 @@ function handlePromise<T>(
 
   const resolver = (
     type: TypeOptions,
-    input: string | UpdateOptions,
+    input: string | UpdateOptions | undefined,
     result: T
   ) => {
-    const params = isStr(input) ? { render: input } : input;
-    toast.update(id, {
+    // Remove the toast if the input has not been provided. This prevents the toast from hanging
+    // in the pending state if a success/error toast has not been provided.
+    if (input == null) {
+      toast.dismiss(id);
+      return;
+    }
+
+    const baseParams = {
       type,
       ...resetParams,
       ...options,
-      ...params,
       data: result
-    });
+    };
+    const params = isStr(input) ? { render: input } : input;
+
+    // if the id is set we know that it's an update
+    if (id) {
+      toast.update(id, {
+        ...baseParams,
+        ...params
+      });
+    } else {
+      // using toast.promise without loading
+      toast(params.render, {
+        ...baseParams,
+        ...params
+      } as ToastOptions);
+    }
+
     return result;
   };
+
   const p = isFn(promise) ? promise() : promise;
+
+  //call the resolvers only when needed
   p.then(result => resolver('success', success, result)).catch(err =>
     resolver('error', error, err)
   );
@@ -245,8 +268,10 @@ toast.done = (id: Id) => {
 };
 
 /**
- * Track changes. The callback get the number of toast displayed
+ * @deprecated
+ * API will change in the next major release
  *
+ * Track changes. The callback get the number of toast displayed
  */
 toast.onChange = (callback: OnChangeCallback) => {
   if (isFn(callback)) {
@@ -258,7 +283,11 @@ toast.onChange = (callback: OnChangeCallback) => {
 };
 
 /**
+ * @deprecated
+ * will be removed in the next major release
+ *
  * Configure the ToastContainer when lazy mounted
+ * Prefer ToastContainer over this one
  */
 toast.configure = (config: ToastContainerProps = {}) => {
   lazy = true;

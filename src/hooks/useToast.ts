@@ -6,10 +6,8 @@ import {
   DOMAttributes
 } from 'react';
 
-import { isFn } from '../utils';
+import { isFn, Default, Direction, SyntheticEvent } from '../utils';
 import { ToastProps } from '../types';
-import { useKeeper } from './useKeeper';
-import { Direction } from '../utils/constant';
 
 interface Draggable {
   start: number;
@@ -20,6 +18,7 @@ interface Draggable {
   canCloseOnClick: boolean;
   canDrag: boolean;
   boundingRect: DOMRect | null;
+  didMove: boolean;
 }
 
 type DragEvent = MouseEvent & TouchEvent;
@@ -37,10 +36,10 @@ function getY(e: DragEvent) {
 }
 
 export function useToast(props: ToastProps) {
-  const [isRunning, setIsRunning] = useState(true);
+  const [isRunning, setIsRunning] = useState(false);
   const [preventExitTransition, setPreventExitTransition] = useState(false);
   const toastRef = useRef<HTMLDivElement>(null);
-  const drag = useKeeper<Draggable>({
+  const drag = useRef<Draggable>({
     start: 0,
     x: 0,
     y: 0,
@@ -48,29 +47,33 @@ export function useToast(props: ToastProps) {
     removalDistance: 0,
     canCloseOnClick: true,
     canDrag: false,
-    boundingRect: null
-  });
-  const syncProps = useKeeper(props, true);
+    boundingRect: null,
+    didMove: false
+  }).current;
+  const syncProps = useRef(props);
   const { autoClose, pauseOnHover, closeToast, onClick, closeOnClick } = props;
 
   useEffect(() => {
+    syncProps.current = props;
+  });
+
+  useEffect(() => {
+    if (toastRef.current)
+      toastRef.current.addEventListener(
+        SyntheticEvent.ENTRANCE_ANIMATION_END,
+        playToast,
+        { once: true }
+      );
+
     if (isFn(props.onOpen))
       props.onOpen(isValidElement(props.children) && props.children.props);
 
     return () => {
-      if (isFn(syncProps.onClose))
-        syncProps.onClose(
-          isValidElement(syncProps.children) && syncProps.children.props
-        );
+      const props = syncProps.current;
+      if (isFn(props.onClose))
+        props.onClose(isValidElement(props.children) && props.children.props);
     };
   }, []);
-
-  useEffect(() => {
-    props.draggable && bindDragEvents();
-    return () => {
-      props.draggable && unbindDragEvents();
-    };
-  }, [props.draggable]);
 
   useEffect(() => {
     props.pauseOnFocusLoss && bindFocusEvents();
@@ -83,6 +86,7 @@ export function useToast(props: ToastProps) {
     e: React.MouseEvent<HTMLElement, MouseEvent> | React.TouchEvent<HTMLElement>
   ) {
     if (props.draggable) {
+      bindDragEvents();
       const toast = toastRef.current!;
       drag.canCloseOnClick = true;
       drag.canDrag = true;
@@ -98,7 +102,10 @@ export function useToast(props: ToastProps) {
       } else {
         drag.start = drag.y;
         drag.removalDistance =
-          toast.offsetHeight * (props.draggablePercent / 100);
+          toast.offsetHeight *
+          (props.draggablePercent === Default.DRAGGABLE_PERCENT
+            ? props.draggablePercent * 1.5
+            : props.draggablePercent / 100);
       }
     }
   }
@@ -142,6 +149,7 @@ export function useToast(props: ToastProps) {
   }
 
   function bindDragEvents() {
+    drag.didMove = false;
     document.addEventListener('mousemove', onDragMove);
     document.addEventListener('mouseup', onDragEnd);
 
@@ -158,15 +166,12 @@ export function useToast(props: ToastProps) {
   }
 
   function onDragMove(e: MouseEvent | TouchEvent) {
-    if (drag.canDrag) {
-      e.preventDefault();
-
-      const toast = toastRef.current!;
+    const toast = toastRef.current!;
+    if (drag.canDrag && toast) {
+      drag.didMove = true;
       if (isRunning) pauseToast();
-
       drag.x = getX(e as DragEvent);
       drag.y = getY(e as DragEvent);
-
       if (props.draggableDirection === Direction.X) {
         drag.delta = drag.x - drag.start;
       } else {
@@ -175,7 +180,6 @@ export function useToast(props: ToastProps) {
 
       // prevent false positif during a toast click
       if (drag.start !== drag.x) drag.canCloseOnClick = false;
-
       toast.style.transform = `translate${props.draggableDirection}(${drag.delta}px)`;
       toast.style.opacity = `${1 -
         Math.abs(drag.delta / drag.removalDistance)}`;
@@ -183,16 +187,15 @@ export function useToast(props: ToastProps) {
   }
 
   function onDragEnd() {
+    unbindDragEvents();
     const toast = toastRef.current!;
-    if (drag.canDrag) {
+    if (drag.canDrag && drag.didMove && toast) {
       drag.canDrag = false;
-
       if (Math.abs(drag.delta) > drag.removalDistance) {
         setPreventExitTransition(true);
         props.closeToast();
         return;
       }
-
       toast.style.transition = 'transform 0.2s, opacity 0.2s';
       toast.style.transform = `translate${props.draggableDirection}(0)`;
       toast.style.opacity = '1';

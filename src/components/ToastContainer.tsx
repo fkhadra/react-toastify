@@ -36,10 +36,9 @@ export const ToastContainer: React.FC<ToastContainerProps> = props => {
       id={containerId as string}
     >
       {getToastToRender((position, toastList) => {
-        const containerStyle: React.CSSProperties =
-          toastList.length === 0
-            ? { ...style, pointerEvents: 'none' }
-            : { ...style };
+        const containerStyle: React.CSSProperties = !toastList.length
+          ? { ...style, pointerEvents: 'none' }
+          : { ...style };
 
         return (
           <div
