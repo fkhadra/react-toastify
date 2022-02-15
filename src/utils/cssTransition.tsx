@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useEffect, useLayoutEffect, useRef } from 'react';
-import { ToastTransitionProps } from '../types';
 
 import { collapseToast } from './collapseToast';
 import { Default, SyntheticEvent } from './constant';
