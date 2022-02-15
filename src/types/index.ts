@@ -323,3 +323,14 @@ export interface Toast {
   content: ToastContent;
   props: ToastProps;
 }
+
+export interface ToastItem<Data = {}> {
+  content: React.ReactNode;
+  id: Id;
+  theme: Theme;
+  type: TypeOptions;
+  isLoading?: boolean;
+  containerId?: Id;
+  data?: Data;
+  icon?: React.ReactNode | false;
+}

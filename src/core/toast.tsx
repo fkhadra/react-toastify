@@ -1,21 +1,16 @@
-import * as React from 'react';
-import { render } from 'react-dom';
-
-import { POSITION, TYPE, canUseDom, isStr, isNum, isFn } from '../utils';
+import { POSITION, TYPE, isStr, isNum, isFn } from '../utils';
 import { eventManager, OnChangeCallback, Event } from './eventManager';
 import {
   ToastContent,
   ToastOptions,
   ToastProps,
   Id,
-  ToastContainerProps,
   UpdateOptions,
   ClearWaitingQueueParams,
   NotValidatedToastProps,
   TypeOptions
 } from '../types';
 import { ContainerInstance } from '../hooks';
-import { ToastContainer } from '../components';
 
 interface EnqueuedToast {
   content: ToastContent;
@@ -24,10 +19,7 @@ interface EnqueuedToast {
 
 let containers = new Map<ContainerInstance | Id, ContainerInstance>();
 let latestInstance: ContainerInstance | Id;
-let containerDomNode: HTMLElement;
-let containerConfig: ToastContainerProps;
 let queue: EnqueuedToast[] = [];
-let lazy = false;
 
 /**
  * Get the toast by id, given it's in the DOM, otherwise returns null
@@ -71,12 +63,6 @@ function dispatchToast(
     eventManager.emit(Event.Show, content, options);
   } else {
     queue.push({ content, options });
-    if (lazy && canUseDom) {
-      lazy = false;
-      containerDomNode = document.createElement('div');
-      document.body.appendChild(containerDomNode);
-      render(<ToastContainer {...containerConfig} />, containerDomNode);
-    }
   }
 
   return options.toastId;
@@ -268,30 +254,25 @@ toast.done = (id: Id) => {
 };
 
 /**
- * @deprecated
- * API will change in the next major release
+ * Subscribe to change when a toast is added or removed
  *
- * Track changes. The callback get the number of toast displayed
+ * The callback give you access to 3 properties:
+ * - toasts: an array of ToastItem[]
+ * - added: when a toast is added, it contains the toast data otherwise it's `undefined`
+ * - removed: when a toast is removed, it contains the toast data otherwise it's `undefined`
+ *
+ * Usage:
+ * ```
+ * toast.onChange(({ toasts, added, removed }) => {
+ *
+ * })
+ * ```
  */
 toast.onChange = (callback: OnChangeCallback) => {
-  if (isFn(callback)) {
-    eventManager.on(Event.Change, callback);
-  }
+  eventManager.on(Event.Change, callback);
   return () => {
-    isFn(callback) && eventManager.off(Event.Change, callback);
+    eventManager.off(Event.Change, callback);
   };
-};
-
-/**
- * @deprecated
- * will be removed in the next major release
- *
- * Configure the ToastContainer when lazy mounted
- * Prefer ToastContainer over this one
- */
-toast.configure = (config: ToastContainerProps = {}) => {
-  lazy = true;
-  containerConfig = config;
 };
 
 toast.POSITION = POSITION;
@@ -320,10 +301,6 @@ eventManager
         .off(Event.Show)
         .off(Event.Clear)
         .off(Event.ClearWaitingQueue);
-    }
-
-    if (canUseDom && containerDomNode) {
-      document.body.removeChild(containerDomNode);
     }
   });
 

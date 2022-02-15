@@ -36,12 +36,6 @@ export function getAutoCloseDelay(
     : containerAutoClose;
 }
 
-export const canUseDom = !!(
-  typeof window !== 'undefined' &&
-  window.document &&
-  window.document.createElement
-);
-
 export function canBeRendered<T>(content: T): boolean {
   return (
     isValidElement(content) || isStr(content) || isFn(content) || isNum(content)

@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { render, act, screen } from '@testing-library/react';
 
-import { cssClasses, triggerAnimationEnd } from '../helpers';
+import { triggerAnimationEnd } from '../helpers';
 import { eventManager, toast, Event } from '../../src/core';
-import { ContainerInstance } from '../../src/hooks';
 import { cssTransition } from '../../src/utils';
 import { Id } from '../../src/types';
 import { ToastContainer } from '../../src/components';
@@ -27,86 +26,12 @@ afterEach(() => {
   (window.requestAnimationFrame as jest.Mock).mockRestore();
 });
 
-const containerId = 'foo';
-const containerInstance: ContainerInstance = {
-  count: 0,
-  queue: [],
-  containerId,
-  displayedToast: 0,
-  props: {},
-  toastKey: 1,
-  getToast: jest.fn(),
-  isToastActive: jest.fn()
-};
-
-function expectContainerNotToBeMounted() {
-  expect(document.querySelector(cssClasses.container)).toBe(null);
-}
-
-function expectContainerToBeMounted() {
-  expect(document.querySelector(cssClasses.container)).not.toBe(null);
-}
-
-function unmountLazyContainer() {
-  act(() => {
-    eventManager.emit(Event.WillUnmount, containerInstance);
-    jest.runAllTimers();
-  });
-  expectContainerNotToBeMounted();
-}
-
 describe('toastify', () => {
   it('Should not crash if no container is mounted', () => {
     act(() => {
       toast('hello');
     });
     expect(screen.queryByText(/hello/)).toBe(null);
-  });
-
-  it('Should lazy mount a ToastContainer if it is not mounted, when opt-in', () => {
-    expectContainerNotToBeMounted();
-    toast.configure({
-      containerId
-    });
-
-    act(() => {
-      toast('hello');
-      jest.runAllTimers();
-    });
-    expectContainerToBeMounted();
-    unmountLazyContainer();
-  });
-
-  it('Should mount only one ToastContainer when using lazy container', () => {
-    expectContainerNotToBeMounted();
-    toast.configure({
-      containerId
-    });
-    act(() => {
-      toast('hello');
-      toast('hello');
-      jest.runAllTimers();
-    });
-
-    expect(document.querySelectorAll(cssClasses.container)).toHaveLength(1);
-    unmountLazyContainer();
-  });
-
-  it("Should be possible to configure the ToastContainer even when it's lazy mounted", () => {
-    expectContainerNotToBeMounted();
-    toast.configure({
-      containerId,
-      rtl: true
-    });
-
-    act(() => {
-      toast('hello');
-      jest.runAllTimers();
-    });
-
-    expectContainerToBeMounted();
-    expect(document.querySelector(cssClasses.rtl)).not.toBe(null);
-    unmountLazyContainer();
   });
 
   it('Should return a new id each time we emit a notification', () => {
@@ -179,10 +104,10 @@ describe('toastify', () => {
       expect(fn).toHaveBeenCalledTimes(1);
     });
 
-    it('The callback should receive the number of toast displayed', done => {
+    it('The callback should receive the toasts that are displayed', done => {
       render(<ToastContainer />);
-      toast.onChange(count => {
-        expect(count).toBe(1);
+      toast.onChange(params => {
+        expect(params.toasts.length).toBe(1);
         done();
       });
 
@@ -192,10 +117,10 @@ describe('toastify', () => {
       });
     });
 
-    it('Should pass containerId as second arg if set', done => {
+    it('Should contains toast data', done => {
       render(<ToastContainer containerId="foo" />);
-      toast.onChange((_count, containerId) => {
-        expect(containerId).toBe('foo');
+      toast.onChange(({ added }) => {
+        expect(added?.content).toBe('hello');
         done();
       });
       act(() => {
