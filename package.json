@@ -15,7 +15,8 @@
   ],
   "files": [
     "dist",
-    "scss"
+    "scss",
+    "addons"
   ],
   "sideEffects": true,
   "scripts": {
@@ -30,7 +31,8 @@
     "postsass": "postcss dist/ReactToastify.css --use autoprefixer -m -o dist/ReactToastify.css",
     "postsass-minimal": "cssnano dist/ReactToastify.minimal.css dist/ReactToastify.minimal.css --no-zindex --no-reduceIdents",
     "style": "npm run sass && npm run sass-minimal && cssnano dist/ReactToastify.css dist/ReactToastify.min.css --no-zindex --no-reduceIdents && npm run style-injector",
-    "style-injector": "style2js --out-dir dist dist/ReactToastify.min.css"
+    "style-injector": "style2js --out-dir dist dist/ReactToastify.min.css",
+    "build:addons": "node build-addons.mjs"
   },
   "peerDependencies": {
     "react": ">=16",
@@ -76,6 +78,7 @@
     "coveralls": "^3.0.9",
     "cssnano": "^4.1.10",
     "cssnano-cli": "^1.0.5",
+    "microbundle": "^0.14.2",
     "husky": "^4.2.0",
     "postcss": "^8.2.13",
     "postcss-cli": "^7.1.0",
@@ -89,5 +92,27 @@
   },
   "dependencies": {
     "clsx": "^1.1.1"
+  },
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/react-toastify.esm.js"
+    },
+    "./dist/ReactToastify.min.css": "./dist/ReactToastify.min.css",
+    "./dist/ReactToastify.css": "./dist/ReactToastify.css",
+    "./dist/ReactToastify.minimal.css": "./dist/ReactToastify.minimal.css",
+    "./ReactToastify.min.css": "./dist/ReactToastify.min.css",
+    "./ReactToastify.css": "./dist/ReactToastify.css",
+    "./ReactToastify.minimal.css": "./dist/ReactToastify.minimal.css",
+    "./dist/inject-style.js": {
+      "require": "./dist/inject-style.js",
+      "import": "./dist/inject-style.esm.js"
+    },
+    "./inject-style.js": {
+      "require": "./dist/inject-style.js",
+      "import": "./dist/inject-style.esm.js"
+    },
+    "./package.json": "./package.json",
+    "./scss": "./scss"
   }
 }
