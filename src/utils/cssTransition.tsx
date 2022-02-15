@@ -1,4 +1,5 @@
-import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import * as React from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 
 import { collapseToast } from './collapseToast';
 import { Default, SyntheticEvent } from './constant';
