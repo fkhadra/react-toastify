@@ -10,3 +10,5 @@ cjs/
 esm/
 dist/
 .cache
+addons/
+!src/addons
