@@ -17,7 +17,7 @@ try {
   const TSC = './node_modules/.bin/tsc';
 
   for (const dir of dirs) {
-    const entryPoint = path.join(BASE_DIR, dir, 'index.ts');
+    let entryPoint = path.join(BASE_DIR, dir, 'index.ts');
     const inDeclarationFile = path.join(BASE_DIR, dir, 'index.d.ts');
     const outDeclarationFile = path.join('addons', dir, 'index.d.ts');
     const exportKey = `./addons/${dir}`;
@@ -27,7 +27,11 @@ try {
     };
 
     if (!existsSync(entryPoint)) {
-      throw new Error(`${entryPoint} does not exist`);
+      if (existsSync(`${entryPoint}x`)) {
+        entryPoint = `${entryPoint}x`;
+      } else {
+        throw new Error(`${entryPoint} does not exist`);
+      }
     }
 
     for (const moduleType of ['cjs', 'esm']) {
@@ -48,7 +52,7 @@ try {
     }
 
     const { stdout, stderr } = await asyncExec(
-      `${TSC} --declaration --emitDeclarationOnly ${entryPoint}`
+      `${TSC} --declaration --emitDeclarationOnly --jsx react ${entryPoint}`
     );
 
     console.log(stdout);
