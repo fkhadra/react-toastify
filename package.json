@@ -1,7 +1,6 @@
 {
   "version": "8.2.0",
   "license": "MIT",
-  "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "description": "React notification made easy",
   "keywords": [
@@ -21,17 +20,20 @@
   "sideEffects": true,
   "scripts": {
     "start": "cd example && npm run start",
-    "build": "npm run prepare",
-    "test": "tsdx test --passWithNoTests",
-    "test:coverage": "tsdx test --coverage",
-    "lint": "tsdx lint src",
-    "prepare": "tsdx build && npm run style",
+    "test": "jest",
+    "clean": "rimraf dist && rimraf addons",
+    "test:coverage": "yarn test --coverage",
+    "lint": "eslint \"src/**/*.{ts,tsx}\"",
+    "prepare": "npm run build && npm run build:addons && npm run style",
     "sass": "sass scss/main.scss dist/ReactToastify.css",
     "sass-minimal": "sass scss/minimal.scss dist/ReactToastify.minimal.css",
     "postsass": "postcss dist/ReactToastify.css --use autoprefixer -m -o dist/ReactToastify.css",
     "postsass-minimal": "cssnano dist/ReactToastify.minimal.css dist/ReactToastify.minimal.css --no-zindex --no-reduceIdents",
     "style": "npm run sass && npm run sass-minimal && cssnano dist/ReactToastify.css dist/ReactToastify.min.css --no-zindex --no-reduceIdents && npm run style-injector",
     "style-injector": "style2js --out-dir dist dist/ReactToastify.min.css",
+    "prebuild": "npm run clean",
+    "build": "microbundle --jsx React.createElement",
+    "build:debug": "microbundle --jsx React.createElement --compress false",
     "build:addons": "node build-addons.mjs"
   },
   "peerDependencies": {
@@ -48,15 +50,35 @@
     "semi": true,
     "singleQuote": true
   },
-  "eslint": {
-    "rules": {
-      "react-hooks/exhaustive-deps": "warn"
-    }
-  },
   "jest": {
     "verbose": true,
+    "globals": {
+      "ts-jest": {
+        "isolatedModules": true
+      }
+    },
     "coveragePathIgnorePatterns": [
       "/src/index.tsx"
+    ],
+    "roots": [
+      "<rootDir>/test"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "setupFilesAfterEnv": [
+      "@testing-library/jest-dom/extend-expect"
+    ],
+    "testRegex": "(.+(test|spec))\\.tsx?$",
+    "testEnvironment": "jsdom",
+    "testRunner": "jest-jasmine2",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
     ]
   },
   "name": "react-toastify",
@@ -69,34 +91,49 @@
     "url": "https://github.com/fkhadra/react-toastify/issues"
   },
   "homepage": "https://github.com/fkhadra/react-toastify#readme",
-  "module": "dist/react-toastify.esm.js",
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.0.0",
-    "@types/jest": "^24.9.0",
+    "@types/jest": "^27.4.0",
     "@types/react": "^17.0.19",
     "@types/react-dom": "^17.0.9",
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
     "coveralls": "^3.0.9",
     "cssnano": "^4.1.10",
     "cssnano-cli": "^1.0.5",
-    "microbundle": "^0.14.2",
+    "eslint": "^8.9.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
     "husky": "^4.2.0",
+    "jest": "^27.5.1",
+    "microbundle": "^0.14.2",
     "postcss": "^8.2.13",
     "postcss-cli": "^7.1.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "rimraf": "^3.0.2",
     "sass": "^1.26.0",
     "style2js": "^1.0.0",
-    "tsdx": "^0.14.1",
+    "ts-jest": "^27.1.3",
     "tslib": "^2.3.1",
     "typescript": "^4.3.5"
   },
   "dependencies": {
     "clsx": "^1.1.1"
   },
+  "main": "dist/react-toastify.js",
+  "module": "dist/react-toastify.esm.js",
+  "umd:main": "dist/react-toastify.umd.js",
+  "unpkg": "dist/react-toastify.umd.js",
+  "source": "src/index.tsx",
   "exports": {
     ".": {
-      "require": "./dist/index.js",
-      "import": "./dist/react-toastify.esm.js"
+      "require": "./dist/react-toastify.js",
+      "import": "./dist/react-toastify.esm.js",
+      "umd": "./dist/react-toastify.umd.js"
     },
     "./dist/ReactToastify.min.css": "./dist/ReactToastify.min.css",
     "./dist/ReactToastify.css": "./dist/ReactToastify.css",
