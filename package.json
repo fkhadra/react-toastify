@@ -128,7 +128,7 @@
   "module": "dist/react-toastify.esm.js",
   "umd:main": "dist/react-toastify.umd.js",
   "unpkg": "dist/react-toastify.umd.js",
-  "source": "src/index.tsx",
+  "source": "src/index.ts",
   "exports": {
     ".": {
       "require": "./dist/react-toastify.js",
