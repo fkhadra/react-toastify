@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 import { Theme, TypeOptions } from '../types';
 import { Default } from '../utils';
