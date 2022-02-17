@@ -30,7 +30,7 @@ import {
   NotValidatedToastProps,
   ToastTransition
 } from '../types';
-import { Icons } from '../components';
+import { Icons } from '../components/Icons';
 
 interface QueuedToast {
   toastContent: ToastContent;

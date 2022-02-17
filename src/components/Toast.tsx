@@ -4,7 +4,7 @@ import cx from 'clsx';
 import { ProgressBar } from './ProgressBar';
 import { ToastProps } from '../types';
 import { Default, isFn } from '../utils';
-import { useToast } from '../hooks';
+import { useToast } from '../hooks/useToast';
 
 export const Toast: React.FC<ToastProps> = props => {
   const {
