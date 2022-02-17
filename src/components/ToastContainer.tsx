@@ -5,7 +5,7 @@ import { Toast } from './Toast';
 import { CloseButton } from './CloseButton';
 import { Bounce } from './Transitions';
 import { POSITION, Direction, Default, parseClassName, isFn } from '../utils';
-import { useToastContainer } from '../hooks';
+import { useToastContainer } from '../hooks/useToastContainer';
 import { ToastContainerProps, ToastPosition } from '../types';
 
 export const ToastContainer: React.FC<ToastContainerProps> = props => {
