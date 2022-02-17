@@ -24,7 +24,8 @@
     "clean": "rimraf dist && rimraf addons",
     "test:coverage": "yarn test --coverage",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
-    "prepare": "npm run build && npm run build:addons && npm run style",
+    "prettier": "prettier --write src",
+    "prepare": "npm run build && npm run build:addons && npm run style && husky install",
     "sass": "sass scss/main.scss dist/ReactToastify.css",
     "sass-minimal": "sass scss/minimal.scss dist/ReactToastify.minimal.css",
     "postsass": "postcss dist/ReactToastify.css --use autoprefixer -m -o dist/ReactToastify.css",
@@ -40,15 +41,12 @@
     "react": ">=16",
     "react-dom": ">=16"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint"
-    }
-  },
   "prettier": {
     "printWidth": 80,
     "semi": true,
-    "singleQuote": true
+    "singleQuote": true,
+    "trailingComma": "none",
+    "arrowParens": "avoid"
   },
   "jest": {
     "verbose": true,
@@ -93,9 +91,9 @@
   "homepage": "https://github.com/fkhadra/react-toastify#readme",
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.2",
-    "@testing-library/react": "^12.0.0",
+    "@testing-library/react": "^12.1.3",
     "@types/jest": "^27.4.0",
-    "@types/react": "^17.0.19",
+    "@types/react": "^17.0.39",
     "@types/react-dom": "^17.0.9",
     "@typescript-eslint/eslint-plugin": "^5.12.0",
     "@typescript-eslint/parser": "^5.12.0",
@@ -107,15 +105,16 @@
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
-    "husky": "^4.2.0",
+    "husky": "^7.0.0",
     "jest": "^27.5.1",
     "microbundle": "^0.14.2",
     "postcss": "^8.2.13",
     "postcss-cli": "^7.1.0",
+    "prettier": "2.5.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "rimraf": "^3.0.2",
-    "sass": "^1.26.0",
+    "sass": "^1.49.7",
     "style2js": "^1.0.0",
     "ts-jest": "^27.1.3",
     "tslib": "^2.3.1",
