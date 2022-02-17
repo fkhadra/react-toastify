@@ -4,10 +4,7 @@ module.exports = {
       '@babel/preset-env',
       {
         shippedProposals: true,
-        targets: '> 0.25%, not dead, not ie 11',
-        // {
-        //   node: 'current',
-        // },
+        targets: '>0.5%, not ie 11, not op_mini all',
       },
     ],
   ],
