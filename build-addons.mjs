@@ -10,16 +10,15 @@ const packageJson = JSON.parse(
   await readFile(new URL('./package.json', import.meta.url))
 );
 
+const DEBUG = process.argv.slice(2)[0] === 'debug';
+const BASE_DIR = './src/addons';
+const MICRO_BUNDLE = './node_modules/.bin/microbundle';
+
 try {
-  const BASE_DIR = './src/addons';
   const dirs = await readdir(BASE_DIR);
-  const MICRO_BUNDLE = './node_modules/.bin/microbundle';
-  const TSC = './node_modules/.bin/tsc';
 
   for (const dir of dirs) {
     let entryPoint = path.join(BASE_DIR, dir, 'index.ts');
-    const inDeclarationFile = path.join(BASE_DIR, dir, 'index.d.ts');
-    const outDeclarationFile = path.join('addons', dir, 'index.d.ts');
     const exportKey = `./addons/${dir}`;
     const exportValues = {
       require: '',
@@ -36,10 +35,10 @@ try {
 
     for (const moduleType of ['cjs', 'esm']) {
       const filename = moduleType === 'esm' ? 'index.esm.js' : 'index.js';
-      const out = `addons/${dir}/${filename}`;
+      const out = `./dist/addons/${dir}/${filename}`;
 
       const { stdout, stderr } = await asyncExec(
-        `${MICRO_BUNDLE} -i ${entryPoint} -o ${out} --no-pkg-main -f ${moduleType} --jsx React.createElement --external react-toastify --compress false --generateTypes true`
+        `${MICRO_BUNDLE} -i ${entryPoint} -o ${out} --no-pkg-main -f ${moduleType} --jsx React.createElement --external react-toastify --compress ${!DEBUG}`
       );
       console.log(stdout);
       console.log(stderr);
@@ -50,14 +49,6 @@ try {
         exportValues.import = `./${out}`;
       }
     }
-
-    const { stdout, stderr } = await asyncExec(
-      `${TSC} --declaration --emitDeclarationOnly --jsx react ${entryPoint}`
-    );
-
-    console.log(stdout);
-    console.log(stderr);
-    await rename(inDeclarationFile, outDeclarationFile);
 
     packageJson.exports = Object.assign(packageJson.exports, {
       [exportKey]: exportValues

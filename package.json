@@ -35,7 +35,8 @@
     "prebuild": "npm run clean",
     "build": "microbundle --jsx React.createElement",
     "build:debug": "microbundle --jsx React.createElement --compress false",
-    "build:addons": "node build-addons.mjs"
+    "build:addons": "node build-addons.mjs",
+    "build:addons-debug": "node build-addons.mjs debug"
   },
   "peerDependencies": {
     "react": ">=16",
