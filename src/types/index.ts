@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 type Nullable<T> = {
   [P in keyof T]: T[P] | null;
@@ -327,8 +327,8 @@ export interface Toast {
 export interface ToastItem<Data = {}> {
   content: React.ReactNode;
   id: Id;
-  theme: Theme;
-  type: TypeOptions;
+  theme?: Theme;
+  type?: TypeOptions;
   isLoading?: boolean;
   containerId?: Id;
   data?: Data;

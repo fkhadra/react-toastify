@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import cx from 'clsx';
 
 import { ProgressBar } from './ProgressBar';
@@ -7,12 +7,8 @@ import { Default, isFn } from '../utils';
 import { useToast } from '../hooks/useToast';
 
 export const Toast: React.FC<ToastProps> = props => {
-  const {
-    isRunning,
-    preventExitTransition,
-    toastRef,
-    eventHandlers
-  } = useToast(props);
+  const { isRunning, preventExitTransition, toastRef, eventHandlers } =
+    useToast(props);
   const {
     closeButton,
     children,
@@ -97,7 +93,8 @@ export const Toast: React.FC<ToastProps> = props => {
           {Icon && (
             <div
               className={cx(`${Default.CSS_NAMESPACE}__toast-icon`, {
-                [`${Default.CSS_NAMESPACE}--animate-icon ${Default.CSS_NAMESPACE}__zoom-enter`]: !isLoading
+                [`${Default.CSS_NAMESPACE}--animate-icon ${Default.CSS_NAMESPACE}__zoom-enter`]:
+                  !isLoading
               })}
             >
               {Icon}

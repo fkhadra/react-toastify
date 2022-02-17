@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import cx from 'clsx';
 
 import { Toast } from './Toast';
@@ -9,9 +9,8 @@ import { useToastContainer } from '../hooks/useToastContainer';
 import { ToastContainerProps, ToastPosition } from '../types';
 
 export const ToastContainer: React.FC<ToastContainerProps> = props => {
-  const { getToastToRender, containerRef, isToastActive } = useToastContainer(
-    props
-  );
+  const { getToastToRender, containerRef, isToastActive } =
+    useToastContainer(props);
   const { className, style, rtl, containerId } = props;
 
   function getClassName(position: ToastPosition) {
