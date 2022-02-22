@@ -44,9 +44,9 @@ try {
       console.log(stderr);
 
       if (moduleType === 'cjs') {
-        exportValues.require = `./${out}`;
+        exportValues.require = out;
       } else if (moduleType === 'esm') {
-        exportValues.import = `./${out}`;
+        exportValues.import = out;
       }
     }
 
