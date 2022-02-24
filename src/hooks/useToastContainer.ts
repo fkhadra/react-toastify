@@ -265,7 +265,7 @@ export function useToastContainer(props: ToastContainerProps) {
       isNotAnUpdate
     ) {
       instance.queue.push({ toastContent, toastProps, staleId });
-    } else if (isNum(delay) && (delay as number) > 0) {
+    } else if (isNum(delay)) {
       setTimeout(() => {
         appendToast(toastContent, toastProps, staleId);
       }, delay);
