@@ -7,7 +7,7 @@ export function toToastItem(toast: Toast): ToastItem {
     id: toast.props.toastId,
     theme: toast.props.theme,
     type: toast.props.type,
-    data: toast.props.data,
+    data: toast.props.data || {},
     isLoading: toast.props.isLoading,
     icon: toast.props.icon
   };
