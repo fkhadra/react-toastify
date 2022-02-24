@@ -331,6 +331,6 @@ export interface ToastItem<Data = {}> {
   type?: TypeOptions;
   isLoading?: boolean;
   containerId?: Id;
-  data?: Data;
+  data: Data;
   icon?: React.ReactNode | false;
 }
