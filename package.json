@@ -14,8 +14,8 @@
   ],
   "files": [
     "dist",
-    "scss",
-    "addons"
+    "addons",
+    "scss"
   ],
   "sideEffects": true,
   "scripts": {
@@ -25,7 +25,6 @@
     "test:coverage": "yarn test --coverage",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "prettier": "prettier --write src",
-    "prepare": "npm run build && npm run build:addons && npm run style && husky install",
     "sass": "sass scss/main.scss dist/ReactToastify.css",
     "sass-minimal": "sass scss/minimal.scss dist/ReactToastify.minimal.css",
     "postsass": "postcss dist/ReactToastify.css --use autoprefixer -m -o dist/ReactToastify.css",
@@ -33,10 +32,14 @@
     "style": "npm run sass && npm run sass-minimal && cssnano dist/ReactToastify.css dist/ReactToastify.min.css --no-zindex --no-reduceIdents && npm run style-injector",
     "style-injector": "style2js --out-dir dist dist/ReactToastify.min.css",
     "prebuild": "npm run clean",
-    "build": "microbundle --jsx React.createElement",
+    "build": "npm run build:core && npm run build:addons && npm run style && husky install",
+    "build:core": "microbundle --jsx React.createElement",
     "build:debug": "microbundle --jsx React.createElement --compress false",
     "build:addons": "node build-addons.mjs",
-    "build:addons-debug": "node build-addons.mjs debug"
+    "build:addons-debug": "node build-addons.mjs debug",
+    "setup:dev": "npm run build && yarn pack -f react-toastify.tgz && npm run rm-pkg && npm run extract-pkg",
+    "rm-pkg": "rimraf node_modules/react-toastify && mkdir -p node_modules/react-toastify",
+    "extract-pkg": "tar xzvf react-toastify.tgz -C node_modules/react-toastify --strip-components 1 && rimraf react-toastify.tgz"
   },
   "peerDependencies": {
     "react": ">=16",
@@ -141,11 +144,11 @@
     "./ReactToastify.min.css": "./dist/ReactToastify.min.css",
     "./ReactToastify.css": "./dist/ReactToastify.css",
     "./ReactToastify.minimal.css": "./dist/ReactToastify.minimal.css",
-    "./dist/inject-style.js": {
+    "./dist/inject-style": {
       "require": "./dist/inject-style.js",
       "import": "./dist/inject-style.esm.js"
     },
-    "./inject-style.js": {
+    "./inject-style": {
       "require": "./dist/inject-style.js",
       "import": "./dist/inject-style.esm.js"
     },
