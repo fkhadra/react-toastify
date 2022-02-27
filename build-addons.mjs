@@ -36,6 +36,7 @@ try {
     for (const moduleType of ['cjs', 'esm']) {
       const filename = moduleType === 'esm' ? 'index.esm.js' : 'index.js';
       const out = `./dist/addons/${dir}/${filename}`;
+      const exportOut = `./addons/${dir}/${filename}`;
 
       const { stdout, stderr } = await asyncExec(
         `${MICRO_BUNDLE} -i ${entryPoint} -o ${out} --no-pkg-main -f ${moduleType} --jsx React.createElement --external react-toastify --compress ${!DEBUG}`
@@ -44,9 +45,9 @@ try {
       console.log(stderr);
 
       if (moduleType === 'cjs') {
-        exportValues.require = out;
+        exportValues.require = exportOut;
       } else if (moduleType === 'esm') {
-        exportValues.import = out;
+        exportValues.import = exportOut;
       }
     }
 
@@ -56,6 +57,7 @@ try {
   }
 
   await writeFile('./package.json', JSON.stringify(packageJson, null, 2));
+  await rename('./dist/addons', './addons');
 } catch (error) {
   throw error;
 }
