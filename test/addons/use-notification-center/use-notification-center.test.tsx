@@ -38,9 +38,7 @@ function TestComponent(props: UseNotificationCenterParams) {
     remove,
     add,
     clear,
-    find,
-    update,
-    sort
+    update
   } = useNotificationCenter(props || {});
 
   return (
@@ -48,6 +46,7 @@ function TestComponent(props: UseNotificationCenterParams) {
       <span data-testid="count">{notifications.length}</span>
       <span data-testid="unreadCount">{unreadCount}</span>
       <button onClick={markAllAsRead}>markAllAsRead</button>
+      <button onClick={clear}>clear</button>
       <input
         data-testid="content"
         type="text"
@@ -234,5 +233,20 @@ describe('useNotificationCenter', () => {
     expect(screen.getByTestId(`read-${initialState[0].id}`)).toHaveTextContent(
       'true'
     );
+  });
+
+  it('support clear', () => {
+    const initialState = [
+      { id: 1, createdAt: Date.now(), read: false, content: 'noti1' },
+      { id: 2, createdAt: Date.now(), read: false, content: 'noti2' }
+    ];
+
+    render(<TestComponent data={initialState} />);
+
+    expect(screen.getByTestId('count')).toHaveTextContent('2');
+
+    fireEvent.click(screen.getByText(/clear/));
+
+    expect(screen.getByTestId('count')).toHaveTextContent('0');
   });
 });
