@@ -22,9 +22,9 @@ export interface ToastContentProps<Data = {}> {
   data?: Data;
 }
 
-export type ToastContent =
+export type ToastContent<T = unknown> =
   | React.ReactNode
-  | ((props: ToastContentProps) => React.ReactNode);
+  | ((props: ToastContentProps<T>) => React.ReactNode);
 
 export type Id = number | string;
 
@@ -231,12 +231,12 @@ export interface ToastOptions<Data = {}> extends CommonOptions {
   data?: Data;
 }
 
-export interface UpdateOptions extends Nullable<ToastOptions> {
+export interface UpdateOptions<T = unknown> extends Nullable<ToastOptions<T>> {
   /**
    * Used to update a toast.
    * Pass any valid ReactNode(string, number, component)
    */
-  render?: ToastContent;
+  render?: ToastContent<T>;
 }
 
 export interface ToastContainerProps extends CommonOptions {

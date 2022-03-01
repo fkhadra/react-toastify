@@ -115,15 +115,15 @@ toast.loading = (content: ToastContent, options?: ToastOptions) =>
     })
   );
 
-export interface ToastPromiseParams {
-  pending?: string | UpdateOptions;
-  success?: string | UpdateOptions;
-  error?: string | UpdateOptions;
+export interface ToastPromiseParams<T = unknown> {
+  pending?: string | UpdateOptions<void>;
+  success?: string | UpdateOptions<T>;
+  error?: string | UpdateOptions<any>;
 }
 
-function handlePromise<T>(
+function handlePromise<T = unknown>(
   promise: Promise<T> | (() => Promise<T>),
-  { pending, error, success }: ToastPromiseParams,
+  { pending, error, success }: ToastPromiseParams<T>,
   options?: ToastOptions
 ) {
   let id: Id;
@@ -147,7 +147,7 @@ function handlePromise<T>(
 
   const resolver = (
     type: TypeOptions,
-    input: string | UpdateOptions | undefined,
+    input: string | UpdateOptions<T> | undefined,
     result: T
   ) => {
     // Remove the toast if the input has not been provided. This prevents the toast from hanging
