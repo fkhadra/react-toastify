@@ -69,7 +69,19 @@ export interface UseNotificationCenter<Data> {
   markAllAsRead(): void;
 
   /**
-   * Mark one or more notifications as read
+   * Mark all notification as read or not.
+   *
+   * Usage:
+   * ```
+   * markAllAsRead(false) // mark all notification as not read
+   *
+   * markAllAsRead(true) // same as calling markAllAsRead()
+   * ```
+   */
+  markAllAsRead(read?: boolean): void;
+
+  /**
+   * Mark one or more notifications as read.
    *
    * Usage:
    * ```
@@ -78,6 +90,19 @@ export interface UseNotificationCenter<Data> {
    * ```
    */
   markAsRead(id: Id | Id[]): void;
+
+  /**
+   * Mark one or more notifications as read.The second parameter let you mark the notificaiton as read or not.
+   *
+   * Usage:
+   * ```
+   * markAsRead("anId", false)
+   * markAsRead(["a","list", "of", "id"], false)
+   *
+   * markAsRead("anId", true) // same as markAsRead("anId")
+   * ```
+   */
+  markAsRead(id: Id | Id[], read?: boolean): void;
 
   /**
    * Remove one or more notifications
@@ -211,24 +236,24 @@ export function useNotificationCenter<Data = {}>(
     setNotifications([]);
   };
 
-  const markAllAsRead = () => {
+  const markAllAsRead = (read = true) => {
     setNotifications(prev =>
       prev.map(v => {
-        v.read = true;
+        v.read = read;
         return v;
       })
     );
   };
 
-  const markAsRead = (id: Id | Id[]) => {
+  const markAsRead = (id: Id | Id[], read = true) => {
     let map = (v: NotificationCenterItem<Data>) => {
-      if (v.id === id) v.read = true;
+      if (v.id === id) v.read = read;
       return v;
     };
 
     if (Array.isArray(id)) {
       map = v => {
-        if (id.includes(v.id)) v.read = true;
+        if (id.includes(v.id)) v.read = read;
         return v;
       };
     }
