@@ -197,6 +197,12 @@ export function useNotificationCenter<Data = {}>(
     }
     return [];
   });
+  // used to method to be used inside effect without having stale `notifications`
+  const notificationsRef = useRef(notifications);
+
+  useEffect(() => {
+    notificationsRef.current = notifications;
+  }, [notifications]);
 
   useEffect(() => {
     return toast.onChange(({ added }) => {
@@ -263,12 +269,12 @@ export function useNotificationCenter<Data = {}>(
 
   const find = (id: Id | Id[]) => {
     return Array.isArray(id)
-      ? notifications.filter(v => id.includes(v.id))
-      : notifications.find(v => v.id === id);
+      ? notificationsRef.current.filter(v => id.includes(v.id))
+      : notificationsRef.current.find(v => v.id === id);
   };
 
   const add = (item: Partial<NotificationCenterItem<Data>>) => {
-    if (notifications.find(v => v.id === item.id)) return null;
+    if (notificationsRef.current.find(v => v.id === item.id)) return null;
 
     const newItem = decorate(item);
 
@@ -278,7 +284,7 @@ export function useNotificationCenter<Data = {}>(
   };
 
   const update = (id: Id, item: Partial<NotificationCenterItem<Data>>) => {
-    const index = notifications.findIndex(v => v.id === id);
+    const index = notificationsRef.current.findIndex(v => v.id === id);
 
     if (index !== -1) {
       setNotifications(prev => {

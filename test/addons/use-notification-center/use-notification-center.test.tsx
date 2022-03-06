@@ -1,11 +1,5 @@
 import * as React from 'react';
-import {
-  render,
-  fireEvent,
-  screen,
-  act,
-  waitFor
-} from '@testing-library/react';
+import { render, fireEvent, screen, act } from '@testing-library/react';
 
 import {
   useNotificationCenter,
