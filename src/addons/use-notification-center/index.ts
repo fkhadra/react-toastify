@@ -290,7 +290,7 @@ export function useNotificationCenter<Data = {}>(
       setNotifications(prev => {
         const nextState = [...prev];
         Object.assign(nextState[index], item, {
-          createdAt: Date.now()
+          createdAt: item.createdAt || Date.now()
         });
 
         return nextState.sort(sortFn.current);
