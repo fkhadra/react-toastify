@@ -39,7 +39,7 @@ export interface UseNotificationCenterParams<Data = {}> {
   sort?: SortFn<Data>;
 
   /**
-   * Keep the toast that meet the condition specified in the callback function.
+   * Keep the toast that meets the condition specified in the callback function.
    *
    * Usage:
    * ```
