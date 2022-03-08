@@ -317,7 +317,7 @@ export interface NotValidatedToastProps extends Partial<ToastProps> {
 }
 
 /**
- * @INTERAL
+ * @INTERNAL
  */
 export interface Toast {
   content: ToastContent;
