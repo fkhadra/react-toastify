@@ -11,10 +11,7 @@ jest.useFakeTimers();
 
 // Clear all previous event to avoid any clash between tests
 beforeEach(() => {
-  eventManager
-    .off(Event.Show)
-    .off(Event.Clear)
-    .off(Event.Change);
+  eventManager.off(Event.Show).off(Event.Clear).off(Event.Change);
 
   jest.spyOn(window, 'requestAnimationFrame').mockImplementation(callback => {
     callback(1);
@@ -58,7 +55,7 @@ describe('toastify', () => {
   });
 
   it('Should not use the provided invalid toastId from options', () => {
-    const toastId = (Symbol('myId') as unknown) as Id;
+    const toastId = Symbol('myId') as unknown as Id;
     const id = toast('Hello', { toastId });
 
     expect(id).not.toEqual(toastId);
@@ -104,25 +101,47 @@ describe('toastify', () => {
       expect(fn).toHaveBeenCalledTimes(1);
     });
 
-    it('The callback should receive the toasts that are displayed', done => {
+    it('The callback should receive a toast item with the status `added`', done => {
       render(<ToastContainer />);
-      toast.onChange(params => {
-        expect(params.toasts.length).toBe(1);
-        done();
+      const status = ['added', 'updated', 'removed'];
+
+      toast.onChange(toast => {
+        const currentStatus = status.shift();
+        expect(toast.status).toBe(currentStatus);
+
+        // all status testted
+        if (!status.length) {
+          done();
+        }
+      });
+      
+      const id = 'foo';
+      act(() => {
+        toast('hello', {
+          toastId: id
+        });
+        jest.runAllTimers();
       });
 
       act(() => {
-        toast('hello');
+        toast.update(id);
         jest.runAllTimers();
+      });
+
+      act(() => {
+        toast.dismiss(id);
+        jest.runAllTimers();
+        triggerAnimationEnd(screen.getByText('hello'));
       });
     });
 
     it('Should contains toast data', done => {
       render(<ToastContainer containerId="foo" />);
-      toast.onChange(({ added }) => {
-        expect(added?.content).toBe('hello');
+      toast.onChange(toast => {
+        expect(toast.content).toBe('hello');
         done();
       });
+
       act(() => {
         toast('hello');
         jest.runAllTimers();

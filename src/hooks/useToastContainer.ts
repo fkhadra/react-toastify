@@ -183,13 +183,10 @@ export function useToastContainer(props: ToastContainerProps) {
       progress: options.progress,
       role: options.role || props.role,
       deleteToast() {
-        const removed = toToastItem(toastToRender.get(toastId)!);
+        const removed = toToastItem(toastToRender.get(toastId)!, 'removed');
         toastToRender.delete(toastId);
 
-        eventManager.emit(Event.Change, {
-          toasts: Array.from(toastToRender.values(), toToastItem),
-          removed
-        });
+        eventManager.emit(Event.Change, removed);
 
         const queueLen = instance.queue.length;
         instance.count = isToastIdValid(toastId)
@@ -290,10 +287,10 @@ export function useToastContainer(props: ToastContainerProps) {
     toastToRender.set(toastId, toast);
 
     setToastIds(state => [...state, toastId].filter(id => id !== staleId));
-    eventManager.emit(Event.Change, {
-      toasts: Array.from(toastToRender.values(), toToastItem),
-      added: toToastItem(toast)
-    });
+    eventManager.emit(
+      Event.Change,
+      toToastItem(toast, toast.props.updateId == null ? 'added' : 'updated')
+    );
   }
 
   function getToastToRender<T>(

@@ -324,6 +324,8 @@ export interface Toast {
   props: ToastProps;
 }
 
+export type ToastItemStatus = 'added' | 'removed' | 'updated';
+
 export interface ToastItem<Data = {}> {
   content: React.ReactNode;
   id: Id;
@@ -333,4 +335,5 @@ export interface ToastItem<Data = {}> {
   containerId?: Id;
   data: Data;
   icon?: React.ReactNode | false;
+  status: ToastItemStatus;
 }

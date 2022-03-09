@@ -25,13 +25,7 @@ type OnClearWaitingQueue = (params: ClearWaitingQueueParams) => void;
 type OnDidMountCallback = (containerInstance: ContainerInstance) => void;
 type OnWillUnmountCallback = OnDidMountCallback;
 
-export interface OnChangePayload {
-  toasts: ToastItem[];
-  added?: ToastItem;
-  removed?: ToastItem;
-}
-
-export type OnChangeCallback = (payload: OnChangePayload) => void;
+export type OnChangeCallback = (toast: ToastItem) => void;
 
 type Callback =
   | OnShowCallback
@@ -65,7 +59,7 @@ export interface EventManager {
   emit(event: Event.ClearWaitingQueue, params: ClearWaitingQueueParams): void;
   emit(event: Event.DidMount, containerInstance: ContainerInstance): void;
   emit(event: Event.WillUnmount, containerInstance: ContainerInstance): void;
-  emit(event: Event.Change, data: OnChangePayload): void;
+  emit(event: Event.Change, data: ToastItem): void;
 }
 
 export const eventManager: EventManager = {
