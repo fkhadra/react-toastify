@@ -8,7 +8,7 @@
   opacity: 0.7;
   transition: 0.3s ease;
   align-self: flex-start;
-  
+
   &--light {
     color: #000;
     opacity: 0.3;
@@ -20,7 +20,8 @@
     width: 14px;
   }
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     opacity: 1;
   }
 }

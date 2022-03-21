@@ -1,12 +1,12 @@
 @charset "UTF-8";
 
-@import "variables";
+@import 'variables';
 
 @keyframes #{$rt-namespace}__trackProgress {
-  0%{
+  0% {
     transform: scaleX(1);
   }
-  100%{
+  100% {
     transform: scaleX(0);
   }
 }
