@@ -126,7 +126,8 @@ function handlePromise<T = unknown>(
     autoClose: null,
     closeOnClick: null,
     closeButton: null,
-    draggable: null
+    draggable: null,
+    delay: 100
   };
 
   const resolver = (
