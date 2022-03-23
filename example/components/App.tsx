@@ -193,7 +193,7 @@ class App extends React.Component {
                   Theme
                   <select
                     name="theme"
-                    id="transthemeition"
+                    id="theme"
                     onChange={this.handleRadioOrSelect}
                     value={this.state.theme}
                   >
