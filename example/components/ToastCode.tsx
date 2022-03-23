@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import { themes } from './constants';
+
 function getType(type: string) {
   switch (type) {
     case 'default':
@@ -26,6 +28,7 @@ export interface ToastCodeProps {
   type: string;
   draggable: boolean;
   progress: number;
+  theme: typeof themes[number];
 }
 
 export const ToastCode: React.FC<ToastCodeProps> = ({
@@ -37,7 +40,8 @@ export const ToastCode: React.FC<ToastCodeProps> = ({
   pauseOnHover,
   type,
   draggable,
-  progress
+  progress,
+  theme
 }) => (
   <div>
     <h3>Toast Emitter</h3>
@@ -49,6 +53,10 @@ export const ToastCode: React.FC<ToastCodeProps> = ({
       <div>
         <span className="code__props">position</span>
         {`: "${position}"`},
+      </div>
+      <div>
+        <span className="code__props">theme</span>
+        {`: "${theme}"`},
       </div>
       <div>
         <span className="code__props">autoClose</span>
