@@ -41,3 +41,5 @@ export const transitions = {
   zoom: Zoom,
   flip: Flip
 };
+
+export const themes = <const>['light', 'dark', 'colored'];
