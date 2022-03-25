@@ -253,17 +253,22 @@ toast.done = (id: Id) => {
 };
 
 /**
- * Subscribe to change when a toast is added or removed
- *
- * The callback give you access to 3 properties:
- * - toasts: an array of ToastItem[]
- * - added: when a toast is added, it contains the toast data otherwise it's `undefined`
- * - removed: when a toast is removed, it contains the toast data otherwise it's `undefined`
+ * Subscribe to change when a toast is added, removed and updated
  *
  * Usage:
  * ```
- * toast.onChange(({ toasts, added, removed }) => {
- *
+ * const unsubscribe = toast.onChange((payload) => {
+ *   switch (payload.status) {
+ *   case "added":
+ *     // new toast added
+ *     break;
+ *   case "updated":
+ *     // toast updated
+ *     break;
+ *   case "removed":
+ *     // toast has been removed
+ *     break;
+ *   }
  * })
  * ```
  */
