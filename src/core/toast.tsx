@@ -121,14 +121,48 @@ export interface ToastPromiseParams {
   error?: string | UpdateOptions;
 }
 
-function handlePromise<T>(
+async function promiseState<T>(promise: Promise<T>, callback: any) {
+  // Symbols and RegExps are never content-equal
+  var uniqueValue = window['Symbol'] ? Symbol('unique') : /unique/;
+
+  function notifyPendingOrResolved(value: any) {
+    if (value === uniqueValue) {
+      return callback('pending');
+    } else {
+      return callback('fulfilled');
+    }
+  }
+
+  function notifyRejected(reason: any) {
+    return callback('rejected');
+  }
+
+  var race = [promise, Promise.resolve(uniqueValue)];
+  await Promise.race(race).then(notifyPendingOrResolved, notifyRejected);
+}
+
+async function handlePromise<T>(
   promise: Promise<T> | (() => Promise<T>),
   { pending, error, success }: ToastPromiseParams,
   options?: ToastOptions
 ) {
   let id: Id;
 
-  if (pending) {
+  let shouldAddPendingToast = true;
+  const p = isFn(promise) ? promise() : promise;
+
+  let pendingDelay = (pending as UpdateOptions)?.delay ?? 0;
+  if (pendingDelay) {
+    await new Promise(resolve => setTimeout(resolve, pendingDelay));
+
+    await promiseState(p, function(state: any) {
+      // `state` now either "pending", "fulfilled" or "rejected"
+      shouldAddPendingToast = state === 'pending';
+    });
+  }
+
+  if (pending && shouldAddPendingToast) {
+    (pending as UpdateOptions).delay = undefined;
     id = isStr(pending)
       ? toast.loading(pending, options)
       : toast.loading(pending.render, {
@@ -182,12 +216,10 @@ function handlePromise<T>(
     return result;
   };
 
-  const p = isFn(promise) ? promise() : promise;
-
   //call the resolvers only when needed
-  p.then(result => resolver('success', success, result)).catch(err =>
-    resolver('error', error, err)
-  );
+  p.then(result => {
+    resolver('success', success, result);
+  }).catch(err => resolver('error', error, err));
 
   return p;
 }
