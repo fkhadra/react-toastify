@@ -97,7 +97,10 @@ export function cssTransition({
       node.dispatchEvent(new Event(SyntheticEvent.ENTRANCE_ANIMATION_END));
       node.removeEventListener('animationend', onEntered);
       node.removeEventListener('animationcancel', onEntered);
-      if (animationStep.current === AnimationStep.Enter) {
+      if (
+        animationStep.current === AnimationStep.Enter &&
+        e.type !== 'animationcancel'
+      ) {
         node.className = baseClassName.current!;
       }
     }
