@@ -167,7 +167,6 @@ async function handlePromise<T>(
   }
 
   if (pending && shouldAddPendingToast) {
-    (pending as UpdateOptions).delay = undefined;
     id = isStr(pending)
       ? toast.loading(pending, options)
       : toast.loading(pending.render, {
