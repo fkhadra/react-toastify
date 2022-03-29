@@ -34,6 +34,7 @@
     "style-injector": "style2js --out-dir dist dist/ReactToastify.min.css",
     "prebuild": "npm run clean",
     "build": "npm run build:core && npm run build:addons && npm run style && husky install",
+    "build-ci": "npm run build:core && npm run build:addons && npm run style",
     "build:core": "microbundle --jsx React.createElement",
     "build:debug": "microbundle --jsx React.createElement --compress false",
     "build:addons": "node build-addons.mjs",
