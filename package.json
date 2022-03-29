@@ -34,12 +34,11 @@
     "style-injector": "style2js --out-dir dist dist/ReactToastify.min.css",
     "prebuild": "npm run clean",
     "build": "npm run build:core && npm run build:addons && npm run style && husky install",
-    "build-ci": "npm run build:core && npm run build:addons && npm run style",
     "build:core": "microbundle --jsx React.createElement",
     "build:debug": "microbundle --jsx React.createElement --compress false",
     "build:addons": "node build-addons.mjs",
     "build:addons-debug": "node build-addons.mjs debug",
-    "setup:dev": "npm run build && yarn pack -f react-toastify.tgz && npm run rm-pkg && npm run extract-pkg",
+    "setup": "npm run build && yarn pack -f react-toastify.tgz && npm run rm-pkg && npm run extract-pkg",
     "rm-pkg": "rimraf node_modules/react-toastify && mkdir -p node_modules/react-toastify",
     "extract-pkg": "tar xzvf react-toastify.tgz -C node_modules/react-toastify --strip-components 1 && rimraf react-toastify.tgz"
   },
