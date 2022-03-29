@@ -134,6 +134,7 @@ async function promiseState<T>(promise: Promise<T>, callback: any) {
   }
 
   function notifyRejected(reason: any) {
+    console.log(reason);
     return callback('rejected');
   }
 
@@ -217,9 +218,9 @@ async function handlePromise<T>(
   };
 
   //call the resolvers only when needed
-  p.then(result => {
-    resolver('success', success, result);
-  }).catch(err => resolver('error', error, err));
+  p.then(result => resolver('success', success, result)).catch(err =>
+    resolver('error', error, err)
+  );
 
   return p;
 }
