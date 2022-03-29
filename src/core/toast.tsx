@@ -154,12 +154,16 @@ async function handlePromise<T>(
 
   let pendingDelay = (pending as UpdateOptions)?.delay ?? 0;
   if (pendingDelay) {
-    await new Promise(resolve => setTimeout(resolve, pendingDelay));
+    var startTime = performance.now();
+    var endTime = startTime + pendingDelay;
 
-    await promiseState(p, function(state: any) {
-      // `state` now either "pending", "fulfilled" or "rejected"
-      shouldAddPendingToast = state === 'pending';
-    });
+    while (performance.now() < endTime && shouldAddPendingToast === true) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+      await promiseState(p, function(state: any) {
+        // `state` now either "pending", "fulfilled" or "rejected"
+        shouldAddPendingToast = state === 'pending';
+      });
+    }
   }
 
   if (pending && shouldAddPendingToast) {
