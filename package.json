@@ -1,5 +1,5 @@
 {
-  "version": "8.2.0",
+  "version": "8.2.2",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -57,7 +57,7 @@
       "/src/index.tsx"
     ]
   },
-  "name": "react-toastify",
+  "name": "potassium-react-toastify",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fkhadra/react-toastify.git"
