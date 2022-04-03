@@ -69,9 +69,9 @@ describe('ToastContainer', () => {
     act(() => {
       toast.dismiss();
       jest.runAllTimers();
-
-      triggerAnimationEnd(toasts);
     });
+
+    triggerAnimationEnd(toasts);
 
     expect(screen.queryAllByText(/coucou/).length).toBe(0);
   });
@@ -93,9 +93,9 @@ describe('ToastContainer', () => {
     act(() => {
       toast.dismiss(0);
       jest.runAllTimers();
-
-      triggerAnimationEnd(screen.getByText('toast id 0'));
     });
+
+    triggerAnimationEnd(screen.getByText('toast id 0'));
 
     expect(screen.getAllByText(/toast id/).length).toBe(1);
   });
@@ -211,8 +211,9 @@ describe('ToastContainer', () => {
     act(() => {
       toast.dismiss();
       jest.runAllTimers();
-      triggerAnimationEnd(screen.getByText('hello'));
     });
+
+    triggerAnimationEnd(screen.getByText('hello'));
 
     act(() => {
       toast('hello', {
@@ -331,8 +332,9 @@ describe('ToastContainer', () => {
     act(() => {
       fireEvent.click(screen.getByLabelText('close'));
       jest.runAllTimers();
-      triggerAnimationEnd(screen.getByText('hello'));
     });
+
+    triggerAnimationEnd(screen.getByText('hello'));
 
     expect(screen.queryByText('hello')).toBe(null);
   });
@@ -482,8 +484,9 @@ describe('ToastContainer', () => {
       act(() => {
         toast.dismiss(toastId);
         jest.runAllTimers();
-        triggerAnimationEnd(screen.getByText('toast-1'));
       });
+
+      triggerAnimationEnd(screen.getByText('toast-1'));
 
       expect(screen.queryByText('toast-1')).toBe(null);
 
@@ -519,8 +522,9 @@ describe('ToastContainer', () => {
       act(() => {
         toast.dismiss(toastId);
         jest.runAllTimers();
-        triggerAnimationEnd(screen.getByText('toast-1'));
       });
+
+      triggerAnimationEnd(screen.getByText('toast-1'));
 
       expect(screen.queryByText('toast-1')).toBe(null);
 
