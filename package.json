@@ -24,7 +24,7 @@
     "test": "tsdx test --passWithNoTests",
     "test:coverage": "tsdx test --coverage",
     "lint": "tsdx lint src",
-    "prepare": "tsdx build && npm run style",
+    "prepare": "tsdx build --format cjs,esm,umd && npm run style",
     "sass": "sass scss/main.scss dist/ReactToastify.css",
     "sass-minimal": "sass scss/minimal.scss dist/ReactToastify.minimal.css",
     "postsass": "postcss dist/ReactToastify.css --use autoprefixer -m -o dist/ReactToastify.css",
