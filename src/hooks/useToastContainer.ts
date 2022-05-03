@@ -14,7 +14,8 @@ import {
   isNum,
   isStr,
   isToastIdValid,
-  getAutoCloseDelay
+  getAutoCloseDelay,
+  toToastItem
 } from '../utils';
 import { eventManager, Event } from '../core/eventManager';
 
@@ -29,6 +30,7 @@ import {
   NotValidatedToastProps,
   ToastTransition
 } from '../types';
+import { Icons } from '../components/Icons';
 
 interface QueuedToast {
   toastContent: ToastContent;
@@ -77,13 +79,9 @@ export function useToastContainer(props: ToastContainerProps) {
   }, []);
 
   useEffect(() => {
+    instance.props = props;
     instance.isToastActive = isToastActive;
     instance.displayedToast = toastIds.length;
-    eventManager.emit(Event.Change, toastIds.length, props.containerId);
-  }, [toastIds]);
-
-  useEffect(() => {
-    instance.props = props;
   });
 
   function clearWaitingQueue({ containerId }: ClearWaitingQueueParams) {
@@ -101,11 +99,8 @@ export function useToastContainer(props: ToastContainerProps) {
   }
 
   function dequeueToast() {
-    const {
-      toastContent,
-      toastProps,
-      staleId
-    } = instance.queue.shift() as QueuedToast;
+    const { toastContent, toastProps, staleId } =
+      instance.queue.shift() as QueuedToast;
     appendToast(toastContent, toastProps, staleId);
   }
 
@@ -140,6 +135,7 @@ export function useToastContainer(props: ToastContainerProps) {
     const toastProps: ToastProps = {
       toastId,
       updateId,
+      containerId: options.containerId,
       isLoading: options.isLoading,
       theme: options.theme || props.theme!,
       icon: options.icon != null ? options.icon : props.icon,
@@ -187,7 +183,11 @@ export function useToastContainer(props: ToastContainerProps) {
       progress: options.progress,
       role: options.role || props.role,
       deleteToast() {
+        const removed = toToastItem(toastToRender.get(toastId)!, 'removed');
         toastToRender.delete(toastId);
+
+        eventManager.emit(Event.Change, removed);
+
         const queueLen = instance.queue.length;
         instance.count = isToastIdValid(toastId)
           ? instance.count - 1
@@ -212,6 +212,22 @@ export function useToastContainer(props: ToastContainerProps) {
         }
       }
     };
+
+    const maybeIcon = Icons[toastProps.type as keyof typeof Icons];
+    const iconProps = { theme: toastProps.theme, type: toastProps.type };
+    toastProps.icon = maybeIcon && maybeIcon(iconProps);
+
+    if (toastProps.icon === false) {
+      toastProps.icon = void 0;
+    } else if (isFn(toastProps.icon)) {
+      toastProps.icon = toastProps.icon(iconProps);
+    } else if (isValidElement(toastProps.icon)) {
+      toastProps.icon = cloneElement(toastProps.icon, iconProps);
+    } else if (isStr(toastProps.icon)) {
+      toastProps.icon = toastProps.icon;
+    } else if (toastProps.isLoading) {
+      toastProps.icon = Icons.spinner();
+    }
 
     if (isFn(options.onOpen)) toastProps.onOpen = options.onOpen;
     if (isFn(options.onClose)) toastProps.onClose = options.onClose;
@@ -246,7 +262,7 @@ export function useToastContainer(props: ToastContainerProps) {
       isNotAnUpdate
     ) {
       instance.queue.push({ toastContent, toastProps, staleId });
-    } else if (isNum(delay) && (delay as number) > 0) {
+    } else if (isNum(delay)) {
       setTimeout(() => {
         appendToast(toastContent, toastProps, staleId);
       }, delay);
@@ -264,11 +280,17 @@ export function useToastContainer(props: ToastContainerProps) {
 
     if (staleId) toastToRender.delete(staleId);
 
-    toastToRender.set(toastId, {
+    const toast = {
       content,
       props: toastProps
-    });
+    };
+    toastToRender.set(toastId, toast);
+
     setToastIds(state => [...state, toastId].filter(id => id !== staleId));
+    eventManager.emit(
+      Event.Change,
+      toToastItem(toast, toast.props.updateId == null ? 'added' : 'updated')
+    );
   }
 
   function getToastToRender<T>(

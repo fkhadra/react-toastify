@@ -1,4 +1,4 @@
-import { fireEvent } from '@testing-library/react';
+import { act, fireEvent } from '@testing-library/react';
 import { Default } from '../src/utils';
 
 export const cssClasses = {
@@ -10,15 +10,17 @@ export const cssClasses = {
 };
 
 export function triggerAnimationEnd(node: HTMLElement | HTMLElement[]) {
-  if (Array.isArray(node)) {
-    node.forEach(el => {
-      fireEvent.animationEnd(el.parentNode!);
-    });
-  } else {
-    fireEvent.animationEnd(node.parentNode!);
-  }
+  act(() => {
+    if (Array.isArray(node)) {
+      node.forEach(el => {
+        fireEvent.animationEnd(el.parentNode!);
+      });
+    } else {
+      fireEvent.animationEnd(node.parentNode!);
+    }
 
-  jest.runAllTimers();
+    jest.runAllTimers();
+  });
 }
 
 export function waitForUseEffectCleanup(fn: () => void) {

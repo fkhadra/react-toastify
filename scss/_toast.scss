@@ -50,3 +50,15 @@
     border-radius: 0;
   }
 }
+
+.f {
+  --y: calc(var(--len) - var(--nth));
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  transform: translate3d(0, calc(var(--y) * -40%), 0)
+    scale(calc(1 - 0.05 * var(--y)));
+  transition: all 0.3s;
+  min-height: 80px;
+}

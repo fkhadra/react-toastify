@@ -1,19 +1,14 @@
-import * as React from 'react';
+import React from 'react';
 import cx from 'clsx';
 
 import { ProgressBar } from './ProgressBar';
-import { Icons } from './Icons';
 import { ToastProps } from '../types';
-import { Default, isFn, isStr } from '../utils';
-import { useToast } from '../hooks';
+import { Default, isFn } from '../utils';
+import { useToast } from '../hooks/useToast';
 
 export const Toast: React.FC<ToastProps> = props => {
-  const {
-    isRunning,
-    preventExitTransition,
-    toastRef,
-    eventHandlers
-  } = useToast(props);
+  const { isRunning, preventExitTransition, toastRef, eventHandlers } =
+    useToast(props);
   const {
     closeButton,
     children,
@@ -38,7 +33,7 @@ export const Toast: React.FC<ToastProps> = props => {
     deleteToast,
     isIn,
     isLoading,
-    icon,
+    icon: Icon,
     theme
   } = props;
   const defaultClassName = cx(
@@ -58,21 +53,6 @@ export const Toast: React.FC<ToastProps> = props => {
       })
     : cx(defaultClassName, className);
   const isProgressControlled = !!progress;
-  const maybeIcon = Icons[type as keyof typeof Icons];
-  const iconProps = { theme, type };
-  let Icon: React.ReactNode = maybeIcon && maybeIcon(iconProps);
-
-  if (icon === false) {
-    Icon = void 0;
-  } else if (isFn(icon)) {
-    Icon = icon(iconProps);
-  } else if (React.isValidElement(icon)) {
-    Icon = React.cloneElement(icon, iconProps);
-  } else if (isStr(icon)) {
-    Icon = icon;
-  } else if (isLoading) {
-    Icon = Icons.spinner();
-  }
 
   function renderCloseButton(closeButton: any) {
     if (!closeButton) return;
@@ -113,7 +93,8 @@ export const Toast: React.FC<ToastProps> = props => {
           {Icon && (
             <div
               className={cx(`${Default.CSS_NAMESPACE}__toast-icon`, {
-                [`${Default.CSS_NAMESPACE}--animate-icon ${Default.CSS_NAMESPACE}__zoom-enter`]: !isLoading
+                [`${Default.CSS_NAMESPACE}--animate-icon ${Default.CSS_NAMESPACE}__zoom-enter`]:
+                  !isLoading
               })}
             >
               {Icon}

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 type Nullable<T> = {
   [P in keyof T]: T[P] | null;
@@ -22,9 +22,9 @@ export interface ToastContentProps<Data = {}> {
   data?: Data;
 }
 
-export type ToastContent =
+export type ToastContent<T = unknown> =
   | React.ReactNode
-  | ((props: ToastContentProps) => React.ReactNode);
+  | ((props: ToastContentProps<T>) => React.ReactNode);
 
 export type Id = number | string;
 
@@ -231,12 +231,12 @@ export interface ToastOptions<Data = {}> extends CommonOptions {
   data?: Data;
 }
 
-export interface UpdateOptions extends Nullable<ToastOptions> {
+export interface UpdateOptions<T = unknown> extends Nullable<ToastOptions<T>> {
   /**
    * Used to update a toast.
    * Pass any valid ReactNode(string, number, component)
    */
-  render?: ToastContent;
+  render?: ToastContent<T>;
 }
 
 export interface ToastContainerProps extends CommonOptions {
@@ -317,9 +317,23 @@ export interface NotValidatedToastProps extends Partial<ToastProps> {
 }
 
 /**
- * @INTERAL
+ * @INTERNAL
  */
 export interface Toast {
   content: ToastContent;
   props: ToastProps;
+}
+
+export type ToastItemStatus = 'added' | 'removed' | 'updated';
+
+export interface ToastItem<Data = {}> {
+  content: React.ReactNode;
+  id: Id;
+  theme?: Theme;
+  type?: TypeOptions;
+  isLoading?: boolean;
+  containerId?: Id;
+  data: Data;
+  icon?: React.ReactNode | false;
+  status: ToastItemStatus;
 }

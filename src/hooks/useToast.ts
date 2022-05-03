@@ -181,8 +181,9 @@ export function useToast(props: ToastProps) {
       // prevent false positif during a toast click
       if (drag.start !== drag.x) drag.canCloseOnClick = false;
       toast.style.transform = `translate${props.draggableDirection}(${drag.delta}px)`;
-      toast.style.opacity = `${1 -
-        Math.abs(drag.delta / drag.removalDistance)}`;
+      toast.style.opacity = `${
+        1 - Math.abs(drag.delta / drag.removalDistance)
+      }`;
     }
   }
 

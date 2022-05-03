@@ -25,5 +25,6 @@ export {
   UpdateOptions,
   ToastContainerProps,
   ToastTransitionProps,
-  Id
+  Id,
+  ToastItem
 } from './types';

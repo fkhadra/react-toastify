@@ -8,6 +8,7 @@ Please note we have a code of conduct, please follow it in all your interactions
 
 ## General Guidelines
 
+- Before starting to work on something, please open an issue first
 - If adding a new feature, write the corresponding test
 - Ensure that nothing get broke. You can use the playground for that
 - If applicable, update the [documentation](https://github.com/fkhadra/react-toastify-doc)
@@ -19,7 +20,7 @@ Please note we have a code of conduct, please follow it in all your interactions
 
 ### Pre-requisites
 
-- *Node:* `^9.0.0`
+- *Node:* `^16.0.0`
 - *Yarn*
 
 ### Install
@@ -36,7 +37,9 @@ git checkout -b my-branch
 Install dependencies:
 
 ```sh
-yarn install
+yarn install 
+// then
+yarn setup
 ```
 
 ## Developing
@@ -52,7 +55,7 @@ yarn start
 yarn test
 
 # Prettify all the things
-yarn prettier-all
+yarn prettier
 ```
 
 ### Project structure
@@ -67,7 +70,7 @@ The playground let you test your changes, it's like the demo of react-toastify. 
 
 #### Src
 
-- [toast:](https://github.com/fkhadra/react-toastify/blob/master/src/core/toast.tsx) Contain the exposed api (`toast.success...`).
+- [toast:](https://github.com/fkhadra/react-toastify/blob/master/src/core/toast.ts) Contain the exposed api (`toast.success...`).
 
 - [eventManager:](https://github.com/fkhadra/react-toastify/blob/master/src/core/eventManager.ts) 
 This is the glue between `toast` and `ToastContainer`. In fact, it is just a dead simple pubsub.

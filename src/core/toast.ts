@@ -1,21 +1,16 @@
-import * as React from 'react';
-import { render } from 'react-dom';
-
-import { POSITION, TYPE, canUseDom, isStr, isNum, isFn } from '../utils';
+import { POSITION, TYPE, isStr, isNum, isFn } from '../utils';
 import { eventManager, OnChangeCallback, Event } from './eventManager';
 import {
   ToastContent,
   ToastOptions,
   ToastProps,
   Id,
-  ToastContainerProps,
   UpdateOptions,
   ClearWaitingQueueParams,
   NotValidatedToastProps,
   TypeOptions
 } from '../types';
 import { ContainerInstance } from '../hooks';
-import { ToastContainer } from '../components';
 
 interface EnqueuedToast {
   content: ToastContent;
@@ -24,10 +19,7 @@ interface EnqueuedToast {
 
 let containers = new Map<ContainerInstance | Id, ContainerInstance>();
 let latestInstance: ContainerInstance | Id;
-let containerDomNode: HTMLElement;
-let containerConfig: ToastContainerProps;
 let queue: EnqueuedToast[] = [];
-let lazy = false;
 
 /**
  * Get the toast by id, given it's in the DOM, otherwise returns null
@@ -43,9 +35,7 @@ function getToast(toastId: Id, { containerId }: ToastOptions) {
  * Generate a random toastId
  */
 function generateToastId() {
-  return Math.random()
-    .toString(36)
-    .substring(2, 9);
+  return Math.random().toString(36).substring(2, 9);
 }
 
 /**
@@ -71,12 +61,6 @@ function dispatchToast(
     eventManager.emit(Event.Show, content, options);
   } else {
     queue.push({ content, options });
-    if (lazy && canUseDom) {
-      lazy = false;
-      containerDomNode = document.createElement('div');
-      document.body.appendChild(containerDomNode);
-      render(<ToastContainer {...containerConfig} />, containerDomNode);
-    }
   }
 
   return options.toastId;
@@ -115,15 +99,15 @@ toast.loading = (content: ToastContent, options?: ToastOptions) =>
     })
   );
 
-export interface ToastPromiseParams {
-  pending?: string | UpdateOptions;
-  success?: string | UpdateOptions;
-  error?: string | UpdateOptions;
+export interface ToastPromiseParams<T = unknown> {
+  pending?: string | UpdateOptions<void>;
+  success?: string | UpdateOptions<T>;
+  error?: string | UpdateOptions<any>;
 }
 
-function handlePromise<T>(
+function handlePromise<T = unknown>(
   promise: Promise<T> | (() => Promise<T>),
-  { pending, error, success }: ToastPromiseParams,
+  { pending, error, success }: ToastPromiseParams<T>,
   options?: ToastOptions
 ) {
   let id: Id;
@@ -142,12 +126,13 @@ function handlePromise<T>(
     autoClose: null,
     closeOnClick: null,
     closeButton: null,
-    draggable: null
+    draggable: null,
+    delay: 100
   };
 
   const resolver = (
     type: TypeOptions,
-    input: string | UpdateOptions | undefined,
+    input: string | UpdateOptions<T> | undefined,
     result: T
   ) => {
     // Remove the toast if the input has not been provided. This prevents the toast from hanging
@@ -268,30 +253,30 @@ toast.done = (id: Id) => {
 };
 
 /**
- * @deprecated
- * API will change in the next major release
+ * Subscribe to change when a toast is added, removed and updated
  *
- * Track changes. The callback get the number of toast displayed
+ * Usage:
+ * ```
+ * const unsubscribe = toast.onChange((payload) => {
+ *   switch (payload.status) {
+ *   case "added":
+ *     // new toast added
+ *     break;
+ *   case "updated":
+ *     // toast updated
+ *     break;
+ *   case "removed":
+ *     // toast has been removed
+ *     break;
+ *   }
+ * })
+ * ```
  */
 toast.onChange = (callback: OnChangeCallback) => {
-  if (isFn(callback)) {
-    eventManager.on(Event.Change, callback);
-  }
+  eventManager.on(Event.Change, callback);
   return () => {
-    isFn(callback) && eventManager.off(Event.Change, callback);
+    eventManager.off(Event.Change, callback);
   };
-};
-
-/**
- * @deprecated
- * will be removed in the next major release
- *
- * Configure the ToastContainer when lazy mounted
- * Prefer ToastContainer over this one
- */
-toast.configure = (config: ToastContainerProps = {}) => {
-  lazy = true;
-  containerConfig = config;
 };
 
 toast.POSITION = POSITION;
@@ -320,10 +305,6 @@ eventManager
         .off(Event.Show)
         .off(Event.Clear)
         .off(Event.ClearWaitingQueue);
-    }
-
-    if (canUseDom && containerDomNode) {
-      document.body.removeChild(containerDomNode);
     }
   });
 

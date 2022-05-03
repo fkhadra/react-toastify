@@ -2,7 +2,8 @@ import {
   Id,
   ToastContent,
   ClearWaitingQueueParams,
-  NotValidatedToastProps
+  NotValidatedToastProps,
+  ToastItem
 } from '../types';
 import { ContainerInstance } from '../hooks';
 
@@ -23,10 +24,9 @@ type OnClearCallback = (id?: Id) => void;
 type OnClearWaitingQueue = (params: ClearWaitingQueueParams) => void;
 type OnDidMountCallback = (containerInstance: ContainerInstance) => void;
 type OnWillUnmountCallback = OnDidMountCallback;
-export type OnChangeCallback = (
-  toast: number,
-  containerId?: number | string
-) => void;
+
+export type OnChangeCallback = (toast: ToastItem) => void;
+
 type Callback =
   | OnShowCallback
   | OnClearCallback
@@ -59,7 +59,7 @@ export interface EventManager {
   emit(event: Event.ClearWaitingQueue, params: ClearWaitingQueueParams): void;
   emit(event: Event.DidMount, containerInstance: ContainerInstance): void;
   emit(event: Event.WillUnmount, containerInstance: ContainerInstance): void;
-  emit(event: Event.Change, toast: number, containerId?: number | string): void;
+  emit(event: Event.Change, data: ToastItem): void;
 }
 
 export const eventManager: EventManager = {

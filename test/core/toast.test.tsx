@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { render, act, screen } from '@testing-library/react';
 
-import { cssClasses, triggerAnimationEnd } from '../helpers';
+import { triggerAnimationEnd } from '../helpers';
 import { eventManager, toast, Event } from '../../src/core';
-import { ContainerInstance } from '../../src/hooks';
 import { cssTransition } from '../../src/utils';
 import { Id } from '../../src/types';
 import { ToastContainer } from '../../src/components';
@@ -12,10 +11,7 @@ jest.useFakeTimers();
 
 // Clear all previous event to avoid any clash between tests
 beforeEach(() => {
-  eventManager
-    .off(Event.Show)
-    .off(Event.Clear)
-    .off(Event.Change);
+  eventManager.off(Event.Show).off(Event.Clear).off(Event.Change);
 
   jest.spyOn(window, 'requestAnimationFrame').mockImplementation(callback => {
     callback(1);
@@ -25,35 +21,8 @@ beforeEach(() => {
 
 afterEach(() => {
   (window.requestAnimationFrame as jest.Mock).mockRestore();
+  jest.clearAllTimers();
 });
-
-const containerId = 'foo';
-const containerInstance: ContainerInstance = {
-  count: 0,
-  queue: [],
-  containerId,
-  displayedToast: 0,
-  props: {},
-  toastKey: 1,
-  getToast: jest.fn(),
-  isToastActive: jest.fn()
-};
-
-function expectContainerNotToBeMounted() {
-  expect(document.querySelector(cssClasses.container)).toBe(null);
-}
-
-function expectContainerToBeMounted() {
-  expect(document.querySelector(cssClasses.container)).not.toBe(null);
-}
-
-function unmountLazyContainer() {
-  act(() => {
-    eventManager.emit(Event.WillUnmount, containerInstance);
-    jest.runAllTimers();
-  });
-  expectContainerNotToBeMounted();
-}
 
 describe('toastify', () => {
   it('Should not crash if no container is mounted', () => {
@@ -61,52 +30,6 @@ describe('toastify', () => {
       toast('hello');
     });
     expect(screen.queryByText(/hello/)).toBe(null);
-  });
-
-  it('Should lazy mount a ToastContainer if it is not mounted, when opt-in', () => {
-    expectContainerNotToBeMounted();
-    toast.configure({
-      containerId
-    });
-
-    act(() => {
-      toast('hello');
-      jest.runAllTimers();
-    });
-    expectContainerToBeMounted();
-    unmountLazyContainer();
-  });
-
-  it('Should mount only one ToastContainer when using lazy container', () => {
-    expectContainerNotToBeMounted();
-    toast.configure({
-      containerId
-    });
-    act(() => {
-      toast('hello');
-      toast('hello');
-      jest.runAllTimers();
-    });
-
-    expect(document.querySelectorAll(cssClasses.container)).toHaveLength(1);
-    unmountLazyContainer();
-  });
-
-  it("Should be possible to configure the ToastContainer even when it's lazy mounted", () => {
-    expectContainerNotToBeMounted();
-    toast.configure({
-      containerId,
-      rtl: true
-    });
-
-    act(() => {
-      toast('hello');
-      jest.runAllTimers();
-    });
-
-    expectContainerToBeMounted();
-    expect(document.querySelector(cssClasses.rtl)).not.toBe(null);
-    unmountLazyContainer();
   });
 
   it('Should return a new id each time we emit a notification', () => {
@@ -133,7 +56,7 @@ describe('toastify', () => {
   });
 
   it('Should not use the provided invalid toastId from options', () => {
-    const toastId = (Symbol('myId') as unknown) as Id;
+    const toastId = Symbol('myId') as unknown as Id;
     const id = toast('Hello', { toastId });
 
     expect(id).not.toEqual(toastId);
@@ -179,25 +102,48 @@ describe('toastify', () => {
       expect(fn).toHaveBeenCalledTimes(1);
     });
 
-    it('The callback should receive the number of toast displayed', done => {
+    it('The callback should receive a toast item with the status `added`', done => {
       render(<ToastContainer />);
-      toast.onChange(count => {
-        expect(count).toBe(1);
-        done();
+      const status = ['added', 'updated', 'removed'];
+
+      toast.onChange(toast => {
+        const currentStatus = status.shift();
+        expect(toast.status).toBe(currentStatus);
+
+        // all status testted
+        if (!status.length) {
+          done();
+        }
+      });
+
+      const id = 'foo';
+      act(() => {
+        toast('hello', {
+          toastId: id
+        });
+        jest.runAllTimers();
       });
 
       act(() => {
-        toast('hello');
+        toast.update(id);
         jest.runAllTimers();
       });
+
+      act(() => {
+        toast.dismiss(id);
+        jest.runAllTimers();
+      });
+
+      triggerAnimationEnd(screen.getByText('hello'));
     });
 
-    it('Should pass containerId as second arg if set', done => {
+    it('Should contains toast data', done => {
       render(<ToastContainer containerId="foo" />);
-      toast.onChange((_count, containerId) => {
-        expect(containerId).toBe('foo');
+      toast.onChange(toast => {
+        expect(toast.content).toBe('hello');
         done();
       });
+
       act(() => {
         toast('hello');
         jest.runAllTimers();
@@ -218,8 +164,9 @@ describe('toastify', () => {
     act(() => {
       toast.dismiss(id);
       jest.runAllTimers();
-      triggerAnimationEnd(screen.getByText('hello'));
     });
+
+    triggerAnimationEnd(screen.getByText('hello'));
 
     expect(screen.queryByText('hello')).toBe(null);
   });
@@ -386,35 +333,34 @@ describe('toastify', () => {
       expect(toast.isActive(1)).toBe(false);
     });
 
-    it('Should be able to tell if a toast is active based on the id as soon as the container is mounted', done => {
+    it('Should be able to tell if a toast is active based on the id as soon as the container is mounted', () => {
       render(<ToastContainer />);
       let id;
 
       act(() => {
         id = toast('hello');
         jest.runAllTimers();
-        expect(toast.isActive(id)).toBe(true);
-        done();
       });
+
+      expect(toast.isActive(id)).toBe(true);
     });
 
-    it('Should work with multi container', done => {
+    it('Should work with multi container', () => {
       render(
         <>
           <ToastContainer containerId="first" enableMultiContainer />
           <ToastContainer containerId="second" enableMultiContainer />
         </>
       );
-
+      let firstId: string | number, secondId: string | number;
       act(() => {
-        const firstId = toast('hello first', { containerId: 'first' });
-        const secondId = toast('hello second', { containerId: 'second' });
+        firstId = toast('hello first', { containerId: 'first' });
+        secondId = toast('hello second', { containerId: 'second' });
         jest.runAllTimers();
-
-        expect(toast.isActive(firstId)).toBe(true);
-        expect(toast.isActive(secondId)).toBe(true);
-        done();
       });
+
+      expect(toast.isActive(firstId)).toBe(true);
+      expect(toast.isActive(secondId)).toBe(true);
     });
   });
 
@@ -509,8 +455,9 @@ describe('toastify', () => {
     act(() => {
       toast.dismiss(id);
       jest.runAllTimers();
-      triggerAnimationEnd(screen.getByText('hello'));
     });
+
+    triggerAnimationEnd(screen.getByText('hello'));
 
     expect(screen.queryByText('hello')).toBe(null);
   });

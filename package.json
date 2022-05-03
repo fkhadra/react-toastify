@@ -1,7 +1,6 @@
 {
-  "version": "8.2.0",
+  "version": "9.0.0-rc-2",
   "license": "MIT",
-  "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "description": "React notification made easy",
   "keywords": [
@@ -15,46 +14,74 @@
   ],
   "files": [
     "dist",
+    "addons",
     "scss"
   ],
   "sideEffects": true,
   "scripts": {
     "start": "cd example && npm run start",
-    "build": "npm run prepare",
-    "test": "tsdx test --passWithNoTests",
-    "test:coverage": "tsdx test --coverage",
-    "lint": "tsdx lint src",
-    "prepare": "tsdx build && npm run style",
+    "test": "jest",
+    "clean": "rimraf dist && rimraf addons",
+    "test:coverage": "yarn test --coverage",
+    "lint": "eslint \"src/**/*.{ts,tsx}\"",
+    "prettier": "prettier --write src",
+    "prettier-scss": "prettier --write scss",
     "sass": "sass scss/main.scss dist/ReactToastify.css",
     "sass-minimal": "sass scss/minimal.scss dist/ReactToastify.minimal.css",
     "postsass": "postcss dist/ReactToastify.css --use autoprefixer -m -o dist/ReactToastify.css",
     "postsass-minimal": "cssnano dist/ReactToastify.minimal.css dist/ReactToastify.minimal.css --no-zindex --no-reduceIdents",
     "style": "npm run sass && npm run sass-minimal && cssnano dist/ReactToastify.css dist/ReactToastify.min.css --no-zindex --no-reduceIdents && npm run style-injector",
-    "style-injector": "style2js --out-dir dist dist/ReactToastify.min.css"
+    "style-injector": "style2js --out-dir dist dist/ReactToastify.min.css",
+    "build": "npm run clean && npm run build:core && npm run pack-and-extract && npm run build:addons && npm run style && husky install",
+    "build:core": "microbundle --jsx React.createElement",
+    "build:debug": "microbundle --jsx React.createElement --compress false",
+    "build:addons": "node build-addons.mjs",
+    "build:addons-debug": "node build-addons.mjs debug",
+    "setup": "npm run clean && npm run build && npm run pack-and-extract",
+    "pack-and-extract": "yarn pack -f react-toastify.tgz && npm run rm-pkg && npm run extract-pkg",
+    "rm-pkg": "rimraf node_modules/react-toastify && mkdir -p node_modules/react-toastify",
+    "extract-pkg": "tar xzvf react-toastify.tgz -C node_modules/react-toastify --strip-components 1 && rimraf react-toastify.tgz"
   },
   "peerDependencies": {
     "react": ">=16",
     "react-dom": ">=16"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint"
-    }
-  },
   "prettier": {
     "printWidth": 80,
     "semi": true,
-    "singleQuote": true
-  },
-  "eslint": {
-    "rules": {
-      "react-hooks/exhaustive-deps": "warn"
-    }
+    "singleQuote": true,
+    "trailingComma": "none",
+    "arrowParens": "avoid"
   },
   "jest": {
     "verbose": true,
+    "globals": {
+      "ts-jest": {
+        "isolatedModules": true
+      }
+    },
     "coveragePathIgnorePatterns": [
       "/src/index.tsx"
+    ],
+    "roots": [
+      "<rootDir>/test"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "setupFilesAfterEnv": [
+      "@testing-library/jest-dom/extend-expect"
+    ],
+    "testRegex": "(.+(test|spec))\\.tsx?$",
+    "testEnvironment": "jsdom",
+    "testRunner": "jest-jasmine2",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
     ]
   },
   "name": "react-toastify",
@@ -67,27 +94,70 @@
     "url": "https://github.com/fkhadra/react-toastify/issues"
   },
   "homepage": "https://github.com/fkhadra/react-toastify#readme",
-  "module": "dist/react-toastify.esm.js",
   "devDependencies": {
-    "@testing-library/react": "^12.0.0",
-    "@types/jest": "^24.9.0",
-    "@types/react": "^17.0.19",
-    "@types/react-dom": "^17.0.9",
+    "@testing-library/jest-dom": "^5.16.3",
+    "@testing-library/react": "^13.0.0",
+    "@types/jest": "^27.4.1",
+    "@types/react": "^17.0.43",
+    "@types/react-dom": "^17.0.14",
+    "@typescript-eslint/eslint-plugin": "^5.17.0",
+    "@typescript-eslint/parser": "^5.17.0",
     "coveralls": "^3.0.9",
-    "cssnano": "^4.1.10",
+    "cssnano": "^5.1.7",
     "cssnano-cli": "^1.0.5",
-    "husky": "^4.2.0",
-    "postcss": "^8.2.13",
-    "postcss-cli": "^7.1.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "sass": "^1.26.0",
+    "eslint": "^8.12.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-react": "^7.29.4",
+    "eslint-plugin-react-hooks": "^4.4.0",
+    "husky": "^7.0.0",
+    "jest": "^27.5.1",
+    "microbundle": "^0.14.2",
+    "postcss": "^8.4.12",
+    "postcss-cli": "^9.1.0",
+    "prettier": "2.6.1",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "rimraf": "^3.0.2",
+    "sass": "^1.49.11",
     "style2js": "^1.0.0",
-    "tsdx": "^0.14.1",
+    "ts-jest": "^27.1.4",
     "tslib": "^2.3.1",
-    "typescript": "^4.3.5"
+    "typescript": "^4.6.3"
   },
   "dependencies": {
     "clsx": "^1.1.1"
+  },
+  "main": "dist/react-toastify.js",
+  "module": "dist/react-toastify.esm.js",
+  "umd:main": "dist/react-toastify.umd.js",
+  "unpkg": "dist/react-toastify.umd.js",
+  "source": "src/index.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/react-toastify.js",
+      "import": "./dist/react-toastify.esm.js",
+      "umd": "./dist/react-toastify.umd.js"
+    },
+    "./dist/ReactToastify.min.css": "./dist/ReactToastify.min.css",
+    "./dist/ReactToastify.css": "./dist/ReactToastify.css",
+    "./dist/ReactToastify.minimal.css": "./dist/ReactToastify.minimal.css",
+    "./ReactToastify.min.css": "./dist/ReactToastify.min.css",
+    "./ReactToastify.css": "./dist/ReactToastify.css",
+    "./ReactToastify.minimal.css": "./dist/ReactToastify.minimal.css",
+    "./dist/inject-style": {
+      "require": "./dist/inject-style.js",
+      "import": "./dist/inject-style.esm.js"
+    },
+    "./inject-style": {
+      "require": "./dist/inject-style.js",
+      "import": "./dist/inject-style.esm.js"
+    },
+    "./package.json": "./package.json",
+    "./scss": "./scss",
+    "./addons/use-notification-center": {
+      "require": "./addons/use-notification-center/index.js",
+      "import": "./addons/use-notification-center/index.esm.js"
+    }
   }
 }

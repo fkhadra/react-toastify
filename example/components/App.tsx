@@ -12,7 +12,7 @@ import { Radio } from './Radio';
 import { Checkbox } from './Checkbox';
 import { ContainerCode, ContainerCodeProps } from './ContainerCode';
 import { ToastCode, ToastCodeProps } from './ToastCode';
-import { flags, transitions } from './constants';
+import { flags, themes, transitions } from './constants';
 
 import { ToastContainer, toast, Id } from '../../src/index';
 import '../../scss/main.scss';
@@ -193,11 +193,11 @@ class App extends React.Component {
                   Theme
                   <select
                     name="theme"
-                    id="transthemeition"
+                    id="theme"
                     onChange={this.handleRadioOrSelect}
                     value={this.state.theme}
                   >
-                    {['light', 'dark', 'colored'].map(k => (
+                    {themes.map(k => (
                       <option key={k} value={k}>
                         {k}
                       </option>
