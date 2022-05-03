@@ -111,7 +111,8 @@ toast.loading = (content: ToastContent, options?: ToastOptions) =>
       closeOnClick: false,
       closeButton: false,
       draggable: false,
-      ...options
+      ...options,
+      delay: undefined
     })
   );
 
