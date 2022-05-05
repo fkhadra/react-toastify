@@ -339,6 +339,40 @@ describe('ToastContainer', () => {
     expect(screen.queryByText('hello')).toBe(null);
   });
 
+  it('Should be able to specify a custom icon', () => {
+    render(<ToastContainer />);
+    act(() => {
+      toast('string', {
+        icon: '🚀'
+      });
+      toast('component', {
+        icon: () => <p>content</p>
+      });
+      toast('disable', {
+        icon: false
+      });
+      jest.runAllTimers();
+    });
+
+    expect(
+      screen
+        .getByText('string')
+        .parentElement.getElementsByClassName('Toastify__toast-icon')[0]
+        .textContent
+    ).toEqual('🚀');
+    expect(
+      screen
+        .getByText('component')
+        .parentElement.getElementsByClassName('Toastify__toast-icon')[0]
+        .textContent
+    ).toEqual('content');
+    expect(
+      screen
+        .getByText('disable')
+        .parentElement.getElementsByClassName('Toastify__toast-icon').length
+    ).toEqual(0);
+  });
+
   describe('Multiple container support', () => {
     it('Should render toasts in all container if enableMultiContainer is not set/false', () => {
       render(

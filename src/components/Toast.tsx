@@ -3,8 +3,9 @@ import cx from 'clsx';
 
 import { ProgressBar } from './ProgressBar';
 import { ToastProps } from '../types';
-import { Default, isFn } from '../utils';
+import { Default, isFn, isStr } from '../utils';
 import { useToast } from '../hooks/useToast';
+import { Icons } from './Icons';
 
 export const Toast: React.FC<ToastProps> = props => {
   const { isRunning, preventExitTransition, toastRef, eventHandlers } =
@@ -33,7 +34,7 @@ export const Toast: React.FC<ToastProps> = props => {
     deleteToast,
     isIn,
     isLoading,
-    icon: Icon,
+    icon,
     theme
   } = props;
   const defaultClassName = cx(
@@ -63,6 +64,22 @@ export const Toast: React.FC<ToastProps> = props => {
 
     if (React.isValidElement(closeButton))
       return React.cloneElement(closeButton, props);
+  }
+
+  const maybeIcon = Icons[type as keyof typeof Icons];
+  const iconProps = { theme, type };
+  let Icon: React.ReactNode = maybeIcon && maybeIcon(iconProps);
+
+  if (icon === false) {
+    Icon = void 0;
+  } else if (isFn(icon)) {
+    Icon = icon(iconProps);
+  } else if (React.isValidElement(icon)) {
+    Icon = React.cloneElement(icon, iconProps);
+  } else if (isStr(icon)) {
+    Icon = icon;
+  } else if (isLoading) {
+    Icon = Icons.spinner();
   }
 
   return (
