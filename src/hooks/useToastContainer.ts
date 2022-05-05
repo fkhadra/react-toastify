@@ -30,7 +30,6 @@ import {
   NotValidatedToastProps,
   ToastTransition
 } from '../types';
-import { Icons } from '../components/Icons';
 
 interface QueuedToast {
   toastContent: ToastContent;
@@ -212,22 +211,6 @@ export function useToastContainer(props: ToastContainerProps) {
         }
       }
     };
-
-    const maybeIcon = Icons[toastProps.type as keyof typeof Icons];
-    const iconProps = { theme: toastProps.theme, type: toastProps.type };
-    toastProps.icon = maybeIcon && maybeIcon(iconProps);
-
-    if (toastProps.icon === false) {
-      toastProps.icon = void 0;
-    } else if (isFn(toastProps.icon)) {
-      toastProps.icon = toastProps.icon(iconProps);
-    } else if (isValidElement(toastProps.icon)) {
-      toastProps.icon = cloneElement(toastProps.icon, iconProps);
-    } else if (isStr(toastProps.icon)) {
-      toastProps.icon = toastProps.icon;
-    } else if (toastProps.isLoading) {
-      toastProps.icon = Icons.spinner();
-    }
 
     if (isFn(options.onOpen)) toastProps.onOpen = options.onOpen;
     if (isFn(options.onClose)) toastProps.onClose = options.onClose;
