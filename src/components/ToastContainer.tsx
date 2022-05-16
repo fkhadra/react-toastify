@@ -67,11 +67,6 @@ export const ToastContainer = forwardRef<HTMLDivElement, ToastContainerProps>(
                       } as StyleHTMLAttributes<HTMLDivElement>
                     }
                     key={`toast-${toastProps.key}`}
-                    closeButton={
-                      toastProps.closeButton === true
-                        ? CloseButton
-                        : toastProps.closeButton
-                    }
                   >
                     {content}
                   </Toast>

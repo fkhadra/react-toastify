@@ -70,3 +70,5 @@ export const Icons = {
   error: Error,
   spinner: Spinner
 };
+
+export const maybeIcon = (type: string): type is keyof typeof Icons => type in Icons;

@@ -1,4 +1,5 @@
 import React from 'react';
+import { CloseButtonProps, IconProps } from '../components';
 
 type Nullable<T> = {
   [P in keyof T]: T[P] | null;
@@ -88,9 +89,9 @@ interface CommonOptions {
    * To remove the close button pass `false`
    */
   closeButton?:
-    | React.ReactElement
-    | ((props: any) => React.ReactElement)
-    | boolean;
+    | boolean
+    | ((props: CloseButtonProps) => React.ReactNode)
+    | React.ReactElement<CloseButtonProps>;
 
   /**
    * An optional css class to set for the progress bar.
@@ -169,7 +170,12 @@ interface CommonOptions {
    * Used to display a custom icon. Set it to `false` to prevent
    * the icons from being displayed
    */
-  icon?: React.ReactNode | false;
+  icon?:
+    | boolean
+    | ((props: IconProps) => React.ReactNode)
+    | React.ReactElement<IconProps>
+    | string
+    | number;
 
   /**
    * Theme to use.
