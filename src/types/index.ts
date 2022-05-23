@@ -58,7 +58,7 @@ interface CommonOptions {
   pauseOnHover?: boolean;
 
   /**
-   * Pause the toast when the window loose focus.
+   * Pause the toast when the window loses focus.
    * `Default: true`
    */
   pauseOnFocusLoss?: boolean;
