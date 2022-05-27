@@ -34,7 +34,7 @@ try {
     }
 
     for (const moduleType of ['cjs', 'esm']) {
-      const filename = moduleType === 'esm' ? 'index.esm.js' : 'index.js';
+      const filename = moduleType === 'esm' ? 'index.esm.mjs' : 'index.js';
       const out = `./dist/addons/${dir}/${filename}`;
       const exportOut = `./addons/${dir}/${filename}`;
 
