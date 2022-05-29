@@ -1,4 +1,5 @@
 import React from 'react';
+import { IconProps } from '../components/Icons';
 
 type Nullable<T> = {
   [P in keyof T]: T[P] | null;
@@ -169,7 +170,7 @@ interface CommonOptions {
    * Used to display a custom icon. Set it to `false` to prevent
    * the icons from being displayed
    */
-  icon?: React.ReactNode | false;
+  icon?: React.ReactNode | false | ((iconProps: IconProps) => React.ReactNode);
 
   /**
    * Theme to use.
