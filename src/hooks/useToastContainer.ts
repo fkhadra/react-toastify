@@ -134,6 +134,7 @@ export function useToastContainer(props: ToastContainerProps) {
     const toastProps: ToastProps = {
       toastId,
       updateId,
+      data,
       containerId: options.containerId,
       isLoading: options.isLoading,
       theme: options.theme || props.theme!,
