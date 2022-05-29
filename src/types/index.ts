@@ -1,6 +1,7 @@
 import React from 'react';
 import { CloseButtonProps, IconProps } from '../components';
 
+
 type Nullable<T> = {
   [P in keyof T]: T[P] | null;
 };
@@ -59,7 +60,7 @@ interface CommonOptions {
   pauseOnHover?: boolean;
 
   /**
-   * Pause the toast when the window loose focus.
+   * Pause the toast when the window loses focus.
    * `Default: true`
    */
   pauseOnFocusLoss?: boolean;
