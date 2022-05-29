@@ -2,10 +2,11 @@ import React from 'react';
 import cx from 'clsx';
 
 import { ProgressBar } from './ProgressBar';
+import { CloseButton } from './CloseButton';
 import { ToastProps } from '../types';
-import { Default, isFn, isStr } from '../utils';
+import { Default, isFn, isNum, isStr } from '../utils';
 import { useToast } from '../hooks/useToast';
-import { Icons } from './Icons';
+import { Icons, maybeIcon } from './Icons';
 
 export const Toast: React.FC<ToastProps> = props => {
   const { isRunning, preventExitTransition, toastRef, eventHandlers } =
@@ -55,31 +56,34 @@ export const Toast: React.FC<ToastProps> = props => {
     : cx(defaultClassName, className);
   const isProgressControlled = !!progress;
 
-  function renderCloseButton(closeButton: any) {
-    if (!closeButton) return;
+  const closeButtonProps = { closeToast, type, theme };
+  let Close: React.ReactNode = null;
 
-    const props = { closeToast, type, theme };
-
-    if (isFn(closeButton)) return closeButton(props);
-
-    if (React.isValidElement(closeButton))
-      return React.cloneElement(closeButton, props);
+  if (closeButton === false) {
+    // hide
+  } else if (isFn(closeButton)) {
+    Close = closeButton(closeButtonProps);
+  } else if (React.isValidElement(closeButton)) {
+    Close = React.cloneElement(closeButton, closeButtonProps);
+  } else {
+    Close = CloseButton(closeButtonProps);
   }
-
-  const maybeIcon = Icons[type as keyof typeof Icons];
+ 
   const iconProps = { theme, type };
-  let Icon: React.ReactNode = maybeIcon && maybeIcon(iconProps);
+  let Icon: React.ReactNode = null;
 
   if (icon === false) {
-    Icon = void 0;
+    // hide
   } else if (isFn(icon)) {
     Icon = icon(iconProps);
   } else if (React.isValidElement(icon)) {
     Icon = React.cloneElement(icon, iconProps);
-  } else if (isStr(icon)) {
+  } else if (isStr(icon) || isNum(icon)) {
     Icon = icon;
   } else if (isLoading) {
     Icon = Icons.spinner();
+  } else if (maybeIcon(type)) {
+    Icon = Icons[type](iconProps);
   }
 
   return (
@@ -107,7 +111,7 @@ export const Toast: React.FC<ToastProps> = props => {
           }
           style={bodyStyle}
         >
-          {Icon && (
+          {Icon !== null && (
             <div
               className={cx(`${Default.CSS_NAMESPACE}__toast-icon`, {
                 [`${Default.CSS_NAMESPACE}--animate-icon ${Default.CSS_NAMESPACE}__zoom-enter`]:
@@ -119,7 +123,7 @@ export const Toast: React.FC<ToastProps> = props => {
           )}
           <div>{children}</div>
         </div>
-        {renderCloseButton(closeButton)}
+        {Close}
         {(autoClose || isProgressControlled) && (
           <ProgressBar
             {...(updateId && !isProgressControlled
