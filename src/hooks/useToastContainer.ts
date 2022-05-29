@@ -31,6 +31,8 @@ import {
   ToastTransition
 } from '../types';
 
+import { getIcon } from '../components/Icons';
+
 interface QueuedToast {
   toastContent: ToastContent;
   toastProps: ToastProps;
@@ -212,6 +214,8 @@ export function useToastContainer(props: ToastContainerProps) {
         }
       }
     };
+
+    toastProps.icon = getIcon(toastProps);
 
     if (isFn(options.onOpen)) toastProps.onOpen = options.onOpen;
     if (isFn(options.onClose)) toastProps.onClose = options.onClose;

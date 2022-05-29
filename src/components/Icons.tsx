@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { cloneElement, isValidElement } from 'react';
 
-import { Theme, TypeOptions } from '../types';
-import { Default } from '../utils';
+import { Theme, ToastProps, TypeOptions } from '../types';
+import { Default, isFn, isNum, isStr } from '../utils';
 
 /**
  * Used when providing custom icon
@@ -71,4 +71,25 @@ export const Icons = {
   spinner: Spinner
 };
 
-export const maybeIcon = (type: string): type is keyof typeof Icons => type in Icons;
+const maybeIcon = (type: string): type is keyof typeof Icons => type in Icons;
+
+export function getIcon({ theme, type, isLoading, icon }: ToastProps) {
+  let Icon: React.ReactNode = null;
+  const iconProps = { theme, type };
+
+  if (icon === false) {
+    // hide
+  } else if (isFn(icon)) {
+    Icon = icon(iconProps);
+  } else if (isValidElement(icon)) {
+    Icon = cloneElement(icon, iconProps);
+  } else if (isStr(icon) || isNum(icon)) {
+    Icon = icon;
+  } else if (isLoading) {
+    Icon = Icons.spinner();
+  } else if (maybeIcon(type)) {
+    Icon = Icons[type](iconProps);
+  }
+
+  return Icon;
+}

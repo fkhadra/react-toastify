@@ -4,9 +4,8 @@ import cx from 'clsx';
 import { ProgressBar } from './ProgressBar';
 import { CloseButton } from './CloseButton';
 import { ToastProps } from '../types';
-import { Default, isFn, isNum, isStr } from '../utils';
+import { Default, isFn } from '../utils';
 import { useToast } from '../hooks/useToast';
-import { Icons, maybeIcon } from './Icons';
 
 export const Toast: React.FC<ToastProps> = props => {
   const { isRunning, preventExitTransition, toastRef, eventHandlers } =
@@ -68,23 +67,6 @@ export const Toast: React.FC<ToastProps> = props => {
   } else {
     Close = CloseButton(closeButtonProps);
   }
- 
-  const iconProps = { theme, type };
-  let Icon: React.ReactNode = null;
-
-  if (icon === false) {
-    // hide
-  } else if (isFn(icon)) {
-    Icon = icon(iconProps);
-  } else if (React.isValidElement(icon)) {
-    Icon = React.cloneElement(icon, iconProps);
-  } else if (isStr(icon) || isNum(icon)) {
-    Icon = icon;
-  } else if (isLoading) {
-    Icon = Icons.spinner();
-  } else if (maybeIcon(type)) {
-    Icon = Icons[type](iconProps);
-  }
 
   return (
     <Transition
@@ -111,14 +93,14 @@ export const Toast: React.FC<ToastProps> = props => {
           }
           style={bodyStyle}
         >
-          {Icon !== null && (
+          {icon !== null && (
             <div
               className={cx(`${Default.CSS_NAMESPACE}__toast-icon`, {
                 [`${Default.CSS_NAMESPACE}--animate-icon ${Default.CSS_NAMESPACE}__zoom-enter`]:
                   !isLoading
               })}
             >
-              {Icon}
+              {icon}
             </div>
           )}
           <div>{children}</div>

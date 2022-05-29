@@ -1,7 +1,6 @@
 import React from 'react';
 import { CloseButtonProps, IconProps } from '../components';
 
-
 type Nullable<T> = {
   [P in keyof T]: T[P] | null;
 };
@@ -176,7 +175,8 @@ interface CommonOptions {
     | ((props: IconProps) => React.ReactNode)
     | React.ReactElement<IconProps>
     | string
-    | number;
+    | number
+    | React.ReactNode;
 
   /**
    * Theme to use.
