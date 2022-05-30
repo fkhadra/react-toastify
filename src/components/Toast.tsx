@@ -2,10 +2,10 @@ import React from 'react';
 import cx from 'clsx';
 
 import { ProgressBar } from './ProgressBar';
+import { CloseButton } from './CloseButton';
 import { ToastProps } from '../types';
-import { Default, isFn, isStr } from '../utils';
+import { Default, isFn } from '../utils';
 import { useToast } from '../hooks/useToast';
-import { Icons } from './Icons';
 
 export const Toast: React.FC<ToastProps> = props => {
   const { isRunning, preventExitTransition, toastRef, eventHandlers } =
@@ -55,31 +55,17 @@ export const Toast: React.FC<ToastProps> = props => {
     : cx(defaultClassName, className);
   const isProgressControlled = !!progress;
 
-  function renderCloseButton(closeButton: any) {
-    if (!closeButton) return;
+  const closeButtonProps = { closeToast, type, theme };
+  let Close: React.ReactNode = null;
 
-    const props = { closeToast, type, theme };
-
-    if (isFn(closeButton)) return closeButton(props);
-
-    if (React.isValidElement(closeButton))
-      return React.cloneElement(closeButton, props);
-  }
-
-  const maybeIcon = Icons[type as keyof typeof Icons];
-  const iconProps = { theme, type };
-  let Icon: React.ReactNode = maybeIcon && maybeIcon(iconProps);
-
-  if (icon === false) {
-    Icon = void 0;
-  } else if (isFn(icon)) {
-    Icon = icon(iconProps);
-  } else if (React.isValidElement(icon)) {
-    Icon = React.cloneElement(icon, iconProps);
-  } else if (isStr(icon)) {
-    Icon = icon;
-  } else if (isLoading) {
-    Icon = Icons.spinner();
+  if (closeButton === false) {
+    // hide
+  } else if (isFn(closeButton)) {
+    Close = closeButton(closeButtonProps);
+  } else if (React.isValidElement(closeButton)) {
+    Close = React.cloneElement(closeButton, closeButtonProps);
+  } else {
+    Close = CloseButton(closeButtonProps);
   }
 
   return (
@@ -107,19 +93,19 @@ export const Toast: React.FC<ToastProps> = props => {
           }
           style={bodyStyle}
         >
-          {Icon && (
+          {icon !== null && (
             <div
               className={cx(`${Default.CSS_NAMESPACE}__toast-icon`, {
                 [`${Default.CSS_NAMESPACE}--animate-icon ${Default.CSS_NAMESPACE}__zoom-enter`]:
                   !isLoading
               })}
             >
-              {Icon}
+              {icon}
             </div>
           )}
           <div>{children}</div>
         </div>
-        {renderCloseButton(closeButton)}
+        {Close}
         {(autoClose || isProgressControlled) && (
           <ProgressBar
             {...(updateId && !isProgressControlled

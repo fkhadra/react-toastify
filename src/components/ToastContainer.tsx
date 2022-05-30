@@ -62,16 +62,12 @@ export const ToastContainer = forwardRef<HTMLDivElement, ToastContainerProps>(
                     isIn={isToastActive(toastProps.toastId)}
                     style={
                       {
+                        ...toastProps.style,
                         '--nth': i + 1,
                         '--len': toastList.length
                       } as StyleHTMLAttributes<HTMLDivElement>
                     }
                     key={`toast-${toastProps.key}`}
-                    closeButton={
-                      toastProps.closeButton === true
-                        ? CloseButton
-                        : toastProps.closeButton
-                    }
                   >
                     {content}
                   </Toast>
