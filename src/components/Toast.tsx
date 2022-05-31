@@ -34,7 +34,7 @@ export const Toast: React.FC<ToastProps> = props => {
     deleteToast,
     isIn,
     isLoading,
-    icon,
+    iconOut,
     theme
   } = props;
   const defaultClassName = cx(
@@ -93,14 +93,14 @@ export const Toast: React.FC<ToastProps> = props => {
           }
           style={bodyStyle}
         >
-          {icon !== null && (
+          {iconOut != null && (
             <div
               className={cx(`${Default.CSS_NAMESPACE}__toast-icon`, {
                 [`${Default.CSS_NAMESPACE}--animate-icon ${Default.CSS_NAMESPACE}__zoom-enter`]:
                   !isLoading
               })}
             >
-              {icon}
+              {iconOut}
             </div>
           )}
           <div>{children}</div>

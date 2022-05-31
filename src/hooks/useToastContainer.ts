@@ -215,7 +215,7 @@ export function useToastContainer(props: ToastContainerProps) {
       }
     };
 
-    toastProps.icon = getIcon(toastProps);
+    toastProps.iconOut = getIcon(toastProps);
 
     if (isFn(options.onOpen)) toastProps.onOpen = options.onOpen;
     if (isFn(options.onClose)) toastProps.onClose = options.onClose;
