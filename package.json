@@ -129,14 +129,14 @@
     "clsx": "^1.1.1"
   },
   "main": "dist/react-toastify.js",
-  "module": "dist/react-toastify.esm.js",
+  "module": "dist/react-toastify.esm.mjs",
   "umd:main": "dist/react-toastify.umd.js",
   "unpkg": "dist/react-toastify.umd.js",
   "source": "src/index.ts",
   "exports": {
     ".": {
       "require": "./dist/react-toastify.js",
-      "import": "./dist/react-toastify.esm.js",
+      "import": "./dist/react-toastify.esm.mjs",
       "umd": "./dist/react-toastify.umd.js"
     },
     "./dist/ReactToastify.min.css": "./dist/ReactToastify.min.css",
@@ -147,17 +147,17 @@
     "./ReactToastify.minimal.css": "./dist/ReactToastify.minimal.css",
     "./dist/inject-style": {
       "require": "./dist/inject-style.js",
-      "import": "./dist/inject-style.esm.js"
+      "import": "./dist/inject-style.esm.mjs"
     },
     "./inject-style": {
       "require": "./dist/inject-style.js",
-      "import": "./dist/inject-style.esm.js"
+      "import": "./dist/inject-style.esm.mjs"
     },
     "./package.json": "./package.json",
     "./scss": "./scss",
     "./addons/use-notification-center": {
       "require": "./addons/use-notification-center/index.js",
-      "import": "./addons/use-notification-center/index.esm.js"
+      "import": "./addons/use-notification-center/index.esm.mjs"
     }
   }
 }
