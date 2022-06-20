@@ -76,7 +76,10 @@ export function useToastContainer(props: ToastContainerProps) {
       .on(Event.ClearWaitingQueue, clearWaitingQueue)
       .emit(Event.DidMount, instance);
 
-    return () => eventManager.emit(Event.WillUnmount, instance);
+      return () => {
+        toastToRender.clear();
+        eventManager.emit(Event.WillUnmount, instance);
+      };
   }, []);
 
   useEffect(() => {
