@@ -7273,10 +7273,10 @@ style-inject@^0.3.0:
   resolved "https://registry.yarnpkg.com/style-inject/-/style-inject-0.3.0.tgz#d21c477affec91811cc82355832a700d22bf8dd3"
   integrity sha512-IezA2qp+vcdlhJaVm5SOdPPTUu0FCEqfNSli2vRuSIBbu5Nq5UvygTk/VzeCqfLz2Atj3dVII5QBKGZRZ0edzw==
 
-style2js@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/style2js/-/style2js-1.0.0.tgz#0431a15a11b978294d7f21bc76f2d4990daa1f37"
-  integrity sha512-JlFG3o6iJT5TInCnA4ErElu6sVqbm7kNKhxLBWXHCkmxhmtI8sTxTWSWIKheS5fpDD0GyLlIHcKAeXU/RcRYKg==
+style2js@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/style2js/-/style2js-1.0.1.tgz#feb2177a7e013ce4588c331a9d602dfcf080374e"
+  integrity sha512-Hmjp9ueAaAABCVbuWqWfDNWWzCnJV9X9VfMFAVeVp7jpNcFlTdT8GhC/yhkAvTQXVKTpiiGrDizCV34oMcE8iQ==
   dependencies:
     "@types/node" "^14.14.16"
     commander "^6.2.1"
