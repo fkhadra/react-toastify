@@ -99,13 +99,13 @@ toast.loading = (content: ToastContent, options?: ToastOptions) =>
     })
   );
 
-export interface ToastPromiseParams<T = unknown> {
-  pending?: string | UpdateOptions<void>;
-  success?: string | UpdateOptions<T>;
-  error?: string | UpdateOptions<any>;
+export interface ToastPromiseParams<T extends {pending?:T["pending"],success?:T["success"],error?:T["error"]} = any> {
+  pending?: string | UpdateOptions<T["pending"]>;
+  success?: string | UpdateOptions<T["success"]>;
+  error?: string | UpdateOptions<T["error"]>;
 }
 
-function handlePromise<T = unknown>(
+function handlePromise<T extends {pending?:T["pending"],success?:T["success"],error?:T["error"]} = any>(
   promise: Promise<T> | (() => Promise<T>),
   { pending, error, success }: ToastPromiseParams<T>,
   options?: ToastOptions
