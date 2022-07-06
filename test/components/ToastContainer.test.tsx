@@ -6,6 +6,7 @@ import { toast, eventManager, Event } from '../../src/core';
 import { ToastOptions } from '../../src/types';
 
 import { triggerAnimationEnd } from '../helpers';
+import { Slide } from '../../src/components/Transitions';
 
 jest.useFakeTimers();
 
@@ -371,6 +372,28 @@ describe('ToastContainer', () => {
         .getByText('disable')
         .parentElement.getElementsByClassName('Toastify__toast-icon').length
     ).toEqual(0);
+  });
+
+  it('Should not be applied the animation style for drag when the close button was clicked', () => {
+    const toastId = 'testToastId';
+    const { container } = render(<ToastContainer transition={Slide} />);
+
+    act(() => {
+      toast('hello', { toastId });
+      jest.runAllTimers();
+    });
+
+    fireEvent.click(screen.getByLabelText('close'));
+
+    expect(container.querySelector(`#${toastId}`)?.className).toContain(
+      'Toastify__slide-exit'
+    );
+    expect(
+      container.querySelector<HTMLElement>(`#${toastId}`)!.style.transform
+    ).toBeFalsy();
+    expect(
+      container.querySelector<HTMLElement>(`#${toastId}`)!.style.opacity
+    ).toBeFalsy();
   });
 
   describe('Multiple container support', () => {

@@ -392,5 +392,130 @@ describe('Toast Component', () => {
       fireEvent.mouseUp(notification);
       progressBar.isRunning();
     });
+
+    it('Should close when the dragged delta exceeds the removalDistance', () => {
+      const distanceMovedByMouse = 60;
+      const closeToastMockFn = jest.fn();
+      render(
+        <Toast {...REQUIRED_PROPS} closeToast={closeToastMockFn}>
+          FooBar
+        </Toast>
+      );
+      const notification = screen.getByRole('alert').parentElement!;
+      HTMLElement.prototype.getBoundingClientRect = () => {
+        return {
+          top: 50,
+          right: 100,
+          bottom: 100,
+          left: 50
+        } as DOMRect;
+      };
+
+      Object.defineProperty(HTMLElement.prototype, 'offsetWidth', {
+        configurable: true,
+        value: 50
+      });
+
+      fireEvent.mouseDown(notification);
+      fireEvent.mouseMove(notification, {
+        clientX: distanceMovedByMouse,
+        clientY: 50
+      });
+      fireEvent.mouseUp(notification);
+
+      expect(closeToastMockFn).toHaveBeenCalledTimes(1);
+      expect(notification.style.transform).toBe(
+        `translatex(${distanceMovedByMouse}px)`
+      );
+    });
+
+    it('Should return to its original position when the dragged delta does not exceed the removalDistance and not clicked from the close button', () => {
+      const closeToastMockFn = jest.fn();
+      render(
+        <Toast {...REQUIRED_PROPS} closeToast={closeToastMockFn}>
+          FooBar
+        </Toast>
+      );
+      const notification = screen.getByRole('alert').parentElement!;
+      HTMLElement.prototype.getBoundingClientRect = () => {
+        return {
+          top: 50,
+          right: 100,
+          bottom: 100,
+          left: 50
+        } as DOMRect;
+      };
+
+      Object.defineProperty(HTMLElement.prototype, 'offsetWidth', {
+        configurable: true,
+        value: 50
+      });
+
+      fireEvent.mouseDown(notification);
+      fireEvent.mouseMove(notification, {
+        clientX: 39,
+        clientY: 50
+      });
+      fireEvent.mouseUp(notification);
+
+      expect(closeToastMockFn).toHaveBeenCalledTimes(0);
+      expect(notification.style.transform).toBe('translatex(0)');
+      expect(notification.style.opacity).toBe('1');
+    });
+
+    it('Should close when the dragged delta does not exceed the removalDistance and clicked from the close button', () => {
+      const closeToastMockFn = jest.fn();
+
+      const { container } = render(
+        <Toast {...REQUIRED_PROPS} closeToast={closeToastMockFn}>
+          FooBar
+        </Toast>
+      );
+      const closeButton = screen.getByLabelText('close');
+      HTMLElement.prototype.getBoundingClientRect = () => {
+        return {
+          top: 50,
+          right: 100,
+          bottom: 100,
+          left: 50
+        } as DOMRect;
+      };
+
+      Object.defineProperty(HTMLElement.prototype, 'offsetWidth', {
+        configurable: true,
+        value: 50
+      });
+
+      act(() => {
+        fireEvent.mouseDown(closeButton);
+        fireEvent.mouseMove(closeButton, {
+          clientX: 41,
+          clientY: 50
+        });
+        fireEvent.mouseUp(closeButton);
+        fireEvent.click(closeButton);
+      });
+
+      const toastStyle = container.querySelector<HTMLDivElement>(
+        `#${REQUIRED_PROPS.toastId}`
+      )!.style;
+      expect(toastStyle.transform).not.toBe('translatex(0)');
+      expect(toastStyle.opacity).not.toBe('1');
+      expect(closeToastMockFn).toBeCalledTimes(2);
+    });
+
+    it('Should be called the closeToast function when the close button was clicked', () => {
+      const closeToastMockFn = jest.fn();
+
+      render(
+        <Toast {...REQUIRED_PROPS} closeToast={closeToastMockFn}>
+          FooBar
+        </Toast>
+      );
+      const closeButton = screen.getByLabelText('close');
+
+      fireEvent.click(closeButton);
+      expect(closeToastMockFn).toHaveBeenCalledTimes(1);
+    });
   });
 });
