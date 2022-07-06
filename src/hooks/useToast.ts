@@ -197,7 +197,6 @@ export function useToast(props: ToastProps) {
         props.closeToast();
         return;
       }
-      toast.style.transition = 'transform 0.2s, opacity 0.2s';
       toast.style.transform = `translate${props.draggableDirection}(0)`;
       toast.style.opacity = '1';
     }
