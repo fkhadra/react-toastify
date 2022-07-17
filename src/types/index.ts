@@ -314,7 +314,7 @@ export interface ToastProps extends ToastOptions {
   deleteToast: () => void;
   theme: Theme;
   type: TypeOptions;
-  iconOut?: React.ReactNode
+  iconOut?: React.ReactNode;
 }
 
 /**
