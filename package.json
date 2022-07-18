@@ -1,5 +1,5 @@
 {
-  "version": "9.0.6",
+  "version": "9.0.6-vite-1",
   "license": "MIT",
   "typings": "dist/index.d.ts",
   "description": "React notification made easy",
