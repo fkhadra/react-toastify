@@ -10,7 +10,6 @@ const packageJson = JSON.parse(
   await readFile(new URL('./package.json', import.meta.url))
 );
 
-const DEBUG = process.argv.slice(2)[0] === 'debug';
 const BASE_DIR = './src/addons';
 const MICRO_BUNDLE = './node_modules/.bin/microbundle';
 
@@ -39,7 +38,7 @@ try {
       const exportOut = `./addons/${dir}/${filename}`;
 
       const { stdout, stderr } = await asyncExec(
-        `${MICRO_BUNDLE} -i ${entryPoint} -o ${out} --no-pkg-main -f ${moduleType} --jsx React.createElement --external react-toastify --compress ${!DEBUG}`
+        `${MICRO_BUNDLE} -i ${entryPoint} -o ${out} --no-pkg-main -f ${moduleType} --jsx React.createElement --external react-toastify --compress false`
       );
       console.log(stdout);
       console.log(stderr);
