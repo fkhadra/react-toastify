@@ -56,7 +56,7 @@ export interface UseNotificationCenter<Data> {
   /**
    * Contains all the notifications
    */
-  notifications: NotificationCenterItem[];
+  notifications: NotificationCenterItem<Data>[];
 
   /**
    * Clear all notifications
