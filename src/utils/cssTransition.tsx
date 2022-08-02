@@ -71,39 +71,38 @@ export function cssTransition({
   }: ToastTransitionProps) {
     const enterClassName = appendPosition ? `${enter}--${position}` : enter;
     const exitClassName = appendPosition ? `${exit}--${position}` : exit;
-    const baseClassName = useRef<string>();
     const animationStep = useRef(AnimationStep.Enter);
 
     useLayoutEffect(() => {
+      const node = nodeRef.current!;
+      const classToToken = enterClassName.split(' ');
+
+      const onEntered = (e: AnimationEvent) => {
+        if (e.target !== nodeRef.current) return;
+
+        node.dispatchEvent(new Event(SyntheticEvent.ENTRANCE_ANIMATION_END));
+        node.removeEventListener('animationend', onEntered);
+        node.removeEventListener('animationcancel', onEntered);
+        if (
+          animationStep.current === AnimationStep.Enter &&
+          e.type !== 'animationcancel'
+        ) {
+          node.classList.remove(...classToToken);
+        }
+      };
+
+      const onEnter = () => {
+        node.classList.add(...classToToken);
+        node.addEventListener('animationend', onEntered);
+        node.addEventListener('animationcancel', onEntered);
+      };
+
       onEnter();
     }, []);
 
     useEffect(() => {
       if (!isIn) preventExitTransition ? onExited() : onExit();
     }, [isIn]);
-
-    function onEnter() {
-      const node = nodeRef.current!;
-      baseClassName.current = node.className;
-      node.className += ` ${enterClassName}`;
-      node.addEventListener('animationend', onEntered);
-      node.addEventListener('animationcancel', onEntered);
-    }
-
-    function onEntered(e: AnimationEvent) {
-      if (e.target !== nodeRef.current) return;
-
-      const node = nodeRef.current!;
-      node.dispatchEvent(new Event(SyntheticEvent.ENTRANCE_ANIMATION_END));
-      node.removeEventListener('animationend', onEntered);
-      node.removeEventListener('animationcancel', onEntered);
-      if (
-        animationStep.current === AnimationStep.Enter &&
-        e.type !== 'animationcancel'
-      ) {
-        node.className = baseClassName.current!;
-      }
-    }
 
     function onExit() {
       animationStep.current = AnimationStep.Exit;
