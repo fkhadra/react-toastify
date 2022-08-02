@@ -101,23 +101,21 @@ export function cssTransition({
     }, []);
 
     useEffect(() => {
+      const node = nodeRef.current!;
+
+      const onExited = () => {
+        node.removeEventListener('animationend', onExited);
+        collapse ? collapseToast(node, done, collapseDuration) : done();
+      };
+
+      const onExit = () => {
+        animationStep.current = AnimationStep.Exit;
+        node.className += ` ${exitClassName}`;
+        node.addEventListener('animationend', onExited);
+      };
+
       if (!isIn) preventExitTransition ? onExited() : onExit();
     }, [isIn]);
-
-    function onExit() {
-      animationStep.current = AnimationStep.Exit;
-      const node = nodeRef.current!;
-
-      node.className += ` ${exitClassName}`;
-      node.addEventListener('animationend', onExited);
-    }
-
-    function onExited() {
-      const node = nodeRef.current!;
-
-      node.removeEventListener('animationend', onExited);
-      collapse ? collapseToast(node, done, collapseDuration) : done();
-    }
 
     return <>{children}</>;
   };
