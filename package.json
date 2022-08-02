@@ -152,7 +152,7 @@
       "import": "./dist/inject-style.esm.mjs"
     },
     "./package.json": "./package.json",
-    "./scss": "./scss",
+    "./scss/": "./scss/",
     "./addons/use-notification-center": {
       "require": "./addons/use-notification-center/index.js",
       "import": "./addons/use-notification-center/index.esm.mjs"
