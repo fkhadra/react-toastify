@@ -13,6 +13,8 @@
   font-family: var(--toastify-font-family);
   cursor: pointer;
   direction: ltr;
+  /* webkit only issue #791 */
+  z-index: 0;
   &--rtl {
     direction: rtl;
   }
