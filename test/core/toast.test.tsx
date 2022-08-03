@@ -171,6 +171,23 @@ describe('toastify', () => {
     expect(screen.queryByText('hello')).toBe(null);
   });
 
+  it('Should be able remove toast programmatically without container', () => {
+    let id: Id;
+    act(() => {
+      id = toast('hello');
+      jest.runAllTimers();
+      toast.dismiss(id);
+      jest.runAllTimers();
+    });
+    render(<ToastContainer />);
+
+    act(() => {
+      jest.runAllTimers();
+    });
+
+    expect(screen.queryByText('hello')).toBe(null);
+  });
+
   describe('update function', () => {
     it('Should be able to update an existing toast', () => {
       render(<ToastContainer />);
