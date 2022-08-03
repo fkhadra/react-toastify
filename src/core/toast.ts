@@ -195,7 +195,13 @@ toast.dark = (content: ToastContent, options?: ToastOptions) =>
 /**
  * Remove toast programmaticaly
  */
-toast.dismiss = (id?: Id) => eventManager.emit(Event.Clear, id);
+toast.dismiss = (id?: Id) => {
+  if (containers.size > 0) {
+    eventManager.emit(Event.Clear, id);
+  } else {
+    queue = queue.filter(t => id !== undefined && t.options.toastId !== id);
+  }
+};
 
 /**
  * Clear waiting queue when limit is used
