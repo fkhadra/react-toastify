@@ -199,7 +199,7 @@ toast.dismiss = (id?: Id) => {
   if (containers.size > 0) {
     eventManager.emit(Event.Clear, id);
   } else {
-    queue = queue.filter(t => id !== undefined && t.options.toastId !== id);
+    queue = queue.filter(t => id != undefined && t.options.toastId !== id);
   }
 };
 
