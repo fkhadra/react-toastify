@@ -23,7 +23,7 @@ export function parseClassName(v: any) {
 }
 
 export function isToastIdValid(toastId?: Id) {
-  return toastId === 0 || toastId;
+  return toastId != null;
 }
 
 export function getAutoCloseDelay(

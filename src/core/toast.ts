@@ -1,4 +1,4 @@
-import { POSITION, TYPE, isStr, isNum, isFn } from '../utils';
+import { POSITION, TYPE, isStr, isNum, isFn, isToastIdValid } from '../utils';
 import { eventManager, OnChangeCallback, Event } from './eventManager';
 import {
   ToastContent,
@@ -199,7 +199,7 @@ toast.dismiss = (id?: Id) => {
   if (containers.size > 0) {
     eventManager.emit(Event.Clear, id);
   } else {
-    queue = queue.filter(t => id != undefined && t.options.toastId !== id);
+    queue = queue.filter(t => isToastIdValid(id) && t.options.toastId !== id);
   }
 };
 
