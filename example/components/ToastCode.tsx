@@ -29,6 +29,7 @@ export interface ToastCodeProps {
   draggable: boolean;
   progress: number;
   theme: typeof themes[number];
+  hidePreviousToast: boolean;
 }
 
 export const ToastCode: React.FC<ToastCodeProps> = ({
@@ -41,7 +42,8 @@ export const ToastCode: React.FC<ToastCodeProps> = ({
   type,
   draggable,
   progress,
-  theme
+  theme,
+  hidePreviousToast
 }) => (
   <div>
     <h3>Toast Emitter</h3>
@@ -77,6 +79,10 @@ export const ToastCode: React.FC<ToastCodeProps> = ({
       <div>
         <span className="code__props">draggable</span>
         {`: ${draggable ? 'true' : 'false'}`},
+      </div>
+      <div>
+        <span className="code__props">hidePreviousToast</span>
+        {`: ${hidePreviousToast ? 'true' : 'false'}`},
       </div>
       {!Number.isNaN(progress) && (
         <div>

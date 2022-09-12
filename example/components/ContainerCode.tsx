@@ -31,7 +31,8 @@ export const ContainerCode: React.FC<ContainerCodeProps> = ({
   pauseOnFocusLoss,
   isDefaultProps,
   draggable,
-  theme
+  theme,
+  hidePreviousToast
 }) => (
   <div>
     <h3>Toast Container</h3>
@@ -58,6 +59,7 @@ export const ContainerCode: React.FC<ContainerCodeProps> = ({
       {getProp('rtl', rtl)}
       {getProp('pauseOnFocusLoss', pauseOnFocusLoss)}
       {getProp('draggable', draggable)}
+      {getProp('hidePreviousToast', hidePreviousToast)}
       {!disableAutoClose ? getProp('pauseOnHover', pauseOnHover) : ''}
       <div>
         <span>{`/>`}</span>

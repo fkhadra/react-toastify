@@ -283,6 +283,12 @@ export interface ToastContainerProps extends CommonOptions {
    * Limit the number of toast displayed at the same time
    */
   limit?: number;
+
+  /**
+   * Removes previous toast before displaying the new one.
+   * `Default: false`
+   */
+  hidePreviousToast?: boolean;
 }
 
 export interface ToastTransitionProps {

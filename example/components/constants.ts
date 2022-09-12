@@ -32,6 +32,10 @@ export const flags = [
   {
     id: 'draggable',
     label: 'Allow to drag and close the toast'
+  },
+  {
+    id: 'hidePreviousToast',
+    label: 'Hide previous toast'
   }
 ];
 
