@@ -248,7 +248,7 @@ export function useToastContainer(props: ToastContainerProps) {
     if (props.hidePreviousToast) {
       toastToRender.clear();
       appendToast(toastContent, toastProps, staleId);
-      return
+      return;
     }
 
     // not handling limit + delay by design. Waiting for user feedback first

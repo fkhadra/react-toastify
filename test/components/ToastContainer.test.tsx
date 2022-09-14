@@ -441,6 +441,19 @@ describe('ToastContainer', () => {
 
       expect(screen.queryByText('hello')).toBe(null);
     });
+
+    it('Should be possible to hide previous toast', () => {
+      render(<ToastContainer hidePreviousToast />);
+
+      act(() => {
+        toast('toast-1');
+        toast('toast-2');
+        jest.runAllTimers();
+      });
+
+      expect(screen.queryByText('toast-1')).toBe(null);
+      expect(screen.queryByText('toast-2')).not.toBe(null);
+    });
   });
 
   describe('Limit number of toast displayed', () => {
