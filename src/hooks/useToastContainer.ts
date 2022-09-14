@@ -76,10 +76,10 @@ export function useToastContainer(props: ToastContainerProps) {
       .on(Event.ClearWaitingQueue, clearWaitingQueue)
       .emit(Event.DidMount, instance);
 
-      return () => {
-        toastToRender.clear();
-        eventManager.emit(Event.WillUnmount, instance);
-      };
+    return () => {
+      toastToRender.clear();
+      eventManager.emit(Event.WillUnmount, instance);
+    };
   }, []);
 
   useEffect(() => {
@@ -243,6 +243,12 @@ export function useToastContainer(props: ToastContainerProps) {
       });
     } else if (isFn(content)) {
       toastContent = content({ closeToast, toastProps, data });
+    }
+
+    if (props.hidePreviousToast) {
+      toastToRender.clear();
+      appendToast(toastContent, toastProps, staleId);
+      return
     }
 
     // not handling limit + delay by design. Waiting for user feedback first

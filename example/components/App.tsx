@@ -107,10 +107,15 @@ class App extends React.Component {
           : e.target.value
     });
 
-  toggleCheckbox = e =>
+  toggleCheckbox = e => {
+    if (e.target.id === 'hidePreviousToast' && e.target.checked) {
+      this.setState({ limit: 0 })
+    }
+    
     this.setState({
       [e.target.name]: !this.state[e.target.name]
     });
+  }
 
   renderFlags() {
     return flags.map(({ id, label }) => (
