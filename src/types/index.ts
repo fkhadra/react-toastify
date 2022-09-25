@@ -283,6 +283,11 @@ export interface ToastContainerProps extends CommonOptions {
    * Limit the number of toast displayed at the same time
    */
   limit?: number;
+
+  /**
+   * Limit the length of the toast queue
+   */
+  queueLimit?: number;
 }
 
 export interface ToastTransitionProps {

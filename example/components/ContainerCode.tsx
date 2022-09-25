@@ -24,6 +24,7 @@ export const ContainerCode: React.FC<ContainerCodeProps> = ({
   disableAutoClose,
   autoClose,
   hideProgressBar,
+  queueLimit,
   newestOnTop,
   closeOnClick,
   pauseOnHover,
@@ -53,6 +54,12 @@ export const ContainerCode: React.FC<ContainerCodeProps> = ({
         {`={${disableAutoClose ? false : autoClose}}`}
       </div>
       {!disableAutoClose ? getProp('hideProgressBar', hideProgressBar) : ''}
+      {queueLimit !== undefined ? (
+        <div>
+          <span className="code__props">queueLimit</span>
+          {`={${queueLimit}}`}
+        </div>
+      ) : null}
       {getProp('newestOnTop', newestOnTop)}
       {getProp('closeOnClick', closeOnClick)}
       {getProp('rtl', rtl)}

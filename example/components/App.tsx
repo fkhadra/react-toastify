@@ -39,6 +39,7 @@ class App extends React.Component {
       progress: '',
       disableAutoClose: false,
       limit: 0,
+      queueLimit: undefined,
       theme: 'light'
     };
   }
@@ -102,7 +103,7 @@ class App extends React.Component {
   handleRadioOrSelect = e =>
     this.setState({
       [e.target.name]:
-        e.target.name === 'limit'
+        e.target.name === 'limit' || 'queueLimit'
           ? parseInt(e.target.value, 10)
           : e.target.value
     });
@@ -164,15 +165,17 @@ class App extends React.Component {
               <div className="options_wrapper">
                 <label htmlFor="autoClose">
                   Delay
-                  <input
-                    type="number"
-                    name="autoClose"
-                    id="autoClose"
-                    value={(this.state.autoClose as unknown) as string}
-                    onChange={this.handleAutoCloseDelay}
-                    disabled={this.state.disableAutoClose}
-                  />
-                  ms
+                  <div className="input_suffix">
+                    <input
+                      type="number"
+                      name="autoClose"
+                      id="autoClose"
+                      value={this.state.autoClose as unknown as string}
+                      onChange={this.handleAutoCloseDelay}
+                      disabled={this.state.disableAutoClose}
+                    />
+                    ms
+                  </div>
                 </label>
                 <label htmlFor="transition">
                   Transition
@@ -221,6 +224,16 @@ class App extends React.Component {
                     name="limit"
                     id="limit"
                     value={this.state.limit}
+                    onChange={this.handleRadioOrSelect}
+                  />
+                </label>
+                <label htmlFor="queueLimit">
+                  Queue Limit
+                  <input
+                    type="number"
+                    name="queueLimit"
+                    id="queueLimit"
+                    value={this.state.queueLimit}
                     onChange={this.handleRadioOrSelect}
                   />
                 </label>

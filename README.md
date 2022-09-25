@@ -36,6 +36,7 @@ $ yarn add react-toastify
 - Possibility to update a toast
 - You can control the progress bar a la `nprogress` 😲
 - You can limit the number of toast displayed at the same time
+- You can limit the length of the toast queue
 - Dark mode 🌒
 - And much more !
 

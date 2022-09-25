@@ -101,8 +101,9 @@ select {
   grid-template-columns: repeat(2, 1fr);
 }
 
-.container__options div:last-child {
-  grid-column: 1 / -1;
+.input_suffix {
+  display: flex;
+  align-items: center;
 }
 
 .container__actions {

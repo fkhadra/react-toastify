@@ -566,4 +566,85 @@ describe('ToastContainer', () => {
       expect(screen.queryByText('toast-3')).toBe(null);
     });
   });
+
+  describe('Limit queue lenght', () => {
+    it('Should not crash when using queueLimit', () => {
+      render(<ToastContainer queueLimit={1} />);
+
+      act(() => {
+        toast('Hello');
+        jest.runAllTimers();
+      });
+
+      expect(screen.getByText('Hello')).toBeInTheDocument();
+    });
+
+    it('Should not work witout limit parametr', () => {
+      render(<ToastContainer queueLimit={1} />);
+
+      act(() => {
+        toast('toast-1');
+        toast('toast-2');
+        jest.runAllTimers();
+      });
+
+      expect(screen.queryByText('toast-1')).toBeInTheDocument();
+      expect(screen.queryByText('toast-2')).toBeInTheDocument();
+    });
+
+    it('Should disable queue when param is 0', () => {
+      render(<ToastContainer limit={1} queueLimit={0} />);
+
+      act(() => {
+        toast('toast-1');
+        toast('toast-2');
+        jest.runAllTimers();
+      });
+
+      expect(screen.queryByText('toast-1')).toBeInTheDocument();
+
+      act(() => {
+        fireEvent.click(screen.getByLabelText('close'));
+        jest.runAllTimers();
+      });
+
+      triggerAnimationEnd(screen.getByText('toast-1'));
+
+      expect(screen.queryByText('toast-2')).not.toBeInTheDocument();
+    });
+
+    it('Should limit queue length', () => {
+      render(<ToastContainer autoClose={500} limit={1} queueLimit={1} />);
+
+      act(() => {
+        toast('toast-1', { toastId: 'toast-1' });
+        toast('toast-2', { toastId: 'toast-2' });
+        toast('toast-3', { toastId: 'toast-3' });
+        jest.runAllTimers();
+      });
+
+      expect(screen.queryByText('toast-1')).toBeInTheDocument();
+      expect(screen.queryByText('toast-2')).not.toBeInTheDocument();
+      expect(screen.queryByText('toast-3')).not.toBeInTheDocument();
+
+      act(() => {
+        fireEvent.click(screen.getByLabelText('close'));
+        jest.runAllTimers();
+      });
+
+      triggerAnimationEnd(screen.getByText('toast-1'));
+
+      expect(screen.queryByText('toast-2')).toBeInTheDocument();
+      expect(screen.queryByText('toast-3')).not.toBeInTheDocument();
+
+      act(() => {
+        fireEvent.click(screen.getByLabelText('close'));
+        jest.runAllTimers();
+      });
+
+      triggerAnimationEnd(screen.getByText('toast-2'));
+
+      expect(screen.queryByText('toast-3')).not.toBeInTheDocument();
+    });
+  });
 });

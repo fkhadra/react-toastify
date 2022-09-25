@@ -252,6 +252,14 @@ export function useToastContainer(props: ToastContainerProps) {
       instance.count > props.limit &&
       isNotAnUpdate
     ) {
+      if (
+        instance.props.queueLimit !== undefined &&
+        instance.count - props.limit > instance.props.queueLimit
+      ) {
+        instance.count--;
+        return;
+      }
+
       instance.queue.push({ toastContent, toastProps, staleId });
     } else if (isNum(delay)) {
       setTimeout(() => {
