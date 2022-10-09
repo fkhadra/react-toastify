@@ -111,11 +111,14 @@ export function useToast(props: ToastProps) {
     }
   }
 
-  function onDragTransitionEnd() {
+  function onDragTransitionEnd(
+    e: React.MouseEvent<HTMLElement, MouseEvent> | React.TouchEvent<HTMLElement>
+  ) {
     if (drag.boundingRect) {
       const { top, bottom, left, right } = drag.boundingRect;
 
       if (
+        e.nativeEvent.type !== 'touchend' &&
         props.pauseOnHover &&
         drag.x >= left &&
         drag.x <= right &&
