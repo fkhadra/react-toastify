@@ -135,7 +135,8 @@
     ".": {
       "require": "./dist/react-toastify.js",
       "import": "./dist/react-toastify.esm.mjs",
-      "umd": "./dist/react-toastify.umd.js"
+      "umd": "./dist/react-toastify.umd.js",
+      "types": "./dist/index.d.ts"
     },
     "./dist/ReactToastify.min.css": "./dist/ReactToastify.min.css",
     "./dist/ReactToastify.css": "./dist/ReactToastify.css",
@@ -149,7 +150,8 @@
     },
     "./inject-style": {
       "require": "./dist/inject-style.js",
-      "import": "./dist/inject-style.esm.mjs"
+      "import": "./dist/inject-style.esm.mjs",
+      "types": "./dist/inject-style.d.ts"
     },
     "./package.json": "./package.json",
     "./scss/": "./scss/",
