@@ -482,11 +482,10 @@ describe('toastify', () => {
   it('should update the toast type when the promise resolves', async () => {
     render(<ToastContainer />);
 
-    const promiseResolved = jest.fn(() => Promise.resolve());
-    const promiseRejected = jest.fn(() => Promise.reject());
+    const promise = jest.fn(() => Promise.resolve());
 
     act(() => {
-      toast.promise(promiseResolved, {
+      toast.promise(promise, {
         success: {
           render: 'success',
           type: () => 'error'
@@ -495,18 +494,10 @@ describe('toastify', () => {
           render: 'error',
         }
       });
-      toast.promise(promiseRejected, {
-        success: 'success',
-        error: {
-          render: 'error',
-          type: () => 'success'
-        }
-      });
     });
 
     await waitFor(() => {
       expect(screen.getByTestId('error')).not.toBe(null);
-      expect(screen.getByTestId('success')).not.toBe(null);
     });
   });
 });
