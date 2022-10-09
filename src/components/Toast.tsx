@@ -83,6 +83,7 @@ export const Toast: React.FC<ToastProps> = props => {
         {...eventHandlers}
         style={style}
         ref={toastRef}
+        data-testid={type}
       >
         <div
           {...(isIn && { role: role })}

@@ -99,10 +99,15 @@ toast.loading = (content: ToastContent, options?: ToastOptions) =>
     })
   );
 
+interface ToastPromiseUpdateOptions<T = unknown>
+  extends Omit<UpdateOptions<T>, 'type'> {
+  type?: TypeOptions | ((data: T) => TypeOptions);
+}
+
 export interface ToastPromiseParams<T = unknown> {
-  pending?: string | UpdateOptions<void>;
-  success?: string | UpdateOptions<T>;
-  error?: string | UpdateOptions<any>;
+  pending?: string | ToastPromiseUpdateOptions<void>;
+  success?: string | ToastPromiseUpdateOptions<T>;
+  error?: string | ToastPromiseUpdateOptions<any>;
 }
 
 function handlePromise<T = unknown>(
@@ -132,7 +137,7 @@ function handlePromise<T = unknown>(
 
   const resolver = (
     type: TypeOptions,
-    input: string | UpdateOptions<T> | undefined,
+    input: string | ToastPromiseUpdateOptions<T> | undefined,
     result: T
   ) => {
     // Remove the toast if the input has not been provided. This prevents the toast from hanging
@@ -148,7 +153,9 @@ function handlePromise<T = unknown>(
       ...options,
       data: result
     };
-    const params = isStr(input) ? { render: input } : input;
+    const params = isStr(input)
+      ? { render: input }
+      : { ...input, type: isFn(input.type) ? input.type(result) : input.type };
 
     // if the id is set we know that it's an update
     if (id) {
