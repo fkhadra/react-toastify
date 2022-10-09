@@ -87,6 +87,9 @@ export function useToast(props: ToastProps) {
     e: React.MouseEvent<HTMLElement, MouseEvent> | React.TouchEvent<HTMLElement>
   ) {
     if (props.draggable) {
+      // required for ios safari to prevent default swipe behavior
+      if (e.nativeEvent.type === 'touchstart') e.nativeEvent.preventDefault();
+
       bindDragEvents();
       const toast = toastRef.current!;
       drag.canCloseOnClick = true;
