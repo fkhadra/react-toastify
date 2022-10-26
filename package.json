@@ -19,7 +19,7 @@
   ],
   "sideEffects": true,
   "scripts": {
-    "start": "cd example && npm run start",
+    "start": "cd example && yarn install && yarn run start",
     "test": "jest",
     "clean": "rimraf dist && rimraf addons",
     "test:coverage": "yarn test --coverage",
