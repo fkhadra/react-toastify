@@ -25,6 +25,7 @@
     display: flex;
     align-items: center;
     & > div:last-child {
+      word-break: break-word;
       flex: 1;
     }
   }
