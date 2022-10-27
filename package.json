@@ -133,6 +133,7 @@
   "source": "src/index.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "require": "./dist/react-toastify.js",
       "import": "./dist/react-toastify.esm.mjs",
       "umd": "./dist/react-toastify.umd.js"
@@ -144,16 +145,19 @@
     "./ReactToastify.css": "./dist/ReactToastify.css",
     "./ReactToastify.minimal.css": "./dist/ReactToastify.minimal.css",
     "./dist/inject-style": {
+      "types": "./dist/inject-style.d.ts",
       "require": "./dist/inject-style.js",
       "import": "./dist/inject-style.esm.mjs"
     },
     "./inject-style": {
+      "types": "./dist/inject-style.d.ts",
       "require": "./dist/inject-style.js",
       "import": "./dist/inject-style.esm.mjs"
     },
     "./package.json": "./package.json",
     "./scss/": "./scss/",
     "./addons/use-notification-center": {
+      "types": "./addons/use-notification-center/index.d.ts",
       "require": "./addons/use-notification-center/index.js",
       "import": "./addons/use-notification-center/index.esm.mjs"
     }
