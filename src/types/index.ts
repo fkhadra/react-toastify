@@ -193,22 +193,12 @@ export interface ToastOptions<Data = {}> extends CommonOptions {
   className?: ToastClassName;
 
   /**
-   * @deprecated starting v10
-   * Use toast.onChange instead
-   *
-   * See https://fkhadra.github.io/react-toastify/listen-for-changes/
-   *
    * Called when toast is mounted.
    */
   onOpen?: <T = {}>(props: T) => void;
 
   /**
-   * @deprecated starting v10
-   * Use toast.onChange instead
-   *
-   * See https://fkhadra.github.io/react-toastify/listen-for-changes/
-   *
-   * Called when toast is mounted.
+   * Called when toast is unmounted.
    */
   onClose?: <T = {}>(props: T) => void;
 
