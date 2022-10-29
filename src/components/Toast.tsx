@@ -35,6 +35,7 @@ export const Toast: React.FC<ToastProps> = props => {
     isIn,
     isLoading,
     iconOut,
+    closeOnClick,
     theme
   } = props;
   const defaultClassName = cx(
@@ -43,6 +44,9 @@ export const Toast: React.FC<ToastProps> = props => {
     `${Default.CSS_NAMESPACE}__toast--${type}`,
     {
       [`${Default.CSS_NAMESPACE}__toast--rtl`]: rtl
+    },
+    {
+      [`${Default.CSS_NAMESPACE}__toast--close-on-click`]: closeOnClick
     }
   );
   const cssClasses = isFn(className)
