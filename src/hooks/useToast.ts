@@ -65,7 +65,6 @@ export function useToast(props: ToastProps) {
         { once: true }
       );
 
-    // TODO: Remove me in v10
     if (isFn(props.onOpen))
       props.onOpen(isValidElement(props.children) && props.children.props);
 
