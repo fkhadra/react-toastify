@@ -53,7 +53,7 @@ export const Toast: React.FC<ToastProps> = props => {
         defaultClassName
       })
     : cx(defaultClassName, className);
-  const isProgressControlled = !!progress;
+  const isProgressControlled = !!progress || !autoClose;
 
   const closeButtonProps = { closeToast, type, theme };
   let Close: React.ReactNode = null;
@@ -106,25 +106,23 @@ export const Toast: React.FC<ToastProps> = props => {
           <div>{children}</div>
         </div>
         {Close}
-        {(autoClose || isProgressControlled) && (
-          <ProgressBar
-            {...(updateId && !isProgressControlled
-              ? { key: `pb-${updateId}` }
-              : {})}
-            rtl={rtl}
-            theme={theme}
-            delay={autoClose as number}
-            isRunning={isRunning}
-            isIn={isIn}
-            closeToast={closeToast}
-            hide={hideProgressBar}
-            type={type}
-            style={progressStyle}
-            className={progressClassName}
-            controlledProgress={isProgressControlled}
-            progress={progress}
-          />
-        )}
+        <ProgressBar
+          {...(updateId && !isProgressControlled
+            ? { key: `pb-${updateId}` }
+            : {})}
+          rtl={rtl}
+          theme={theme}
+          delay={autoClose as number}
+          isRunning={isRunning}
+          isIn={isIn}
+          closeToast={closeToast}
+          hide={hideProgressBar}
+          type={type}
+          style={progressStyle}
+          className={progressClassName}
+          controlledProgress={isProgressControlled}
+          progress={progress || 0}
+        />
       </div>
     </Transition>
   );
