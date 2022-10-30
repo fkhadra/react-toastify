@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'clsx';
 
-import { TYPE, Default, isFn } from './../utils';
+import { Default, isFn, Type } from './../utils';
 import { TypeOptions, ToastClassName, Theme } from '../types';
 
 export interface ProgressBarProps {
@@ -70,7 +70,7 @@ export function ProgressBar({
   delay,
   isRunning,
   closeToast,
-  type,
+  type = Type.DEFAULT,
   hide,
   className,
   style: userStyle,
@@ -135,8 +135,3 @@ export function ProgressBar({
     />
   );
 }
-
-ProgressBar.defaultProps = {
-  type: TYPE.DEFAULT,
-  hide: false
-};
