@@ -285,7 +285,16 @@ toast.onChange = (callback: OnChangeCallback) => {
   };
 };
 
+/**
+ * @deprecated 
+ * Will be removed in the next major release.
+ */
 toast.POSITION = POSITION;
+
+/**
+ * @deprecated
+ * Will be removed in the next major release.
+ */
 toast.TYPE = TYPE;
 
 /**
