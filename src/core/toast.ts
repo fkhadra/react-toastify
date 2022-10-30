@@ -20,6 +20,7 @@ interface EnqueuedToast {
 let containers = new Map<ContainerInstance | Id, ContainerInstance>();
 let latestInstance: ContainerInstance | Id;
 let queue: EnqueuedToast[] = [];
+let TOAST_ID = 1;
 
 /**
  * Get the toast by id, given it's in the DOM, otherwise returns null
@@ -35,7 +36,7 @@ function getToast(toastId: Id, { containerId }: ToastOptions) {
  * Generate a random toastId
  */
 function generateToastId() {
-  return Math.random().toString(36).substring(2, 9);
+  return `t-${TOAST_ID++}`;
 }
 
 /**
