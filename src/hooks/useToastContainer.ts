@@ -13,9 +13,9 @@ import {
   isFn,
   isNum,
   isStr,
-  isToastIdValid,
   getAutoCloseDelay,
-  toToastItem
+  toToastItem,
+  isNil
 } from '../utils';
 import { eventManager, Event } from '../core/eventManager';
 
@@ -76,10 +76,10 @@ export function useToastContainer(props: ToastContainerProps) {
       .on(Event.ClearWaitingQueue, clearWaitingQueue)
       .emit(Event.DidMount, instance);
 
-      return () => {
-        toastToRender.clear();
-        eventManager.emit(Event.WillUnmount, instance);
-      };
+    return () => {
+      toastToRender.clear();
+      eventManager.emit(Event.WillUnmount, instance);
+    };
   }, []);
 
   useEffect(() => {
@@ -98,7 +98,7 @@ export function useToastContainer(props: ToastContainerProps) {
 
   function removeToast(toastId?: Id) {
     setToastIds(state =>
-      isToastIdValid(toastId) ? state.filter(id => id !== toastId) : []
+      isNil(toastId) ? [] : state.filter(id => id !== toastId)
     );
   }
 
@@ -118,7 +118,7 @@ export function useToastContainer(props: ToastContainerProps) {
       !containerRef.current ||
       (instance.props.enableMultiContainer &&
         options.containerId !== instance.props.containerId) ||
-      (toastToRender.has(options.toastId) && options.updateId == null)
+      (toastToRender.has(options.toastId) && isNil(options.updateId))
     );
   }
 
@@ -132,7 +132,7 @@ export function useToastContainer(props: ToastContainerProps) {
     const { toastId, updateId, data } = options;
     const { props } = instance;
     const closeToast = () => removeToast(toastId);
-    const isNotAnUpdate = updateId == null;
+    const isNotAnUpdate = isNil(updateId);
 
     if (isNotAnUpdate) instance.count++;
 
@@ -143,7 +143,7 @@ export function useToastContainer(props: ToastContainerProps) {
       containerId: options.containerId,
       isLoading: options.isLoading,
       theme: options.theme || props.theme!,
-      icon: options.icon != null ? options.icon : props.icon,
+      icon:  options.icon ?? props.icon,
       isIn: false,
       key: options.key || instance.toastKey++,
       type: options.type!,
@@ -194,14 +194,14 @@ export function useToastContainer(props: ToastContainerProps) {
         eventManager.emit(Event.Change, removed);
 
         const queueLen = instance.queue.length;
-        instance.count = isToastIdValid(toastId)
-          ? instance.count - 1
-          : instance.count - instance.displayedToast;
+        instance.count = isNil(toastId)
+          ? instance.count - instance.displayedToast
+          : instance.count - 1;
 
         if (instance.count < 0) instance.count = 0;
 
         if (queueLen > 0) {
-          const freeSlot = isToastIdValid(toastId) ? 1 : instance.props.limit!;
+          const freeSlot = isNil(toastId) ? instance.props.limit! : 1;
 
           if (queueLen === 1 || freeSlot === 1) {
             instance.displayedToast++;
@@ -280,7 +280,7 @@ export function useToastContainer(props: ToastContainerProps) {
     setToastIds(state => [...state, toastId].filter(id => id !== staleId));
     eventManager.emit(
       Event.Change,
-      toToastItem(toast, toast.props.updateId == null ? 'added' : 'updated')
+      toToastItem(toast, isNil(toast.props.updateId) ? 'added' : 'updated')
     );
   }
 

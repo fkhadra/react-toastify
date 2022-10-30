@@ -4,7 +4,7 @@ import cx from 'clsx';
 import { ProgressBar } from './ProgressBar';
 import { CloseButton } from './CloseButton';
 import { ToastProps } from '../types';
-import { Default, isFn } from '../utils';
+import { Default, isFn, isNil } from '../utils';
 import { useToast } from '../hooks/useToast';
 
 export const Toast: React.FC<ToastProps> = props => {
@@ -93,7 +93,7 @@ export const Toast: React.FC<ToastProps> = props => {
           }
           style={bodyStyle}
         >
-          {iconOut != null && (
+          {!isNil(iconOut) && (
             <div
               className={cx(`${Default.CSS_NAMESPACE}__toast-icon`, {
                 [`${Default.CSS_NAMESPACE}--animate-icon ${Default.CSS_NAMESPACE}__zoom-enter`]:
