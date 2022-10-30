@@ -33,7 +33,7 @@
     "style": "npm run sass && npm run sass-minimal && cssnano dist/ReactToastify.css dist/ReactToastify.min.css --no-zindex --no-reduceIdents && npm run style-injector",
     "style-injector": "style2js --out-dir dist dist/ReactToastify.min.css",
     "build": "npm run clean && npm run build:core && npm run pack-and-extract && npm run build:addons && npm run style && husky install",
-    "build:core": "microbundle --jsx React.createElement --compress false",
+    "build:core": "microbundle --jsx React.createElement",
     "build:addons": "node build-addons.mjs",
     "setup": "npm run clean && npm run build && npm run pack-and-extract",
     "pack-and-extract": "yarn pack -f react-toastify.tgz && npm run rm-pkg && npm run extract-pkg",
@@ -136,8 +136,7 @@
       "types": "./dist/index.d.ts",
       "require": "./dist/react-toastify.js",
       "import": "./dist/react-toastify.esm.mjs",
-      "umd": "./dist/react-toastify.umd.js",
-      "types": "./dist/index.d.ts"
+      "umd": "./dist/react-toastify.umd.js"
     },
     "./dist/ReactToastify.min.css": "./dist/ReactToastify.min.css",
     "./dist/ReactToastify.css": "./dist/ReactToastify.css",
@@ -153,15 +152,14 @@
     "./inject-style": {
       "types": "./dist/inject-style.d.ts",
       "require": "./dist/inject-style.js",
-      "import": "./dist/inject-style.esm.mjs",
-      "types": "./dist/inject-style.d.ts"
+      "import": "./dist/inject-style.esm.mjs"
     },
     "./package.json": "./package.json",
     "./scss/": "./scss/",
     "./addons/use-notification-center": {
-      "types": "./addons/use-notification-center/index.d.ts",
       "require": "./addons/use-notification-center/index.js",
-      "import": "./addons/use-notification-center/index.esm.mjs"
+      "import": "./addons/use-notification-center/index.esm.mjs",
+      "types": "./addons/use-notification-center/index.d.ts"
     }
   }
 }
