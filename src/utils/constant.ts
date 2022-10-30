@@ -10,6 +10,9 @@ type KeyOfPosition =
 
 type KeyOfType = 'INFO' | 'SUCCESS' | 'WARNING' | 'ERROR' | 'DEFAULT';
 
+/**
+ * @deprecated
+ */
 export const POSITION: { [key in KeyOfPosition]: ToastPosition } = {
   TOP_LEFT: 'top-left',
   TOP_RIGHT: 'top-right',
@@ -19,6 +22,9 @@ export const POSITION: { [key in KeyOfPosition]: ToastPosition } = {
   BOTTOM_CENTER: 'bottom-center'
 };
 
+/**
+ * @deprecated
+ */
 export const TYPE: { [key in KeyOfType]: TypeOptions } = {
   INFO: 'info',
   SUCCESS: 'success',
@@ -26,6 +32,14 @@ export const TYPE: { [key in KeyOfType]: TypeOptions } = {
   ERROR: 'error',
   DEFAULT: 'default'
 };
+
+export const enum Type {
+  INFO = 'info',
+  SUCCESS = 'success',
+  WARNING = 'warning',
+  ERROR = 'error',
+  DEFAULT = 'default'
+}
 
 export const enum Default {
   COLLAPSE_DURATION = 300,

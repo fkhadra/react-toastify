@@ -1,4 +1,12 @@
-import { POSITION, TYPE, isStr, isNum, isFn, isToastIdValid } from '../utils';
+import {
+  POSITION,
+  TYPE,
+  isStr,
+  isNum,
+  isFn,
+  isToastIdValid,
+  Type
+} from '../utils';
 import { eventManager, OnChangeCallback, Event } from './eventManager';
 import {
   ToastContent,
@@ -178,10 +186,10 @@ function handlePromise<T = unknown>(
 }
 
 toast.promise = handlePromise;
-toast.success = createToastByType(TYPE.SUCCESS);
-toast.info = createToastByType(TYPE.INFO);
-toast.error = createToastByType(TYPE.ERROR);
-toast.warning = createToastByType(TYPE.WARNING);
+toast.success = createToastByType(Type.SUCCESS);
+toast.info = createToastByType(Type.INFO);
+toast.error = createToastByType(Type.ERROR);
+toast.warning = createToastByType(Type.WARNING);
 toast.warn = toast.warning;
 toast.dark = (content: ToastContent, options?: ToastOptions) =>
   dispatchToast(
@@ -286,7 +294,7 @@ toast.onChange = (callback: OnChangeCallback) => {
 };
 
 /**
- * @deprecated 
+ * @deprecated
  * Will be removed in the next major release.
  */
 toast.POSITION = POSITION;
