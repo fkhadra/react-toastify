@@ -88,6 +88,28 @@ describe('Toast Component', () => {
     expect(document.querySelector(cssClasses.rtl)).not.toBeNull();
   });
 
+  describe('Should support closeOnClick display', () => {
+    it('Should set relevant class when closeOnClick is set to true', () => {
+      render(
+        <Toast {...REQUIRED_PROPS} closeOnClick>
+          FooBar
+        </Toast>
+      );
+
+      expect(document.querySelector(cssClasses.closeOnClick)).not.toBeNull();
+    });
+    it('Should not set relevant class when closeOnClick is set to false', () => {
+      render(
+        <Toast {...REQUIRED_PROPS}
+          closeOnClick={false}>
+          FooBar
+        </Toast>
+      );
+
+      expect(document.querySelector(cssClasses.closeOnClick)).toBeNull();
+    });
+  });
+
   it('Should not render ProgressBar if autoClose prop is set to false', () => {
     render(
       <Toast {...REQUIRED_PROPS} autoClose={false}>
