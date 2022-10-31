@@ -13,7 +13,7 @@ import {
 import { ContainerInstance } from '../hooks';
 
 interface EnqueuedToast {
-  content: ToastContent;
+  content: ToastContent<any>;
   options: NotValidatedToastProps;
 }
 
@@ -27,35 +27,31 @@ let TOAST_ID = 1;
  */
 function getToast(toastId: Id, { containerId }: ToastOptions) {
   const container = containers.get(containerId || latestInstance);
-  if (!container) return null;
-
-  return container.getToast(toastId);
+  return container && container.getToast(toastId);
 }
 
 /**
  * Generate a random toastId
  */
 function generateToastId() {
-  return `t-${TOAST_ID++}`;
+  return `${TOAST_ID++}`;
 }
 
 /**
  * Generate a toastId or use the one provided
  */
 function getToastId(options?: ToastOptions) {
-  if (options && (isStr(options.toastId) || isNum(options.toastId))) {
-    return options.toastId;
-  }
-
-  return generateToastId();
+  return options && (isStr(options.toastId) || isNum(options.toastId))
+    ? options.toastId
+    : generateToastId();
 }
 
 /**
  * If the container is not mounted, the toast is enqueued and
  * the container lazy mounted
  */
-function dispatchToast(
-  content: ToastContent,
+function dispatchToast<TData>(
+  content: ToastContent<TData>,
   options: NotValidatedToastProps
 ): Id {
   if (containers.size > 0) {
@@ -79,15 +75,23 @@ function mergeOptions(type: string, options?: ToastOptions) {
 }
 
 function createToastByType(type: string) {
-  return (content: ToastContent, options?: ToastOptions) =>
-    dispatchToast(content, mergeOptions(type, options));
+  return <TData = unknown>(
+    content: ToastContent<TData>,
+    options?: ToastOptions
+  ) => dispatchToast(content, mergeOptions(type, options));
 }
 
-function toast(content: ToastContent, options?: ToastOptions) {
+function toast<TData = unknown>(
+  content: ToastContent<TData>,
+  options?: ToastOptions
+) {
   return dispatchToast(content, mergeOptions(TYPE.DEFAULT, options));
 }
 
-toast.loading = (content: ToastContent, options?: ToastOptions) =>
+toast.loading = <TData = unknown>(
+  content: ToastContent<TData>,
+  options?: ToastOptions
+) =>
   dispatchToast(
     content,
     mergeOptions(TYPE.DEFAULT, {
@@ -100,15 +104,19 @@ toast.loading = (content: ToastContent, options?: ToastOptions) =>
     })
   );
 
-export interface ToastPromiseParams<T = unknown> {
-  pending?: string | UpdateOptions<void>;
-  success?: string | UpdateOptions<T>;
-  error?: string | UpdateOptions<any>;
+export interface ToastPromiseParams<
+  TData = unknown,
+  TError = unknown,
+  TPending = unknown
+> {
+  pending?: string | UpdateOptions<TPending>;
+  success?: string | UpdateOptions<TData>;
+  error?: string | UpdateOptions<TError>;
 }
 
-function handlePromise<T = unknown>(
-  promise: Promise<T> | (() => Promise<T>),
-  { pending, error, success }: ToastPromiseParams<T>,
+function handlePromise<TData = unknown, TError = unknown, TPending = unknown>(
+  promise: Promise<TData> | (() => Promise<TData>),
+  { pending, error, success }: ToastPromiseParams<TData, TError, TPending>,
   options?: ToastOptions
 ) {
   let id: Id;
@@ -131,7 +139,7 @@ function handlePromise<T = unknown>(
     delay: 100
   };
 
-  const resolver = (
+  const resolver = <T>(
     type: TypeOptions,
     input: string | UpdateOptions<T> | undefined,
     result: T
@@ -156,7 +164,7 @@ function handlePromise<T = unknown>(
       toast.update(id, {
         ...baseParams,
         ...params
-      });
+      } as UpdateOptions);
     } else {
       // using toast.promise without loading
       toast(params!.render, {

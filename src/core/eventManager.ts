@@ -50,9 +50,9 @@ export interface EventManager {
   on(event: Event.Change, callback: OnChangeCallback): EventManager;
   off(event: Event, callback?: Callback): EventManager;
   cancelEmit(event: Event): EventManager;
-  emit(
+  emit<TData>(
     event: Event.Show,
-    content: React.ReactNode,
+    content: React.ReactNode | ToastContent<TData>,
     options: NotValidatedToastProps
   ): void;
   emit(event: Event.Clear, id?: string | number): void;

@@ -4,7 +4,8 @@ import {
   useReducer,
   cloneElement,
   isValidElement,
-  useState
+  useState,
+  ReactElement
 } from 'react';
 import {
   parseClassName,
@@ -143,7 +144,7 @@ export function useToastContainer(props: ToastContainerProps) {
       containerId: options.containerId,
       isLoading: options.isLoading,
       theme: options.theme || props.theme!,
-      icon:  options.icon ?? props.icon,
+      icon: options.icon ?? props.icon,
       isIn: false,
       key: options.key || instance.toastKey++,
       type: options.type!,
@@ -236,7 +237,7 @@ export function useToastContainer(props: ToastContainerProps) {
     let toastContent = content;
 
     if (isValidElement(content) && !isStr(content.type)) {
-      toastContent = cloneElement(content, {
+      toastContent = cloneElement(content as ReactElement, {
         closeToast,
         toastProps,
         data

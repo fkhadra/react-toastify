@@ -337,6 +337,9 @@ function decorate<Data>(
 }
 
 // newest to oldest
-function defaultSort(l: NotificationCenterItem, r: NotificationCenterItem) {
+function defaultSort<Data>(
+  l: NotificationCenterItem<Data>,
+  r: NotificationCenterItem<Data>
+) {
   return r.createdAt - l.createdAt;
 }
