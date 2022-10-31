@@ -85,7 +85,7 @@ function toast<TData = unknown>(
   content: ToastContent<TData>,
   options?: ToastOptions
 ) {
-  return dispatchToast(content, mergeOptions(TYPE.DEFAULT, options));
+  return dispatchToast(content, mergeOptions(Type.DEFAULT, options));
 }
 
 toast.loading = <TData = unknown>(
@@ -94,7 +94,7 @@ toast.loading = <TData = unknown>(
 ) =>
   dispatchToast(
     content,
-    mergeOptions(TYPE.DEFAULT, {
+    mergeOptions(Type.DEFAULT, {
       isLoading: true,
       autoClose: false,
       closeOnClick: false,
@@ -195,7 +195,7 @@ toast.warn = toast.warning;
 toast.dark = (content: ToastContent, options?: ToastOptions) =>
   dispatchToast(
     content,
-    mergeOptions(TYPE.DEFAULT, {
+    mergeOptions(Type.DEFAULT, {
       theme: 'dark',
       ...options
     })
