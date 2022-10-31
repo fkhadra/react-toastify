@@ -27,6 +27,14 @@ export type ToastContent<T = unknown> =
   | React.ReactNode
   | ((props: ToastContentProps<T>) => React.ReactNode);
 
+export type ToastIcon =
+  | boolean
+  | ((props: IconProps) => React.ReactNode)
+  | React.ReactElement<IconProps>
+  | string
+  | number
+  | React.ReactNode;
+
 export type Id = number | string;
 
 export type ToastTransition =
@@ -170,13 +178,7 @@ interface CommonOptions {
    * Used to display a custom icon. Set it to `false` to prevent
    * the icons from being displayed
    */
-  icon?:
-    | boolean
-    | ((props: IconProps) => React.ReactNode)
-    | React.ReactElement<IconProps>
-    | string
-    | number
-    | React.ReactNode;
+  icon?: ToastIcon;
 
   /**
    * Theme to use.
@@ -335,13 +337,13 @@ export interface Toast {
 export type ToastItemStatus = 'added' | 'removed' | 'updated';
 
 export interface ToastItem<Data = {}> {
-  content: React.ReactNode;
+  content: ToastContent<Data>;
   id: Id;
   theme?: Theme;
   type?: TypeOptions;
   isLoading?: boolean;
   containerId?: Id;
   data: Data;
-  icon?: React.ReactNode | false;
+  icon?: ToastIcon;
   status: ToastItemStatus;
 }
