@@ -54,6 +54,7 @@
   "jest": {
     "verbose": true,
     "coveragePathIgnorePatterns": [
+      "/dist/*",
       "/src/index.tsx"
     ],
     "roots": [
