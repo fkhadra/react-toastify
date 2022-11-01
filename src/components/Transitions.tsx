@@ -1,25 +1,17 @@
 import { Default, cssTransition } from '../utils';
 
-const Bounce = cssTransition({
-  enter: `${Default.CSS_NAMESPACE}--animate ${Default.CSS_NAMESPACE}__bounce-enter`,
-  exit: `${Default.CSS_NAMESPACE}--animate ${Default.CSS_NAMESPACE}__bounce-exit`,
-  appendPosition: true
+const getConfig = (animationName: string, appendPosition = false) => ({
+  enter: `${Default.CSS_NAMESPACE}--animate ${Default.CSS_NAMESPACE}__${animationName}-enter`,
+  exit: `${Default.CSS_NAMESPACE}--animate ${Default.CSS_NAMESPACE}__${animationName}-exit`,
+  appendPosition
 });
 
-const Slide = cssTransition({
-  enter: `${Default.CSS_NAMESPACE}--animate ${Default.CSS_NAMESPACE}__slide-enter`,
-  exit: `${Default.CSS_NAMESPACE}--animate ${Default.CSS_NAMESPACE}__slide-exit`,
-  appendPosition: true
-});
+const Bounce = cssTransition(getConfig('bounce', true));
 
-const Zoom = cssTransition({
-  enter: `${Default.CSS_NAMESPACE}--animate ${Default.CSS_NAMESPACE}__zoom-enter`,
-  exit: `${Default.CSS_NAMESPACE}--animate ${Default.CSS_NAMESPACE}__zoom-exit`
-});
+const Slide = cssTransition(getConfig('slide', true));
 
-const Flip = cssTransition({
-  enter: `${Default.CSS_NAMESPACE}--animate ${Default.CSS_NAMESPACE}__flip-enter`,
-  exit: `${Default.CSS_NAMESPACE}--animate ${Default.CSS_NAMESPACE}__flip-exit`
-});
+const Zoom = cssTransition(getConfig('zoom'));
+
+const Flip = cssTransition(getConfig('flip'));
 
 export { Bounce, Slide, Zoom, Flip };
