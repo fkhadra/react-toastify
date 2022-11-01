@@ -233,7 +233,10 @@ toast.isActive = (id: Id) => {
   return isToastActive;
 };
 
-toast.update = (toastId: Id, options: UpdateOptions = {}) => {
+toast.update = <TData = unknown>(
+  toastId: Id,
+  options: UpdateOptions<TData> = {}
+) => {
   // if you call toast and toast.update directly nothing will be displayed
   // this is why I defered the update
   setTimeout(() => {

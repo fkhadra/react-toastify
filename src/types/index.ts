@@ -166,7 +166,7 @@ interface CommonOptions {
   /**
    * @deprecated
    * ⚠️ Will be removed in the next major release. You can pass a react component with you handler instead.
-   * 
+   *
    * Fired when clicking inside toaster
    */
   onClick?: (event: React.MouseEvent) => void;
