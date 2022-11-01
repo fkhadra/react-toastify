@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { cloneElement, isValidElement, ReactNode } from 'react';
 import cx from 'clsx';
 
 import { ProgressBar } from './ProgressBar';
@@ -66,8 +66,8 @@ export const Toast: React.FC<ToastProps> = props => {
     // hide
   } else if (isFn(closeButton)) {
     Close = closeButton(closeButtonProps);
-  } else if (React.isValidElement(closeButton)) {
-    Close = React.cloneElement(closeButton, closeButtonProps);
+  } else if (isValidElement(closeButton)) {
+    Close = cloneElement(closeButton, closeButtonProps);
   } else {
     Close = CloseButton(closeButtonProps);
   }
