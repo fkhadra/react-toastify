@@ -1,4 +1,4 @@
-import { Default, raf } from './constant';
+import { Default } from './constant';
 
 /**
  * Used to collapse toast after exit animation
@@ -10,12 +10,12 @@ export function collapseToast(
 ) {
   const { scrollHeight, style } = node;
 
-  raf(() => {
+  requestAnimationFrame(() => {
     style.minHeight = 'initial';
     style.height = scrollHeight + 'px';
     style.transition = `all ${duration}ms`;
 
-    raf(() => {
+    requestAnimationFrame(() => {
       style.height = '0';
       style.padding = '0';
       style.margin = '0';
