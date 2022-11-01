@@ -10,7 +10,6 @@ import {
 import {
   parseClassName,
   canBeRendered,
-  isBool,
   isFn,
   isNum,
   isStr,
@@ -28,8 +27,7 @@ import {
   Toast,
   ToastPosition,
   ClearWaitingQueueParams,
-  NotValidatedToastProps,
-  ToastTransition
+  NotValidatedToastProps
 } from '../types';
 
 import { getIcon } from '../components/Icons';
@@ -137,57 +135,25 @@ export function useToastContainer(props: ToastContainerProps) {
 
     if (isNotAnUpdate) instance.count++;
 
-    const toastProps: ToastProps = {
+    const toastProps = {
+      ...props,
+      ...options,
       toastId,
       updateId,
       data,
-      containerId: options.containerId,
-      isLoading: options.isLoading,
-      theme: options.theme || props.theme!,
-      icon: options.icon ?? props.icon,
+      closeToast,
       isIn: false,
       key: options.key || instance.toastKey++,
-      type: options.type!,
-      closeToast: closeToast,
-      closeButton: options.closeButton,
-      rtl: props.rtl,
-      position: options.position || (props.position as ToastPosition),
-      transition: options.transition || (props.transition as ToastTransition),
       className: parseClassName(options.className || props.toastClassName),
       bodyClassName: parseClassName(
         options.bodyClassName || props.bodyClassName
       ),
-      style: options.style || props.toastStyle,
-      bodyStyle: options.bodyStyle || props.bodyStyle,
-      onClick: options.onClick || props.onClick,
-      pauseOnHover: isBool(options.pauseOnHover)
-        ? options.pauseOnHover
-        : props.pauseOnHover,
-      pauseOnFocusLoss: isBool(options.pauseOnFocusLoss)
-        ? options.pauseOnFocusLoss
-        : props.pauseOnFocusLoss,
-      draggable: isBool(options.draggable)
-        ? options.draggable
-        : props.draggable,
-      draggablePercent:
-        options.draggablePercent || (props.draggablePercent as number),
-      draggableDirection:
-        options.draggableDirection || props.draggableDirection,
-      closeOnClick: isBool(options.closeOnClick)
-        ? options.closeOnClick
-        : props.closeOnClick,
       progressClassName: parseClassName(
         options.progressClassName || props.progressClassName
       ),
-      progressStyle: options.progressStyle || props.progressStyle,
       autoClose: options.isLoading
         ? false
         : getAutoCloseDelay(options.autoClose, props.autoClose),
-      hideProgressBar: isBool(options.hideProgressBar)
-        ? options.hideProgressBar
-        : props.hideProgressBar,
-      progress: options.progress,
-      role: options.role || props.role,
       deleteToast() {
         const removed = toToastItem(toastToRender.get(toastId)!, 'removed');
         toastToRender.delete(toastId);
@@ -217,7 +183,7 @@ export function useToastContainer(props: ToastContainerProps) {
           forceUpdate();
         }
       }
-    };
+    } as ToastProps;
 
     toastProps.iconOut = getIcon(toastProps);
 
