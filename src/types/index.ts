@@ -205,7 +205,7 @@ export interface ToastOptions<Data = {}> extends CommonOptions {
   /**
    * @deprecated
    * ⚠️ Will be removed in the next major release. You can rely on `toast.onChange` instead.
-   * 
+   *
    * Called when toast is unmounted.
    */
   onClose?: <T = {}>(props: T) => void;
