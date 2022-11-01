@@ -10,6 +10,8 @@ type KeyOfPosition =
 
 type KeyOfType = 'INFO' | 'SUCCESS' | 'WARNING' | 'ERROR' | 'DEFAULT';
 
+export const raf = requestAnimationFrame
+
 /**
  * @deprecated
  */
