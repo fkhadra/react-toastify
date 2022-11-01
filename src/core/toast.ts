@@ -1,4 +1,4 @@
-import { POSITION, TYPE, isStr, isNum, isFn, Type, isNil } from '../utils';
+import { POSITION, TYPE, isStr, isNum, isFn, Type } from '../utils';
 import { eventManager, OnChangeCallback, Event } from './eventManager';
 import {
   ToastContent,
@@ -146,7 +146,7 @@ function handlePromise<TData = unknown, TError = unknown, TPending = unknown>(
   ) => {
     // Remove the toast if the input has not been provided. This prevents the toast from hanging
     // in the pending state if a success/error toast has not been provided.
-    if (isNil(input)) {
+    if (input == null) {
       toast.dismiss(id);
       return;
     }
@@ -208,7 +208,7 @@ toast.dismiss = (id?: Id) => {
   if (containers.size > 0) {
     eventManager.emit(Event.Clear, id);
   } else {
-    queue = queue.filter(t => !isNil(id) && t.options.toastId !== id);
+    queue = queue.filter(t => id != null && t.options.toastId !== id);
   }
 };
 

@@ -9,8 +9,6 @@ export const isFn = (v: any): v is Function => typeof v === 'function';
 
 export const parseClassName = (v: any) => (isStr(v) || isFn(v) ? v : null);
 
-export const isNil = (v: any) => v == null;
-
 export const getAutoCloseDelay = (
   toastAutoClose?: false | number,
   containerAutoClose?: false | number

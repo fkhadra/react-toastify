@@ -14,8 +14,7 @@ import {
   isNum,
   isStr,
   getAutoCloseDelay,
-  toToastItem,
-  isNil
+  toToastItem
 } from '../utils';
 import { eventManager, Event } from '../core/eventManager';
 
@@ -97,7 +96,7 @@ export function useToastContainer(props: ToastContainerProps) {
 
   function removeToast(toastId?: Id) {
     setToastIds(state =>
-      isNil(toastId) ? [] : state.filter(id => id !== toastId)
+      toastId == null ? [] : state.filter(id => id !== toastId)
     );
   }
 
@@ -117,7 +116,7 @@ export function useToastContainer(props: ToastContainerProps) {
       !containerRef.current ||
       (instance.props.enableMultiContainer &&
         options.containerId !== instance.props.containerId) ||
-      (toastToRender.has(options.toastId) && isNil(options.updateId))
+      (toastToRender.has(options.toastId) && options.updateId == null)
     );
   }
 
@@ -131,7 +130,7 @@ export function useToastContainer(props: ToastContainerProps) {
     const { toastId, updateId, data } = options;
     const { props } = instance;
     const closeToast = () => removeToast(toastId);
-    const isNotAnUpdate = isNil(updateId);
+    const isNotAnUpdate = updateId == null;
 
     if (isNotAnUpdate) instance.count++;
 
@@ -161,14 +160,15 @@ export function useToastContainer(props: ToastContainerProps) {
         eventManager.emit(Event.Change, removed);
 
         const queueLen = instance.queue.length;
-        instance.count = isNil(toastId)
-          ? instance.count - instance.displayedToast
-          : instance.count - 1;
+        instance.count =
+          toastId == null
+            ? instance.count - instance.displayedToast
+            : instance.count - 1;
 
         if (instance.count < 0) instance.count = 0;
 
         if (queueLen > 0) {
-          const freeSlot = isNil(toastId) ? instance.props.limit! : 1;
+          const freeSlot = toastId == null ? instance.props.limit! : 1;
 
           if (queueLen === 1 || freeSlot === 1) {
             instance.displayedToast++;
@@ -247,7 +247,7 @@ export function useToastContainer(props: ToastContainerProps) {
     setToastIds(state => [...state, toastId].filter(id => id !== staleId));
     eventManager.emit(
       Event.Change,
-      toToastItem(toast, isNil(toast.props.updateId) ? 'added' : 'updated')
+      toToastItem(toast, toast.props.updateId == null ? 'added' : 'updated')
     );
   }
 
