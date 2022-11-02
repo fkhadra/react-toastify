@@ -136,13 +136,14 @@ export function useToastContainer(props: ToastContainerProps) {
 
     const toastProps = {
       ...props,
+      style: props.toastStyle,
+      key: instance.toastKey++,
       ...options,
       toastId,
       updateId,
       data,
       closeToast,
       isIn: false,
-      key: options.key || instance.toastKey++,
       className: parseClassName(options.className || props.toastClassName),
       bodyClassName: parseClassName(
         options.bodyClassName || props.bodyClassName
