@@ -1,5 +1,5 @@
 {
-  "version": "9.1.0",
+  "version": "9.1.1",
   "license": "MIT",
   "typings": "dist/index.d.ts",
   "description": "React notification made easy",
