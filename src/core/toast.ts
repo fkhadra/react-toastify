@@ -106,7 +106,7 @@ toast.loading = <TData = unknown>(
 
 interface ToastPromiseUpdateOptions<T = unknown>
   extends Omit<UpdateOptions<T>, 'type'> {
-  type?: TypeOptions | ((data: T) => TypeOptions);
+  type?: TypeOptions | ((props: { data: T }) => TypeOptions);
 }
 
 export interface ToastPromiseParams<
@@ -164,7 +164,7 @@ function handlePromise<TData = unknown, TError = unknown, TPending = unknown>(
     };
     const params = isStr(input)
       ? { render: input }
-      : { ...input, type: isFn(input.type) ? input.type(result) : input.type };
+      : { ...input, type: isFn(input.type) ? input.type({ data: result }) : input.type };
 
     // if the id is set we know that it's an update
     if (id) {

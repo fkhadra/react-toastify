@@ -482,13 +482,15 @@ describe('toastify', () => {
   it('should update the toast type when the promise resolves', async () => {
     render(<ToastContainer />);
 
-    const promise = jest.fn(() => Promise.resolve());
+    const promise = jest.fn(() => Promise.resolve({
+      ok: false
+    }));
 
     act(() => {
       toast.promise(promise, {
         success: {
           render: 'success',
-          type: () => 'error'
+          type: ({ data }) => !data.ok ? 'error' : 'success'
         },
         error: {
           render: 'error',
