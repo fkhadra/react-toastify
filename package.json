@@ -1,5 +1,5 @@
 {
-  "version": "9.0.8",
+  "version": "9.1.0",
   "license": "MIT",
   "typings": "dist/index.d.ts",
   "description": "React notification made easy",
@@ -33,7 +33,7 @@
     "style": "npm run sass && npm run sass-minimal && cssnano dist/ReactToastify.css dist/ReactToastify.min.css --no-zindex --no-reduceIdents && npm run style-injector",
     "style-injector": "style2js --out-dir dist dist/ReactToastify.min.css",
     "build": "npm run clean && npm run build:core && npm run pack-and-extract && npm run build:addons && npm run style && husky install",
-    "build:core": "microbundle --jsx React.createElement --compress false",
+    "build:core": "microbundle --jsx React.createElement --jsxFragment React.Fragment",
     "build:addons": "node build-addons.mjs",
     "setup": "npm run clean && npm run build && npm run pack-and-extract",
     "pack-and-extract": "yarn pack -f react-toastify.tgz && npm run rm-pkg && npm run extract-pkg",
@@ -53,19 +53,20 @@
   },
   "jest": {
     "verbose": true,
-    "globals": {
-      "ts-jest": {
-        "isolatedModules": true
-      }
-    },
     "coveragePathIgnorePatterns": [
+      "/dist/*",
       "/src/index.tsx"
     ],
     "roots": [
       "<rootDir>/test"
     ],
     "transform": {
-      "^.+\\.tsx?$": "ts-jest"
+      "^.+\\.tsx?$": [
+        "ts-jest",
+        {
+          "isolatedModules": true
+        }
+      ]
     },
     "setupFilesAfterEnv": [
       "@testing-library/jest-dom/extend-expect"
@@ -93,35 +94,37 @@
   },
   "homepage": "https://github.com/fkhadra/react-toastify#readme",
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.16.3",
-    "@testing-library/react": "^13.0.0",
-    "@types/jest": "^27.4.1",
-    "@types/react": "^17.0.43",
-    "@types/react-dom": "^17.0.14",
-    "@typescript-eslint/eslint-plugin": "^5.17.0",
-    "@typescript-eslint/parser": "^5.17.0",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@types/jest": "^29.2.0",
+    "@types/react": "^18.0.24",
+    "@types/react-dom": "^18.0.8",
+    "@typescript-eslint/eslint-plugin": "^5.41.0",
+    "@typescript-eslint/parser": "^5.41.0",
     "coveralls": "^3.0.9",
-    "cssnano": "^5.1.7",
+    "cssnano": "^5.1.14",
     "cssnano-cli": "^1.0.5",
-    "eslint": "^8.12.0",
+    "eslint": "^8.26.0",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jsx-a11y": "^6.5.1",
-    "eslint-plugin-react": "^7.29.4",
+    "eslint-plugin-react": "^7.31.10",
     "eslint-plugin-react-hooks": "^4.4.0",
-    "husky": "^7.0.0",
-    "jest": "^27.5.1",
-    "microbundle": "^0.14.2",
-    "postcss": "^8.4.12",
-    "postcss-cli": "^9.1.0",
-    "prettier": "2.6.1",
+    "husky": "^8.0.1",
+    "jest": "^29.2.2",
+    "jest-environment-jsdom": "^29.2.2",
+    "jest-jasmine2": "^29.2.2",
+    "microbundle": "^0.15.1",
+    "postcss": "^8.4.18",
+    "postcss-cli": "^10.0.0",
+    "prettier": "2.7.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "rimraf": "^3.0.2",
-    "sass": "^1.49.11",
+    "sass": "^1.55.0",
     "style2js": "^1.0.1",
-    "ts-jest": "^27.1.4",
+    "ts-jest": "^29.0.3",
     "tslib": "^2.3.1",
-    "typescript": "^4.6.3"
+    "typescript": "^4.8.4"
   },
   "dependencies": {
     "clsx": "^1.1.1"
@@ -133,6 +136,7 @@
   "source": "src/index.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "require": "./dist/react-toastify.js",
       "import": "./dist/react-toastify.esm.mjs",
       "umd": "./dist/react-toastify.umd.js"
@@ -144,10 +148,12 @@
     "./ReactToastify.css": "./dist/ReactToastify.css",
     "./ReactToastify.minimal.css": "./dist/ReactToastify.minimal.css",
     "./dist/inject-style": {
+      "types": "./dist/inject-style.d.ts",
       "require": "./dist/inject-style.js",
       "import": "./dist/inject-style.esm.mjs"
     },
     "./inject-style": {
+      "types": "./dist/inject-style.d.ts",
       "require": "./dist/inject-style.js",
       "import": "./dist/inject-style.esm.mjs"
     },
@@ -155,7 +161,8 @@
     "./scss/": "./scss/",
     "./addons/use-notification-center": {
       "require": "./addons/use-notification-center/index.js",
-      "import": "./addons/use-notification-center/index.esm.mjs"
+      "import": "./addons/use-notification-center/index.esm.mjs",
+      "types": "./addons/use-notification-center/index.d.ts"
     }
   }
 }

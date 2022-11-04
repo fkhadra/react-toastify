@@ -11,12 +11,15 @@
   max-height: var(--toastify-toast-max-height);
   overflow: hidden;
   font-family: var(--toastify-font-family);
-  cursor: pointer;
+  cursor: default;
   direction: ltr;
   /* webkit only issue #791 */
   z-index: 0;
   &--rtl {
     direction: rtl;
+  }
+  &--close-on-click {
+    cursor: pointer;
   }
   &-body {
     margin: auto 0;
@@ -25,6 +28,7 @@
     display: flex;
     align-items: center;
     & > div:last-child {
+      word-break: break-word;
       flex: 1;
     }
   }

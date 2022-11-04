@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'clsx';
 
-import { TYPE, Default, isFn } from './../utils';
+import { Default, isFn, Type } from './../utils';
 import { TypeOptions, ToastClassName, Theme } from '../types';
 
 export interface ProgressBarProps {
@@ -70,7 +70,7 @@ export function ProgressBar({
   delay,
   isRunning,
   closeToast,
-  type,
+  type = Type.DEFAULT,
   hide,
   className,
   style: userStyle,
@@ -80,11 +80,12 @@ export function ProgressBar({
   isIn,
   theme
 }: ProgressBarProps) {
+  const isHidden = hide || (controlledProgress && progress === 0);
   const style: React.CSSProperties = {
     ...userStyle,
     animationDuration: `${delay}ms`,
     animationPlayState: isRunning ? 'running' : 'paused',
-    opacity: hide ? 0 : 1
+    opacity: isHidden ? 0 : 1
   };
 
   if (controlledProgress) style.transform = `scaleX(${progress})`;
@@ -126,7 +127,7 @@ export function ProgressBar({
   return (
     <div
       role="progressbar"
-      aria-hidden={hide ? 'true' : 'false'}
+      aria-hidden={isHidden ? 'true' : 'false'}
       aria-label="notification timer"
       className={classNames}
       style={style}
@@ -134,8 +135,3 @@ export function ProgressBar({
     />
   );
 }
-
-ProgressBar.defaultProps = {
-  type: TYPE.DEFAULT,
-  hide: false
-};

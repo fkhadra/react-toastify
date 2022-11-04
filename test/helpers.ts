@@ -3,6 +3,7 @@ import { Default } from '../src/utils';
 
 export const cssClasses = {
   rtl: `.${Default.CSS_NAMESPACE}__toast--rtl`,
+  closeOnClick: `.${Default.CSS_NAMESPACE}__toast--close-on-click`,
   progressBar: `.${Default.CSS_NAMESPACE}__progress-bar`,
   progressBarController: `.${Default.CSS_NAMESPACE}__progress-bar--controlled`,
   closeButton: `.${Default.CSS_NAMESPACE}__close-button`,

@@ -1,4 +1,4 @@
-import { POSITION, TYPE, isStr, isNum, isFn, isToastIdValid } from '../utils';
+import { POSITION, TYPE, isStr, isNum, isFn, Type } from '../utils';
 import { eventManager, OnChangeCallback, Event } from './eventManager';
 import {
   ToastContent,
@@ -13,48 +13,45 @@ import {
 import { ContainerInstance } from '../hooks';
 
 interface EnqueuedToast {
-  content: ToastContent;
+  content: ToastContent<any>;
   options: NotValidatedToastProps;
 }
 
 let containers = new Map<ContainerInstance | Id, ContainerInstance>();
 let latestInstance: ContainerInstance | Id;
 let queue: EnqueuedToast[] = [];
+let TOAST_ID = 1;
 
 /**
  * Get the toast by id, given it's in the DOM, otherwise returns null
  */
 function getToast(toastId: Id, { containerId }: ToastOptions) {
   const container = containers.get(containerId || latestInstance);
-  if (!container) return null;
-
-  return container.getToast(toastId);
+  return container && container.getToast(toastId);
 }
 
 /**
  * Generate a random toastId
  */
 function generateToastId() {
-  return Math.random().toString(36).substring(2, 9);
+  return `${TOAST_ID++}`;
 }
 
 /**
  * Generate a toastId or use the one provided
  */
 function getToastId(options?: ToastOptions) {
-  if (options && (isStr(options.toastId) || isNum(options.toastId))) {
-    return options.toastId;
-  }
-
-  return generateToastId();
+  return options && (isStr(options.toastId) || isNum(options.toastId))
+    ? options.toastId
+    : generateToastId();
 }
 
 /**
  * If the container is not mounted, the toast is enqueued and
  * the container lazy mounted
  */
-function dispatchToast(
-  content: ToastContent,
+function dispatchToast<TData>(
+  content: ToastContent<TData>,
   options: NotValidatedToastProps
 ): Id {
   if (containers.size > 0) {
@@ -78,18 +75,26 @@ function mergeOptions(type: string, options?: ToastOptions) {
 }
 
 function createToastByType(type: string) {
-  return (content: ToastContent, options?: ToastOptions) =>
-    dispatchToast(content, mergeOptions(type, options));
+  return <TData = unknown>(
+    content: ToastContent<TData>,
+    options?: ToastOptions
+  ) => dispatchToast(content, mergeOptions(type, options));
 }
 
-function toast(content: ToastContent, options?: ToastOptions) {
-  return dispatchToast(content, mergeOptions(TYPE.DEFAULT, options));
+function toast<TData = unknown>(
+  content: ToastContent<TData>,
+  options?: ToastOptions
+) {
+  return dispatchToast(content, mergeOptions(Type.DEFAULT, options));
 }
 
-toast.loading = (content: ToastContent, options?: ToastOptions) =>
+toast.loading = <TData = unknown>(
+  content: ToastContent<TData>,
+  options?: ToastOptions
+) =>
   dispatchToast(
     content,
-    mergeOptions(TYPE.DEFAULT, {
+    mergeOptions(Type.DEFAULT, {
       isLoading: true,
       autoClose: false,
       closeOnClick: false,
@@ -104,15 +109,19 @@ interface ToastPromiseUpdateOptions<T = unknown>
   type?: TypeOptions | ((data: T) => TypeOptions);
 }
 
-export interface ToastPromiseParams<T = unknown> {
-  pending?: string | ToastPromiseUpdateOptions<void>;
-  success?: string | ToastPromiseUpdateOptions<T>;
-  error?: string | ToastPromiseUpdateOptions<any>;
+export interface ToastPromiseParams<
+  TData = unknown,
+  TError = unknown,
+  TPending = unknown
+> {
+  pending?: string | ToastPromiseUpdateOptions<TPending>;
+  success?: string | ToastPromiseUpdateOptions<TData>;
+  error?: string | ToastPromiseUpdateOptions<TError>;
 }
 
-function handlePromise<T = unknown>(
-  promise: Promise<T> | (() => Promise<T>),
-  { pending, error, success }: ToastPromiseParams<T>,
+function handlePromise<TData = unknown, TError = unknown, TPending = unknown>(
+  promise: Promise<TData> | (() => Promise<TData>),
+  { pending, error, success }: ToastPromiseParams<TData, TError, TPending>,
   options?: ToastOptions
 ) {
   let id: Id;
@@ -135,7 +144,7 @@ function handlePromise<T = unknown>(
     delay: 100
   };
 
-  const resolver = (
+  const resolver = <T>(
     type: TypeOptions,
     input: string | ToastPromiseUpdateOptions<T> | undefined,
     result: T
@@ -162,10 +171,10 @@ function handlePromise<T = unknown>(
       toast.update(id, {
         ...baseParams,
         ...params
-      });
+      } as UpdateOptions);
     } else {
       // using toast.promise without loading
-      toast(params.render, {
+      toast(params!.render, {
         ...baseParams,
         ...params
       } as ToastOptions);
@@ -185,15 +194,15 @@ function handlePromise<T = unknown>(
 }
 
 toast.promise = handlePromise;
-toast.success = createToastByType(TYPE.SUCCESS);
-toast.info = createToastByType(TYPE.INFO);
-toast.error = createToastByType(TYPE.ERROR);
-toast.warning = createToastByType(TYPE.WARNING);
+toast.success = createToastByType(Type.SUCCESS);
+toast.info = createToastByType(Type.INFO);
+toast.error = createToastByType(Type.ERROR);
+toast.warning = createToastByType(Type.WARNING);
 toast.warn = toast.warning;
 toast.dark = (content: ToastContent, options?: ToastOptions) =>
   dispatchToast(
     content,
-    mergeOptions(TYPE.DEFAULT, {
+    mergeOptions(Type.DEFAULT, {
       theme: 'dark',
       ...options
     })
@@ -206,7 +215,7 @@ toast.dismiss = (id?: Id) => {
   if (containers.size > 0) {
     eventManager.emit(Event.Clear, id);
   } else {
-    queue = queue.filter(t => isToastIdValid(id) && t.options.toastId !== id);
+    queue = queue.filter(t => id != null && t.options.toastId !== id);
   }
 };
 
@@ -231,7 +240,10 @@ toast.isActive = (id: Id) => {
   return isToastActive;
 };
 
-toast.update = (toastId: Id, options: UpdateOptions = {}) => {
+toast.update = <TData = unknown>(
+  toastId: Id,
+  options: UpdateOptions<TData> = {}
+) => {
   // if you call toast and toast.update directly nothing will be displayed
   // this is why I defered the update
   setTimeout(() => {
@@ -292,7 +304,16 @@ toast.onChange = (callback: OnChangeCallback) => {
   };
 };
 
+/**
+ * @deprecated
+ * Will be removed in the next major release.
+ */
 toast.POSITION = POSITION;
+
+/**
+ * @deprecated
+ * Will be removed in the next major release.
+ */
 toast.TYPE = TYPE;
 
 /**

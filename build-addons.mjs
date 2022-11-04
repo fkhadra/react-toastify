@@ -21,7 +21,8 @@ try {
     const exportKey = `./addons/${dir}`;
     const exportValues = {
       require: '',
-      import: ''
+      import: '',
+      types: `./addons/${dir}/index.d.ts`
     };
 
     if (!existsSync(entryPoint)) {

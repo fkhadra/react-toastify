@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { cloneElement, isValidElement, ReactNode } from 'react';
 import cx from 'clsx';
 
 import { ProgressBar } from './ProgressBar';
@@ -35,6 +35,7 @@ export const Toast: React.FC<ToastProps> = props => {
     isIn,
     isLoading,
     iconOut,
+    closeOnClick,
     theme
   } = props;
   const defaultClassName = cx(
@@ -43,6 +44,9 @@ export const Toast: React.FC<ToastProps> = props => {
     `${Default.CSS_NAMESPACE}__toast--${type}`,
     {
       [`${Default.CSS_NAMESPACE}__toast--rtl`]: rtl
+    },
+    {
+      [`${Default.CSS_NAMESPACE}__toast--close-on-click`]: closeOnClick
     }
   );
   const cssClasses = isFn(className)
@@ -53,7 +57,7 @@ export const Toast: React.FC<ToastProps> = props => {
         defaultClassName
       })
     : cx(defaultClassName, className);
-  const isProgressControlled = !!progress;
+  const isProgressControlled = !!progress || !autoClose;
 
   const closeButtonProps = { closeToast, type, theme };
   let Close: React.ReactNode = null;
@@ -62,8 +66,8 @@ export const Toast: React.FC<ToastProps> = props => {
     // hide
   } else if (isFn(closeButton)) {
     Close = closeButton(closeButtonProps);
-  } else if (React.isValidElement(closeButton)) {
-    Close = React.cloneElement(closeButton, closeButtonProps);
+  } else if (isValidElement(closeButton)) {
+    Close = cloneElement(closeButton, closeButtonProps);
   } else {
     Close = CloseButton(closeButtonProps);
   }
@@ -104,28 +108,26 @@ export const Toast: React.FC<ToastProps> = props => {
               {iconOut}
             </div>
           )}
-          <div>{children}</div>
+          <div>{children as ReactNode}</div>
         </div>
         {Close}
-        {(autoClose || isProgressControlled) && (
-          <ProgressBar
-            {...(updateId && !isProgressControlled
-              ? { key: `pb-${updateId}` }
-              : {})}
-            rtl={rtl}
-            theme={theme}
-            delay={autoClose as number}
-            isRunning={isRunning}
-            isIn={isIn}
-            closeToast={closeToast}
-            hide={hideProgressBar}
-            type={type}
-            style={progressStyle}
-            className={progressClassName}
-            controlledProgress={isProgressControlled}
-            progress={progress}
-          />
-        )}
+        <ProgressBar
+          {...(updateId && !isProgressControlled
+            ? { key: `pb-${updateId}` }
+            : {})}
+          rtl={rtl}
+          theme={theme}
+          delay={autoClose as number}
+          isRunning={isRunning}
+          isIn={isIn}
+          closeToast={closeToast}
+          hide={hideProgressBar}
+          type={type}
+          style={progressStyle}
+          className={progressClassName}
+          controlledProgress={isProgressControlled}
+          progress={progress || 0}
+        />
       </div>
     </Transition>
   );

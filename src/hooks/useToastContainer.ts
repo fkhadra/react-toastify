@@ -4,16 +4,15 @@ import {
   useReducer,
   cloneElement,
   isValidElement,
-  useState
+  useState,
+  ReactElement
 } from 'react';
 import {
   parseClassName,
   canBeRendered,
-  isBool,
   isFn,
   isNum,
   isStr,
-  isToastIdValid,
   getAutoCloseDelay,
   toToastItem
 } from '../utils';
@@ -27,8 +26,7 @@ import {
   Toast,
   ToastPosition,
   ClearWaitingQueueParams,
-  NotValidatedToastProps,
-  ToastTransition
+  NotValidatedToastProps
 } from '../types';
 
 import { getIcon } from '../components/Icons';
@@ -98,7 +96,7 @@ export function useToastContainer(props: ToastContainerProps) {
 
   function removeToast(toastId?: Id) {
     setToastIds(state =>
-      isToastIdValid(toastId) ? state.filter(id => id !== toastId) : []
+      toastId == null ? [] : state.filter(id => id !== toastId)
     );
   }
 
@@ -136,57 +134,26 @@ export function useToastContainer(props: ToastContainerProps) {
 
     if (isNotAnUpdate) instance.count++;
 
-    const toastProps: ToastProps = {
+    const toastProps = {
+      ...props,
+      style: props.toastStyle,
+      key: instance.toastKey++,
+      ...options,
       toastId,
       updateId,
       data,
-      containerId: options.containerId,
-      isLoading: options.isLoading,
-      theme: options.theme || props.theme!,
-      icon: options.icon != null ? options.icon : props.icon,
+      closeToast,
       isIn: false,
-      key: options.key || instance.toastKey++,
-      type: options.type!,
-      closeToast: closeToast,
-      closeButton: options.closeButton,
-      rtl: props.rtl,
-      position: options.position || (props.position as ToastPosition),
-      transition: options.transition || (props.transition as ToastTransition),
       className: parseClassName(options.className || props.toastClassName),
       bodyClassName: parseClassName(
         options.bodyClassName || props.bodyClassName
       ),
-      style: options.style || props.toastStyle,
-      bodyStyle: options.bodyStyle || props.bodyStyle,
-      onClick: options.onClick || props.onClick,
-      pauseOnHover: isBool(options.pauseOnHover)
-        ? options.pauseOnHover
-        : props.pauseOnHover,
-      pauseOnFocusLoss: isBool(options.pauseOnFocusLoss)
-        ? options.pauseOnFocusLoss
-        : props.pauseOnFocusLoss,
-      draggable: isBool(options.draggable)
-        ? options.draggable
-        : props.draggable,
-      draggablePercent:
-        options.draggablePercent || (props.draggablePercent as number),
-      draggableDirection:
-        options.draggableDirection || props.draggableDirection,
-      closeOnClick: isBool(options.closeOnClick)
-        ? options.closeOnClick
-        : props.closeOnClick,
       progressClassName: parseClassName(
         options.progressClassName || props.progressClassName
       ),
-      progressStyle: options.progressStyle || props.progressStyle,
       autoClose: options.isLoading
         ? false
         : getAutoCloseDelay(options.autoClose, props.autoClose),
-      hideProgressBar: isBool(options.hideProgressBar)
-        ? options.hideProgressBar
-        : props.hideProgressBar,
-      progress: options.progress,
-      role: options.role || props.role,
       deleteToast() {
         const removed = toToastItem(toastToRender.get(toastId)!, 'removed');
         toastToRender.delete(toastId);
@@ -194,14 +161,15 @@ export function useToastContainer(props: ToastContainerProps) {
         eventManager.emit(Event.Change, removed);
 
         const queueLen = instance.queue.length;
-        instance.count = isToastIdValid(toastId)
-          ? instance.count - 1
-          : instance.count - instance.displayedToast;
+        instance.count =
+          toastId == null
+            ? instance.count - instance.displayedToast
+            : instance.count - 1;
 
         if (instance.count < 0) instance.count = 0;
 
         if (queueLen > 0) {
-          const freeSlot = isToastIdValid(toastId) ? 1 : instance.props.limit!;
+          const freeSlot = toastId == null ? instance.props.limit! : 1;
 
           if (queueLen === 1 || freeSlot === 1) {
             instance.displayedToast++;
@@ -216,7 +184,7 @@ export function useToastContainer(props: ToastContainerProps) {
           forceUpdate();
         }
       }
-    };
+    } as ToastProps;
 
     toastProps.iconOut = getIcon(toastProps);
 
@@ -236,7 +204,7 @@ export function useToastContainer(props: ToastContainerProps) {
     let toastContent = content;
 
     if (isValidElement(content) && !isStr(content.type)) {
-      toastContent = cloneElement(content, {
+      toastContent = cloneElement(content as ReactElement, {
         closeToast,
         toastProps,
         data
