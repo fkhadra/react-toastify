@@ -38,7 +38,6 @@ export const ToastContainer = forwardRef<HTMLDivElement, ToastContainerProps>(
     }
 
     useEffect(() => {
-      console.log('check');
       if (ref) {
         (ref as React.MutableRefObject<HTMLDivElement>).current =
           containerRef.current!;
