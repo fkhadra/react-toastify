@@ -109,6 +109,12 @@ You can find the release note for the latest release [here](https://github.com/f
 
 You can browse them all [here](https://github.com/fkhadra/react-toastify/releases)
 
+## Latest Code Changes
+Import toast file from Core
+Added button for Close all toastr as svg (X)
+ in ToastContainer.tsx file 
+Added closeAllprop variable for style property
+
 ## License
 
 Licensed under MIT
