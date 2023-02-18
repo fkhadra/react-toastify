@@ -70,7 +70,12 @@ export function useToastContainer(props: ToastContainerProps) {
     eventManager
       .cancelEmit(Event.WillUnmount)
       .on(Event.Show, buildToast)
-      .on(Event.Clear, toastId => containerRef.current && removeToast(toastId))
+      .on(
+        Event.Clear,
+        toastId =>
+          containerRef.current &&
+          removeToast(toastId, toastToRender.get(toastId as Id)?.props.onClose)
+      )
       .on(Event.ClearWaitingQueue, clearWaitingQueue)
       .emit(Event.DidMount, instance);
 
@@ -94,10 +99,14 @@ export function useToastContainer(props: ToastContainerProps) {
     }
   }
 
-  function removeToast(toastId?: Id) {
+  function removeToast(
+    toastId?: Id,
+    onCloseHandler?: <T = {}>(props: T) => void
+  ) {
     setToastIds(state =>
       toastId == null ? [] : state.filter(id => id !== toastId)
     );
+    onCloseHandler && onCloseHandler(null);
   }
 
   function dequeueToast() {
@@ -129,7 +138,7 @@ export function useToastContainer(props: ToastContainerProps) {
 
     const { toastId, updateId, data } = options;
     const { props } = instance;
-    const closeToast = () => removeToast(toastId);
+    const closeToast = () => removeToast(toastId, options.onClose);
     const isNotAnUpdate = updateId == null;
 
     if (isNotAnUpdate) instance.count++;

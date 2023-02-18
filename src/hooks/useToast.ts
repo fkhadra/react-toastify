@@ -67,12 +67,6 @@ export function useToast(props: ToastProps) {
 
     if (isFn(props.onOpen))
       props.onOpen(isValidElement(props.children) && props.children.props);
-
-    return () => {
-      const props = syncProps.current;
-      if (isFn(props.onClose))
-        props.onClose(isValidElement(props.children) && props.children.props);
-    };
   }, []);
 
   useEffect(() => {

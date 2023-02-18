@@ -1,7 +1,7 @@
 /**
  * The playground could use some love 💖. To the brave soul reading this
  * message, any help would be appreciated 🙏
- * 
+ *
  * The code is full of bad assertion 😆
  */
 
@@ -53,7 +53,10 @@ class App extends React.Component {
   showToast = () => {
     this.toastId =
       this.state.type === 'default'
-        ? toast('🦄 Wow so easy !', { progress: this.state.progress })
+        ? toast('🦄 Wow so easy !', {
+            progress: this.state.progress,
+            onClose: () => console.log('closed from app')
+          })
         : toast[this.state.type]('🚀 Wow so easy !', {
             progress: this.state.progress
           });
@@ -168,7 +171,7 @@ class App extends React.Component {
                     type="number"
                     name="autoClose"
                     id="autoClose"
-                    value={(this.state.autoClose as unknown) as string}
+                    value={this.state.autoClose as unknown as string}
                     onChange={this.handleAutoCloseDelay}
                     disabled={this.state.disableAutoClose}
                   />
@@ -230,10 +233,10 @@ class App extends React.Component {
           </section>
           <section>
             <ContainerCode
-              {...((this.state as unknown) as ContainerCodeProps)}
+              {...(this.state as unknown as ContainerCodeProps)}
               isDefaultProps={this.isDefaultProps() as boolean}
             />
-            <ToastCode {...((this.state as unknown) as ToastCodeProps)} />
+            <ToastCode {...(this.state as unknown as ToastCodeProps)} />
           </section>
           <div className="cta__wrapper">
             <ul className="container__actions">
