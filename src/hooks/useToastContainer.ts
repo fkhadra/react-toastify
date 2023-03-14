@@ -138,7 +138,9 @@ export function useToastContainer(props: ToastContainerProps) {
       ...props,
       style: props.toastStyle,
       key: instance.toastKey++,
-      ...options,
+      ...Object.fromEntries(
+        Object.entries(options).filter(([_, v]) => v != null)
+      ),
       toastId,
       updateId,
       data,
