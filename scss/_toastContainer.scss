@@ -1,6 +1,6 @@
 .#{$rt-namespace}__toast-container {
   z-index: var(--toastify-z-index);
-  -webkit-transform: translate3d(0, 0, var(--toastify-z-index) px);
+  -webkit-transform: translate3d(0, 0, var(--toastify-z-index));
   position: fixed;
   padding: 4px;
   width: var(--toastify-toast-width);
