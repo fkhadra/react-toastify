@@ -135,8 +135,7 @@ function handlePromise<TData = unknown, TError = unknown, TPending = unknown>(
     autoClose: null,
     closeOnClick: null,
     closeButton: null,
-    draggable: null,
-    delay: 100
+    draggable: null
   };
 
   const resolver = <T>(
@@ -237,14 +236,13 @@ toast.update = <TData = unknown>(
   toastId: Id,
   options: UpdateOptions<TData> = {}
 ) => {
-  // if you call toast and toast.update directly nothing will be displayed
-  // this is why I defered the update
   setTimeout(() => {
     const toast = getToast(toastId, options as ToastOptions);
     if (toast) {
       const { props: oldOptions, content: oldContent } = toast;
 
       const nextOptions = {
+        delay: 100,
         ...oldOptions,
         ...options,
         toastId: options.toastId || toastId,
