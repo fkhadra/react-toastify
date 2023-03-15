@@ -23,7 +23,7 @@ export interface ProgressBarProps {
   /**
    * Optional type : info, success ...
    */
-  type: TypeOptions;
+  type?: TypeOptions;
 
   /**
    * The theme that is currently used
