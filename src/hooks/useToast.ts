@@ -153,11 +153,11 @@ export function useToast(props: ToastProps) {
   function bindFocusEvents() {
     if (!document.hasFocus()) pauseToast();
 
-    document.addEventListener("visibilitychange", onVisibilityChange);
+    document.addEventListener('visibilitychange', onVisibilityChange);
   }
 
   function unbindFocusEvents() {
-    document.removeEventListener("visibilitychange", onVisibilityChange);
+    document.removeEventListener('visibilitychange', onVisibilityChange);
   }
 
   function bindDragEvents() {
