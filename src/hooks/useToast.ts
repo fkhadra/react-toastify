@@ -142,16 +142,22 @@ export function useToast(props: ToastProps) {
     setIsRunning(false);
   }
 
+  function onVisibilityChange() {
+    if (document.hidden) {
+      pauseToast();
+    } else {
+      playToast();
+    }
+  }
+
   function bindFocusEvents() {
     if (!document.hasFocus()) pauseToast();
 
-    window.addEventListener('focus', playToast);
-    window.addEventListener('blur', pauseToast);
+    document.addEventListener("visibilitychange", onVisibilityChange);
   }
 
   function unbindFocusEvents() {
-    window.removeEventListener('focus', playToast);
-    window.removeEventListener('blur', pauseToast);
+    document.removeEventListener("visibilitychange", onVisibilityChange);
   }
 
   function bindDragEvents() {
