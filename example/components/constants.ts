@@ -23,7 +23,7 @@ export const flags = [
   },
   {
     id: 'pauseOnFocusLoss',
-    label: 'Pause toast when the window loses focus'
+    label: 'Pause toast when the document is not visible'
   },
   {
     id: 'rtl',
