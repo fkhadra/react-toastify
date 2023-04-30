@@ -160,9 +160,9 @@
     "./package.json": "./package.json",
     "./scss/": "./scss/",
     "./addons/use-notification-center": {
+      "types": "./addons/use-notification-center/index.d.ts",
       "require": "./addons/use-notification-center/index.js",
-      "import": "./addons/use-notification-center/index.esm.mjs",
-      "types": "./addons/use-notification-center/index.d.ts"
+      "import": "./addons/use-notification-center/index.esm.mjs"
     }
   }
 }
