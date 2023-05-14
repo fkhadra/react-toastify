@@ -112,10 +112,10 @@ export function ProgressBar({
   // so if controlledProgress is set
   // it means that this is also the case for progress
   const animationEvent = {
-    [controlledProgress && progress! >= 1
+    [controlledProgress && (progress as number)! >= 1
       ? 'onTransitionEnd'
       : 'onAnimationEnd']:
-      controlledProgress && progress! < 1
+      controlledProgress && (progress as number)! < 1
         ? null
         : () => {
             isIn && closeToast();
