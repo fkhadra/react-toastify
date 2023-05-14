@@ -20,9 +20,9 @@ try {
     let entryPoint = path.join(BASE_DIR, dir, 'index.ts');
     const exportKey = `./addons/${dir}`;
     const exportValues = {
+      types: `./addons/${dir}/index.d.ts`,
       require: '',
-      import: '',
-      types: `./addons/${dir}/index.d.ts`
+      import: ''
     };
 
     if (!existsSync(entryPoint)) {
