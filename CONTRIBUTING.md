@@ -70,10 +70,10 @@ The playground let you test your changes, it's like the demo of react-toastify. 
 
 #### Src
 
-- [toast:](https://github.com/fkhadra/react-toastify/blob/master/src/core/toast.ts) Contain the exposed api (`toast.success...`).
+- [toast:](https://github.com/fkhadra/react-toastify/blob/main/src/core/toast.ts) Contain the exposed api (`toast.success...`).
 
-- [eventManager:](https://github.com/fkhadra/react-toastify/blob/master/src/core/eventManager.ts) 
+- [eventManager:](https://github.com/fkhadra/react-toastify/blob/main/src/core/eventManager.ts) 
 This is the glue between `toast` and `ToastContainer`. In fact, it is just a dead simple pubsub.
 
 ## License
-By contributing, you agree that your contributions will be licensed under its MIT License.
+By contributing, you agree that your contributions will be licensed under its [MIT License](https://github.com/fkhadra/react-toastify/blob/main/LICENSE).
