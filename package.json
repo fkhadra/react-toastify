@@ -35,6 +35,7 @@
     "build": "npm run clean && npm run build:core && npm run pack-and-extract && npm run build:addons && npm run style && husky install",
     "build:core": "microbundle --jsx React.createElement --jsxFragment React.Fragment",
     "build:addons": "node build-addons.mjs",
+    "postbuild": "./prepend-use-client.sh",
     "setup": "npm run clean && npm run build && npm run pack-and-extract",
     "pack-and-extract": "yarn pack -f react-toastify.tgz && npm run rm-pkg && npm run extract-pkg",
     "rm-pkg": "rimraf node_modules/react-toastify && mkdir -p node_modules/react-toastify",
