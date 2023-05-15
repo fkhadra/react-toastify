@@ -192,20 +192,29 @@ describe('Toast Component', () => {
     progressBar.isRunning();
   });
 
-  it('Should pause Toast on window blur and resume Toast on focus', () => {
+  it('Should pause the animation when the document is not visible and resume when visible', () => {
+    Object.defineProperty(document, "hidden", {
+      writable: true,
+      value: true
+    });
+
     render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
     const progressBar = getProgressBar();
     endEnterTransition('FooBar');
     progressBar.isRunning();
 
     act(() => {
-      window.dispatchEvent(new Event('blur'));
+      document.dispatchEvent(new Event('visibilitychange'));
     });
 
     progressBar.isPaused();
 
+    Object.defineProperty(document, "hidden", {
+      value: false
+    });
+
     act(() => {
-      window.dispatchEvent(new Event('focus'));
+      document.dispatchEvent(new Event('visibilitychange'));
     });
 
     progressBar.isRunning();
@@ -214,7 +223,7 @@ describe('Toast Component', () => {
   it('Should bind or unbind dom events when `pauseOnFocusLoss` props are updated', () => {
     const { rerender } = render(<Toast {...REQUIRED_PROPS}>FooBar</Toast>);
 
-    window.removeEventListener = jest.fn();
+    document.removeEventListener = jest.fn();
 
     rerender(
       <Toast {...REQUIRED_PROPS} pauseOnFocusLoss={false}>
@@ -222,7 +231,7 @@ describe('Toast Component', () => {
       </Toast>
     );
 
-    expect(window.removeEventListener).toHaveBeenCalled();
+    expect(document.removeEventListener).toHaveBeenCalled();
 
     document.addEventListener = jest.fn();
     window.addEventListener = jest.fn();
@@ -233,7 +242,7 @@ describe('Toast Component', () => {
       </Toast>
     );
 
-    expect(window.addEventListener).toHaveBeenCalled();
+    expect(document.addEventListener).toHaveBeenCalled();
   });
 
   it('Should render toast with controlled progress bar', () => {
