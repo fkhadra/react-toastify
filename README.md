@@ -25,8 +25,9 @@ $ yarn add react-toastify
 - Super easy to customize
 - RTL support
 - Swipe to close 👌
+- Beautiful by default
 - Can choose swipe direction
-- Super easy to use an animation of your choice. Works well with animate.css for example
+- Super easy to use an animation of your choice
 - Can display a react component inside the toast!
 - Has ```onOpen``` and ```onClose``` hooks. Both can access the props passed to the react component rendered inside the toast
 - Can remove a toast programmatically
@@ -37,6 +38,8 @@ $ yarn add react-toastify
 - You can control the progress bar a la `nprogress` 😲
 - You can limit the number of toast displayed at the same time
 - Dark mode 🌒
+- Colored theme
+- Promise support
 - And much more !
 
 ## The gist
