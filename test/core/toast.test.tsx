@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, act, screen } from '@testing-library/react';
+import { render, act, screen, waitFor } from '@testing-library/react';
 
 import { triggerAnimationEnd } from '../helpers';
 import { eventManager, toast, Event } from '../../src/core';
@@ -477,5 +477,29 @@ describe('toastify', () => {
     triggerAnimationEnd(screen.getByText('hello'));
 
     expect(screen.queryByText('hello')).toBe(null);
+  });
+
+  it('should update the toast type when the promise resolves', async () => {
+    render(<ToastContainer />);
+
+    const promise = jest.fn(() => Promise.resolve({
+      ok: false
+    }));
+
+    act(() => {
+      toast.promise(promise, {
+        success: {
+          render: 'success',
+          type: ({ data }) => !data.ok ? 'error' : 'success'
+        },
+        error: {
+          render: 'error',
+        }
+      });
+    });
+
+    await waitFor(() => {
+      expect(screen.getByTestId('error')).not.toBe(null);
+    });
   });
 });
