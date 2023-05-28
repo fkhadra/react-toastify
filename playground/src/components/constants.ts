@@ -1,4 +1,4 @@
-import { Bounce, Slide, Flip, Zoom } from '../../src/index';
+import { Bounce, Slide, Flip, Zoom } from '../../../src/index';
 
 export const flags = [
   {
