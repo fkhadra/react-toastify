@@ -11,3 +11,4 @@ esm/
 dist/
 .cache
 /addons
+.nyc_output
