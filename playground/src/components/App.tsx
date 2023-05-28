@@ -1,11 +1,9 @@
 /**
  * The playground could use some love 💖. To the brave soul reading this
  * message, any help would be appreciated 🙏
- * 
+ *
  * The code is full of bad assertion 😆
  */
-
-import * as React from 'react';
 
 import { Header } from './Header';
 import { Radio } from './Radio';
@@ -14,8 +12,9 @@ import { ContainerCode, ContainerCodeProps } from './ContainerCode';
 import { ToastCode, ToastCodeProps } from './ToastCode';
 import { flags, themes, transitions } from './constants';
 
-import { ToastContainer, toast, Id } from '../../src/index';
-import '../../scss/main.scss';
+import { ToastContainer, toast, Id } from '../../../src/index';
+import '../../../scss/main.scss';
+import React from 'react';
 
 // Attach to window. Can be useful to debug
 // @ts-ignore
@@ -168,7 +167,7 @@ class App extends React.Component {
                     type="number"
                     name="autoClose"
                     id="autoClose"
-                    value={(this.state.autoClose as unknown) as string}
+                    value={this.state.autoClose as unknown as string}
                     onChange={this.handleAutoCloseDelay}
                     disabled={this.state.disableAutoClose}
                   />
@@ -230,10 +229,10 @@ class App extends React.Component {
           </section>
           <section>
             <ContainerCode
-              {...((this.state as unknown) as ContainerCodeProps)}
+              {...(this.state as unknown as ContainerCodeProps)}
               isDefaultProps={this.isDefaultProps() as boolean}
             />
-            <ToastCode {...((this.state as unknown) as ToastCodeProps)} />
+            <ToastCode {...(this.state as unknown as ToastCodeProps)} />
           </section>
           <div className="cta__wrapper">
             <ul className="container__actions">
@@ -274,6 +273,7 @@ class App extends React.Component {
             </ul>
           </div>
         </div>
+        {/* @ts-ignore */}
         <ToastContainer
           {...this.state}
           transition={transitions[this.state.transition]}

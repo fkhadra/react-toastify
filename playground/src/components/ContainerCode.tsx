@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ToastContainerProps } from '../../src';
+import { ToastContainerProps } from '../../../src';
 
 function getProp<L, R>(prop: L, value: R) {
   return value ? (
