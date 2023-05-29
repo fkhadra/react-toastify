@@ -1,5 +1,5 @@
 {
-  "include": ["src", "types", "cypress"],
+  "include": ["src", "types", "cypress", "@testing-library/cypress"],
   "compilerOptions": {
     "module": "ESNext",
     "lib": ["dom", "esnext"],
