@@ -20,9 +20,9 @@
   "sideEffects": true,
   "scripts": {
     "start": "cd playground && yarn dev",
-    "test": "jest",
+    "test": "cypress open --component",
+    "test:run": "cypress run --component",
     "clean": "rimraf dist && rimraf addons",
-    "test:coverage": "yarn test --coverage",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "prettier": "prettier --write src",
     "prettier-scss": "prettier --write scss",

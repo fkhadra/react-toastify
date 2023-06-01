@@ -1,17 +1,10 @@
 export { useToastContainer, useToast } from './hooks';
 export { cssTransition, collapseToast } from './utils';
-export {
-  ToastContainer,
-  Bounce,
-  Flip,
-  Slide,
-  Zoom,
-  Icons,
-  IconProps,
-  CloseButtonProps
-} from './components';
-export { toast, ToastPromiseParams } from './core';
-export {
+export { ToastContainer, Bounce, Flip, Slide, Zoom, Icons } from './components';
+export type { IconProps, CloseButton } from './components';
+export type { ToastPromiseParams } from './core';
+export { toast } from './core';
+export type {
   TypeOptions,
   Theme,
   ToastPosition,

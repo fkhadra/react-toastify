@@ -73,7 +73,10 @@ export const Icons = {
 
 const maybeIcon = (type: string): type is keyof typeof Icons => type in Icons;
 
-export type IconParams = Pick<ToastProps, 'theme' | 'icon' | 'type' | 'isLoading'>;
+export type IconParams = Pick<
+  ToastProps,
+  'theme' | 'icon' | 'type' | 'isLoading'
+>;
 
 export function getIcon({ theme, type, isLoading, icon }: IconParams) {
   let Icon: React.ReactNode = null;
