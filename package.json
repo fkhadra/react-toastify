@@ -95,6 +95,7 @@
   },
   "homepage": "https://github.com/fkhadra/react-toastify#readme",
   "devDependencies": {
+    "@4tw/cypress-drag-drop": "^2.2.4",
     "@cypress/code-coverage": "^3.10.6",
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@testing-library/cypress": "^9.0.0",

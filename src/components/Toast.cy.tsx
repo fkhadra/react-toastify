@@ -1,8 +1,8 @@
 import React from 'react';
-import { ToastProps } from '../types';
+import { DraggableDirection, ToastProps } from '../types';
+import { Default } from '../utils';
 import { Toast } from './Toast';
 import { ToastContainer } from './ToastContainer';
-import { Default } from '../utils';
 
 const REQUIRED_PROPS = {
   ...ToastContainer.defaultProps,
@@ -302,5 +302,61 @@ describe('Toast', () => {
     cy.resolveEntranceAnimation();
 
     cy.findByLabelText('close').should('exist');
+  });
+
+  describe('Drag event', () => {
+    beforeEach(() => {
+      cy.viewport('macbook-16');
+    });
+
+    for (const { axis, delta } of [
+      { axis: 'x', delta: { deltaX: -300 } },
+      { axis: 'y', delta: { deltaY: 300 } }
+    ]) {
+      it(`should close toast when dragging on ${axis}-axis`, () => {
+        cy.mount(
+          <div style={{ width: '300px', position: 'fixed', right: 0 }}>
+            <Toast
+              {...REQUIRED_PROPS}
+              autoClose={5000}
+              draggableDirection={axis as DraggableDirection}
+              closeToast={cy.stub().as('closeToast')}
+            >
+              hello
+            </Toast>
+          </div>
+        );
+
+        cy.resolveEntranceAnimation();
+
+        cy.findByRole('alert').move(delta);
+        cy.get('@closeToast').should('have.been.called');
+      });
+    }
+
+    for (const { axis, delta } of [
+      { axis: 'x', delta: { deltaX: -100 } },
+      { axis: 'y', delta: { deltaY: 40 } }
+    ]) {
+      it(`should not close toast when dragging on ${axis}-axis`, () => {
+        cy.mount(
+          <div style={{ width: '300px', position: 'fixed', right: 0 }}>
+            <Toast
+              {...REQUIRED_PROPS}
+              autoClose={5000}
+              draggableDirection={axis as DraggableDirection}
+              closeToast={cy.stub().as('closeToast')}
+            >
+              hello
+            </Toast>
+          </div>
+        );
+
+        cy.resolveEntranceAnimation();
+
+        cy.findByRole('alert').move(delta);
+        cy.get('@closeToast').should('not.have.been.called');
+      });
+    }
   });
 });
