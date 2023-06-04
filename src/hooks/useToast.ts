@@ -105,10 +105,11 @@ export function useToast(props: ToastProps) {
       } else {
         drag.start = drag.y;
         drag.removalDistance =
-          toast.offsetHeight *
-          (props.draggablePercent === Default.DRAGGABLE_PERCENT
-            ? props.draggablePercent * 1.5
-            : props.draggablePercent / 100);
+          (toast.offsetHeight *
+            (props.draggablePercent === Default.DRAGGABLE_PERCENT
+              ? props.draggablePercent * 1.5
+              : props.draggablePercent)) /
+          100;
       }
     }
   }

@@ -3,7 +3,7 @@
   "compilerOptions": {
     "module": "ESNext",
     "lib": ["dom", "esnext"],
-    "types": ["cypress", "node"],
+    "types": ["cypress", "node", "@4tw/cypress-drag-drop"],
     "importHelpers": true,
     "declaration": true,
     "sourceMap": true,
