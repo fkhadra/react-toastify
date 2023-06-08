@@ -7,10 +7,12 @@ const closeToast = jest.fn();
 
 describe('CloseButton', () => {
   it('Should call closeToast on click', () => {
-    render(
+    const { container } = render(
       <CloseButton closeToast={closeToast} type="default" theme="light" />
     );
+    const element = container.firstChild;
 
+    expect(element instanceof HTMLButtonElement).toBe(true);
     expect(closeToast).not.toHaveBeenCalled();
     fireEvent.click(screen.getByLabelText('close'));
     expect(closeToast).toHaveBeenCalled();
