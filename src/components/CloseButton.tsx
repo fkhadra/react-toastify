@@ -13,12 +13,12 @@ export function CloseButton({
   closeToast,
   theme,
   ariaLabel = 'close'
-}: CloseButtonProps): JSX.Element {
+}: CloseButtonProps): React.ReactElement {
   return (
     <button
       className={`${Default.CSS_NAMESPACE}__close-button ${Default.CSS_NAMESPACE}__close-button--${theme}`}
       type="button"
-      onClick={e => {
+      onClick={(e: React.MouseEvent<HTMLElement>) => {
         e.stopPropagation();
         closeToast(e);
       }}
