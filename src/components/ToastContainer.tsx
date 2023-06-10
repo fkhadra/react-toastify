@@ -12,9 +12,24 @@ import { ToastContainerProps, ToastPosition } from '../types';
 
 export const ToastContainer = forwardRef<HTMLDivElement, ToastContainerProps>(
   (props, ref) => {
+    let containerProps: ToastContainerProps = {
+      position: 'top-right',
+      transition: Bounce,
+      autoClose: 5000,
+      closeButton: CloseButton,
+      pauseOnHover: true,
+      pauseOnFocusLoss: true,
+      closeOnClick: true,
+      draggable: true,
+      draggablePercent: Default.DRAGGABLE_PERCENT as number,
+      draggableDirection: Direction.X,
+      role: 'alert',
+      theme: 'light',
+      ...props
+    };
     const { getToastToRender, containerRef, isToastActive } =
-      useToastContainer(props);
-    const { className, style, rtl, containerId } = props;
+      useToastContainer(containerProps);
+    const { className, style, rtl, containerId } = containerProps;
 
     function getClassName(position: ToastPosition) {
       const defaultClassName = cx(
@@ -82,18 +97,3 @@ export const ToastContainer = forwardRef<HTMLDivElement, ToastContainerProps>(
 );
 
 ToastContainer.displayName = 'ToastContainer';
-
-ToastContainer.defaultProps = {
-  position: 'top-right',
-  transition: Bounce,
-  autoClose: 5000,
-  closeButton: CloseButton,
-  pauseOnHover: true,
-  pauseOnFocusLoss: true,
-  closeOnClick: true,
-  draggable: true,
-  draggablePercent: Default.DRAGGABLE_PERCENT as number,
-  draggableDirection: Direction.X,
-  role: 'alert',
-  theme: 'light'
-};
