@@ -33,9 +33,9 @@ declare global {
     }
   }
 }
-import '@testing-library/cypress/add-commands';
 
 import '@4tw/cypress-drag-drop';
+import '@testing-library/cypress/add-commands';
 
 Cypress.Commands.add('resolveEntranceAnimation', () => {
   cy.wait(800);

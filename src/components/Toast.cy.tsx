@@ -2,10 +2,10 @@ import React from 'react';
 import { DraggableDirection, ToastProps } from '../types';
 import { Default } from '../utils';
 import { Toast } from './Toast';
-import { ToastContainer } from './ToastContainer';
+import { defaultProps } from './ToastContainer';
 
 const REQUIRED_PROPS = {
-  ...ToastContainer.defaultProps,
+  ...defaultProps,
   isIn: true,
   autoClose: false,
   closeToast: () => {},

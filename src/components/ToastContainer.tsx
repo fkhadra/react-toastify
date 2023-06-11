@@ -1,6 +1,11 @@
 // https://github.com/yannickcr/eslint-plugin-react/issues/3140
 /* eslint react/prop-types: "off" */
-import React, { forwardRef, StyleHTMLAttributes, useEffect } from 'react';
+import React, {
+  forwardRef,
+  StyleHTMLAttributes,
+  useEffect,
+  useMemo
+} from 'react';
 import cx from 'clsx';
 
 import { Toast } from './Toast';
@@ -10,23 +15,30 @@ import { Direction, Default, parseClassName, isFn } from '../utils';
 import { useToastContainer } from '../hooks/useToastContainer';
 import { ToastContainerProps, ToastPosition } from '../types';
 
+export const defaultProps: ToastContainerProps = {
+  position: 'top-right',
+  transition: Bounce,
+  autoClose: 5000,
+  closeButton: CloseButton,
+  pauseOnHover: true,
+  pauseOnFocusLoss: true,
+  closeOnClick: true,
+  draggable: true,
+  draggablePercent: Default.DRAGGABLE_PERCENT as number,
+  draggableDirection: Direction.X,
+  role: 'alert',
+  theme: 'light'
+};
+
 export const ToastContainer = forwardRef<HTMLDivElement, ToastContainerProps>(
   (props, ref) => {
-    let containerProps: ToastContainerProps = {
-      position: 'top-right',
-      transition: Bounce,
-      autoClose: 5000,
-      closeButton: CloseButton,
-      pauseOnHover: true,
-      pauseOnFocusLoss: true,
-      closeOnClick: true,
-      draggable: true,
-      draggablePercent: Default.DRAGGABLE_PERCENT as number,
-      draggableDirection: Direction.X,
-      role: 'alert',
-      theme: 'light',
-      ...props
-    };
+    let containerProps: ToastContainerProps = useMemo(
+      () => ({
+        ...defaultProps,
+        ...props
+      }),
+      [props]
+    );
     const { getToastToRender, containerRef, isToastActive } =
       useToastContainer(containerProps);
     const { className, style, rtl, containerId } = containerProps;
