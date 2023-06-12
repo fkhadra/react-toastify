@@ -8,7 +8,7 @@ import { Default, isFn } from '../utils';
 import { useToast } from '../hooks/useToast';
 
 export const Toast: React.FC<ToastProps> = props => {
-  const { isRunning, preventExitTransition, toastRef, eventHandlers } =
+  const { isRunning, preventExitTransition, toastRef, eventHandlers, playToast } =
     useToast(props);
   const {
     closeButton,
@@ -79,6 +79,7 @@ export const Toast: React.FC<ToastProps> = props => {
       position={position}
       preventExitTransition={preventExitTransition}
       nodeRef={toastRef}
+      playToast={playToast}
     >
       <div
         id={toastId as string}

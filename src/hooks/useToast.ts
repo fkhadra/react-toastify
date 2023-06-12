@@ -1,13 +1,7 @@
-import {
-  useState,
-  useRef,
-  useEffect,
-  isValidElement,
-  DOMAttributes
-} from 'react';
+import { DOMAttributes, useEffect, useRef, useState } from 'react';
 
-import { isFn, Default, Direction, SyntheticEvent } from '../utils';
 import { ToastProps } from '../types';
+import { Default, Direction } from '../utils';
 
 interface Draggable {
   start: number;
@@ -50,30 +44,7 @@ export function useToast(props: ToastProps) {
     boundingRect: null,
     didMove: false
   }).current;
-  const syncProps = useRef(props);
   const { autoClose, pauseOnHover, closeToast, onClick, closeOnClick } = props;
-
-  useEffect(() => {
-    syncProps.current = props;
-  });
-
-  useEffect(() => {
-    if (toastRef.current)
-      toastRef.current.addEventListener(
-        SyntheticEvent.ENTRANCE_ANIMATION_END,
-        playToast,
-        { once: true }
-      );
-
-    if (isFn(props.onOpen))
-      props.onOpen(isValidElement(props.children) && props.children.props);
-
-    return () => {
-      const props = syncProps.current;
-      if (isFn(props.onClose))
-        props.onClose(isValidElement(props.children) && props.children.props);
-    };
-  }, []);
 
   useEffect(() => {
     props.pauseOnFocusLoss && bindFocusEvents();
