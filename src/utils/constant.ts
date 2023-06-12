@@ -52,7 +52,3 @@ export const enum Direction {
   X = 'x',
   Y = 'y'
 }
-
-export const enum SyntheticEvent {
-  ENTRANCE_ANIMATION_END = 'd'
-}
