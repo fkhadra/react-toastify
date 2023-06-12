@@ -1,15 +1,20 @@
-import React, { cloneElement, isValidElement, ReactNode } from 'react';
 import cx from 'clsx';
+import React, { cloneElement, isValidElement, ReactNode } from 'react';
 
-import { ProgressBar } from './ProgressBar';
-import { CloseButton } from './CloseButton';
+import { useToast } from '../hooks/useToast';
 import { ToastProps } from '../types';
 import { Default, isFn } from '../utils';
-import { useToast } from '../hooks/useToast';
+import { CloseButton } from './CloseButton';
+import { ProgressBar } from './ProgressBar';
 
 export const Toast: React.FC<ToastProps> = props => {
-  const { isRunning, preventExitTransition, toastRef, eventHandlers, playToast } =
-    useToast(props);
+  const {
+    isRunning,
+    preventExitTransition,
+    toastRef,
+    eventHandlers,
+    playToast
+  } = useToast(props);
   const {
     closeButton,
     children,
