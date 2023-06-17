@@ -47,7 +47,6 @@ export function createContainerObserver({
   dispatchChanges
 }: ContainerObserverParams) {
   let ToastKey = 1;
-  let DisplayedToast = 0;
   let Count = 0;
   let Queue: QueuedToast[] = [];
   let ActiveToasts: Id[] = [];
@@ -152,7 +151,6 @@ export function createContainerObserver({
         if (Count < 0) Count = 0;
 
         if (Queue.length > 0) {
-          DisplayedToast++;
           addActiveToast(Queue.shift() as ActiveToast);
           return;
         }
