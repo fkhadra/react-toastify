@@ -33,10 +33,11 @@
     "style": "npm run sass && npm run sass-minimal && cssnano dist/ReactToastify.css dist/ReactToastify.min.css --no-zindex --no-reduceIdents && npm run style-injector",
     "style-injector": "style2js --out-dir dist dist/ReactToastify.min.css",
     "build": "npm run clean && npm run build:core && npm run pack-and-extract && npm run build:addons && npm run style && husky install",
-    "build:core": "microbundle --jsx React.createElement --jsxFragment React.Fragment",
+    "build:core": "microbundle --jsx React.createElement --jsxFragment React.Fragment --tsconfig tsconfig.build.json",
     "build:addons": "node build-addons.mjs",
     "postbuild": "./prepend-use-client.sh",
     "setup": "npm run clean && npm run build && npm run pack-and-extract",
+    "setup:core": "npm run clean && npm run build:core && npm run pack-and-extract",
     "pack-and-extract": "yarn pack -f react-toastify.tgz && npm run rm-pkg && npm run extract-pkg",
     "rm-pkg": "rimraf node_modules/react-toastify && mkdir -p node_modules/react-toastify",
     "extract-pkg": "tar xzvf react-toastify.tgz -C node_modules/react-toastify --strip-components 1 && rimraf react-toastify.tgz"
