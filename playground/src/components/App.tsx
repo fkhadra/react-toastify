@@ -279,6 +279,19 @@ class App extends React.Component {
           transition={transitions[this.state.transition]}
           autoClose={this.state.disableAutoClose ? false : this.state.autoClose}
         />
+        <ToastContainer
+          containerId="xxx"
+          position="top-left"
+          autoClose={false}
+          theme="dark"
+          limit={3}
+        />
+        <ToastContainer
+          limit={3}
+          containerId="yyy"
+          autoClose={false}
+          position="top-right"
+        />
       </main>
     );
   }
