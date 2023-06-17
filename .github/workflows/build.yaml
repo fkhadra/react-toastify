@@ -19,7 +19,7 @@ jobs:
       - name: Setup
         run: yarn setup
       - name: Test
-        run: yarn run test:coverage 
+        run: yarn run test:run 
       - name: Coveralls GitHub Action
         uses: coverallsapp/github-action@v1.1.2
         with:
