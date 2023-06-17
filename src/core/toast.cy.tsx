@@ -7,7 +7,7 @@ beforeEach(() => {
 });
 
 describe('without container', () => {
-  it('should enqueue toasts till container is mounted', () => {
+  it('enqueue toasts till container is mounted', () => {
     toast('msg1');
     toast('msg2');
 
@@ -21,7 +21,7 @@ describe('without container', () => {
     cy.findByText('msg2').should('exist');
   });
 
-  it('should remove toast from render queue', () => {
+  it('remove toast from render queue', () => {
     toast('msg1');
     const id = toast('msg2');
     toast.dismiss(id);
@@ -39,27 +39,27 @@ describe('with container', () => {
     cy.mount(<ToastContainer autoClose={false} />);
   });
 
-  it('should render toast', () => {
+  it('render toast', () => {
     toast('msg');
     cy.resolveEntranceAnimation();
     cy.findByText('msg').should('exist').click().should('not.exist');
   });
 
-  it('should return a new id each time a notification is pushed', () => {
+  it('return a new id each time a notification is pushed', () => {
     const firstId = toast('Hello');
     const secondId = toast('Hello');
 
     expect(firstId).not.to.be.eq(secondId);
   });
 
-  it('should use the provided toastId from options', () => {
+  it('use the provided toastId from options', () => {
     const toastId = 11;
     const id = toast('Hello', { toastId });
 
     expect(id).to.be.eq(toastId);
   });
 
-  it('should handle change event', () => {
+  it('handle change event', () => {
     toast.onChange(cy.stub().as('onChange'));
 
     const id = toast('msg', { data: 'xxxx' });
@@ -84,14 +84,14 @@ describe('with container', () => {
     });
   });
 
-  it('should unsubsribe from change event', () => {
+  it('unsubsribe from change event', () => {
     const unsub = toast.onChange(cy.stub().as('onChange'));
     unsub();
     toast('msg');
     cy.get('@onChange').should('not.have.been.called');
   });
 
-  it('should be able remove toast programmatically', () => {
+  it('be able remove toast programmatically', () => {
     const id = toast('msg');
 
     cy.findByText('msg').should('exist');
@@ -102,7 +102,7 @@ describe('with container', () => {
   });
 
   describe('update function', () => {
-    it('should be able to update an existing toast', () => {
+    it('update an existing toast', () => {
       const id = toast('msg');
 
       cy.resolveEntranceAnimation();
@@ -125,7 +125,7 @@ describe('with container', () => {
         });
     });
 
-    it('should be able to update a Toast and keep the same content', () => {
+    it('keep the same content', () => {
       const id = toast('msg');
 
       cy.resolveEntranceAnimation();
@@ -142,7 +142,7 @@ describe('with container', () => {
         });
     });
 
-    it('should update a toast only if it exist and if the container is mounted', () => {
+    it('update a toast only when it exists', () => {
       toast.update(0, {
         render: 'msg'
       });
@@ -151,7 +151,7 @@ describe('with container', () => {
       cy.findByText('msg').should('not.exist');
     });
 
-    it('should be able to update the toastId', () => {
+    it('update the toastId', () => {
       const id = toast('msg');
       const nextId = 123;
 
@@ -176,7 +176,7 @@ describe('with container', () => {
     });
   });
 
-  it('Can append classNames', () => {
+  it('can append classNames', () => {
     toast('msg', {
       className: 'class1',
       bodyClassName: 'class2',
@@ -188,7 +188,7 @@ describe('with container', () => {
     cy.get('.class3').should('exist');
   });
 
-  it('should be able to use syntaxic sugar for different notification type', () => {
+  it('uses syntaxic sugar for different notification type', () => {
     toast('default');
     toast.success('success');
     toast.error('error');
@@ -306,104 +306,6 @@ describe('with container', () => {
   });
 });
 
-describe('with limit', () => {
-  it('limit the numder of toast displayed', () => {
-    cy.mount(<ToastContainer autoClose={false} limit={2} />);
-
-    toast('msg1');
-    toast('msg2');
-    toast('msg3');
-    cy.resolveEntranceAnimation();
-
-    cy.findByText('msg3').should('not.exist');
-    cy.findByText('msg1').should('exist');
-    cy.findByText('msg2')
-      .should('exist')
-      .click()
-      .then(() => {
-        cy.resolveEntranceAnimation();
-        cy.findByText('msg3').should('exist');
-      });
-  });
-
-  it('clear waiting queue', () => {
-    cy.mount(<ToastContainer autoClose={false} limit={2} />);
-
-    toast('msg1');
-    toast('msg2');
-    toast('msg3');
-    cy.resolveEntranceAnimation();
-
-    cy.findByText('msg3').should('not.exist');
-    cy.findByText('msg1').should('exist');
-    cy.findByText('msg2')
-      .should('exist')
-      .then(() => {
-        toast.clearWaitingQueue();
-        cy.findByText('msg2')
-          .click()
-          .then(() => {
-            cy.resolveEntranceAnimation();
-            cy.findByText('msg3').should('not.exist');
-          });
-      });
-  });
-
-  beforeEach(() => {
-    cy.mount(
-      <>
-        <ToastContainer
-          position="top-left"
-          autoClose={false}
-          limit={1}
-          containerId="1"
-        />
-        <ToastContainer
-          position="top-right"
-          autoClose={false}
-          limit={1}
-          containerId="xxx"
-        />
-      </>
-    );
-  });
-
-  it.only('clear waiting queue for a given container', () => {
-    toast('msg1-c1', {
-      containerId: '1'
-    });
-    toast('msg2-c1', {
-      containerId: '1'
-    });
-
-    toast('msg1-c2', {
-      containerId: 'xxx'
-    });
-    toast('msg2-c2', {
-      containerId: '2'
-    });
-
-    cy.resolveEntranceAnimation();
-
-    // cy.findByText('msg2-c1').should('not.exist');
-    // cy.findByText('msg2-c2').should('not.exist');
-
-    // cy.findByText('msg1-c1').should('exist');
-    // cy.findByText('msg1-c2').should('exist');
-
-    // cy.findByText('msg1-c1').then(() => {
-    //   toast.clearWaitingQueue({ containerId: '1' });
-    //   cy.findByText('msg1-c1')
-    //     .click()
-    //     .then(() => {
-    //       cy.resolveEntranceAnimation();
-    //       cy.findByText('msg1-c1').should('not.exist');
-    //       cy.findByText('msg2-c1').should('exist');
-    //     });
-    // });
-  });
-});
-
 describe('with multi containers', () => {
   const Containers = {
     First: 'first',
@@ -416,26 +318,144 @@ describe('with multi containers', () => {
         <ToastContainer
           autoClose={false}
           position="top-left"
+          limit={1}
           containerId={Containers.First}
         />
         <ToastContainer
           autoClose={false}
           position="top-right"
+          limit={1}
           containerId={Containers.Second}
         />
       </>
     );
   });
 
-  it('should be able to update a toast even when using multi containers', () => {
+  it('update a toast even when using multi containers', () => {
     toast('first container', {
       containerId: Containers.First
     });
-
-    toast('second container', {
+    const id = toast('second container', {
       containerId: Containers.Second
     });
 
     cy.resolveEntranceAnimation();
+
+    cy.findByText('first container').should('exist');
+    cy.findByText('second container')
+      .should('exist')
+      .then(() => {
+        toast.update(id, {
+          render: 'second container updated',
+          containerId: Containers.Second
+        });
+
+        cy.findByText('second container updated').should('exist');
+      });
+  });
+
+  it('remove toast for a given container', () => {
+    const toastId = '123';
+
+    toast('first container', {
+      toastId,
+      containerId: Containers.First
+    });
+    toast('second container', {
+      toastId,
+      containerId: Containers.Second
+    });
+
+    cy.resolveEntranceAnimation();
+
+    cy.findByText('first container').should('exist');
+    cy.findByText('second container')
+      .should('exist')
+      .then(() => {
+        toast.dismiss({
+          containerId: Containers.Second,
+          id: toastId
+        });
+
+        cy.findByText('first container').should('exist');
+        cy.findByText('second container').should('not.exist');
+      });
+  });
+
+  it('clear waiting queue for a given container', () => {
+    toast('msg1-c1', {
+      containerId: Containers.First
+    });
+    toast('msg2-c1', {
+      containerId: Containers.First
+    });
+    toast('msg1-c2', {
+      containerId: Containers.Second
+    });
+    toast('msg2-c2', {
+      containerId: Containers.Second
+    });
+
+    cy.resolveEntranceAnimation();
+
+    cy.findByText('msg2-c1').should('not.exist');
+    cy.findByText('msg2-c2').should('not.exist');
+
+    cy.findByText('msg1-c1').should('exist');
+    cy.findByText('msg1-c2').should('exist');
+
+    cy.findByText('msg1-c1').then(() => {
+      toast.clearWaitingQueue({ containerId: Containers.First });
+      cy.findByText('msg1-c1')
+        .click()
+        .then(() => {
+          cy.resolveEntranceAnimation();
+          cy.findByText('msg1-c1').should('not.exist');
+          cy.findByText('msg2-c1').should('not.exist');
+        });
+    });
+  });
+
+  describe('with limit', () => {
+    beforeEach(() => {
+      cy.mount(<ToastContainer autoClose={false} limit={2} />);
+    });
+    it('limit the numder of toast displayed', () => {
+      toast('msg1');
+      toast('msg2');
+      toast('msg3');
+      cy.resolveEntranceAnimation();
+
+      cy.findByText('msg3').should('not.exist');
+      cy.findByText('msg1').should('exist');
+      cy.findByText('msg2')
+        .should('exist')
+        .click()
+        .then(() => {
+          cy.resolveEntranceAnimation();
+          cy.findByText('msg3').should('exist');
+        });
+    });
+
+    it('clear waiting queue', () => {
+      toast('msg1');
+      toast('msg2');
+      toast('msg3');
+      cy.resolveEntranceAnimation();
+
+      cy.findByText('msg3').should('not.exist');
+      cy.findByText('msg1').should('exist');
+      cy.findByText('msg2')
+        .should('exist')
+        .then(() => {
+          toast.clearWaitingQueue();
+          cy.findByText('msg2')
+            .click()
+            .then(() => {
+              cy.resolveEntranceAnimation();
+              cy.findByText('msg3').should('not.exist');
+            });
+        });
+    });
   });
 });

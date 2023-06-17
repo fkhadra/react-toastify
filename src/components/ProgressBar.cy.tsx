@@ -1,6 +1,6 @@
 import React from 'react';
-import { ProgressBar } from './ProgressBar';
 import { Theme } from '../types';
+import { ProgressBar } from './ProgressBar';
 
 const getProps = () => ({
   delay: 5000,
@@ -27,7 +27,7 @@ const Wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 );
 
 describe('ProgressBar', () => {
-  it('should merge className', () => {
+  it('merge className', () => {
     cy.mount(
       <Wrapper>
         <ProgressBar {...getProps()} className="test" />
@@ -37,7 +37,7 @@ describe('ProgressBar', () => {
     cy.get('.test').should('exist');
   });
 
-  it('should merge className in function form', () => {
+  it('merge className in function form', () => {
     cy.mount(
       <Wrapper>
         <ProgressBar {...getProps()} className={() => 'test'} />
@@ -47,7 +47,7 @@ describe('ProgressBar', () => {
     cy.get('.test').should('exist');
   });
 
-  it('should trigger closeToast when animation end', () => {
+  it('trigger closeToast when animation end', () => {
     const closeToast = cy.stub().as('closeToast');
     const delay = 1000;
     cy.mount(
@@ -61,7 +61,7 @@ describe('ProgressBar', () => {
     cy.get('@closeToast').should('have.been.called');
   });
 
-  it('should hide the progress bar', () => {
+  it('hide the progress bar', () => {
     cy.mount(
       <Wrapper>
         <ProgressBar {...getProps()} hide />
@@ -71,7 +71,7 @@ describe('ProgressBar', () => {
     cy.get('[role=progressbar]').should('exist').should('not.be.visible');
   });
 
-  it('should pause the progress bar', () => {
+  it('pause the progress bar', () => {
     cy.mount(
       <Wrapper>
         <ProgressBar {...getProps()} isRunning={false} />
@@ -83,7 +83,7 @@ describe('ProgressBar', () => {
       .and('include', 'animation-play-state: paused');
   });
 
-  it('should control progress bar', () => {
+  it('control progress bar', () => {
     cy.mount(
       <Wrapper>
         <ProgressBar {...getProps()} controlledProgress progress={0.7} />

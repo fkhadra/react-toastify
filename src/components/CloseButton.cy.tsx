@@ -2,7 +2,7 @@ import React from 'react';
 import { CloseButton } from './CloseButton';
 
 describe('CloseButton', () => {
-  it('should call close toast when clicking', () => {
+  it('call close toast when clicking', () => {
     const closeToast = cy.stub().as('closeToast');
     cy.mount(
       <CloseButton closeToast={closeToast} type="default" theme="light" />
@@ -13,13 +13,13 @@ describe('CloseButton', () => {
     cy.get('@closeToast').should('have.been.called');
   });
 
-  it('should have a default aria-label', () => {
+  it('have a default aria-label', () => {
     cy.mount(<CloseButton closeToast={cy.stub} type="default" theme="light" />);
 
     cy.findByLabelText('close').should('exist');
   });
 
-  it('should set aria-label', () => {
+  it('set aria-label', () => {
     cy.mount(
       <CloseButton
         closeToast={cy.stub}
