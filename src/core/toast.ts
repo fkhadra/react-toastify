@@ -1,41 +1,16 @@
-import { POSITION, TYPE, isStr, isNum, isFn, Type } from '../utils';
-import { eventManager, OnChangeCallback, Event } from './eventManager';
 import {
+  ClearWaitingQueueParams,
+  Id,
+  NotValidatedToastProps,
   ToastContent,
   ToastOptions,
   ToastProps,
-  Id,
-  UpdateOptions,
-  ClearWaitingQueueParams,
-  NotValidatedToastProps,
-  TypeOptions
+  TypeOptions,
+  UpdateOptions
 } from '../types';
-import { ContainerInstance } from '../hooks';
-
-interface EnqueuedToast {
-  content: ToastContent<any>;
-  options: NotValidatedToastProps;
-}
-
-let containers = new Map<ContainerInstance | Id, ContainerInstance>();
-let latestInstance: ContainerInstance | Id;
-let queue: EnqueuedToast[] = [];
-let TOAST_ID = 1;
-
-/**
- * Get the toast by id, given it's in the DOM, otherwise returns null
- */
-function getToast(toastId: Id, { containerId }: ToastOptions) {
-  const container = containers.get(containerId || latestInstance);
-  return container && container.getToast(toastId);
-}
-
-/**
- * Generate a random toastId
- */
-function generateToastId() {
-  return `${TOAST_ID++}`;
-}
+import { POSITION, TYPE, Type, isFn, isNum, isStr } from '../utils';
+import { genToastId } from './genToastId';
+import { store } from './store';
 
 /**
  * Generate a toastId or use the one provided
@@ -43,7 +18,7 @@ function generateToastId() {
 function getToastId(options?: ToastOptions) {
   return options && (isStr(options.toastId) || isNum(options.toastId))
     ? options.toastId
-    : generateToastId();
+    : genToastId();
 }
 
 /**
@@ -54,12 +29,7 @@ function dispatchToast<TData>(
   content: ToastContent<TData>,
   options: NotValidatedToastProps
 ): Id {
-  if (containers.size > 0) {
-    eventManager.emit(Event.Show, content, options);
-  } else {
-    queue.push({ content, options });
-  }
-
+  store.pushToast(content, options);
   return options.toastId;
 }
 
@@ -200,63 +170,58 @@ toast.dark = (content: ToastContent, options?: ToastOptions) =>
     })
   );
 
+interface RemoveParams {
+  id?: Id;
+  containerId: Id;
+}
+
+function dismiss(params: RemoveParams): void;
+function dismiss(params?: Id): void;
+function dismiss(params?: Id | RemoveParams) {
+  store.remove(params);
+}
 /**
  * Remove toast programmaticaly
  */
-toast.dismiss = (id?: Id) => {
-  if (containers.size > 0) {
-    eventManager.emit(Event.Clear, id);
-  } else {
-    queue = queue.filter(t => id != null && t.options.toastId !== id);
-  }
-};
+toast.dismiss = dismiss;
 
 /**
  * Clear waiting queue when limit is used
  */
 toast.clearWaitingQueue = (params: ClearWaitingQueueParams = {}) =>
-  eventManager.emit(Event.ClearWaitingQueue, params);
+  store.clearWaitingQueue(params);
 
 /**
  * return true if one container is displaying the toast
  */
-toast.isActive = (id: Id) => {
-  let isToastActive = false;
-
-  containers.forEach(container => {
-    if (container.isToastActive && container.isToastActive(id)) {
-      isToastActive = true;
-    }
-  });
-
-  return isToastActive;
-};
+toast.isActive = store.isToastActive;
 
 toast.update = <TData = unknown>(
   toastId: Id,
   options: UpdateOptions<TData> = {}
 ) => {
-  setTimeout(() => {
-    const toast = getToast(toastId, options as ToastOptions);
-    if (toast) {
-      const { props: oldOptions, content: oldContent } = toast;
+  // setTimeout(() => {
+  const toast = store.getToast(toastId, options as ToastOptions);
 
-      const nextOptions = {
-        delay: 100,
-        ...oldOptions,
-        ...options,
-        toastId: options.toastId || toastId,
-        updateId: generateToastId()
-      } as ToastProps & UpdateOptions;
+  if (toast) {
+    const { props: oldOptions, content: oldContent } = toast;
 
-      if (nextOptions.toastId !== toastId) nextOptions.staleId = toastId;
+    const nextOptions = {
+      delay: 100,
+      ...oldOptions,
+      ...options,
+      toastId: options.toastId || toastId,
+      updateId: genToastId()
+    } as ToastProps & UpdateOptions;
 
-      const content = nextOptions.render || oldContent;
-      delete nextOptions.render;
+    if (nextOptions.toastId !== toastId) nextOptions.staleId = toastId;
 
-      dispatchToast(content, nextOptions);
-    }
-  }, 0);
+    const content = nextOptions.render || oldContent;
+    delete nextOptions.render;
+
+    dispatchToast(content, nextOptions);
+  }
+  // }, 0);
 };
 
 /**
@@ -288,12 +253,7 @@ toast.done = (id: Id) => {
  * })
  * ```
  */
-toast.onChange = (callback: OnChangeCallback) => {
-  eventManager.on(Event.Change, callback);
-  return () => {
-    eventManager.off(Event.Change, callback);
-  };
-};
+toast.onChange = store.onChange;
 
 /**
  * @deprecated
@@ -306,31 +266,5 @@ toast.POSITION = POSITION;
  * Will be removed in the next major release.
  */
 toast.TYPE = TYPE;
-
-/**
- * Wait until the ToastContainer is mounted to dispatch the toast
- * and attach isActive method
- */
-eventManager
-  .on(Event.DidMount, (containerInstance: ContainerInstance) => {
-    latestInstance = containerInstance.containerId || containerInstance;
-    containers.set(latestInstance, containerInstance);
-
-    queue.forEach(item => {
-      eventManager.emit(Event.Show, item.content, item.options);
-    });
-
-    queue = [];
-  })
-  .on(Event.WillUnmount, (containerInstance: ContainerInstance) => {
-    containers.delete(containerInstance.containerId || containerInstance);
-
-    if (containers.size === 0) {
-      eventManager
-        .off(Event.Show)
-        .off(Event.Clear)
-        .off(Event.ClearWaitingQueue);
-    }
-  });
 
 export { toast };
