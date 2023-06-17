@@ -86,7 +86,10 @@ export const ToastContainer = forwardRef<HTMLDivElement, ToastContainerProps>(
                 return (
                   <Toast
                     {...toastProps}
-                    isIn={isToastActive(toastProps.toastId)}
+                    isIn={isToastActive(
+                      toastProps.toastId,
+                      toastProps.containerId
+                    )}
                     style={
                       {
                         ...toastProps.style,

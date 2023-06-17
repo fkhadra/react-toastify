@@ -198,17 +198,11 @@ export interface ToastOptions<Data = {}> extends CommonOptions {
   className?: ToastClassName;
 
   /**
-   * @deprecated
-   * ⚠️ Will be removed in the next major release. You can rely on `toast.onChange` instead.
-   *
    * Called when toast is mounted.
    */
   onOpen?: <T = {}>(props: T) => void;
 
   /**
-   * @deprecated
-   * ⚠️ Will be removed in the next major release. You can rely on `toast.onChange` instead.
-   *
    * Called when toast is unmounted.
    */
   onClose?: <T = {}>(props: T) => void;
@@ -303,6 +297,7 @@ export interface ToastTransitionProps {
   preventExitTransition: boolean;
   nodeRef: React.RefObject<HTMLElement>;
   children?: React.ReactNode;
+  playToast(): void;
 }
 
 /**
