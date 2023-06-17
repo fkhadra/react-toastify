@@ -59,7 +59,7 @@ describe('Toast', () => {
       bodyClassName: () => 'body-class'
     }
   ]) {
-    it(`should merge container and body className when using ${name}`, () => {
+    it(`merge container and body className when using ${name}`, () => {
       cy.mount(
         <Toast
           {...REQUIRED_PROPS}
@@ -75,7 +75,7 @@ describe('Toast', () => {
     });
   }
 
-  it('should support rtl', () => {
+  it('support rtl', () => {
     cy.mount(
       <Toast {...REQUIRED_PROPS} rtl>
         FooBar
@@ -86,7 +86,7 @@ describe('Toast', () => {
   });
 
   describe('closeOnClick', () => {
-    it('should call closeToast when enabled', () => {
+    it('call closeToast when enabled', () => {
       const closeToast = cy.stub().as('closeToast');
 
       cy.mount(
@@ -99,7 +99,7 @@ describe('Toast', () => {
       cy.get('@closeToast').should('have.been.called');
     });
 
-    it('should not call closeToast when disabled', () => {
+    it('does not call closeToast when disabled', () => {
       const closeToast = cy.stub().as('closeToast');
 
       cy.mount(
@@ -114,7 +114,7 @@ describe('Toast', () => {
   });
 
   describe('autoClose', () => {
-    it('should not render progress bar when false', () => {
+    it('does not render progress bar when false', () => {
       cy.mount(
         <Toast {...REQUIRED_PROPS} autoClose={false}>
           FooBar
@@ -124,7 +124,7 @@ describe('Toast', () => {
       cy.findByRole('progressbar').should('not.exist');
     });
 
-    it('should resume and pause progress bar', () => {
+    it('resume and pause progress bar', () => {
       cy.mount(
         <Toast {...REQUIRED_PROPS} autoClose={5000}>
           hello
@@ -144,7 +144,7 @@ describe('Toast', () => {
     });
   });
 
-  it('should not render close button when closeButton is false', () => {
+  it('does not render close button when closeButton is false', () => {
     cy.mount(
       <Toast {...REQUIRED_PROPS} closeButton={false}>
         FooBar
@@ -154,7 +154,7 @@ describe('Toast', () => {
     cy.findByLabelText('close').should('not.exist');
   });
 
-  it('should resume and pause progress bar when pauseOnFocusLoss is enabled', () => {
+  it('resume and pause progress bar when pauseOnFocusLoss is enabled', () => {
     cy.mount(
       <Toast {...REQUIRED_PROPS} autoClose={5000} pauseOnFocusLoss>
         hello
@@ -171,7 +171,7 @@ describe('Toast', () => {
     progressBar.isRunning();
   });
 
-  it('should not pause progress bar when pauseOnHover is disabled', () => {
+  it('does not pause progress bar when pauseOnHover is disabled', () => {
     cy.mount(
       <Toast {...REQUIRED_PROPS} autoClose={5000} pauseOnHover={false}>
         hello
@@ -185,7 +185,7 @@ describe('Toast', () => {
   });
 
   describe('controller progress bar', () => {
-    it('should set the correct progress value bar disregarding autoClose value', () => {
+    it('set the correct progress value bar disregarding autoClose value', () => {
       cy.mount(
         <Toast {...REQUIRED_PROPS} progress={0.3} autoClose={false}>
           hello
@@ -207,7 +207,7 @@ describe('Toast', () => {
       progressBar.isControlled(0.3);
     });
 
-    it('should call closeToast when progress value is >= 1', () => {
+    it('call closeToast when progress value is >= 1', () => {
       const closeToast = cy.stub().as('closeToast');
       cy.mount(
         <Toast {...REQUIRED_PROPS} progress={1.1} closeToast={closeToast}>
@@ -220,7 +220,7 @@ describe('Toast', () => {
     });
   });
 
-  it('should call closeToast when autoClose duration exceeded', () => {
+  it('call closeToast when autoClose duration exceeded', () => {
     const closeToast = cy.stub().as('closeToast');
     cy.mount(
       <Toast {...REQUIRED_PROPS} autoClose={200} closeToast={closeToast}>
@@ -231,7 +231,7 @@ describe('Toast', () => {
     cy.get('@closeToast').should('have.been.called');
   });
 
-  it('should attach specified attributes: role, id, etc...', () => {
+  it('attach specified attributes: role, id, etc...', () => {
     const style: React.CSSProperties = {
       background: 'purple'
     };
@@ -275,14 +275,14 @@ describe('Toast', () => {
       value: <div>hello</div>
     }
   ]) {
-    it(`should render ${type}`, () => {
+    it(`render ${type}`, () => {
       cy.mount(<Toast {...REQUIRED_PROPS}>{value}</Toast>);
 
       cy.findByText('hello').should('exist');
     });
   }
 
-  it('should override default closeButton', () => {
+  it('override default closeButton', () => {
     cy.mount(
       <Toast {...REQUIRED_PROPS} closeButton={<span>💩</span>}>
         hello
@@ -293,7 +293,7 @@ describe('Toast', () => {
     cy.findByText('💩').should('exist');
   });
 
-  it('should fallback to default closeButton', () => {
+  it('fallback to default closeButton', () => {
     cy.mount(
       <Toast {...REQUIRED_PROPS} closeButton={true}>
         hello
@@ -313,7 +313,7 @@ describe('Toast', () => {
       { axis: 'x', delta: { deltaX: -300 } },
       { axis: 'y', delta: { deltaY: 300 } }
     ]) {
-      it(`should close toast when dragging on ${axis}-axis`, () => {
+      it(`close toast when dragging on ${axis}-axis`, () => {
         cy.mount(
           <div style={{ width: '300px', position: 'fixed', right: 0 }}>
             <Toast
@@ -338,7 +338,7 @@ describe('Toast', () => {
       { axis: 'x', delta: { deltaX: -100 } },
       { axis: 'y', delta: { deltaY: 40 } }
     ]) {
-      it(`should not close toast when dragging on ${axis}-axis`, () => {
+      it(`does not close toast when dragging on ${axis}-axis`, () => {
         cy.mount(
           <div style={{ width: '300px', position: 'fixed', right: 0 }}>
             <Toast
