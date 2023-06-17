@@ -17,7 +17,7 @@ jobs:
       - name: Lint
         run: yarn lint
       - name: Setup
-        run: yarn setup
+        run: yarn build:core
       - name: Test
         run: yarn run test:run 
       - name: Coveralls GitHub Action
