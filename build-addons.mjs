@@ -39,7 +39,7 @@ try {
       const exportOut = `./addons/${dir}/${filename}`;
 
       const { stdout, stderr } = await asyncExec(
-        `${MICRO_BUNDLE} -i ${entryPoint} -o ${out} --no-pkg-main -f ${moduleType} --jsx React.createElement --external react-toastify --compress false`
+        `${MICRO_BUNDLE} -i ${entryPoint} -o ${out} --no-pkg-main -f ${moduleType} --jsx React.createElement --external react-toastify --compress false --tsconfig tsconfig.build.json`
       );
       console.log(stdout);
       console.log(stderr);

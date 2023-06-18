@@ -21,7 +21,7 @@
   "scripts": {
     "start": "cd playground && yarn dev",
     "test": "cypress open --component",
-    "test:run": "cypress run --component",
+    "test:run": "cypress run --component -b chrome",
     "clean": "rimraf dist && rimraf addons",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "prettier": "prettier --write src",
