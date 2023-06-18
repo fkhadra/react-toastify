@@ -1,5 +1,5 @@
 import React from 'react';
-import { CloseButtonProps, IconProps } from '../components';
+import { CloseButtonProps, IconProps } from './components';
 
 type Nullable<T> = {
   [P in keyof T]: T[P] | null;
@@ -277,12 +277,6 @@ export interface ToastContainerProps extends CommonOptions {
    * An optional css class for the toast.
    */
   toastClassName?: ToastClassName;
-
-  /**
-   * Show the toast only if it includes containerId and it's the same as containerId
-   * `Default: false`
-   */
-  enableMultiContainer?: boolean;
 
   /**
    * Limit the number of toast displayed at the same time

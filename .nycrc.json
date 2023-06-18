@@ -8,6 +8,7 @@
   ],
   "exclude": [
     "cypress/**/*.*",
+    "src/types.ts",
     "**/*.d.ts",
     "**/*.cy.tsx",
     "**/*.cy.ts"
