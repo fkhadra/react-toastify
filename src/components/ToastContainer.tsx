@@ -1,19 +1,14 @@
 // https://github.com/yannickcr/eslint-plugin-react/issues/3140
 /* eslint react/prop-types: "off" */
-import React, {
-  forwardRef,
-  StyleHTMLAttributes,
-  useEffect,
-  useMemo
-} from 'react';
 import cx from 'clsx';
+import React, { forwardRef, useEffect, useMemo } from 'react';
 
-import { Toast } from './Toast';
-import { CloseButton } from './CloseButton';
-import { Bounce } from './Transitions';
-import { Direction, Default, parseClassName, isFn } from '../utils';
 import { useToastContainer } from '../hooks/useToastContainer';
 import { ToastContainerProps, ToastPosition } from '../types';
+import { Default, Direction, isFn, parseClassName } from '../utils';
+import { CloseButton } from './CloseButton';
+import { Toast } from './Toast';
+import { Bounce } from './Transitions';
 
 export const defaultProps: ToastContainerProps = {
   position: 'top-right',
@@ -82,7 +77,7 @@ export const ToastContainer = forwardRef<HTMLDivElement, ToastContainerProps>(
               style={containerStyle}
               key={`container-${position}`}
             >
-              {toastList.map(({ content, props: toastProps }, i) => {
+              {toastList.map(({ content, props: toastProps }) => {
                 return (
                   <Toast
                     {...toastProps}
@@ -90,13 +85,7 @@ export const ToastContainer = forwardRef<HTMLDivElement, ToastContainerProps>(
                       toastProps.toastId,
                       toastProps.containerId
                     )}
-                    style={
-                      {
-                        ...toastProps.style,
-                        '--nth': i + 1,
-                        '--len': toastList.length
-                      } as StyleHTMLAttributes<HTMLDivElement>
-                    }
+                    style={toastProps.style}
                     key={`toast-${toastProps.key}`}
                   >
                     {content}
