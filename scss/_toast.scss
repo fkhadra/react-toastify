@@ -5,7 +5,7 @@
   margin-bottom: 1rem;
   padding: 8px;
   border-radius: 4px;
-  box-shadow: 0 1px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 15px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   display: flex;
   justify-content: space-between;
   max-height: var(--toastify-toast-max-height);
@@ -42,7 +42,7 @@
 
 .#{$rt-namespace}--animate {
   animation-fill-mode: both;
-  animation-duration: 0.7s;
+  animation-duration: 0.6s;
 }
 
 .#{$rt-namespace}--animate-icon {
