@@ -8,7 +8,7 @@ import {
   TypeOptions,
   UpdateOptions
 } from '../types';
-import { POSITION, TYPE, Type, isFn, isNum, isStr } from '../utils';
+import { Type, isFn, isNum, isStr } from '../utils';
 import { genToastId } from './genToastId';
 import { store } from './store';
 
@@ -254,17 +254,5 @@ toast.done = (id: Id) => {
  * ```
  */
 toast.onChange = store.onChange;
-
-/**
- * @deprecated
- * Will be removed in the next major release.
- */
-toast.POSITION = POSITION;
-
-/**
- * @deprecated
- * Will be removed in the next major release.
- */
-toast.TYPE = TYPE;
 
 export { toast };
