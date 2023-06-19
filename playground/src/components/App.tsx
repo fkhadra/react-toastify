@@ -10,9 +10,9 @@ import { Radio } from './Radio';
 import { Checkbox } from './Checkbox';
 import { ContainerCode, ContainerCodeProps } from './ContainerCode';
 import { ToastCode, ToastCodeProps } from './ToastCode';
-import { flags, themes, transitions } from './constants';
+import { flags, positions, themes, transitions, typs } from './constants';
 
-import { ToastContainer, toast, Id } from '../../../src/index';
+import { ToastContainer, toast, Id, cssTransition } from '../../../src/index';
 import '../../../scss/main.scss';
 import React from 'react';
 
@@ -140,7 +140,7 @@ class App extends React.Component {
               <h3>Position</h3>
               <ul>
                 <Radio
-                  options={toast.POSITION}
+                  options={positions}
                   name="position"
                   checked={this.state.position as string}
                   onChange={this.handleRadioOrSelect}
@@ -151,7 +151,7 @@ class App extends React.Component {
               <h3>Type</h3>
               <ul>
                 <Radio
-                  options={toast.TYPE}
+                  options={typs}
                   name="type"
                   checked={this.state.type}
                   onChange={this.handleRadioOrSelect}
