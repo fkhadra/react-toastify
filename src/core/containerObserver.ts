@@ -217,7 +217,7 @@ export function createContainerObserver({
       return ActiveToasts.some(v => v === id);
     },
     getSnapshot() {
-      return Snapshot;
+      return props.newestOnTop ? Snapshot.reverse() : Snapshot;
     },
     buildToast
   };
