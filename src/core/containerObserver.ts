@@ -3,11 +3,11 @@ import { getIcon } from '../components/Icons';
 import {
   Id,
   NotValidatedToastProps,
+  OnChangeCallback,
   Toast,
   ToastContainerProps,
   ToastContent,
-  ToastProps,
-  OnChangeCallback
+  ToastProps
 } from '../types';
 import {
   canBeRendered,
@@ -46,22 +46,22 @@ export function createContainerObserver({
   props,
   dispatchChanges
 }: ContainerObserverParams) {
-  let ToastKey = 1;
-  let Count = 0;
-  let Queue: QueuedToast[] = [];
-  let ActiveToasts: Id[] = [];
-  let Snapshot: Toast[] = [];
-  const Toasts = new Map<Id, Toast>();
-  const Listeners = new Set<Notify>();
+  let toastKey = 1;
+  let toastCount = 0;
+  let queue: QueuedToast[] = [];
+  let activeToasts: Id[] = [];
+  let snapshot: Toast[] = [];
+  const toasts = new Map<Id, Toast>();
+  const listeners = new Set<Notify>();
 
   const observe = (notify: Notify) => {
-    Listeners.add(notify);
-    return () => Listeners.delete(notify);
+    listeners.add(notify);
+    return () => listeners.delete(notify);
   };
 
   const notify = () => {
-    Snapshot = Array.from(Toasts.values());
-    Listeners.forEach(cb => cb());
+    snapshot = Array.from(toasts.values());
+    listeners.forEach(cb => cb());
   };
 
   const shouldIgnoreToast = ({
@@ -70,29 +70,29 @@ export function createContainerObserver({
     updateId
   }: NotValidatedToastProps) => {
     const containerMismatch = containerId ? containerId !== id : id !== 1;
-    const isDuplicate = Toasts.has(toastId) && updateId == null;
+    const isDuplicate = toasts.has(toastId) && updateId == null;
 
     return containerMismatch || isDuplicate;
   };
 
-  const removeActiveToast = (id?: Id) => {
-    ActiveToasts = id == null ? [] : ActiveToasts.filter(v => v !== id);
+  const removeToast = (id?: Id) => {
+    activeToasts = id == null ? [] : activeToasts.filter(v => v !== id);
     notify();
   };
 
   const clearQueue = () => {
-    Count -= Queue.length;
-    Queue = [];
+    toastCount -= queue.length;
+    queue = [];
   };
 
   const addActiveToast = (toast: ActiveToast) => {
     const { toastId, onOpen, updateId, children } = toast.props;
     const isNew = updateId == null;
 
-    if (toast.staleId) Toasts.delete(toast.staleId);
+    if (toast.staleId) toasts.delete(toast.staleId);
 
-    Toasts.set(toastId, toast);
-    ActiveToasts = [...ActiveToasts, toast.props.toastId].filter(
+    toasts.set(toastId, toast);
+    activeToasts = [...activeToasts, toast.props.toastId].filter(
       v => v !== toast.staleId
     );
     notify();
@@ -110,17 +110,17 @@ export function createContainerObserver({
 
     const { toastId, updateId, data, staleId, delay } = options;
     const closeToast = () => {
-      removeActiveToast(toastId);
+      removeToast(toastId);
     };
 
     const isNotAnUpdate = updateId == null;
 
-    if (isNotAnUpdate) Count++;
+    if (isNotAnUpdate) toastCount++;
 
     const toastProps = {
       ...props,
       style: props.toastStyle,
-      key: ToastKey++,
+      key: toastKey++,
       ...Object.fromEntries(
         Object.entries(options).filter(([_, v]) => v != null)
       ),
@@ -140,18 +140,18 @@ export function createContainerObserver({
         ? false
         : getAutoCloseDelay(options.autoClose, props.autoClose),
       deleteToast() {
-        const toastToRemove = Toasts.get(toastId)!;
+        const toastToRemove = toasts.get(toastId)!;
         const { onClose, children } = toastToRemove.props;
         if (isFn(onClose)) onClose(isValidElement(children) && children.props);
 
         dispatchChanges(toToastItem(toastToRemove, 'removed'));
-        Toasts.delete(toastId);
+        toasts.delete(toastId);
 
-        Count--;
-        if (Count < 0) Count = 0;
+        toastCount--;
+        if (toastCount < 0) toastCount = 0;
 
-        if (Queue.length > 0) {
-          addActiveToast(Queue.shift() as ActiveToast);
+        if (queue.length > 0) {
+          addActiveToast(queue.shift() as ActiveToast);
           return;
         }
 
@@ -193,10 +193,10 @@ export function createContainerObserver({
     if (
       props.limit &&
       props.limit > 0 &&
-      Count > props.limit &&
+      toastCount > props.limit &&
       isNotAnUpdate
     ) {
-      Queue.push(activeToast);
+      queue.push(activeToast);
     } else if (isNum(delay)) {
       setTimeout(() => {
         addActiveToast(activeToast);
@@ -210,15 +210,11 @@ export function createContainerObserver({
     id,
     props,
     observe,
-    removeActiveToast,
-    toasts: Toasts,
+    removeToast,
+    toasts,
     clearQueue,
-    isToastActive(id: Id) {
-      return ActiveToasts.some(v => v === id);
-    },
-    getSnapshot() {
-      return props.newestOnTop ? Snapshot.reverse() : Snapshot;
-    },
-    buildToast
+    buildToast,
+    isToastActive: (id: Id) => activeToasts.some(v => v === id),
+    getSnapshot: () => (props.newestOnTop ? snapshot.reverse() : snapshot)
   };
 }
