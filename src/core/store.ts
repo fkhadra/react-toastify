@@ -6,7 +6,7 @@ import {
   ToastItem,
   ToastOptions
 } from '../types';
-import { canBeRendered, isId } from '../utils';
+import { Default, canBeRendered, isId } from '../utils';
 import {
   ContainerObserver,
   createContainerObserver
@@ -27,7 +27,6 @@ interface RemoveParams {
 }
 
 function createStore() {
-  const DEFAULT_CONTAINER_ID = 1;
   const containers = new Map<Id, ContainerObserver>();
   let renderQueue: EnqueuedToast[] = [];
   const listeners = new Set<OnChangeCallback>();
@@ -49,7 +48,7 @@ function createStore() {
   }
 
   function getToast(id: Id, { containerId }: ToastOptions) {
-    return containers.get(containerId || DEFAULT_CONTAINER_ID)?.toasts.get(id);
+    return containers.get(containerId || Default.CONTAINER_ID)?.toasts.get(id);
   }
 
   function flushRenderQueue() {
@@ -100,7 +99,7 @@ function createStore() {
 
   return {
     registerContainer(props: ToastContainerProps) {
-      const id = props.containerId || DEFAULT_CONTAINER_ID;
+      const id = props.containerId || Default.CONTAINER_ID;
       return {
         subscribe(notify: () => void) {
           const container = createContainerObserver({
