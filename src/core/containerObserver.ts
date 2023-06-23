@@ -6,7 +6,8 @@ import {
   Toast,
   ToastContainerProps,
   ToastContent,
-  ToastProps
+  ToastProps,
+  OnChangeCallback
 } from '../types';
 import {
   canBeRendered,
@@ -17,7 +18,6 @@ import {
   parseClassName,
   toToastItem
 } from '../utils';
-import { OnChangeCallback } from './store';
 
 interface QueuedToast {
   content: ToastContent<any>;

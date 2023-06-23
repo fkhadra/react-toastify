@@ -345,3 +345,5 @@ export interface ToastItem<Data = {}> {
   icon?: ToastIcon;
   status: ToastItemStatus;
 }
+
+export type OnChangeCallback = (toast: ToastItem) => void;
