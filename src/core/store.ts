@@ -64,10 +64,10 @@ export function removeToast(params?: Id | RemoveParams) {
 
   if (params == null || isId(params)) {
     containers.forEach(c => {
-      c.removeActiveToast(params as Id);
+      c.removeToast(params as Id);
     });
   } else if (params && 'containerId' in params) {
-    containers.get(params.containerId)?.removeActiveToast(params.id);
+    containers.get(params.containerId)?.removeToast(params.id);
   }
 }
 
