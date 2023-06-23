@@ -1,5 +1,6 @@
 import {
   Id,
+  IdOpts,
   NotValidatedToastProps,
   ToastContent,
   ToastOptions,
@@ -15,7 +16,8 @@ import {
   isToastActive,
   onChange,
   pushToast,
-  removeToast
+  removeToast,
+  toggleToast
 } from './store';
 
 /**
@@ -257,5 +259,8 @@ toast.done = (id: Id) => {
  * ```
  */
 toast.onChange = onChange;
+
+toast.play = (opts?: IdOpts) => toggleToast(true, opts);
+toast.pause = (opts?: IdOpts) => toggleToast(false, opts);
 
 export { toast };

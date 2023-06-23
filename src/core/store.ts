@@ -91,6 +91,30 @@ export function pushToast<TData>(
   });
 }
 
+interface ToggleToastParams {
+  id?: Id;
+  containerId?: Id;
+}
+
+type P = {
+  id: Id;
+  containerId?: Id;
+  fn: (v: boolean) => void;
+};
+export function registerToggle(p: P) {
+  containers.get(p.containerId || Default.CONTAINER_ID)?.setToggle(p.id, p.fn);
+}
+
+export function toggleToast(v: boolean, opt?: ToggleToastParams) {
+  containers.forEach(c => {
+    if (opt == null || !opt?.containerId) {
+      c.toggle(v, opt?.id);
+    } else if (opt?.containerId === c.id) {
+      c.toggle(v, opt?.id);
+    }
+  });
+}
+
 export function registerContainer(props: ToastContainerProps) {
   const id = props.containerId || Default.CONTAINER_ID;
   return {

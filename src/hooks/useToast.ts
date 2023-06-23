@@ -2,6 +2,7 @@ import { DOMAttributes, useEffect, useRef, useState } from 'react';
 
 import { ToastProps } from '../types';
 import { Default, Direction } from '../utils';
+import { registerToggle } from '../core/store';
 
 interface Draggable {
   start: number;
@@ -45,6 +46,12 @@ export function useToast(props: ToastProps) {
     didMove: false
   }).current;
   const { autoClose, pauseOnHover, closeToast, onClick, closeOnClick } = props;
+
+  registerToggle({
+    id: props.toastId,
+    containerId: props.containerId,
+    fn: setIsRunning
+  });
 
   useEffect(() => {
     props.pauseOnFocusLoss && bindFocusEvents();
