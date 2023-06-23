@@ -1,5 +1,4 @@
 import {
-  ClearWaitingQueueParams,
   Id,
   NotValidatedToastProps,
   ToastContent,
@@ -10,7 +9,14 @@ import {
 } from '../types';
 import { Type, isFn, isNum, isStr } from '../utils';
 import { genToastId } from './genToastId';
-import { store } from './store';
+import {
+  clearWaitingQueue,
+  getToast,
+  isToastActive,
+  onChange,
+  pushToast,
+  removeToast
+} from './store';
 
 /**
  * Generate a toastId or use the one provided
@@ -29,7 +35,7 @@ function dispatchToast<TData>(
   content: ToastContent<TData>,
   options: NotValidatedToastProps
 ): Id {
-  store.pushToast(content, options);
+  pushToast(content, options);
   return options.toastId;
 }
 
@@ -178,7 +184,7 @@ interface RemoveParams {
 function dismiss(params: RemoveParams): void;
 function dismiss(params?: Id): void;
 function dismiss(params?: Id | RemoveParams) {
-  store.remove(params);
+  removeToast(params);
 }
 /**
  * Remove toast programmaticaly
@@ -188,20 +194,18 @@ toast.dismiss = dismiss;
 /**
  * Clear waiting queue when limit is used
  */
-toast.clearWaitingQueue = (params: ClearWaitingQueueParams = {}) =>
-  store.clearWaitingQueue(params);
+toast.clearWaitingQueue = clearWaitingQueue;
 
 /**
  * return true if one container is displaying the toast
  */
-toast.isActive = store.isToastActive;
+toast.isActive = isToastActive;
 
 toast.update = <TData = unknown>(
   toastId: Id,
   options: UpdateOptions<TData> = {}
 ) => {
-  // setTimeout(() => {
-  const toast = store.getToast(toastId, options as ToastOptions);
+  const toast = getToast(toastId, options as ToastOptions);
 
   if (toast) {
     const { props: oldOptions, content: oldContent } = toast;
@@ -221,7 +225,6 @@ toast.update = <TData = unknown>(
 
     dispatchToast(content, nextOptions);
   }
-  // }, 0);
 };
 
 /**
@@ -253,6 +256,6 @@ toast.done = (id: Id) => {
  * })
  * ```
  */
-toast.onChange = store.onChange;
+toast.onChange = onChange;
 
 export { toast };
