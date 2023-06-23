@@ -75,6 +75,12 @@ export function createContainerObserver({
     return containerMismatch || isDuplicate;
   };
 
+  const toggle = (v: boolean, id?: Id) => {
+    toasts.forEach(t => {
+      if (id == null || id === t.props.toastId) isFn(t.toggle) && t.toggle(v);
+    });
+  };
+
   const removeToast = (id?: Id) => {
     activeToasts = id == null ? [] : activeToasts.filter(v => v !== id);
     notify();
@@ -210,10 +216,13 @@ export function createContainerObserver({
     id,
     props,
     observe,
+    toggle,
     removeToast,
     toasts,
     clearQueue,
     buildToast,
+    setToggle: (id: Id, fn: (v: boolean) => void) =>
+      (toasts.get(id)!.toggle = fn),
     isToastActive: (id: Id) => activeToasts.some(v => v === id),
     getSnapshot: () => (props.newestOnTop ? snapshot.reverse() : snapshot)
   };

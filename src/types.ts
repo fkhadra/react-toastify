@@ -330,6 +330,7 @@ export interface NotValidatedToastProps extends Partial<ToastProps> {
 export interface Toast {
   content: ToastContent;
   props: ToastProps;
+  toggle?: (v: boolean) => void;
 }
 
 export type ToastItemStatus = 'added' | 'removed' | 'updated';
@@ -347,3 +348,8 @@ export interface ToastItem<Data = {}> {
 }
 
 export type OnChangeCallback = (toast: ToastItem) => void;
+
+export type IdOpts = {
+  id?: Id;
+  containerId?: Id;
+};
