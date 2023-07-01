@@ -321,7 +321,7 @@ export function useNotificationCenter<Data = {}>(
   };
 }
 
-function decorate<Data>(
+export function decorate<Data>(
   item: NotificationCenterItem<Data> | Partial<NotificationCenterItem<Data>>
 ) {
   if (item.id == null) item.id = Date.now().toString(36).substring(2, 9);
