@@ -7,7 +7,7 @@ type Nullable<T> = {
 
 export type TypeOptions = 'info' | 'success' | 'warning' | 'error' | 'default';
 
-export type Theme = 'light' | 'dark' | 'colored';
+export type Theme = 'light' | 'dark' | 'colored' | (string & {});
 
 export type ToastPosition =
   | 'top-right'

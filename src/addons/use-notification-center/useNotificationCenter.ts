@@ -92,7 +92,7 @@ export interface UseNotificationCenter<Data> {
   markAsRead(id: Id | Id[]): void;
 
   /**
-   * Mark one or more notifications as read.The second parameter let you mark the notificaiton as read or not.
+   * Mark one or more notifications as read.The second parameter let you mark the notification as read or not.
    *
    * Usage:
    * ```
@@ -123,7 +123,7 @@ export interface UseNotificationCenter<Data> {
    * ```
    * const id = add({id: "id", content: "test", data: { foo: "hello" } })
    *
-   * // Return the id of the notificaiton, generate one if none provided
+   * // Return the id of the notification, generate one if none provided
    * const id = add({ data: {title: "a title", text: "some text"} })
    * ```
    */
@@ -144,7 +144,7 @@ export interface UseNotificationCenter<Data> {
   update(id: Id, item: Partial<NotificationCenterItem<Data>>): Id | null;
 
   /**
-   * Retrive one or more notifications
+   * Retrieve one or more notifications
    *
    * Usage:
    * ```
@@ -155,7 +155,7 @@ export interface UseNotificationCenter<Data> {
   find(id: Id): NotificationCenterItem<Data> | undefined;
 
   /**
-   * Retrive one or more notifications
+   * Retrieve one or more notifications
    *
    * Usage:
    * ```

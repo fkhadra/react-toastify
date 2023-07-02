@@ -96,13 +96,14 @@ interface ToggleToastParams {
   containerId?: Id;
 }
 
-type P = {
+type RegisterToggleOpts = {
   id: Id;
   containerId?: Id;
   fn: (v: boolean) => void;
 };
-export function registerToggle(p: P) {
-  containers.get(p.containerId || Default.CONTAINER_ID)?.setToggle(p.id, p.fn);
+
+export function registerToggle(opts: RegisterToggleOpts) {
+  containers.get(opts.containerId || Default.CONTAINER_ID)?.setToggle(opts.id, opts.fn);
 }
 
 export function toggleToast(v: boolean, opt?: ToggleToastParams) {
