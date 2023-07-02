@@ -129,11 +129,7 @@ describe('NotificationCenter', () => {
     cy.findByText('msg updated').should('exist');
   });
 
-  // it('filter', () => {
-
-  // });
-
-  it('mark as read a single notificaiton', () => {
+  it('mark as read a single notification', () => {
     cy.findByTestId('unreadCount').should('contain.text', 0);
     cy.findByTestId('count').should('contain.text', 0);
     const id = toast('msg');

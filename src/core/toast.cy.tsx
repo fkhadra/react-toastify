@@ -84,7 +84,7 @@ describe('with container', () => {
     });
   });
 
-  it('unsubsribe from change event', () => {
+  it('unsubscribe from change event', () => {
     const unsub = toast.onChange(cy.stub().as('onChange'));
     unsub();
     toast('msg');
@@ -188,7 +188,7 @@ describe('with container', () => {
     cy.get('.class3').should('exist');
   });
 
-  it('uses syntaxic sugar for different notification type', () => {
+  it('uses syntactic sugar for different notification type', () => {
     toast('default');
     toast.success('success');
     toast.error('error');
@@ -420,7 +420,7 @@ describe('with multi containers', () => {
     beforeEach(() => {
       cy.mount(<ToastContainer autoClose={false} limit={2} />);
     });
-    it('limit the numder of toast displayed', () => {
+    it('limit the number of toast displayed', () => {
       toast('msg1');
       toast('msg2');
       toast('msg3');

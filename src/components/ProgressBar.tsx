@@ -36,12 +36,12 @@ export interface ProgressBarProps {
   hide?: boolean;
 
   /**
-   * Optionnal className
+   * Optional className
    */
   className?: ToastClassName;
 
   /**
-   * Optionnal inline style
+   * Optional inline style
    */
   style?: React.CSSProperties;
 

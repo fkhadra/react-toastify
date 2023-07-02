@@ -189,7 +189,7 @@ function dismiss(params?: Id | RemoveParams) {
   removeToast(params);
 }
 /**
- * Remove toast programmaticaly
+ * Remove toast programmatically
  */
 toast.dismiss = dismiss;
 
