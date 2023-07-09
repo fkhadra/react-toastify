@@ -319,6 +319,7 @@ describe('Toast', () => {
             <Toast
               {...REQUIRED_PROPS}
               autoClose={5000}
+              draggable
               draggableDirection={axis as DraggableDirection}
               closeToast={cy.stub().as('closeToast')}
             >
@@ -344,6 +345,7 @@ describe('Toast', () => {
             <Toast
               {...REQUIRED_PROPS}
               autoClose={5000}
+              draggable
               draggableDirection={axis as DraggableDirection}
               closeToast={cy.stub().as('closeToast')}
             >
