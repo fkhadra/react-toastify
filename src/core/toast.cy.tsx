@@ -36,7 +36,7 @@ describe('without container', () => {
 
 describe('with container', () => {
   beforeEach(() => {
-    cy.mount(<ToastContainer autoClose={false} />);
+    cy.mount(<ToastContainer autoClose={false} closeOnClick />);
   });
 
   it('render toast', () => {
@@ -345,12 +345,14 @@ describe('with multi containers', () => {
           position="top-left"
           limit={1}
           containerId={Containers.First}
+          closeOnClick
         />
         <ToastContainer
           autoClose={false}
           position="top-right"
           limit={1}
           containerId={Containers.Second}
+          closeOnClick
         />
       </>
     );
@@ -443,7 +445,7 @@ describe('with multi containers', () => {
 
   describe('with limit', () => {
     beforeEach(() => {
-      cy.mount(<ToastContainer autoClose={false} limit={2} />);
+      cy.mount(<ToastContainer autoClose={false} limit={2} closeOnClick />);
     });
     it('limit the number of toast displayed', () => {
       toast('msg1');

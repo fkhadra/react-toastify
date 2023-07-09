@@ -103,7 +103,9 @@ type RegisterToggleOpts = {
 };
 
 export function registerToggle(opts: RegisterToggleOpts) {
-  containers.get(opts.containerId || Default.CONTAINER_ID)?.setToggle(opts.id, opts.fn);
+  containers
+    .get(opts.containerId || Default.CONTAINER_ID)
+    ?.setToggle(opts.id, opts.fn);
 }
 
 export function toggleToast(v: boolean, opt?: ToggleToastParams) {
