@@ -17,7 +17,6 @@ export const defaultProps: ToastContainerProps = {
   closeButton: CloseButton,
   pauseOnHover: true,
   pauseOnFocusLoss: true,
-  closeOnClick: false,
   draggable: 'touch',
   draggablePercent: Default.DRAGGABLE_PERCENT as number,
   draggableDirection: Direction.X,
