@@ -101,6 +101,31 @@ describe('with container', () => {
     cy.findByText('msg').should('not.exist');
   });
 
+  it('pause and resume notification', () => {
+    const id = toast('msg', {
+      autoClose: 10000
+    });
+
+    cy.findByRole('progressbar').as('progressBar');
+
+    cy.get('@progressBar')
+      .should('have.attr', 'style')
+      .and('include', 'animation-play-state: running')
+      .then(() => {
+        toast.pause({ id });
+        cy.get('@progressBar')
+          .should('have.attr', 'style')
+          .and('include', 'animation-play-state: paused')
+          .then(() => {
+            toast.play({ id });
+
+            cy.get('@progressBar')
+              .should('have.attr', 'style')
+              .and('include', 'animation-play-state: running');
+          });
+      });
+  });
+
   describe('update function', () => {
     it('update an existing toast', () => {
       const id = toast('msg');

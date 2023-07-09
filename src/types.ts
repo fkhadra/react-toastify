@@ -136,7 +136,7 @@ interface CommonOptions {
    * Allow toast to be draggable
    * `Default: true`
    */
-  draggable?: boolean;
+  draggable?: boolean | 'mouse' | 'touch';
 
   /**
    * The percentage of the toast's width it takes for a drag to dismiss a toast

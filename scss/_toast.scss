@@ -1,5 +1,6 @@
 .#{$rt-namespace}__toast {
   position: relative;
+  touch-action: none;
   min-height: var(--toastify-toast-min-height);
   box-sizing: border-box;
   margin-bottom: 1rem;
