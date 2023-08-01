@@ -257,6 +257,8 @@ export interface ToastContainerProps extends CommonOptions {
    */
   className?: ToastClassName;
 
+  stacked?: boolean;
+
   /**
    * Whether or not to display the newest toast on top.
    * `Default: false`

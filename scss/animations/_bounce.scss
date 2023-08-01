@@ -32,11 +32,11 @@
 @keyframes #{$rt-namespace}__bounceOutRight {
   20% {
     opacity: 1;
-    transform: translate3d(-20px, 0, 0);
+    transform: translate3d(-20px, var(--y), 0);
   }
   to {
     opacity: 0;
-    transform: translate3d(2000px, 0, 0);
+    transform: translate3d(2000px, var(--y), 0);
   }
 }
 
@@ -70,11 +70,11 @@
 @keyframes #{$rt-namespace}__bounceOutLeft {
   20% {
     opacity: 1;
-    transform: translate3d(20px, 0, 0);
+    transform: translate3d(20px, var(--y), 0);
   }
   to {
     opacity: 0;
-    transform: translate3d(-2000px, 0, 0);
+    transform: translate3d(-2000px, var(--y), 0);
   }
 }
 
@@ -107,12 +107,12 @@
 
 @keyframes #{$rt-namespace}__bounceOutUp {
   20% {
-    transform: translate3d(0, -10px, 0);
+    transform: translate3d(0, calc(var(--y) - 10px), 0);
   }
   40%,
   45% {
     opacity: 1;
-    transform: translate3d(0, 20px, 0);
+    transform: translate3d(0, calc(var(--y) + 20px), 0);
   }
   to {
     opacity: 0;
@@ -149,12 +149,12 @@
 
 @keyframes #{$rt-namespace}__bounceOutDown {
   20% {
-    transform: translate3d(0, 10px, 0);
+    transform: translate3d(0, calc(var(--y) - 10px), 0);
   }
   40%,
   45% {
     opacity: 1;
-    transform: translate3d(0, -20px, 0);
+    transform: translate3d(0, calc(var(--y) + 20px), 0);
   }
   to {
     opacity: 0;

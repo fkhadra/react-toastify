@@ -16,6 +16,7 @@
   z-index: var(--toastify-z-index);
   opacity: 0.7;
   transform-origin: left;
+  border-bottom-left-radius: var(--toastify-toast-bd-radius);
 
   &--animated {
     animation: #{$rt-namespace}__trackProgress linear 1 forwards;
@@ -29,5 +30,7 @@
     right: 0;
     left: initial;
     transform-origin: right;
+    border-bottom-left-radius: initial;
+    border-bottom-right-radius: var(--toastify-toast-bd-radius);
   }
 }

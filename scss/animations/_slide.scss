@@ -1,5 +1,5 @@
 @mixin transform {
-  transform: translate3d(0, 0, 0);
+  transform: translate3d(0, var(--y), 0);
 }
 
 @keyframes #{$rt-namespace}__slideInRight {
@@ -48,7 +48,7 @@
   }
   to {
     visibility: hidden;
-    transform: translate3d(110%, 0, 0);
+    transform: translate3d(110%, var(--y), 0);
   }
 }
 
@@ -58,7 +58,7 @@
   }
   to {
     visibility: hidden;
-    transform: translate3d(-110%, 0, 0);
+    transform: translate3d(-110%, var(--y), 0);
   }
 }
 
@@ -82,6 +82,11 @@
   }
 }
 
+@mixin timing {
+  animation-timing-function: ease-in;
+  animation-duration: 0.3s;
+}
+
 .#{$rt-namespace}__slide-enter {
   &--top-left,
   &--bottom-left {
@@ -103,15 +108,19 @@
   &--top-left,
   &--bottom-left {
     animation-name: #{$rt-namespace}__slideOutLeft;
+    @include timing;
   }
   &--top-right,
   &--bottom-right {
     animation-name: #{$rt-namespace}__slideOutRight;
+    @include timing;
   }
   &--top-center {
     animation-name: #{$rt-namespace}__slideOutUp;
+    @include timing;
   }
   &--bottom-center {
     animation-name: #{$rt-namespace}__slideOutDown;
+    @include timing;
   }
 }
