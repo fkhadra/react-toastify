@@ -1,10 +1,9 @@
-import { useMemo, useRef, useSyncExternalStore } from 'react';
+import { useMemo, useSyncExternalStore } from 'react';
 
 import { isToastActive, registerContainer } from '../core/store';
 import { Toast, ToastContainerProps, ToastPosition } from '../types';
 
 export function useToastContainer(props: ToastContainerProps) {
-  const containerRef = useRef(null);
   const { subscribe, getSnapshot } = useMemo(
     () => registerContainer(props),
     [props]
@@ -30,7 +29,7 @@ export function useToastContainer(props: ToastContainerProps) {
 
   return {
     getToastToRender,
-    containerRef,
-    isToastActive
+    isToastActive,
+    count: snapshot?.length
   };
 }

@@ -221,8 +221,9 @@ export function createContainerObserver({
     toasts,
     clearQueue,
     buildToast,
-    setToggle: (id: Id, fn: (v: boolean) => void) =>
-      (toasts.get(id)!.toggle = fn),
+    setToggle: (id: Id, fn: (v: boolean) => void) => {
+      toasts.get(id)!.toggle = fn;
+    },
     isToastActive: (id: Id) => activeToasts.some(v => v === id),
     getSnapshot: () => (props.newestOnTop ? snapshot.reverse() : snapshot)
   };

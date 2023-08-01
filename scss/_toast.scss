@@ -1,21 +1,73 @@
 .#{$rt-namespace}__toast {
+  --y: 0;
   position: relative;
   touch-action: none;
   min-height: var(--toastify-toast-min-height);
   box-sizing: border-box;
   margin-bottom: 1rem;
   padding: 8px;
-  border-radius: 4px;
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  border-radius: var(--toastify-toast-bd-radius);
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: space-between;
   max-height: var(--toastify-toast-max-height);
-  overflow: hidden;
   font-family: var(--toastify-font-family);
   cursor: default;
   direction: ltr;
   /* webkit only issue #791 */
   z-index: 0;
+  
+  &--stacked {
+    position: absolute;
+    width: 100%;
+    transform: translate3d(0, var(--y), 0) scale(var(--s));
+    transition: transform 0.3s;
+
+    &[data-collapsed] .#{$rt-namespace}__toast-body, &[data-collapsed] .#{$rt-namespace}__close-button  {
+      transition: opacity 0.1s;
+    }
+
+    &[data-collapsed="true"]:not(:last-child) > * {
+      opacity: 0;
+    }
+
+    &:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: calc(var(--g) * 1px);
+      bottom: 100%;
+    }
+
+    &[data-pos="top"] {
+      top: 0;
+    }
+
+    &[data-pos="bot"]  {
+      bottom: 0;
+    }
+
+    &[data-pos="bot"]#{&}:before {
+      transform-origin: top;
+    }
+
+    &[data-pos="top"]#{&}:before {
+      transform-origin: bottom;
+    }
+
+    &:before{
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 100%;
+      transform: scaleY(3);
+      z-index: -1;
+     }
+  }
+  
   &--rtl {
     direction: rtl;
   }
@@ -43,7 +95,7 @@
 
 .#{$rt-namespace}--animate {
   animation-fill-mode: both;
-  animation-duration: 0.6s;
+  animation-duration: 0.5s;
 }
 
 .#{$rt-namespace}--animate-icon {

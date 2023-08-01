@@ -89,6 +89,7 @@ export const Toast: React.FC<ToastProps> = props => {
       <div
         id={toastId as string}
         onClick={onClick}
+        data-in={isIn}
         className={cssClasses}
         {...eventHandlers}
         style={style}
