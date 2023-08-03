@@ -5,16 +5,17 @@
  * The code is full of bad assertion 😆
  */
 
-import { Header } from './Header';
-import { Radio } from './Radio';
 import { Checkbox } from './Checkbox';
 import { ContainerCode, ContainerCodeProps } from './ContainerCode';
+import { Header } from './Header';
+import { Radio } from './Radio';
 import { ToastCode, ToastCodeProps } from './ToastCode';
 import { flags, positions, themes, transitions, typs } from './constants';
 
-import { ToastContainer, toast, Id, cssTransition } from '../../../src/index';
-import '../../../scss/main.scss';
 import React from 'react';
+import '../../../scss/main.scss';
+import { Id, ToastContainer, toast } from '../../../src/index';
+import { defaultProps } from '../../../src/components/ToastContainer';
 
 // Attach to window. Can be useful to debug
 // @ts-ignore
@@ -32,7 +33,7 @@ class App extends React.Component {
 
   static getDefaultState() {
     return {
-      ...ToastContainer.defaultProps,
+      ...defaultProps,
       transition: 'bounce',
       type: 'default',
       progress: '',
@@ -273,11 +274,12 @@ class App extends React.Component {
             </ul>
           </div>
         </div>
-        {/* @ts-ignore */}
         <ToastContainer
           {...this.state}
           transition={transitions[this.state.transition]}
           autoClose={this.state.disableAutoClose ? false : this.state.autoClose}
+          stacked
+          draggable
         />
         <ToastContainer
           containerId="xxx"

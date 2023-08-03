@@ -4,7 +4,6 @@ import React, { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useToastContainer } from '../hooks/useToastContainer';
 import { ToastContainerProps, ToastPosition } from '../types';
 import { Default, Direction, isFn, parseClassName } from '../utils';
-import { CloseButton } from './CloseButton';
 import { Toast } from './Toast';
 import { Bounce } from './Transitions';
 import { toast } from '../core';
@@ -13,7 +12,7 @@ export const defaultProps: ToastContainerProps = {
   position: 'top-right',
   transition: Bounce,
   autoClose: 5000,
-  closeButton: CloseButton,
+  closeButton: true,
   pauseOnHover: true,
   pauseOnFocusLoss: true,
   draggable: 'touch',
@@ -51,6 +50,11 @@ export function ToastContainer(props: ToastContainerProps) {
           defaultClassName
         })
       : cx(defaultClassName, parseClassName(className));
+  }
+
+  function collapseAll() {
+    setIsCollapsed(true);
+    toast.play();
   }
 
   useLayoutEffect(() => {
@@ -93,10 +97,7 @@ export function ToastContainer(props: ToastContainerProps) {
         setIsCollapsed(false);
         toast.pause();
       }}
-      onMouseLeave={() => {
-        setIsCollapsed(true);
-        toast.play();
-      }}
+      onMouseLeave={collapseAll}
     >
       {getToastToRender((position, toastList) => {
         const containerStyle: React.CSSProperties = !toastList.length
@@ -113,6 +114,7 @@ export function ToastContainer(props: ToastContainerProps) {
               return (
                 <Toast
                   {...toastProps}
+                  collapseAll={collapseAll}
                   isIn={isToastActive(
                     toastProps.toastId,
                     toastProps.containerId
