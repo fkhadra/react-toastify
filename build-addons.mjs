@@ -17,6 +17,8 @@ try {
   const dirs = await readdir(BASE_DIR);
 
   for (const dir of dirs) {
+    if (dir.startsWith('.')) continue;
+    
     let entryPoint = path.join(BASE_DIR, dir, 'index.ts');
     const exportKey = `./addons/${dir}`;
     const exportValues = {
