@@ -318,6 +318,7 @@ export interface ToastProps extends ToastOptions {
   type: TypeOptions;
   iconOut?: React.ReactNode;
   collapseAll: () => void;
+  stacked?: boolean;
 }
 
 /**
