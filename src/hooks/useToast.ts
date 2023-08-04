@@ -34,11 +34,26 @@ export function useToast(props: ToastProps) {
   });
 
   useEffect(() => {
-    props.pauseOnFocusLoss && bindFocusEvents();
-    return () => {
-      props.pauseOnFocusLoss && unbindFocusEvents();
-    };
+    if (props.pauseOnFocusLoss) {
+      bindFocusEvents();
+
+      return () => {
+        unbindFocusEvents();
+      };
+    }
   }, [props.pauseOnFocusLoss]);
+
+  function bindFocusEvents() {
+    if (!document.hasFocus()) pauseToast();
+
+    window.addEventListener('focus', playToast);
+    window.addEventListener('blur', pauseToast);
+  }
+
+  function unbindFocusEvents() {
+    window.removeEventListener('focus', playToast);
+    window.removeEventListener('blur', pauseToast);
+  }
 
   function onDragStart(e: React.PointerEvent<HTMLElement>) {
     if (props.draggable === true || props.draggable === e.pointerType) {
@@ -88,18 +103,6 @@ export function useToast(props: ToastProps) {
 
   function pauseToast() {
     setIsRunning(false);
-  }
-
-  function bindFocusEvents() {
-    if (!document.hasFocus()) pauseToast();
-
-    window.addEventListener('focus', playToast);
-    window.addEventListener('blur', pauseToast);
-  }
-
-  function unbindFocusEvents() {
-    window.removeEventListener('focus', playToast);
-    window.removeEventListener('blur', pauseToast);
   }
 
   function bindDragEvents() {
