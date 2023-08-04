@@ -53,8 +53,10 @@ export function ToastContainer(props: ToastContainerProps) {
   }
 
   function collapseAll() {
-    setIsCollapsed(true);
-    toast.play();
+    if (stacked) {
+      setIsCollapsed(true);
+      toast.play();
+    }
   }
 
   useLayoutEffect(() => {
@@ -94,8 +96,10 @@ export function ToastContainer(props: ToastContainerProps) {
       className={Default.CSS_NAMESPACE as string}
       id={containerId as string}
       onMouseEnter={() => {
-        setIsCollapsed(false);
-        toast.pause();
+        if (stacked) {
+          setIsCollapsed(false);
+          toast.pause();
+        }
       }}
       onMouseLeave={collapseAll}
     >
