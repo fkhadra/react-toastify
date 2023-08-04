@@ -114,6 +114,7 @@ export function ToastContainer(props: ToastContainerProps) {
               return (
                 <Toast
                   {...toastProps}
+                  stacked={stacked}
                   collapseAll={collapseAll}
                   isIn={isToastActive(
                     toastProps.toastId,

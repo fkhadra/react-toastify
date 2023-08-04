@@ -165,7 +165,9 @@ export function useToast(props: ToastProps) {
 
   if (autoClose && pauseOnHover) {
     eventHandlers.onMouseEnter = pauseToast;
-    eventHandlers.onMouseLeave = playToast;
+
+    // progress control is delegated to the container
+    if (props.stacked === false) eventHandlers.onMouseLeave = playToast;
   }
 
   // prevent toast from closing when user drags the toast
