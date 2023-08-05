@@ -11,7 +11,8 @@ const REQUIRED_PROPS = {
   closeToast: () => {},
   type: 'default',
   toastId: 'id',
-  key: 'key'
+  key: 'key',
+  collapseAll: () => {}
 } as ToastProps;
 
 const cssClasses = {
