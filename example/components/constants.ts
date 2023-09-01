@@ -43,3 +43,11 @@ export const transitions = {
 };
 
 export const themes = <const>['light', 'dark', 'colored'];
+
+export const typeMap = {
+  default: 'toast',
+  success: 'toast.success',
+  error: 'toast.error',
+  info: 'toast.info',
+  warning: 'toast.warn'
+};
