@@ -95,6 +95,7 @@
   },
   "homepage": "https://github.com/fkhadra/react-toastify#readme",
   "devDependencies": {
+    "@parcel/transformer-typescript-tsc": "2.4.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@types/jest": "^29.5.1",

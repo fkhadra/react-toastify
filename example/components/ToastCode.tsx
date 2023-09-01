@@ -1,21 +1,11 @@
 import * as React from 'react';
 
-import { themes } from './constants';
+import { themes, typeMap } from './constants';
+
+
 
 function getType(type: string) {
-  switch (type) {
-    case 'default':
-    default:
-      return 'toast';
-    case 'success':
-      return 'toast.success';
-    case 'error':
-      return 'toast.error';
-    case 'info':
-      return 'toast.info';
-    case 'warning':
-      return 'toast.warn';
-  }
+  return typeMap[type] || 'toast';
 }
 
 export interface ToastCodeProps {
@@ -28,7 +18,7 @@ export interface ToastCodeProps {
   type: string;
   draggable: boolean;
   progress: number;
-  theme: typeof themes[number];
+  theme: (typeof themes)[number];
 }
 
 export const ToastCode: React.FC<ToastCodeProps> = ({
