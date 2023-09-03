@@ -16,6 +16,7 @@
   direction: ltr;
   /* webkit only issue #791 */
   z-index: 0;
+  overflow: hidden;
   
   &--stacked {
     position: absolute;
@@ -25,6 +26,10 @@
 
     &[data-collapsed] .#{$rt-namespace}__toast-body, &[data-collapsed] .#{$rt-namespace}__close-button  {
       transition: opacity 0.1s;
+    }
+
+    &[data-collapsed="false"]{
+      overflow: visible;
     }
 
     &[data-collapsed="true"]:not(:last-child) > * {
