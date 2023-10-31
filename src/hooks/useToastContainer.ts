@@ -1,5 +1,5 @@
-import { useMemo, useSyncExternalStore } from 'react';
-
+import { useMemo } from 'react';
+import { useSyncExternalStore } from 'use-sync-external-store';
 import { isToastActive, registerContainer } from '../core/store';
 import { Toast, ToastContainerProps, ToastPosition } from '../types';
 
