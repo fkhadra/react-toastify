@@ -117,9 +117,11 @@
     },
     "./dist/ReactToastify.min.css": "./dist/ReactToastify.min.css",
     "./dist/ReactToastify.css": "./dist/ReactToastify.css",
+    "./dist/ReactToastify.css.map": "./dist/ReactToastify.css.map",
     "./dist/ReactToastify.minimal.css": "./dist/ReactToastify.minimal.css",
     "./ReactToastify.min.css": "./dist/ReactToastify.min.css",
     "./ReactToastify.css": "./dist/ReactToastify.css",
+    "./ReactToastify.css.map": "./dist/ReactToastify.css.map",
     "./ReactToastify.minimal.css": "./dist/ReactToastify.minimal.css",
     "./dist/inject-style": {
       "types": "./dist/inject-style.d.ts",
