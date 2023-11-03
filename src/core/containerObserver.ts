@@ -1,5 +1,4 @@
 import { ReactElement, cloneElement, isValidElement } from 'react';
-import { getIcon } from '../components/Icons';
 import {
   Id,
   NotValidatedToastProps,
@@ -164,8 +163,6 @@ export function createContainerObserver({
         notify();
       }
     } as ToastProps;
-
-    toastProps.iconOut = getIcon(toastProps);
 
     toastProps.closeButton = props.closeButton;
 
