@@ -10,7 +10,6 @@ export function useToastContainer(props: ToastContainerProps) {
   );
   const snapshot = useSyncExternalStore(subscribe, getSnapshot);
 
-  // TODO: extract when idea are clear
   function getToastToRender<T>(
     cb: (position: ToastPosition, toastList: Toast[]) => T
   ) {
