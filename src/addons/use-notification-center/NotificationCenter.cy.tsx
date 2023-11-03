@@ -92,7 +92,7 @@ describe('NotificationCenter', () => {
     cy.mount(<TestComponent />);
   });
 
-  it.skip('listen for new notifications', () => {
+  it('listen for new notifications', () => {
     cy.findByTestId('count').should('contain.text', 0);
     cy.findByTestId('unreadCount')
       .should('contain.text', 0)
