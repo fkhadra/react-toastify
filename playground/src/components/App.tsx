@@ -278,8 +278,6 @@ class App extends React.Component {
           {...this.state}
           transition={transitions[this.state.transition]}
           autoClose={this.state.disableAutoClose ? false : this.state.autoClose}
-          stacked
-          draggable
         />
         <ToastContainer
           containerId="xxx"
