@@ -486,3 +486,19 @@ describe('with multi containers', () => {
     });
   });
 });
+
+describe('with stacked container', () => {
+  beforeEach(() => {
+    cy.mount(<ToastContainer autoClose={false} stacked />);
+  });
+
+  it('render toasts', () => {
+    toast('hello 1');
+    toast('hello 2');
+    toast('hello 3');
+
+    cy.findByText('hello 1').should('exist').and('not.be.visible');
+    cy.findByText('hello 2').should('exist').and('not.be.visible');
+    cy.findByText('hello 3').should('exist').and('be.visible');
+  });
+});
