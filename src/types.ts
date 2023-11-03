@@ -128,13 +128,13 @@ interface CommonOptions {
   hideProgressBar?: boolean;
 
   /**
-   * Pass a custom transition built with react-transition-group.
+   * Pass a custom transition see https://fkhadra.github.io/react-toastify/custom-animation/
    */
   transition?: ToastTransition;
 
   /**
    * Allow toast to be draggable
-   * `Default: true`
+   * `Default: 'touch'`
    */
   draggable?: boolean | 'mouse' | 'touch';
 
@@ -257,6 +257,9 @@ export interface ToastContainerProps extends CommonOptions {
    */
   className?: ToastClassName;
 
+  /**
+   * Will stack the toast with the newest on the top.
+   */
   stacked?: boolean;
 
   /**

@@ -30,8 +30,7 @@ function getToastId<TData>(options?: ToastOptions<TData>) {
 }
 
 /**
- * If the container is not mounted, the toast is enqueued and
- * the container lazy mounted
+ * If the container is not mounted, the toast is enqueued
  */
 function dispatchToast<TData>(
   content: ToastContent<TData>,
@@ -232,6 +231,26 @@ function dismiss(params?: Id | RemoveParams) {
 
 /**
  * Remove toast programmatically
+ *
+ * - Remove all toasts:
+ * ```
+ * toast.dismiss()
+ * ```
+ *
+ * - Remove all toasts that belongs to a given container
+ * ```
+ * toast.dismiss({ container: "123" })
+ * ```
+ *
+ * - Remove toast that has a given id regardless the container
+ * ```
+ * toast.dismiss({ id: "123" })
+ * ```
+ *
+ * - Remove toast that has a given id for a specific container
+ * ```
+ * toast.dismiss({ id: "123", containerId: "12" })
+ * ```
  */
 toast.dismiss = dismiss;
 
@@ -241,10 +260,49 @@ toast.dismiss = dismiss;
 toast.clearWaitingQueue = clearWaitingQueue;
 
 /**
- * return true if one container is displaying the toast
+ * Check if a toast is active
+ *
+ * - Check regardless the container
+ * ```
+ * toast.isActive("123")
+ * ```
+ *
+ * - Check in a specific container
+ * ```
+ * toast.isActive("123", "containerId")
+ * ```
  */
 toast.isActive = isToastActive;
 
+/**
+ * Update a toast, see https://fkhadra.github.io/react-toastify/update-toast/ for more
+ *
+ * Example:
+ * ```
+ * // With a string
+ * toast.update(toastId, {
+ *    render: "New content",
+ *    type: "info",
+ * });
+ *
+ * // Or with a component
+ * toast.update(toastId, {
+ *    render: MyComponent
+ * });
+ *
+ * // Or a function
+ * toast.update(toastId, {
+ *    render: () => <div>New content</div>
+ * });
+ *
+ * // Apply a transition
+ * toast.update(toastId, {
+ *   render: "New Content",
+ *   type: toast.TYPE.INFO,
+ *   transition: Rotate
+ * })
+ * ```
+ */
 toast.update = <TData = unknown>(
   toastId: Id,
   options: UpdateOptions<TData> = {}
@@ -272,7 +330,18 @@ toast.update = <TData = unknown>(
 };
 
 /**
- * Used for controlled progress bar.
+ * Used for controlled progress bar. It will automatically close the notification.
+ *
+ * If you don't want your notification to be clsoed when the timer is done you should use `toast.update` instead as follow instead:
+ *
+ * ```
+ * toast.update(id, {
+ *    progress: null, // remove controlled progress bar
+ *    render: "ok",
+ *    type: "success",
+ *    autoClose: 5000 // set autoClose to the desired value
+ *   });
+ * ```
  */
 toast.done = (id: Id) => {
   toast.update(id, {
@@ -302,7 +371,58 @@ toast.done = (id: Id) => {
  */
 toast.onChange = onChange;
 
+/**
+ * Play a toast(s) timer progammatically
+ *
+ * Usage:
+ *
+ * - Play all toasts
+ * ```
+ * toast.play()
+ * ```
+ *
+ * - Play all toasts for a given container
+ * ```
+ * toast.play({ containerId: "123" })
+ * ```
+ *
+ * - Play toast that has a given id regardless the container
+ * ```
+ * toast.play({ id: "123" })
+ * ```
+ *
+ * - Play toast that has a given id for a specific container
+ * ```
+ * toast.play({ id: "123", containerId: "12" })
+ * ```
+ */
 toast.play = (opts?: IdOpts) => toggleToast(true, opts);
+
+/**
+ * Pause a toast(s) timer progammatically
+ *
+ * Usage:
+ *
+ * - Pause all toasts
+ * ```
+ * toast.pause()
+ * ```
+ *
+ * - Pause all toasts for a given container
+ * ```
+ * toast.pause({ containerId: "123" })
+ * ```
+ *
+ * - Pause toast that has a given id regardless the container
+ * ```
+ * toast.pause({ id: "123" })
+ * ```
+ *
+ * - Pause toast that has a given id for a specific container
+ * ```
+ * toast.pause({ id: "123", containerId: "12" })
+ * ```
+ */
 toast.pause = (opts?: IdOpts) => toggleToast(false, opts);
 
 export { toast };
