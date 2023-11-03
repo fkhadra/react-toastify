@@ -17,10 +17,10 @@ export type ToastPosition =
   | 'bottom-center'
   | 'bottom-left';
 
-export interface ToastContentProps<Data = {}> {
-  closeToast?: () => void;
+export interface ToastContentProps<Data = unknown> {
+  closeToast: () => void;
   toastProps: ToastProps;
-  data?: Data;
+  data: Data;
 }
 
 export type ToastContent<T = unknown> =
@@ -191,7 +191,7 @@ interface CommonOptions {
   theme?: Theme;
 }
 
-export interface ToastOptions<Data = {}> extends CommonOptions {
+export interface ToastOptions<Data = unknown> extends CommonOptions {
   /**
    * An optional css class to set.
    */

@@ -23,7 +23,7 @@ import {
 /**
  * Generate a toastId or use the one provided
  */
-function getToastId(options?: ToastOptions) {
+function getToastId<TData>(options?: ToastOptions<TData>) {
   return options && (isStr(options.toastId) || isNum(options.toastId))
     ? options.toastId
     : genToastId();
@@ -44,7 +44,7 @@ function dispatchToast<TData>(
 /**
  * Merge provided options with the defaults settings and generate the toastId
  */
-function mergeOptions(type: string, options?: ToastOptions) {
+function mergeOptions<TData>(type: string, options?: ToastOptions<TData>) {
   return {
     ...options,
     type: (options && options.type) || type,
@@ -55,20 +55,20 @@ function mergeOptions(type: string, options?: ToastOptions) {
 function createToastByType(type: string) {
   return <TData = unknown>(
     content: ToastContent<TData>,
-    options?: ToastOptions
+    options?: ToastOptions<TData>
   ) => dispatchToast(content, mergeOptions(type, options));
 }
 
 function toast<TData = unknown>(
   content: ToastContent<TData>,
-  options?: ToastOptions
+  options?: ToastOptions<TData>
 ) {
   return dispatchToast(content, mergeOptions(Type.DEFAULT, options));
 }
 
 toast.loading = <TData = unknown>(
   content: ToastContent<TData>,
-  options?: ToastOptions
+  options?: ToastOptions<TData>
 ) =>
   dispatchToast(
     content,
@@ -95,7 +95,7 @@ export interface ToastPromiseParams<
 function handlePromise<TData = unknown, TError = unknown, TPending = unknown>(
   promise: Promise<TData> | (() => Promise<TData>),
   { pending, error, success }: ToastPromiseParams<TData, TError, TPending>,
-  options?: ToastOptions
+  options?: ToastOptions<TData>
 ) {
   let id: Id;
 
@@ -105,7 +105,7 @@ function handlePromise<TData = unknown, TError = unknown, TPending = unknown>(
       : toast.loading(pending.render, {
           ...options,
           ...(pending as ToastOptions)
-        });
+        } as ToastOptions<TPending>);
   }
 
   const resetParams = {
@@ -147,7 +147,7 @@ function handlePromise<TData = unknown, TError = unknown, TPending = unknown>(
       toast(params!.render, {
         ...baseParams,
         ...params
-      } as ToastOptions);
+      } as ToastOptions<T>);
     }
 
     return result;
@@ -163,6 +163,47 @@ function handlePromise<TData = unknown, TError = unknown, TPending = unknown>(
   return p;
 }
 
+/**
+ * Supply a promise or a function that return a promise and the notification will be updated if it resolves or fails.
+ * When the promise is pending a spinner is displayed by default.
+ * `toast.promise` returns the provided promise so you can chain it.
+ *
+ * Simple example:
+ *
+ * ```
+ * toast.promise(MyPromise,
+ *  {
+ *    pending: 'Promise is pending',
+ *    success: 'Promise resolved 👌',
+ *    error: 'Promise rejected 🤯'
+ *  }
+ * )
+ *
+ * ```
+ *
+ * Advanced usage:
+ * ```
+ * toast.promise<{name: string}, {message: string}, undefined>(
+ *    resolveWithSomeData,
+ *    {
+ *      pending: {
+ *        render: () => "I'm loading",
+ *        icon: false,
+ *      },
+ *      success: {
+ *        render: ({data}) => `Hello ${data.name}`,
+ *        icon: "🟢",
+ *      },
+ *      error: {
+ *        render({data}){
+ *          // When the promise reject, data will contains the error
+ *          return <MyErrorComponent message={data.message} />
+ *        }
+ *      }
+ *    }
+ * )
+ * ```
+ */
 toast.promise = handlePromise;
 toast.success = createToastByType(Type.SUCCESS);
 toast.info = createToastByType(Type.INFO);
@@ -188,6 +229,7 @@ function dismiss(params?: Id): void;
 function dismiss(params?: Id | RemoveParams) {
   removeToast(params);
 }
+
 /**
  * Remove toast programmatically
  */
