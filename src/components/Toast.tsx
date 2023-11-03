@@ -6,6 +6,7 @@ import { ToastProps } from '../types';
 import { Default, isFn } from '../utils';
 import { CloseButton } from './CloseButton';
 import { ProgressBar } from './ProgressBar';
+import { getIcon } from './Icons';
 
 export const Toast: React.FC<ToastProps> = props => {
   const {
@@ -39,7 +40,6 @@ export const Toast: React.FC<ToastProps> = props => {
     deleteToast,
     isIn,
     isLoading,
-    iconOut,
     closeOnClick,
     theme
   } = props;
@@ -62,6 +62,7 @@ export const Toast: React.FC<ToastProps> = props => {
         defaultClassName
       })
     : cx(defaultClassName, className);
+  const icon = getIcon(props);
   const isProgressControlled = !!progress || !autoClose;
 
   const closeButtonProps = { closeToast, type, theme };
@@ -104,14 +105,14 @@ export const Toast: React.FC<ToastProps> = props => {
           }
           style={bodyStyle}
         >
-          {iconOut != null && (
+          {icon != null && (
             <div
               className={cx(`${Default.CSS_NAMESPACE}__toast-icon`, {
                 [`${Default.CSS_NAMESPACE}--animate-icon ${Default.CSS_NAMESPACE}__zoom-enter`]:
                   !isLoading
               })}
             >
-              {iconOut}
+              {icon}
             </div>
           )}
           <div>{children as ReactNode}</div>

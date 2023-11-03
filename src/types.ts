@@ -28,12 +28,9 @@ export type ToastContent<T = unknown> =
   | ((props: ToastContentProps<T>) => React.ReactNode);
 
 export type ToastIcon =
-  | boolean
+  | false
   | ((props: IconProps) => React.ReactNode)
-  | React.ReactElement<IconProps>
-  | string
-  | number
-  | React.ReactNode;
+  | React.ReactElement<IconProps>;
 
 export type Id = number | string;
 
@@ -319,7 +316,6 @@ export interface ToastProps extends ToastOptions {
   deleteToast: () => void;
   theme: Theme;
   type: TypeOptions;
-  iconOut?: React.ReactNode;
   collapseAll: () => void;
   stacked?: boolean;
 }

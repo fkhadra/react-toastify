@@ -29,26 +29,6 @@ describe('Icons', () => {
     cy.findByText('icon').should('exist');
   });
 
-  it('handle string', () => {
-    const C = getIcon({
-      ...props,
-      icon: 'icon'
-    });
-
-    cy.mount(C);
-    cy.findByText('icon').should('exist');
-  });
-
-  it('handle number', () => {
-    const C = getIcon({
-      ...props,
-      icon: 123
-    });
-
-    cy.mount(C);
-    cy.findByText('123').should('exist');
-  });
-
   it('handle loader', () => {
     const C = getIcon({
       ...props,

@@ -1,7 +1,7 @@
 import React, { cloneElement, isValidElement } from 'react';
 
 import { Theme, ToastProps, TypeOptions } from '../types';
-import { Default, isFn, isNum, isStr } from '../utils';
+import { Default, isFn } from '../utils';
 
 /**
  * Used when providing custom icon
@@ -9,6 +9,7 @@ import { Default, isFn, isNum, isStr } from '../utils';
 export interface IconProps {
   theme: Theme;
   type: TypeOptions;
+  isLoading?: boolean;
 }
 
 export type BuiltInIconProps = React.SVGProps<SVGSVGElement> & IconProps;
@@ -80,7 +81,7 @@ export type IconParams = Pick<
 
 export function getIcon({ theme, type, isLoading, icon }: IconParams) {
   let Icon: React.ReactNode = null;
-  const iconProps = { theme, type };
+  const iconProps = { theme, type, isLoading };
 
   if (icon === false) {
     // hide
@@ -88,8 +89,6 @@ export function getIcon({ theme, type, isLoading, icon }: IconParams) {
     Icon = icon(iconProps);
   } else if (isValidElement(icon)) {
     Icon = cloneElement(icon, iconProps);
-  } else if (isStr(icon) || isNum(icon)) {
-    Icon = icon;
   } else if (isLoading) {
     Icon = Icons.spinner();
   } else if (maybeIcon(type)) {
