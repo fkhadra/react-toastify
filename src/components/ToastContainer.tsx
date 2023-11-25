@@ -1,12 +1,12 @@
 import cx from 'clsx';
-import React, { useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 
+import { toast } from '../core';
 import { useToastContainer } from '../hooks/useToastContainer';
 import { ToastContainerProps, ToastPosition } from '../types';
 import { Default, Direction, isFn, parseClassName } from '../utils';
 import { Toast } from './Toast';
 import { Bounce } from './Transitions';
-import { toast } from '../core';
 
 export const defaultProps: ToastContainerProps = {
   position: 'top-right',
@@ -23,13 +23,10 @@ export const defaultProps: ToastContainerProps = {
 };
 
 export function ToastContainer(props: ToastContainerProps) {
-  let containerProps: ToastContainerProps = useMemo(
-    () => ({
-      ...defaultProps,
-      ...props
-    }),
-    [props]
-  );
+  let containerProps: ToastContainerProps = {
+    ...defaultProps,
+    ...props
+  };
   const stacked = props.stacked;
   const [collapsed, setIsCollapsed] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);

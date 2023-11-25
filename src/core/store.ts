@@ -122,11 +122,7 @@ export function registerContainer(props: ToastContainerProps) {
   const id = props.containerId || Default.CONTAINER_ID;
   return {
     subscribe(notify: () => void) {
-      const container = createContainerObserver({
-        id,
-        props,
-        dispatchChanges
-      });
+      const container = createContainerObserver(id, props, dispatchChanges);
 
       containers.set(id, container);
       const unobserve = container.observe(notify);
@@ -136,6 +132,9 @@ export function registerContainer(props: ToastContainerProps) {
         unobserve();
         containers.delete(id);
       };
+    },
+    setProps(p: ToastContainerProps) {
+      containers.get(id)?.setProps(p);
     },
     getSnapshot() {
       return containers.get(id)?.getSnapshot();
