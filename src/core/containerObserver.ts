@@ -32,24 +32,19 @@ interface ActiveToast {
   staleId?: Id;
 }
 
-interface ContainerObserverParams {
-  id: Id;
-  props: ToastContainerProps;
-  dispatchChanges: OnChangeCallback;
-}
-
 export type ContainerObserver = ReturnType<typeof createContainerObserver>;
 
-export function createContainerObserver({
-  id,
-  props,
-  dispatchChanges
-}: ContainerObserverParams) {
+export function createContainerObserver(
+  id: Id,
+  containerProps: ToastContainerProps,
+  dispatchChanges: OnChangeCallback
+) {
   let toastKey = 1;
   let toastCount = 0;
   let queue: QueuedToast[] = [];
   let activeToasts: Id[] = [];
   let snapshot: Toast[] = [];
+  let props = containerProps;
   const toasts = new Map<Id, Toast>();
   const listeners = new Set<Notify>();
 
@@ -218,6 +213,9 @@ export function createContainerObserver({
     toasts,
     clearQueue,
     buildToast,
+    setProps(p: ToastContainerProps) {
+      props = p;
+    },
     setToggle: (id: Id, fn: (v: boolean) => void) => {
       toasts.get(id)!.toggle = fn;
     },
