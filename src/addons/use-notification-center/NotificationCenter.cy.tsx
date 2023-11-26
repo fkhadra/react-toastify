@@ -94,16 +94,14 @@ describe('NotificationCenter', () => {
 
   it('listen for new notifications', () => {
     cy.findByTestId('count').should('contain.text', 0);
-    cy.findByTestId('unreadCount')
-      .should('contain.text', 0)
-      .then(() => {
-        toast('msg');
+    cy.findByTestId('unreadCount').should('contain.text', 0);
 
-        cy.resolveEntranceAnimation();
-
-        cy.findByTestId('count').should('contain.text', 1, { timeout: 10000 });
-        cy.findByTestId('unreadCount').should('contain.text', 1);
-      });
+    // hacky asf???
+    cy.wait(1000).then(() => {
+      toast('msg');
+      cy.findByTestId('count').should('contain.text', 1, { timeout: 10000 });
+      cy.findByTestId('unreadCount').should('contain.text', 1);
+    });
   });
 
   it('add notification', () => {
