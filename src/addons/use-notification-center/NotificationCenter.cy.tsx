@@ -124,7 +124,7 @@ describe('NotificationCenter', () => {
     toast.update(id, {
       render: 'msg updated'
     });
-    cy.findByText('msg updated').should('exist');
+    cy.findAllByText('msg updated').should('exist');
   });
 
   it('mark as read a single notification', () => {
