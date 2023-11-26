@@ -199,9 +199,9 @@ export function useNotificationCenter<Data = {}>(
   });
 
   useEffect(() => {
-    return toast.onChange(toast => {
-      if (toast.status === 'added' || toast.status === 'updated') {
-        const newItem = decorate(toast as NotificationCenterItem<Data>);
+    return toast.onChange(item => {
+      if (item.status === 'added' || item.status === 'updated') {
+        const newItem = decorate(item as NotificationCenterItem<Data>);
         if (filterFn.current && !filterFn.current(newItem)) return;
 
         setNotifications(prev => {
