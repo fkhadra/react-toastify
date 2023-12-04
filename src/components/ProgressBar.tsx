@@ -125,13 +125,18 @@ export function ProgressBar({
   // TODO: add aria-valuenow, aria-valuemax, aria-valuemin
 
   return (
-    <div
-      role="progressbar"
-      aria-hidden={isHidden ? 'true' : 'false'}
-      aria-label="notification timer"
-      className={classNames}
-      style={style}
-      {...animationEvent}
-    />
+    <div className={`${Default.CSS_NAMESPACE}__progress-bar--wrp`}>
+      <div
+        className={`${Default.CSS_NAMESPACE}__progress-bar--background ${Default.CSS_NAMESPACE}__progress-bar-theme--${theme} ${Default.CSS_NAMESPACE}__progress-bar--${type}`}
+      />
+      <div
+        role="progressbar"
+        aria-hidden={isHidden ? 'true' : 'false'}
+        aria-label="notification timer"
+        className={classNames}
+        style={style}
+        {...animationEvent}
+      />
+    </div>
   );
 }
