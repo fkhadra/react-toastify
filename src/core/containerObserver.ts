@@ -45,6 +45,7 @@ export function createContainerObserver(
   let activeToasts: Id[] = [];
   let snapshot: Toast[] = [];
   let props = containerProps;
+  let closedByButton = false;
   const toasts = new Map<Id, Toast>();
   const listeners = new Set<Notify>();
 
@@ -113,6 +114,11 @@ export function createContainerObserver(
       removeToast(toastId);
     };
 
+    const closeToastByButton = () => {
+      removeToast(toastId);
+      closedByButton = true;
+    };
+
     const isNotAnUpdate = updateId == null;
 
     if (isNotAnUpdate) toastCount++;
@@ -128,6 +134,7 @@ export function createContainerObserver(
       updateId,
       data,
       closeToast,
+      closeToastByButton,
       isIn: false,
       className: parseClassName(options.className || props.toastClassName),
       bodyClassName: parseClassName(
@@ -144,9 +151,12 @@ export function createContainerObserver(
         const { onClose, children } = toastToRemove.props;
         if (isFn(onClose)) onClose(isValidElement(children) && children.props);
 
-        dispatchChanges(toToastItem(toastToRemove, 'removed'));
+        !closedByButton
+          ? dispatchChanges(toToastItem(toastToRemove, 'removed'))
+          : dispatchChanges(toToastItem(toastToRemove, 'removed by button'));
         toasts.delete(toastId);
 
+        closedByButton = false;
         toastCount--;
         if (toastCount < 0) toastCount = 0;
 

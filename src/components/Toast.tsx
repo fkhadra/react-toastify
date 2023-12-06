@@ -24,6 +24,7 @@ export const Toast: React.FC<ToastProps> = props => {
     type,
     hideProgressBar,
     closeToast,
+    closeToastByButton,
     transition: Transition,
     position,
     className,
@@ -65,7 +66,7 @@ export const Toast: React.FC<ToastProps> = props => {
   const icon = getIcon(props);
   const isProgressControlled = !!progress || !autoClose;
 
-  const closeButtonProps = { closeToast, type, theme };
+  const closeButtonProps = { closeToast: closeToastByButton, type, theme };
   let Close: React.ReactNode = null;
 
   if (closeButton === false) {

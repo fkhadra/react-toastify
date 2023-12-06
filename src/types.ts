@@ -306,6 +306,7 @@ export interface ToastProps extends ToastOptions {
   key: Id;
   transition: ToastTransition;
   closeToast: () => void;
+  closeToastByButton: () => void;
   position: ToastPosition;
   children?: ToastContent;
   draggablePercent: number;
@@ -336,7 +337,11 @@ export interface Toast {
   toggle?: (v: boolean) => void;
 }
 
-export type ToastItemStatus = 'added' | 'removed' | 'updated';
+export type ToastItemStatus =
+  | 'added'
+  | 'removed'
+  | 'updated'
+  | 'removed by button';
 
 export interface ToastItem<Data = {}> {
   content: ToastContent<Data>;
