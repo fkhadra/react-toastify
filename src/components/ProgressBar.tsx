@@ -127,7 +127,7 @@ export function ProgressBar({
   return (
     <div className={`${Default.CSS_NAMESPACE}__progress-bar--wrp`}>
       <div
-        className={`${Default.CSS_NAMESPACE}__progress-bar--background ${Default.CSS_NAMESPACE}__progress-bar-theme--${theme} ${Default.CSS_NAMESPACE}__progress-bar--${type}`}
+        className={`${Default.CSS_NAMESPACE}__progress-bar--bg ${Default.CSS_NAMESPACE}__progress-bar-theme--${theme} ${Default.CSS_NAMESPACE}__progress-bar--${type}`}
       />
       <div
         role="progressbar"
