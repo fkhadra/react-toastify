@@ -43,6 +43,10 @@
     border-bottom-left-radius: var(--toastify-toast-bd-radius);
   }
 
+  &--wrp[data-hidden="true"] {
+    opacity: 0;
+  }
+
   &--bg {
     opacity: var(--toastify-color-progress-bgo);
     width: 100%;
