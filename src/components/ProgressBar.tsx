@@ -84,8 +84,7 @@ export function ProgressBar({
   const style: React.CSSProperties = {
     ...userStyle,
     animationDuration: `${delay}ms`,
-    animationPlayState: isRunning ? 'running' : 'paused',
-    opacity: isHidden ? 0 : 1
+    animationPlayState: isRunning ? 'running' : 'paused'
   };
 
   if (controlledProgress) style.transform = `scaleX(${progress})`;
@@ -125,7 +124,10 @@ export function ProgressBar({
   // TODO: add aria-valuenow, aria-valuemax, aria-valuemin
 
   return (
-    <div className={`${Default.CSS_NAMESPACE}__progress-bar--wrp`}>
+    <div
+      className={`${Default.CSS_NAMESPACE}__progress-bar--wrp`}
+      data-hidden={isHidden}
+    >
       <div
         className={`${Default.CSS_NAMESPACE}__progress-bar--bg ${Default.CSS_NAMESPACE}__progress-bar-theme--${theme} ${Default.CSS_NAMESPACE}__progress-bar--${type}`}
       />
