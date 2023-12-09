@@ -1,6 +1,7 @@
 import React from 'react';
 import { ToastContainer } from '../components';
 import { toast } from './toast';
+import { Default } from '../utils';
 
 beforeEach(() => {
   cy.viewport('macbook-15');
@@ -82,6 +83,23 @@ describe('with container', () => {
     cy.get('@onChange').should('have.been.calledWithMatch', {
       status: 'removed'
     });
+  });
+
+  it('remove toast by button', () => {
+    toast.onChange(cy.stub().as('onChange'));
+    
+    toast('msg', { data: 'xxxx' });
+
+    cy.resolveEntranceAnimation();
+
+    cy.findByText('msg').should('exist');
+
+    cy.get(`.${Default.CSS_NAMESPACE}__close-button`).click();
+
+    cy.get('@onChange').should('have.been.calledWithMatch', {
+      status: 'removed by button'
+    });
+    cy.findByText('msg').should('not.exist');
   });
 
   it('unsubscribe from change event', () => {
