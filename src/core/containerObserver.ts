@@ -151,9 +151,12 @@ export function createContainerObserver(
         const { onClose, children } = toastToRemove.props;
         if (isFn(onClose)) onClose(isValidElement(children) && children.props);
 
-        !closedByButton
-          ? dispatchChanges(toToastItem(toastToRemove, 'removed'))
-          : dispatchChanges(toToastItem(toastToRemove, 'removed by button'));
+        dispatchChanges(
+          toToastItem(
+            toastToRemove,
+            !closedByButton ? 'removed' : 'removed by button'
+          )
+        );
         toasts.delete(toastId);
 
         closedByButton = false;

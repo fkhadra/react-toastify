@@ -87,7 +87,7 @@ describe('with container', () => {
 
   it('remove toast by button', () => {
     toast.onChange(cy.stub().as('onChange'));
-    
+
     toast('msg', { data: 'xxxx' });
 
     cy.resolveEntranceAnimation();
