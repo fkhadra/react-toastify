@@ -66,11 +66,11 @@ export function removeToast(params?: Id | RemoveParams) {
     containers.forEach(c => {
       c.removeToast(params as Id);
     });
-  } else if (params && ('containerId' in params || "id" in params)) {
-    const container = containers.get(params.containerId)
-    container ? container.removeToast(params.id) :  containers.forEach(c => {
-      c.removeToast(params.id);
-    });
+  } else if (params && ('containerId' in params || 'id' in params)) {
+    containers.get(params.containerId)?.removeToast(params.id) ||
+      containers.forEach(c => {
+        c.removeToast(params.id);
+      });
   }
 }
 
