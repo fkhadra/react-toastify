@@ -128,7 +128,7 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "clsx": "^1.1.1"
+    "clsx": "^2.1.0"
   },
   "main": "dist/react-toastify.js",
   "module": "dist/react-toastify.esm.mjs",
