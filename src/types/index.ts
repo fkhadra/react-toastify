@@ -308,7 +308,7 @@ export interface ToastTransitionProps {
 /**
  * @INTERNAL
  */
-export interface ToastProps extends ToastOptions {
+export interface ToastProps<TData = unknown> extends ToastOptions<TData> {
   isIn: boolean;
   staleId?: Id;
   toastId: Id;
@@ -338,9 +338,9 @@ export interface NotValidatedToastProps extends Partial<ToastProps> {
 /**
  * @INTERNAL
  */
-export interface Toast {
-  content: ToastContent;
-  props: ToastProps;
+export interface Toast<TData = unknown> {
+  content: ToastContent<TData>;
+  props: ToastProps<TData>;
 }
 
 export type ToastItemStatus = 'added' | 'removed' | 'updated';

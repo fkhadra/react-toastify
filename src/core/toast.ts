@@ -25,7 +25,10 @@ let TOAST_ID = 1;
 /**
  * Get the toast by id, given it's in the DOM, otherwise returns null
  */
-function getToast(toastId: Id, { containerId }: ToastOptions) {
+function getToast<TData>(
+  toastId: Id,
+  { containerId }: ToastOptions<TData> | UpdateOptions<TData>
+) {
   const container = containers.get(containerId || latestInstance);
   return container && container.getToast(toastId);
 }
@@ -40,7 +43,7 @@ function generateToastId() {
 /**
  * Generate a toastId or use the one provided
  */
-function getToastId(options?: ToastOptions) {
+function getToastId<TData>(options?: ToastOptions<TData>) {
   return options && (isStr(options.toastId) || isNum(options.toastId))
     ? options.toastId
     : generateToastId();
@@ -66,7 +69,7 @@ function dispatchToast<TData>(
 /**
  * Merge provided options with the defaults settings and generate the toastId
  */
-function mergeOptions(type: string, options?: ToastOptions) {
+function mergeOptions<TData>(type: Type, options?: ToastOptions<TData>) {
   return {
     ...options,
     type: (options && options.type) || type,
@@ -74,23 +77,23 @@ function mergeOptions(type: string, options?: ToastOptions) {
   } as NotValidatedToastProps;
 }
 
-function createToastByType(type: string) {
+function createToastByType(type: Type) {
   return <TData = unknown>(
     content: ToastContent<TData>,
-    options?: ToastOptions
+    options?: ToastOptions<TData>
   ) => dispatchToast(content, mergeOptions(type, options));
 }
 
 function toast<TData = unknown>(
   content: ToastContent<TData>,
-  options?: ToastOptions
+  options?: ToastOptions<TData>
 ) {
   return dispatchToast(content, mergeOptions(Type.DEFAULT, options));
 }
 
 toast.loading = <TData = unknown>(
   content: ToastContent<TData>,
-  options?: ToastOptions
+  options?: ToastOptions<TData>
 ) =>
   dispatchToast(
     content,
@@ -117,7 +120,7 @@ export interface ToastPromiseParams<
 function handlePromise<TData = unknown, TError = unknown, TPending = unknown>(
   promise: Promise<TData> | (() => Promise<TData>),
   { pending, error, success }: ToastPromiseParams<TData, TError, TPending>,
-  options?: ToastOptions
+  options?: ToastOptions<TData>
 ) {
   let id: Id;
 
@@ -126,8 +129,8 @@ function handlePromise<TData = unknown, TError = unknown, TPending = unknown>(
       ? toast.loading(pending, options)
       : toast.loading(pending.render, {
           ...options,
-          ...(pending as ToastOptions)
-        });
+          ...pending
+        } as ToastOptions<TPending>);
   }
 
   const resetParams = {
@@ -163,13 +166,13 @@ function handlePromise<TData = unknown, TError = unknown, TPending = unknown>(
       toast.update(id, {
         ...baseParams,
         ...params
-      } as UpdateOptions);
+      } as UpdateOptions<T>);
     } else {
       // using toast.promise without loading
       toast(params!.render, {
         ...baseParams,
         ...params
-      } as ToastOptions);
+      } as ToastOptions<T>);
     }
 
     return result;
@@ -191,7 +194,10 @@ toast.info = createToastByType(Type.INFO);
 toast.error = createToastByType(Type.ERROR);
 toast.warning = createToastByType(Type.WARNING);
 toast.warn = toast.warning;
-toast.dark = (content: ToastContent, options?: ToastOptions) =>
+toast.dark = <TData>(
+  content: ToastContent<TData>,
+  options?: ToastOptions<TData>
+) =>
   dispatchToast(
     content,
     mergeOptions(Type.DEFAULT, {
@@ -237,7 +243,7 @@ toast.update = <TData = unknown>(
   options: UpdateOptions<TData> = {}
 ) => {
   setTimeout(() => {
-    const toast = getToast(toastId, options as ToastOptions);
+    const toast = getToast(toastId, options);
     if (toast) {
       const { props: oldOptions, content: oldContent } = toast;
 
@@ -247,7 +253,7 @@ toast.update = <TData = unknown>(
         ...options,
         toastId: options.toastId || toastId,
         updateId: generateToastId()
-      } as ToastProps & UpdateOptions;
+      } as ToastProps<TData> & UpdateOptions<TData>;
 
       if (nextOptions.toastId !== toastId) nextOptions.staleId = toastId;
 
