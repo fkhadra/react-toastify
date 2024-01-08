@@ -39,8 +39,8 @@ $ yarn add react-toastify
 - You can control the progress bar a la `nprogress` 😲
 - You can limit the number of toast displayed at the same time
 - Dark mode 🌒
-- Pause time programmaticaly 
-- Stacked notifications!\
+- Pause timer programmaticaly 
+- Stacked notifications!
 - And much more !
 
 ## The gist
