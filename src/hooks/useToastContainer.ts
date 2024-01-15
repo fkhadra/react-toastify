@@ -7,7 +7,7 @@ export function useToastContainer(props: ToastContainerProps) {
     registerContainer(props)
   ).current;
   setProps(props);
-  const snapshot = useSyncExternalStore(subscribe, getSnapshot);
+  const snapshot = useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
 
   function getToastToRender<T>(
     cb: (position: ToastPosition, toastList: Toast[]) => T
