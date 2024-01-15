@@ -14,7 +14,12 @@ export interface IconProps {
 
 export type BuiltInIconProps = React.SVGProps<SVGSVGElement> & IconProps;
 
-const Svg: React.FC<BuiltInIconProps> = ({ theme, type, ...rest }) => (
+const Svg: React.FC<BuiltInIconProps> = ({
+  theme,
+  type,
+  isLoading,
+  ...rest
+}) => (
   <svg
     viewBox="0 0 24 24"
     width="100%"
