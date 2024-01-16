@@ -1,8 +1,9 @@
 import cx from 'clsx';
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { toast } from '../core';
 import { useToastContainer } from '../hooks/useToastContainer';
+import { useIsomorphicLayoutEffect } from '../hooks/useIsomorphicLayoutEffect';
 import { ToastContainerProps, ToastPosition } from '../types';
 import { Default, Direction, isFn, parseClassName } from '../utils';
 import { Toast } from './Toast';
@@ -56,7 +57,7 @@ export function ToastContainer(props: ToastContainerProps) {
     }
   }
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (stacked) {
       const nodes = containerRef.current!.querySelectorAll('[data-in="true"]');
       const gap = 12;
