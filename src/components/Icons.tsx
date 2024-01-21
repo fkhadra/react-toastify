@@ -86,12 +86,12 @@ export type IconParams = Pick<
 
 export function getIcon({ theme, type, isLoading, icon }: IconParams) {
   let Icon: React.ReactNode = null;
-  const iconProps = { theme, type, isLoading };
+  const iconProps = { theme, type };
 
   if (icon === false) {
     // hide
   } else if (isFn(icon)) {
-    Icon = icon(iconProps);
+    Icon = icon({ ...iconProps, isLoading });
   } else if (isValidElement(icon)) {
     Icon = cloneElement(icon, iconProps);
   } else if (isLoading) {
