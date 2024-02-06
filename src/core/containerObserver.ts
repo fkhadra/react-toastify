@@ -98,8 +98,11 @@ export function createContainerObserver(
     notify();
     dispatchChanges(toToastItem(toast, isNew ? 'added' : 'updated'));
 
-    if (isNew && isFn(onOpen))
-      onOpen(isValidElement(children) && children.props);
+    if (isNew) {
+      if (isFn(containerProps.onOpen))
+        containerProps.onOpen(isValidElement(children) && children.props);
+      if (isFn(onOpen)) onOpen(isValidElement(children) && children.props);
+    }
   };
 
   const buildToast = <TData = unknown>(
@@ -119,6 +122,9 @@ export function createContainerObserver(
 
     const toastProps = {
       ...props,
+      // dont propagate the handlers called above for the container to the toast
+      onOpen: undefined,
+      onClose: undefined,
       style: props.toastStyle,
       key: toastKey++,
       ...Object.fromEntries(
@@ -142,6 +148,8 @@ export function createContainerObserver(
       deleteToast() {
         const toastToRemove = toasts.get(toastId)!;
         const { onClose, children } = toastToRemove.props;
+        if (isFn(containerProps.onClose))
+          containerProps.onClose(isValidElement(children) && children.props);
         if (isFn(onClose)) onClose(isValidElement(children) && children.props);
 
         dispatchChanges(toToastItem(toastToRemove, 'removed'));
