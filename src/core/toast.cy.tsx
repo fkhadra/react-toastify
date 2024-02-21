@@ -334,7 +334,8 @@ describe('with container', () => {
 describe('with multi containers', () => {
   const Containers = {
     First: 'first',
-    Second: 'second'
+    Second: 'second',
+    Third: 'third'
   };
 
   beforeEach(() => {
@@ -352,6 +353,13 @@ describe('with multi containers', () => {
           position="top-right"
           limit={1}
           containerId={Containers.Second}
+          closeOnClick
+        />
+        <ToastContainer
+          autoClose={false}
+          position="bottom-right"
+          limit={10}
+          containerId={Containers.Third}
           closeOnClick
         />
       </>
@@ -406,6 +414,41 @@ describe('with multi containers', () => {
 
         cy.findByText('first container').should('exist');
         cy.findByText('second container').should('not.exist');
+      });
+  });
+
+  it('remove all toasts for a given container', () => {
+    const toastId = '123';
+
+    toast('first container', {
+      toastId,
+      containerId: Containers.First
+    });
+    toast('third container', {
+      toastId,
+      containerId: Containers.Third
+    });
+    toast('third container second toast', {
+      containerId: Containers.Third
+    });
+
+    cy.resolveEntranceAnimation();
+
+    cy.findByText('first container').should('exist');
+    cy.findByText('third container second toast').should('exist');
+    cy.findByText('third container')
+      .should('exist')
+      .then(() => {
+        toast.dismiss({
+          containerId: Containers.Third
+        });
+
+        cy.resolveEntranceAnimation();
+
+        cy.findByText('first container').should('exist');
+        cy.findByText('third container').should('not.exist');
+        cy.findByText('third container second toast').should('not.exist');
+        cy.findByText('first container').should('exist');
       });
   });
 
