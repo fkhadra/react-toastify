@@ -448,7 +448,14 @@ describe('with multi containers', () => {
         cy.findByText('first container').should('exist');
         cy.findByText('third container').should('not.exist');
         cy.findByText('third container second toast').should('not.exist');
-        cy.findByText('first container').should('exist');
+        cy.findByText('first container')
+          .should('exist')
+          .then(() => {
+            toast.dismiss({ containerId: 'Non-Existing Container Id' });
+
+            cy.findByText('first container').should('not.exist');
+            cy.findByText('third container').should('not.exist');
+          });
       });
   });
 
