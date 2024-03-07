@@ -43,8 +43,8 @@
     "extract-pkg": "tar xzvf react-toastify.tgz -C node_modules/react-toastify --strip-components 1 && rimraf react-toastify.tgz"
   },
   "peerDependencies": {
-    "react": ">=16",
-    "react-dom": ">=16"
+    "react": ">=18",
+    "react-dom": ">=18"
   },
   "prettier": {
     "printWidth": 80,
