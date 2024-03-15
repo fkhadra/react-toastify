@@ -183,13 +183,6 @@ interface CommonOptions {
    * `Default: 'light'`
    */
   theme?: Theme;
-}
-
-export interface ToastOptions<Data = unknown> extends CommonOptions {
-  /**
-   * An optional css class to set.
-   */
-  className?: ToastClassName;
 
   /**
    * Called when toast is mounted.
@@ -200,6 +193,13 @@ export interface ToastOptions<Data = unknown> extends CommonOptions {
    * Called when toast is unmounted.
    */
   onClose?: <T = {}>(props: T) => void;
+}
+
+export interface ToastOptions<Data = unknown> extends CommonOptions {
+  /**
+   * An optional css class to set.
+   */
+  className?: ToastClassName;
 
   /**
    * An optional inline style to apply.
