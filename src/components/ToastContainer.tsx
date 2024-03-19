@@ -10,8 +10,8 @@ import { Toast } from './Toast';
 import { Bounce } from './Transitions';
 
 export const defaultProps: ToastContainerProps = {
+  transition= 'Bounce',
   position: 'top-right',
-  transition: Bounce,
   autoClose: 5000,
   closeButton: true,
   pauseOnHover: true,
