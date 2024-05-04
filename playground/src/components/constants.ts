@@ -18,6 +18,10 @@ export const flags = [
     label: 'Close on click'
   },
   {
+    id: 'closeOnClickAway',
+    label: 'Close on click away'
+  },
+  {
     id: 'pauseOnHover',
     label: 'Pause delay on hover'
   },

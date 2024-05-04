@@ -43,6 +43,46 @@ export function useToast(props: ToastProps) {
     }
   }, [props.pauseOnFocusLoss]);
 
+  // close Toast on clickAway
+  useEffect(() => {
+    let clickAwayTimeout: ReturnType<typeof setTimeout>;
+    let enableClickAway = false; // Initially disable click-away
+
+    function handleClickAway(event: MouseEvent) {
+      if (!enableClickAway) return;
+
+      let element: null | HTMLElement = event.target as HTMLElement;
+
+      // Check if the click is outside the toast container
+      while (
+        element &&
+        !element.classList.contains('Toastify__toast-container') &&
+        !element.className.includes('Toastify')
+      ) {
+        element = element.parentElement;
+      }
+
+      // Close the toast if the click is outside
+      if (!element) {
+        closeToast();
+      }
+    }
+
+    if (props.closeOnClickAway) {
+      document.addEventListener('click', handleClickAway);
+      // Enable click-away after a short delay
+      clickAwayTimeout = setTimeout(() => {
+        enableClickAway = true;
+      }, 500); // Delay in milliseconds
+    }
+
+    // Cleanup: remove event listener and clear timeout
+    return () => {
+      document.removeEventListener('click', handleClickAway);
+      clearTimeout(clickAwayTimeout);
+    };
+  }, [props.closeOnClickAway, closeToast]);
+
   function bindFocusEvents() {
     if (!document.hasFocus()) pauseToast();
 

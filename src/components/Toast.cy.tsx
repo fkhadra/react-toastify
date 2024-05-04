@@ -3,6 +3,7 @@ import { DraggableDirection, ToastProps } from '../types';
 import { Default } from '../utils';
 import { Toast } from './Toast';
 import { defaultProps } from './ToastContainer';
+import { SinonStub } from 'cypress/types/sinon';
 
 const REQUIRED_PROPS = {
   ...defaultProps,
@@ -109,6 +110,76 @@ describe('Toast', () => {
         </Toast>
       );
 
+      cy.findByRole('alert').click();
+      cy.get('@closeToast').should('not.have.been.called');
+    });
+  });
+
+  describe('closeOnClickAway', () => {
+    let closeToast: SinonStub;
+
+    beforeEach(() => {
+      closeToast = cy.stub().as('closeToast');
+    });
+
+    it('calls closeToast when enabled and clicking outside the toast', () => {
+      cy.mount(
+        <div>
+          <div
+            data-testid="outside-area"
+            style={{
+              width: '100vw',
+              height: '100vh',
+              position: 'absolute',
+              top: 0,
+              left: 0
+            }}
+          ></div>
+          <Toast {...REQUIRED_PROPS} closeOnClickAway closeToast={closeToast}>
+            hello
+          </Toast>
+        </div>
+      );
+
+      cy.resolveEntranceAnimation();
+
+      // Click on the area outside the Toast
+      cy.findByTestId('outside-area').click();
+      cy.get('@closeToast').should('have.been.called');
+    });
+
+    it('does not call closeToast when clicking inside the toast', () => {
+      cy.mount(
+        <Toast
+          {...REQUIRED_PROPS}
+          closeOnClickAway={true}
+          closeToast={closeToast}
+        >
+          hello
+        </Toast>
+      );
+
+      cy.resolveEntranceAnimation();
+
+      // Click on the Toast itself
+      cy.findByRole('alert').click();
+      cy.get('@closeToast').should('not.have.been.called');
+    });
+
+    it('does not call closeToast when disabled and clicking outside the toast', () => {
+      cy.mount(
+        <Toast
+          {...REQUIRED_PROPS}
+          closeOnClickAway={false}
+          closeToast={closeToast}
+        >
+          hello
+        </Toast>
+      );
+
+      cy.resolveEntranceAnimation();
+
+      // Click on the Toast itself
       cy.findByRole('alert').click();
       cy.get('@closeToast').should('not.have.been.called');
     });

@@ -26,6 +26,7 @@ export const ContainerCode: React.FC<ContainerCodeProps> = ({
   hideProgressBar,
   newestOnTop,
   closeOnClick,
+  closeOnClickAway,
   pauseOnHover,
   rtl,
   pauseOnFocusLoss,
@@ -55,6 +56,7 @@ export const ContainerCode: React.FC<ContainerCodeProps> = ({
       {!disableAutoClose ? getProp('hideProgressBar', hideProgressBar) : ''}
       {getProp('newestOnTop', newestOnTop)}
       {getProp('closeOnClick', closeOnClick)}
+      {getProp('closeOnClickAway', closeOnClickAway)}
       {getProp('rtl', rtl)}
       {getProp('pauseOnFocusLoss', pauseOnFocusLoss)}
       {getProp('draggable', draggable)}

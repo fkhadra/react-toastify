@@ -76,6 +76,12 @@ interface CommonOptions {
   closeOnClick?: boolean;
 
   /**
+   * Remove the toast when clicked Away.
+   * `Default: false`
+   */
+  closeOnClickAway?: boolean;
+
+  /**
    * Set the delay in ms to close the toast automatically.
    * Use `false` to prevent the toast from closing.
    * `Default: 5000`
