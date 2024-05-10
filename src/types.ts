@@ -71,7 +71,7 @@ interface CommonOptions {
 
   /**
    * Remove the toast when clicked.
-   * `Default: true`
+   * `Default: false`
    */
   closeOnClick?: boolean;
 
