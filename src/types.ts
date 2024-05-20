@@ -43,11 +43,11 @@ export type ToastTransition =
  */
 export type ToastClassName =
   | ((context?: {
-      type?: TypeOptions;
-      defaultClassName?: string;
-      position?: ToastPosition;
-      rtl?: boolean;
-    }) => string)
+    type?: TypeOptions;
+    defaultClassName?: string;
+    position?: ToastPosition;
+    rtl?: boolean;
+  }) => string)
   | string;
 
 export interface ClearWaitingQueueParams {
@@ -94,9 +94,9 @@ interface CommonOptions {
    * To remove the close button pass `false`
    */
   closeButton?:
-    | boolean
-    | ((props: CloseButtonProps) => React.ReactNode)
-    | React.ReactElement<CloseButtonProps>;
+  | boolean
+  | ((props: CloseButtonProps) => React.ReactNode)
+  | React.ReactElement<CloseButtonProps>;
 
   /**
    * An optional css class to set for the progress bar.

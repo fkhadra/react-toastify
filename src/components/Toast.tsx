@@ -42,7 +42,7 @@ export const Toast: React.FC<ToastProps> = props => {
     isLoading,
     closeOnClick,
     theme,
-    onButtonClose 
+    onButtonClose
   } = props;
   const defaultClassName = cx(
     `${Default.CSS_NAMESPACE}__toast`,

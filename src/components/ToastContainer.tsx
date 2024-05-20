@@ -31,7 +31,8 @@ export function ToastContainer(props: ToastContainerProps) {
   const stacked = props.stacked;
   const [collapsed, setIsCollapsed] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
-  const { getToastToRender, isToastActive, count } = useToastContainer(containerProps);
+  const { getToastToRender, isToastActive, count } =
+    useToastContainer(containerProps);
   const { className, style, rtl, containerId } = containerProps;
 
   function getClassName(position: ToastPosition) {
@@ -122,7 +123,7 @@ export function ToastContainer(props: ToastContainerProps) {
                     toastProps.containerId
                   )}
                   style={toastProps.style}
-                  onButtonClose={toastProps.onButtonClose} 
+                  onButtonClose={toastProps.onButtonClose}
                   key={`toast-${toastProps.key}`}
                 >
                   {content}

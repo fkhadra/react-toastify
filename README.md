@@ -107,6 +107,12 @@ Support this project with your organization. Your logo will show up here with a 
 <a href="https://opencollective.com/react-toastify/organization/8/website"><img src="https://opencollective.com/react-toastify/organization/8/avatar.svg"></a>
 <a href="https://opencollective.com/react-toastify/organization/9/website"><img src="https://opencollective.com/react-toastify/organization/9/avatar.svg"></a>
 
+### ToastContainer Props
+
+- `onButtonClose` (function): Called when the notification close button is clicked.
+
+
+
 ## Release Notes
 
 You can find the release note for the latest release [here](https://github.com/fkhadra/react-toastify/releases/latest)
@@ -116,3 +122,4 @@ You can browse them all [here](https://github.com/fkhadra/react-toastify/release
 ## License
 
 Licensed under MIT
+
