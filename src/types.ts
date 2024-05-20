@@ -315,6 +315,8 @@ export interface ToastProps extends ToastOptions {
   type: TypeOptions;
   collapseAll: () => void;
   stacked?: boolean;
+  onButtonClose?: () => void;
+
 }
 
 /**
