@@ -138,7 +138,7 @@ export interface UseNotificationCenter<Data> {
    * const id = update("anId",  {content: "test", data: { foo: "hello" } })
    *
    * // It's also possible to update the id
-   * const id = update("anId"m { id:"anotherOne", data: {title: "a title", text: "some text"} })
+   * const id = update("anId", { id:"anotherOne", data: {title: "a title", text: "some text"} })
    * ```
    */
   update(id: Id, item: Partial<NotificationCenterItem<Data>>): Id | null;
