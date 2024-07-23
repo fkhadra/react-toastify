@@ -2,11 +2,13 @@ import cx from 'clsx';
 import React, { cloneElement, isValidElement, ReactNode } from 'react';
 
 import { useToast } from '../hooks/useToast';
-import { ToastProps } from '../types';
+import { ToastComeAndGoTo, ToastProps } from '../types';
 import { Default, isFn } from '../utils';
 import { CloseButton } from './CloseButton';
 import { ProgressBar } from './ProgressBar';
 import { getIcon } from './Icons';
+import { toast } from '../core';
+
 
 export const Toast: React.FC<ToastProps> = props => {
   const {
@@ -14,7 +16,7 @@ export const Toast: React.FC<ToastProps> = props => {
     preventExitTransition,
     toastRef,
     eventHandlers,
-    playToast
+    playToast,
   } = useToast(props);
   const {
     closeButton,
@@ -41,8 +43,11 @@ export const Toast: React.FC<ToastProps> = props => {
     isIn,
     isLoading,
     closeOnClick,
-    theme
+    theme,
+    comeFrom,
+    leaveFrom
   } = props;
+
   const defaultClassName = cx(
     `${Default.CSS_NAMESPACE}__toast`,
     `${Default.CSS_NAMESPACE}__toast-theme--${theme}`,
@@ -59,7 +64,8 @@ export const Toast: React.FC<ToastProps> = props => {
         rtl,
         position,
         type,
-        defaultClassName
+        defaultClassName,
+      className,
       })
     : cx(defaultClassName, className);
   const icon = getIcon(props);
@@ -78,6 +84,9 @@ export const Toast: React.FC<ToastProps> = props => {
     Close = CloseButton(closeButtonProps);
   }
 
+
+
+
   return (
     <Transition
       isIn={isIn}
@@ -86,6 +95,11 @@ export const Toast: React.FC<ToastProps> = props => {
       preventExitTransition={preventExitTransition}
       nodeRef={toastRef}
       playToast={playToast}
+      comeFrom={comeFrom}
+      leaveFrom={leaveFrom}
+
+
+
     >
       <div
         id={toastId as string}
@@ -95,6 +109,7 @@ export const Toast: React.FC<ToastProps> = props => {
         {...eventHandlers}
         style={style}
         ref={toastRef}
+
       >
         <div
           {...(isIn && { role: role })}

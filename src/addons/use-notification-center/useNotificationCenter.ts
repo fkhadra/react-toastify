@@ -11,6 +11,7 @@ export interface NotificationCenterItem<Data = {}>
 
 export type SortFn<Data> = (
   l: NotificationCenterItem<Data>,
+
   r: NotificationCenterItem<Data>
 ) => number;
 

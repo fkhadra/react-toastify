@@ -65,7 +65,6 @@ export function createContainerObserver(
   }: NotValidatedToastProps) => {
     const containerMismatch = containerId ? containerId !== id : id !== 1;
     const isDuplicate = toasts.has(toastId) && updateId == null;
-
     return containerMismatch || isDuplicate;
   };
 

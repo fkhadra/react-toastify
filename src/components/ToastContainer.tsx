@@ -20,7 +20,7 @@ export const defaultProps: ToastContainerProps = {
   draggablePercent: Default.DRAGGABLE_PERCENT as number,
   draggableDirection: Direction.X,
   role: 'alert',
-  theme: 'light'
+  theme: 'light',
 };
 
 export function ToastContainer(props: ToastContainerProps) {
@@ -28,12 +28,14 @@ export function ToastContainer(props: ToastContainerProps) {
     ...defaultProps,
     ...props
   };
+
   const stacked = props.stacked;
   const [collapsed, setIsCollapsed] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
   const { getToastToRender, isToastActive, count } =
     useToastContainer(containerProps);
   const { className, style, rtl, containerId } = containerProps;
+
 
   function getClassName(position: ToastPosition) {
     const defaultClassName = cx(
@@ -81,7 +83,6 @@ export function ToastContainer(props: ToastContainerProps) {
           node.style.setProperty('--y', `${isTop ? y : y * -1}px`);
           node.style.setProperty('--g', `${gap}`);
           node.style.setProperty('--s', `${1 - (collapsed ? prevS : 0)}`);
-
           usedHeight += node.offsetHeight;
           prevS += 0.025;
         });

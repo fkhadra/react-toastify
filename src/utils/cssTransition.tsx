@@ -68,10 +68,16 @@ export function cssTransition({
     done,
     nodeRef,
     isIn,
-    playToast
+    playToast,
+    comeFrom,
+    leaveFrom
   }: ToastTransitionProps) {
-    const enterClassName = appendPosition ? `${enter}--${position}` : enter;
-    const exitClassName = appendPosition ? `${exit}--${position}` : exit;
+
+
+
+
+    const enterClassName = appendPosition ? `${enter}${comeFrom ? comeFrom : ""}--${position}` : enter;
+    const exitClassName = appendPosition ? `${exit}${leaveFrom ? leaveFrom: ""}--${position}` : exit;
     const animationStep = useRef(AnimationStep.Enter);
 
     useLayoutEffect(() => {
