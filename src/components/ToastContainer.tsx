@@ -20,7 +20,7 @@ export const defaultProps: ToastContainerProps = {
   draggablePercent: Default.DRAGGABLE_PERCENT as number,
   draggableDirection: Direction.X,
   role: 'alert',
-  theme: 'light',
+  theme: 'light'
 };
 
 export function ToastContainer(props: ToastContainerProps) {
@@ -35,7 +35,6 @@ export function ToastContainer(props: ToastContainerProps) {
   const { getToastToRender, isToastActive, count } =
     useToastContainer(containerProps);
   const { className, style, rtl, containerId } = containerProps;
-
 
   function getClassName(position: ToastPosition) {
     const defaultClassName = cx(

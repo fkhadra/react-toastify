@@ -41,6 +41,7 @@ $ yarn add react-toastify
 - Dark mode 🌒
 - Pause timer programmaticaly 
 - Stacked notifications!
+- Can show toast and hide from any side ( LEFT , RIGHT, BOTTOM, TOP )
 - And much more !
 
 ## The gist

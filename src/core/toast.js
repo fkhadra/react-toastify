@@ -1,77 +1,114 @@
-import { __assign } from "tslib";
+import { __assign } from 'tslib';
 import { isFn, isNum, isStr } from '../utils';
 import { genToastId } from './genToastId';
-import { clearWaitingQueue, getToast, isToastActive, onChange, pushToast, removeToast, toggleToast } from './store';
+import {
+  clearWaitingQueue,
+  getToast,
+  isToastActive,
+  onChange,
+  pushToast,
+  removeToast,
+  toggleToast
+} from './store';
 /**
  * Generate a toastId or use the one provided
  */
 function getToastId(options) {
-    return options && (isStr(options.toastId) || isNum(options.toastId))
-        ? options.toastId
-        : genToastId();
+  return options && (isStr(options.toastId) || isNum(options.toastId))
+    ? options.toastId
+    : genToastId();
 }
 /**
  * If the container is not mounted, the toast is enqueued
  */
 function dispatchToast(content, options) {
-    pushToast(content, options);
-    return options.toastId;
+  pushToast(content, options);
+  return options.toastId;
 }
 /**
  * Merge provided options with the defaults settings and generate the toastId
  */
 function mergeOptions(type, options) {
-    return __assign(__assign({}, options), { type: (options && options.type) || type, toastId: getToastId(options) });
+  return __assign(__assign({}, options), {
+    type: (options && options.type) || type,
+    toastId: getToastId(options)
+  });
 }
 function createToastByType(type) {
-    return function (content, options) { return dispatchToast(content, mergeOptions(type, options)); };
+  return function (content, options) {
+    return dispatchToast(content, mergeOptions(type, options));
+  };
 }
 function toast(content, options) {
-    return dispatchToast(content, mergeOptions("default" /* Type.DEFAULT */, options));
+  return dispatchToast(
+    content,
+    mergeOptions('default' /* Type.DEFAULT */, options)
+  );
 }
 toast.loading = function (content, options) {
-    return dispatchToast(content, mergeOptions("default" /* Type.DEFAULT */, __assign({ isLoading: true, autoClose: false, closeOnClick: false, closeButton: false, draggable: false }, options)));
+  return dispatchToast(
+    content,
+    mergeOptions(
+      'default' /* Type.DEFAULT */,
+      __assign(
+        {
+          isLoading: true,
+          autoClose: false,
+          closeOnClick: false,
+          closeButton: false,
+          draggable: false
+        },
+        options
+      )
+    )
+  );
 };
 function handlePromise(promise, _a, options) {
-    var pending = _a.pending, error = _a.error, success = _a.success;
-    var id;
-    if (pending) {
-        id = isStr(pending)
-            ? toast.loading(pending, options)
-            : toast.loading(pending.render, __assign(__assign({}, options), pending));
+  var pending = _a.pending,
+    error = _a.error,
+    success = _a.success;
+  var id;
+  if (pending) {
+    id = isStr(pending)
+      ? toast.loading(pending, options)
+      : toast.loading(pending.render, __assign(__assign({}, options), pending));
+  }
+  var resetParams = {
+    isLoading: null,
+    autoClose: null,
+    closeOnClick: null,
+    closeButton: null,
+    draggable: null
+  };
+  var resolver = function (type, input, result) {
+    // Remove the toast if the input has not been provided. This prevents the toast from hanging
+    // in the pending state if a success/error toast has not been provided.
+    if (input == null) {
+      toast.dismiss(id);
+      return;
     }
-    var resetParams = {
-        isLoading: null,
-        autoClose: null,
-        closeOnClick: null,
-        closeButton: null,
-        draggable: null
-    };
-    var resolver = function (type, input, result) {
-        // Remove the toast if the input has not been provided. This prevents the toast from hanging
-        // in the pending state if a success/error toast has not been provided.
-        if (input == null) {
-            toast.dismiss(id);
-            return;
-        }
-        var baseParams = __assign(__assign(__assign({ type: type }, resetParams), options), { data: result });
-        var params = isStr(input) ? { render: input } : input;
-        // if the id is set we know that it's an update
-        if (id) {
-            toast.update(id, __assign(__assign({}, baseParams), params));
-        }
-        else {
-            // using toast.promise without loading
-            toast(params.render, __assign(__assign({}, baseParams), params));
-        }
-        return result;
-    };
-    var p = isFn(promise) ? promise() : promise;
-    //call the resolvers only when needed
-    p.then(function (result) { return resolver('success', success, result); }).catch(function (err) {
-        return resolver('error', error, err);
-    });
-    return p;
+    var baseParams = __assign(
+      __assign(__assign({ type: type }, resetParams), options),
+      { data: result }
+    );
+    var params = isStr(input) ? { render: input } : input;
+    // if the id is set we know that it's an update
+    if (id) {
+      toast.update(id, __assign(__assign({}, baseParams), params));
+    } else {
+      // using toast.promise without loading
+      toast(params.render, __assign(__assign({}, baseParams), params));
+    }
+    return result;
+  };
+  var p = isFn(promise) ? promise() : promise;
+  //call the resolvers only when needed
+  p.then(function (result) {
+    return resolver('success', success, result);
+  }).catch(function (err) {
+    return resolver('error', error, err);
+  });
+  return p;
 }
 /**
  * Supply a promise or a function that return a promise and the notification will be updated if it resolves or fails.
@@ -115,16 +152,22 @@ function handlePromise(promise, _a, options) {
  * ```
  */
 toast.promise = handlePromise;
-toast.success = createToastByType("success" /* Type.SUCCESS */);
-toast.info = createToastByType("info" /* Type.INFO */);
-toast.error = createToastByType("error" /* Type.ERROR */);
-toast.warning = createToastByType("warning" /* Type.WARNING */);
+toast.success = createToastByType('success' /* Type.SUCCESS */);
+toast.info = createToastByType('info' /* Type.INFO */);
+toast.error = createToastByType('error' /* Type.ERROR */);
+toast.warning = createToastByType('warning' /* Type.WARNING */);
 toast.warn = toast.warning;
 toast.dark = function (content, options) {
-    return dispatchToast(content, mergeOptions("default" /* Type.DEFAULT */, __assign({ theme: 'dark' }, options)));
+  return dispatchToast(
+    content,
+    mergeOptions(
+      'default' /* Type.DEFAULT */,
+      __assign({ theme: 'dark' }, options)
+    )
+  );
 };
 function dismiss(params) {
-    removeToast(params);
+  removeToast(params);
 }
 /**
  * Remove toast programmatically
@@ -198,17 +241,22 @@ toast.isActive = isToastActive;
  * ```
  */
 toast.update = function (toastId, options) {
-    if (options === void 0) { options = {}; }
-    var toast = getToast(toastId, options);
-    if (toast) {
-        var oldOptions = toast.props, oldContent = toast.content;
-        var nextOptions = __assign(__assign(__assign({ delay: 100 }, oldOptions), options), { toastId: options.toastId || toastId, updateId: genToastId() });
-        if (nextOptions.toastId !== toastId)
-            nextOptions.staleId = toastId;
-        var content = nextOptions.render || oldContent;
-        delete nextOptions.render;
-        dispatchToast(content, nextOptions);
-    }
+  if (options === void 0) {
+    options = {};
+  }
+  var toast = getToast(toastId, options);
+  if (toast) {
+    var oldOptions = toast.props,
+      oldContent = toast.content;
+    var nextOptions = __assign(
+      __assign(__assign({ delay: 100 }, oldOptions), options),
+      { toastId: options.toastId || toastId, updateId: genToastId() }
+    );
+    if (nextOptions.toastId !== toastId) nextOptions.staleId = toastId;
+    var content = nextOptions.render || oldContent;
+    delete nextOptions.render;
+    dispatchToast(content, nextOptions);
+  }
 };
 /**
  * Used for controlled progress bar. It will automatically close the notification.
@@ -225,9 +273,9 @@ toast.update = function (toastId, options) {
  * ```
  */
 toast.done = function (id) {
-    toast.update(id, {
-        progress: 1
-    });
+  toast.update(id, {
+    progress: 1
+  });
 };
 /**
  * Subscribe to change when a toast is added, removed and updated
@@ -275,7 +323,9 @@ toast.onChange = onChange;
  * toast.play({ id: "123", containerId: "12" })
  * ```
  */
-toast.play = function (opts) { return toggleToast(true, opts); };
+toast.play = function (opts) {
+  return toggleToast(true, opts);
+};
 /**
  * Pause a toast(s) timer progammatically
  *
@@ -301,6 +351,8 @@ toast.play = function (opts) { return toggleToast(true, opts); };
  * toast.pause({ id: "123", containerId: "12" })
  * ```
  */
-toast.pause = function (opts) { return toggleToast(false, opts); };
+toast.pause = function (opts) {
+  return toggleToast(false, opts);
+};
 export { toast };
 //# sourceMappingURL=toast.js.map

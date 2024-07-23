@@ -1,6 +1,7 @@
 import React from 'react';
 import { ToastContainer } from '../components';
 import { toast } from './toast';
+import { ToastComeAndLeaveFrom } from '../types';
 
 beforeEach(() => {
   cy.viewport('macbook-15');
@@ -550,5 +551,38 @@ describe('with stacked container', () => {
     cy.findByText('hello 1').should('exist').and('not.be.visible');
     cy.findByText('hello 2').should('exist').and('not.be.visible');
     cy.findByText('hello 3').should('exist').and('be.visible');
+  });
+});
+
+describe('come-from and leave-from toast', () => {
+  const positions: ToastComeAndLeaveFrom[] = ['top', 'left', 'right', 'bottom'];
+
+  positions.forEach(cF => {
+    positions.forEach(lF => {
+      it(`should display toast coming from ${cF} and leaving ${lF}`, () => {
+        toast('test1', { comeFrom: cF, leaveFrom: lF });
+        toast('test2', { comeFrom: cF, leaveFrom: lF });
+
+        cy.findByText('test1').should('not.exist');
+        cy.findByText('test2').should('not.exist');
+
+        cy.mount(<ToastContainer autoClose={false} stacked />);
+        cy.resolveEntranceAnimation();
+        cy.findByText('test1').should('exist');
+        cy.findByText('test2').should('exist');
+      });
+
+      it(`remove toast from render queue`, () => {
+        it(`remove tost`, () => {
+          toast('test1');
+          const id = toast('test2');
+          toast.dismiss(id);
+          cy.mount(<ToastContainer autoClose={false} />);
+          cy.resolveEntranceAnimation();
+          cy.findByText('test1').should('exist');
+          cy.findByText('test2').should('not.exist');
+        });
+      });
+    });
   });
 });

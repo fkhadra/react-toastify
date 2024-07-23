@@ -442,4 +442,32 @@ describe('with stacked container', function () {
         cy.findByText('hello 3').should('exist').and('be.visible');
     });
 });
+describe('come-from and leave-from toast', function () {
+    var positions = ['top', 'left', 'right', 'bottom'];
+    positions.forEach(function (cF) {
+        positions.forEach(function (lF) {
+            it("should display toast coming from ".concat(cF, " and leaving ").concat(lF), function () {
+                toast('test1', { comeFrom: cF, leaveFrom: lF });
+                toast('test2', { comeFrom: cF, leaveFrom: lF });
+                cy.findByText('test1').should('not.exist');
+                cy.findByText('test2').should('not.exist');
+                cy.mount(React.createElement(ToastContainer, { autoClose: false, stacked: true }));
+                cy.resolveEntranceAnimation();
+                cy.findByText('test1').should('exist');
+                cy.findByText('test2').should('exist');
+            });
+            it("remove toast from render queue", function () {
+                it("remove tost", function () {
+                    toast('test1');
+                    var id = toast('test2');
+                    toast.dismiss(id);
+                    cy.mount(React.createElement(ToastContainer, { autoClose: false }));
+                    cy.resolveEntranceAnimation();
+                    cy.findByText('test1').should('exist');
+                    cy.findByText('test2').should('not.exist');
+                });
+            });
+        });
+    });
+});
 //# sourceMappingURL=toast.cy.js.map

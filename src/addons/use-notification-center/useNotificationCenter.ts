@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
+
+// @ts-ignore
 import { toast, ToastItem, Id } from 'react-toastify';
 
 type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
@@ -200,7 +202,7 @@ export function useNotificationCenter<Data = {}>(
   });
 
   useEffect(() => {
-    return toast.onChange(item => {
+    return toast.onChange((item: any) => {
       if (item.status === 'added' || item.status === 'updated') {
         const newItem = decorate(item as NotificationCenterItem<Data>);
         if (filterFn.current && !filterFn.current(newItem)) return;

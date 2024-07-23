@@ -17,9 +17,6 @@ export type ToastPosition =
   | 'bottom-center'
   | 'bottom-left';
 
-
-
-
 export interface ToastContentProps<Data = unknown> {
   closeToast: () => void;
   toastProps: ToastProps;
@@ -57,7 +54,7 @@ export interface ClearWaitingQueueParams {
   containerId?: Id;
 }
 
-export type ToastComeAndLeaveFrom =  'left' | 'right' | 'bottom' | 'top';
+export type ToastComeAndLeaveFrom = 'left' | 'right' | 'bottom' | 'top';
 
 export type DraggableDirection = 'x' | 'y';
 
@@ -243,7 +240,7 @@ export interface ToastOptions<Data = unknown> extends CommonOptions {
 
   comeFrom?: ToastComeAndLeaveFrom;
 
-  leaveFrom?:ToastComeAndLeaveFrom;
+  leaveFrom?: ToastComeAndLeaveFrom;
 }
 
 export interface UpdateOptions<T = unknown> extends Nullable<ToastOptions<T>> {
@@ -290,8 +287,6 @@ export interface ToastContainerProps extends CommonOptions {
    * Limit the number of toast displayed at the same time
    */
   limit?: number;
-
-
 }
 
 export interface ToastTransitionProps {
@@ -302,7 +297,7 @@ export interface ToastTransitionProps {
   nodeRef: React.RefObject<HTMLElement>;
   children?: React.ReactNode;
   playToast(): void;
-  comeFrom?: ToastComeAndLeaveFrom
+  comeFrom?: ToastComeAndLeaveFrom;
   leaveFrom?: ToastComeAndLeaveFrom;
 }
 
@@ -329,7 +324,7 @@ export interface ToastProps extends ToastOptions {
   collapseAll: () => void;
   stacked?: boolean;
   comeFrom?: ToastComeAndLeaveFrom;
-  leaveFrom?:ToastComeAndLeaveFrom;
+  leaveFrom?: ToastComeAndLeaveFrom;
 }
 
 /**

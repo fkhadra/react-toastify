@@ -1,5 +1,4 @@
 
-@import './animations/comeAndGoFrom';
 
 
 .#{$rt-namespace}__toast {
@@ -21,9 +20,6 @@
   /* webkit only issue #791 */
   z-index: 0;
   overflow: hidden;
-
-
-
 
 
 

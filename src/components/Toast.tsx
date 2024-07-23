@@ -9,14 +9,13 @@ import { ProgressBar } from './ProgressBar';
 import { getIcon } from './Icons';
 import { toast } from '../core';
 
-
 export const Toast: React.FC<ToastProps> = props => {
   const {
     isRunning,
     preventExitTransition,
     toastRef,
     eventHandlers,
-    playToast,
+    playToast
   } = useToast(props);
   const {
     closeButton,
@@ -65,7 +64,7 @@ export const Toast: React.FC<ToastProps> = props => {
         position,
         type,
         defaultClassName,
-      className,
+        className
       })
     : cx(defaultClassName, className);
   const icon = getIcon(props);
@@ -84,9 +83,6 @@ export const Toast: React.FC<ToastProps> = props => {
     Close = CloseButton(closeButtonProps);
   }
 
-
-
-
   return (
     <Transition
       isIn={isIn}
@@ -97,9 +93,6 @@ export const Toast: React.FC<ToastProps> = props => {
       playToast={playToast}
       comeFrom={comeFrom}
       leaveFrom={leaveFrom}
-
-
-
     >
       <div
         id={toastId as string}
@@ -109,7 +102,6 @@ export const Toast: React.FC<ToastProps> = props => {
         {...eventHandlers}
         style={style}
         ref={toastRef}
-
       >
         <div
           {...(isIn && { role: role })}

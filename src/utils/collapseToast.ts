@@ -7,12 +7,9 @@ import { ToastComeAndGoTo } from '../types';
 export function collapseToast(
   node: HTMLElement,
   done: () => void,
-  duration = Default.COLLAPSE_DURATION,
+  duration = Default.COLLAPSE_DURATION
 ) {
-  const { scrollHeight, style} = node;
-
-
-
+  const { scrollHeight, style } = node;
 
   requestAnimationFrame(() => {
     style.minHeight = 'initial';
@@ -25,6 +22,4 @@ export function collapseToast(
       setTimeout(done, duration as number);
     });
   });
-
-
 }
