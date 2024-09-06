@@ -2,8 +2,6 @@ import * as React from 'react';
 
 import { themes, typeMap } from './constants';
 
-
-
 function getType(type: string) {
   return typeMap[type] || typeMap.default
 }
