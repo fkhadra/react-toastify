@@ -16,7 +16,7 @@ export interface ToastCodeProps {
   type: string;
   draggable: boolean;
   progress: number;
-  theme: (typeof themes)[number];
+  theme: typeof themes[number];
 }
 
 export const ToastCode: React.FC<ToastCodeProps> = ({
