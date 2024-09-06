@@ -1,7 +1,7 @@
 import React, { cloneElement, isValidElement } from 'react';
 
 import { Theme, ToastProps, TypeOptions } from '../types';
-import { Default, isFn, isNum, isStr } from '../utils';
+import { Default, isFn } from '../utils';
 
 /**
  * Used when providing custom icon
@@ -9,11 +9,17 @@ import { Default, isFn, isNum, isStr } from '../utils';
 export interface IconProps {
   theme: Theme;
   type: TypeOptions;
+  isLoading?: boolean;
 }
 
 export type BuiltInIconProps = React.SVGProps<SVGSVGElement> & IconProps;
 
-const Svg: React.FC<BuiltInIconProps> = ({ theme, type, ...rest }) => (
+const Svg: React.FC<BuiltInIconProps> = ({
+  theme,
+  type,
+  isLoading,
+  ...rest
+}) => (
   <svg
     viewBox="0 0 24 24"
     width="100%"
@@ -73,18 +79,21 @@ export const Icons = {
 
 const maybeIcon = (type: string): type is keyof typeof Icons => type in Icons;
 
-export function getIcon({ theme, type, isLoading, icon }: ToastProps) {
+export type IconParams = Pick<
+  ToastProps,
+  'theme' | 'icon' | 'type' | 'isLoading'
+>;
+
+export function getIcon({ theme, type, isLoading, icon }: IconParams) {
   let Icon: React.ReactNode = null;
   const iconProps = { theme, type };
 
   if (icon === false) {
     // hide
   } else if (isFn(icon)) {
-    Icon = icon(iconProps);
+    Icon = icon({ ...iconProps, isLoading });
   } else if (isValidElement(icon)) {
     Icon = cloneElement(icon, iconProps);
-  } else if (isStr(icon) || isNum(icon)) {
-    Icon = icon;
   } else if (isLoading) {
     Icon = Icons.spinner();
   } else if (maybeIcon(type)) {

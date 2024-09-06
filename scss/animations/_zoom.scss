@@ -14,7 +14,7 @@
   }
   50% {
     opacity: 0;
-    transform: scale3d(0.3, 0.3, 0.3);
+    transform: translate3d(0,var(--y),0) scale3d(0.3, 0.3, 0.3);
   }
   to {
     opacity: 0;

@@ -1,12 +1,13 @@
 {
-  "include": ["src", "types"],
+  "include": ["src", "types", "cypress", "@testing-library/cypress"],
   "compilerOptions": {
     "module": "ESNext",
     "lib": ["dom", "esnext"],
+    "types": ["cypress", "node", "@4tw/cypress-drag-drop"],
     "importHelpers": true,
     "declaration": true,
     "sourceMap": true,
-    "rootDir": "./src",
+    "rootDir": "./",
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,

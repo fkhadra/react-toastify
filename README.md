@@ -9,6 +9,8 @@
 
 ![React toastify](https://user-images.githubusercontent.com/5574267/130804494-a9d2d69c-f170-4576-b2e1-0bb7f13dd92d.gif "React toastify")
 
+![stacked](https://github.com/fkhadra/react-toastify/assets/5574267/975c7c01-b95e-43cf-9100-256fa8ef2760)
+
 
 🎉 React-Toastify allows you to add notifications to your app with ease. No more nonsense!
 
@@ -37,6 +39,8 @@ $ yarn add react-toastify
 - You can control the progress bar a la `nprogress` 😲
 - You can limit the number of toast displayed at the same time
 - Dark mode 🌒
+- Pause timer programmaticaly 
+- Stacked notifications!
 - And much more !
 
 ## The gist

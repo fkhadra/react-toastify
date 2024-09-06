@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import { collapseToast } from './collapseToast';
-import { Default, SyntheticEvent } from './constant';
+import { Default } from './constant';
 
 import { ToastTransitionProps } from '../types';
 
@@ -67,7 +67,8 @@ export function cssTransition({
     preventExitTransition,
     done,
     nodeRef,
-    isIn
+    isIn,
+    playToast
   }: ToastTransitionProps) {
     const enterClassName = appendPosition ? `${enter}--${position}` : enter;
     const exitClassName = appendPosition ? `${exit}--${position}` : exit;
@@ -80,7 +81,7 @@ export function cssTransition({
       const onEntered = (e: AnimationEvent) => {
         if (e.target !== nodeRef.current) return;
 
-        node.dispatchEvent(new Event(SyntheticEvent.ENTRANCE_ANIMATION_END));
+        playToast();
         node.removeEventListener('animationend', onEntered);
         node.removeEventListener('animationcancel', onEntered);
         if (

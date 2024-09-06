@@ -1,15 +1,21 @@
-import React, { cloneElement, isValidElement, ReactNode } from 'react';
 import cx from 'clsx';
+import React, { cloneElement, isValidElement, ReactNode } from 'react';
 
-import { ProgressBar } from './ProgressBar';
-import { CloseButton } from './CloseButton';
+import { useToast } from '../hooks/useToast';
 import { ToastProps } from '../types';
 import { Default, isFn } from '../utils';
-import { useToast } from '../hooks/useToast';
+import { CloseButton } from './CloseButton';
+import { ProgressBar } from './ProgressBar';
+import { getIcon } from './Icons';
 
 export const Toast: React.FC<ToastProps> = props => {
-  const { isRunning, preventExitTransition, toastRef, eventHandlers } =
-    useToast(props);
+  const {
+    isRunning,
+    preventExitTransition,
+    toastRef,
+    eventHandlers,
+    playToast
+  } = useToast(props);
   const {
     closeButton,
     children,
@@ -34,7 +40,6 @@ export const Toast: React.FC<ToastProps> = props => {
     deleteToast,
     isIn,
     isLoading,
-    iconOut,
     closeOnClick,
     theme
   } = props;
@@ -57,6 +62,7 @@ export const Toast: React.FC<ToastProps> = props => {
         defaultClassName
       })
     : cx(defaultClassName, className);
+  const icon = getIcon(props);
   const isProgressControlled = !!progress || !autoClose;
 
   const closeButtonProps = { closeToast, type, theme };
@@ -79,10 +85,12 @@ export const Toast: React.FC<ToastProps> = props => {
       position={position}
       preventExitTransition={preventExitTransition}
       nodeRef={toastRef}
+      playToast={playToast}
     >
       <div
         id={toastId as string}
         onClick={onClick}
+        data-in={isIn}
         className={cssClasses}
         {...eventHandlers}
         style={style}
@@ -97,14 +105,14 @@ export const Toast: React.FC<ToastProps> = props => {
           }
           style={bodyStyle}
         >
-          {iconOut != null && (
+          {icon != null && (
             <div
               className={cx(`${Default.CSS_NAMESPACE}__toast-icon`, {
                 [`${Default.CSS_NAMESPACE}--animate-icon ${Default.CSS_NAMESPACE}__zoom-enter`]:
                   !isLoading
               })}
             >
-              {iconOut}
+              {icon}
             </div>
           )}
           <div>{children as ReactNode}</div>

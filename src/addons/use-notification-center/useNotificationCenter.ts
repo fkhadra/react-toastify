@@ -4,7 +4,7 @@ import { toast, ToastItem, Id } from 'react-toastify';
 type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
 
 export interface NotificationCenterItem<Data = {}>
-  extends Optional<ToastItem<Data>, 'content' | 'data'> {
+  extends Optional<ToastItem<Data>, 'content' | 'data' | 'status'> {
   read: boolean;
   createdAt: number;
 }
@@ -92,7 +92,7 @@ export interface UseNotificationCenter<Data> {
   markAsRead(id: Id | Id[]): void;
 
   /**
-   * Mark one or more notifications as read.The second parameter let you mark the notificaiton as read or not.
+   * Mark one or more notifications as read.The second parameter let you mark the notification as read or not.
    *
    * Usage:
    * ```
@@ -123,7 +123,7 @@ export interface UseNotificationCenter<Data> {
    * ```
    * const id = add({id: "id", content: "test", data: { foo: "hello" } })
    *
-   * // Return the id of the notificaiton, generate one if none provided
+   * // Return the id of the notification, generate one if none provided
    * const id = add({ data: {title: "a title", text: "some text"} })
    * ```
    */
@@ -144,7 +144,7 @@ export interface UseNotificationCenter<Data> {
   update(id: Id, item: Partial<NotificationCenterItem<Data>>): Id | null;
 
   /**
-   * Retrive one or more notifications
+   * Retrieve one or more notifications
    *
    * Usage:
    * ```
@@ -155,7 +155,7 @@ export interface UseNotificationCenter<Data> {
   find(id: Id): NotificationCenterItem<Data> | undefined;
 
   /**
-   * Retrive one or more notifications
+   * Retrieve one or more notifications
    *
    * Usage:
    * ```
@@ -197,17 +197,11 @@ export function useNotificationCenter<Data = {}>(
     }
     return [];
   });
-  // used to method to be used inside effect without having stale `notifications`
-  const notificationsRef = useRef(notifications);
 
   useEffect(() => {
-    notificationsRef.current = notifications;
-  }, [notifications]);
-
-  useEffect(() => {
-    return toast.onChange(toast => {
-      if (toast.status === 'added' || toast.status === 'updated') {
-        const newItem = decorate(toast as NotificationCenterItem<Data>);
+    return toast.onChange(item => {
+      if (item.status === 'added' || item.status === 'updated') {
+        const newItem = decorate(item as NotificationCenterItem<Data>);
         if (filterFn.current && !filterFn.current(newItem)) return;
 
         setNotifications(prev => {
@@ -269,12 +263,12 @@ export function useNotificationCenter<Data = {}>(
 
   const find = (id: Id | Id[]) => {
     return Array.isArray(id)
-      ? notificationsRef.current.filter(v => id.includes(v.id))
-      : notificationsRef.current.find(v => v.id === id);
+      ? notifications.filter(v => id.includes(v.id))
+      : notifications.find(v => v.id === id);
   };
 
   const add = (item: Partial<NotificationCenterItem<Data>>) => {
-    if (notificationsRef.current.find(v => v.id === item.id)) return null;
+    if (notifications.find(v => v.id === item.id)) return null;
 
     const newItem = decorate(item);
 
@@ -284,7 +278,7 @@ export function useNotificationCenter<Data = {}>(
   };
 
   const update = (id: Id, item: Partial<NotificationCenterItem<Data>>) => {
-    const index = notificationsRef.current.findIndex(v => v.id === id);
+    const index = notifications.findIndex(v => v.id === id);
 
     if (index !== -1) {
       setNotifications(prev => {
@@ -327,7 +321,7 @@ export function useNotificationCenter<Data = {}>(
   };
 }
 
-function decorate<Data>(
+export function decorate<Data>(
   item: NotificationCenterItem<Data> | Partial<NotificationCenterItem<Data>>
 ) {
   if (item.id == null) item.id = Date.now().toString(36).substring(2, 9);

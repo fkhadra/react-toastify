@@ -11,7 +11,7 @@ jobs:
       - name: Install node
         uses: actions/setup-node@v1
         with:
-            node-version: '16.x'
+            node-version: '18.x'
       - name: Install dependencies
         run: yarn 
       - name: Lint
@@ -19,7 +19,17 @@ jobs:
       - name: Setup
         run: yarn setup
       - name: Test
-        run: yarn run test:coverage 
+        run: yarn run test:run 
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: cypress-videos
+          path: cypress/videos
       - name: Coveralls GitHub Action
         uses: coverallsapp/github-action@v1.1.2
         with:

@@ -1,72 +1,49 @@
-import { POSITION, TYPE, isStr, isNum, isFn, Type } from '../utils';
-import { eventManager, OnChangeCallback, Event } from './eventManager';
 import {
+  Id,
+  IdOpts,
+  NotValidatedToastProps,
   ToastContent,
   ToastOptions,
   ToastProps,
-  Id,
-  UpdateOptions,
-  ClearWaitingQueueParams,
-  NotValidatedToastProps,
-  TypeOptions
+  TypeOptions,
+  UpdateOptions
 } from '../types';
-import { ContainerInstance } from '../hooks';
-
-interface EnqueuedToast {
-  content: ToastContent<any>;
-  options: NotValidatedToastProps;
-}
-
-let containers = new Map<ContainerInstance | Id, ContainerInstance>();
-let latestInstance: ContainerInstance | Id;
-let queue: EnqueuedToast[] = [];
-let TOAST_ID = 1;
-
-/**
- * Get the toast by id, given it's in the DOM, otherwise returns null
- */
-function getToast(toastId: Id, { containerId }: ToastOptions) {
-  const container = containers.get(containerId || latestInstance);
-  return container && container.getToast(toastId);
-}
-
-/**
- * Generate a random toastId
- */
-function generateToastId() {
-  return `${TOAST_ID++}`;
-}
+import { Type, isFn, isNum, isStr } from '../utils';
+import { genToastId } from './genToastId';
+import {
+  clearWaitingQueue,
+  getToast,
+  isToastActive,
+  onChange,
+  pushToast,
+  removeToast,
+  toggleToast
+} from './store';
 
 /**
  * Generate a toastId or use the one provided
  */
-function getToastId(options?: ToastOptions) {
+function getToastId<TData>(options?: ToastOptions<TData>) {
   return options && (isStr(options.toastId) || isNum(options.toastId))
     ? options.toastId
-    : generateToastId();
+    : genToastId();
 }
 
 /**
- * If the container is not mounted, the toast is enqueued and
- * the container lazy mounted
+ * If the container is not mounted, the toast is enqueued
  */
 function dispatchToast<TData>(
   content: ToastContent<TData>,
   options: NotValidatedToastProps
 ): Id {
-  if (containers.size > 0) {
-    eventManager.emit(Event.Show, content, options);
-  } else {
-    queue.push({ content, options });
-  }
-
+  pushToast(content, options);
   return options.toastId;
 }
 
 /**
  * Merge provided options with the defaults settings and generate the toastId
  */
-function mergeOptions(type: string, options?: ToastOptions) {
+function mergeOptions<TData>(type: string, options?: ToastOptions<TData>) {
   return {
     ...options,
     type: (options && options.type) || type,
@@ -77,20 +54,20 @@ function mergeOptions(type: string, options?: ToastOptions) {
 function createToastByType(type: string) {
   return <TData = unknown>(
     content: ToastContent<TData>,
-    options?: ToastOptions
+    options?: ToastOptions<TData>
   ) => dispatchToast(content, mergeOptions(type, options));
 }
 
 function toast<TData = unknown>(
   content: ToastContent<TData>,
-  options?: ToastOptions
+  options?: ToastOptions<TData>
 ) {
   return dispatchToast(content, mergeOptions(Type.DEFAULT, options));
 }
 
 toast.loading = <TData = unknown>(
   content: ToastContent<TData>,
-  options?: ToastOptions
+  options?: ToastOptions<TData>
 ) =>
   dispatchToast(
     content,
@@ -117,7 +94,7 @@ export interface ToastPromiseParams<
 function handlePromise<TData = unknown, TError = unknown, TPending = unknown>(
   promise: Promise<TData> | (() => Promise<TData>),
   { pending, error, success }: ToastPromiseParams<TData, TError, TPending>,
-  options?: ToastOptions
+  options?: ToastOptions<TData>
 ) {
   let id: Id;
 
@@ -127,7 +104,7 @@ function handlePromise<TData = unknown, TError = unknown, TPending = unknown>(
       : toast.loading(pending.render, {
           ...options,
           ...(pending as ToastOptions)
-        });
+        } as ToastOptions<TPending>);
   }
 
   const resetParams = {
@@ -169,7 +146,7 @@ function handlePromise<TData = unknown, TError = unknown, TPending = unknown>(
       toast(params!.render, {
         ...baseParams,
         ...params
-      } as ToastOptions);
+      } as ToastOptions<T>);
     }
 
     return result;
@@ -185,6 +162,47 @@ function handlePromise<TData = unknown, TError = unknown, TPending = unknown>(
   return p;
 }
 
+/**
+ * Supply a promise or a function that return a promise and the notification will be updated if it resolves or fails.
+ * When the promise is pending a spinner is displayed by default.
+ * `toast.promise` returns the provided promise so you can chain it.
+ *
+ * Simple example:
+ *
+ * ```
+ * toast.promise(MyPromise,
+ *  {
+ *    pending: 'Promise is pending',
+ *    success: 'Promise resolved 👌',
+ *    error: 'Promise rejected 🤯'
+ *  }
+ * )
+ *
+ * ```
+ *
+ * Advanced usage:
+ * ```
+ * toast.promise<{name: string}, {message: string}, undefined>(
+ *    resolveWithSomeData,
+ *    {
+ *      pending: {
+ *        render: () => "I'm loading",
+ *        icon: false,
+ *      },
+ *      success: {
+ *        render: ({data}) => `Hello ${data.name}`,
+ *        icon: "🟢",
+ *      },
+ *      error: {
+ *        render({data}){
+ *          // When the promise reject, data will contains the error
+ *          return <MyErrorComponent message={data.message} />
+ *        }
+ *      }
+ *    }
+ * )
+ * ```
+ */
 toast.promise = handlePromise;
 toast.success = createToastByType(Type.SUCCESS);
 toast.info = createToastByType(Type.INFO);
@@ -200,67 +218,130 @@ toast.dark = (content: ToastContent, options?: ToastOptions) =>
     })
   );
 
+interface RemoveParams {
+  id?: Id;
+  containerId: Id;
+}
+
+function dismiss(params: RemoveParams): void;
+function dismiss(params?: Id): void;
+function dismiss(params?: Id | RemoveParams) {
+  removeToast(params);
+}
+
 /**
- * Remove toast programmaticaly
+ * Remove toast programmatically
+ *
+ * - Remove all toasts:
+ * ```
+ * toast.dismiss()
+ * ```
+ *
+ * - Remove all toasts that belongs to a given container
+ * ```
+ * toast.dismiss({ container: "123" })
+ * ```
+ *
+ * - Remove toast that has a given id regardless the container
+ * ```
+ * toast.dismiss({ id: "123" })
+ * ```
+ *
+ * - Remove toast that has a given id for a specific container
+ * ```
+ * toast.dismiss({ id: "123", containerId: "12" })
+ * ```
  */
-toast.dismiss = (id?: Id) => {
-  if (containers.size > 0) {
-    eventManager.emit(Event.Clear, id);
-  } else {
-    queue = queue.filter(t => id != null && t.options.toastId !== id);
-  }
-};
+toast.dismiss = dismiss;
 
 /**
  * Clear waiting queue when limit is used
  */
-toast.clearWaitingQueue = (params: ClearWaitingQueueParams = {}) =>
-  eventManager.emit(Event.ClearWaitingQueue, params);
+toast.clearWaitingQueue = clearWaitingQueue;
 
 /**
- * return true if one container is displaying the toast
+ * Check if a toast is active
+ *
+ * - Check regardless the container
+ * ```
+ * toast.isActive("123")
+ * ```
+ *
+ * - Check in a specific container
+ * ```
+ * toast.isActive("123", "containerId")
+ * ```
  */
-toast.isActive = (id: Id) => {
-  let isToastActive = false;
+toast.isActive = isToastActive;
 
-  containers.forEach(container => {
-    if (container.isToastActive && container.isToastActive(id)) {
-      isToastActive = true;
-    }
-  });
-
-  return isToastActive;
-};
-
+/**
+ * Update a toast, see https://fkhadra.github.io/react-toastify/update-toast/ for more
+ *
+ * Example:
+ * ```
+ * // With a string
+ * toast.update(toastId, {
+ *    render: "New content",
+ *    type: "info",
+ * });
+ *
+ * // Or with a component
+ * toast.update(toastId, {
+ *    render: MyComponent
+ * });
+ *
+ * // Or a function
+ * toast.update(toastId, {
+ *    render: () => <div>New content</div>
+ * });
+ *
+ * // Apply a transition
+ * toast.update(toastId, {
+ *   render: "New Content",
+ *   type: toast.TYPE.INFO,
+ *   transition: Rotate
+ * })
+ * ```
+ */
 toast.update = <TData = unknown>(
   toastId: Id,
   options: UpdateOptions<TData> = {}
 ) => {
-  setTimeout(() => {
-    const toast = getToast(toastId, options as ToastOptions);
-    if (toast) {
-      const { props: oldOptions, content: oldContent } = toast;
+  const toast = getToast(toastId, options as ToastOptions);
 
-      const nextOptions = {
-        delay: 100,
-        ...oldOptions,
-        ...options,
-        toastId: options.toastId || toastId,
-        updateId: generateToastId()
-      } as ToastProps & UpdateOptions;
+  if (toast) {
+    const { props: oldOptions, content: oldContent } = toast;
 
-      if (nextOptions.toastId !== toastId) nextOptions.staleId = toastId;
+    const nextOptions = {
+      delay: 100,
+      ...oldOptions,
+      ...options,
+      toastId: options.toastId || toastId,
+      updateId: genToastId()
+    } as ToastProps & UpdateOptions;
 
-      const content = nextOptions.render || oldContent;
-      delete nextOptions.render;
+    if (nextOptions.toastId !== toastId) nextOptions.staleId = toastId;
 
-      dispatchToast(content, nextOptions);
-    }
-  }, 0);
+    const content = nextOptions.render || oldContent;
+    delete nextOptions.render;
+
+    dispatchToast(content, nextOptions);
+  }
 };
 
 /**
- * Used for controlled progress bar.
+ * Used for controlled progress bar. It will automatically close the notification.
+ *
+ * If you don't want your notification to be clsoed when the timer is done you should use `toast.update` instead as follow instead:
+ *
+ * ```
+ * toast.update(id, {
+ *    progress: null, // remove controlled progress bar
+ *    render: "ok",
+ *    type: "success",
+ *    autoClose: 5000 // set autoClose to the desired value
+ *   });
+ * ```
  */
 toast.done = (id: Id) => {
   toast.update(id, {
@@ -288,49 +369,60 @@ toast.done = (id: Id) => {
  * })
  * ```
  */
-toast.onChange = (callback: OnChangeCallback) => {
-  eventManager.on(Event.Change, callback);
-  return () => {
-    eventManager.off(Event.Change, callback);
-  };
-};
+toast.onChange = onChange;
 
 /**
- * @deprecated
- * Will be removed in the next major release.
+ * Play a toast(s) timer progammatically
+ *
+ * Usage:
+ *
+ * - Play all toasts
+ * ```
+ * toast.play()
+ * ```
+ *
+ * - Play all toasts for a given container
+ * ```
+ * toast.play({ containerId: "123" })
+ * ```
+ *
+ * - Play toast that has a given id regardless the container
+ * ```
+ * toast.play({ id: "123" })
+ * ```
+ *
+ * - Play toast that has a given id for a specific container
+ * ```
+ * toast.play({ id: "123", containerId: "12" })
+ * ```
  */
-toast.POSITION = POSITION;
+toast.play = (opts?: IdOpts) => toggleToast(true, opts);
 
 /**
- * @deprecated
- * Will be removed in the next major release.
+ * Pause a toast(s) timer progammatically
+ *
+ * Usage:
+ *
+ * - Pause all toasts
+ * ```
+ * toast.pause()
+ * ```
+ *
+ * - Pause all toasts for a given container
+ * ```
+ * toast.pause({ containerId: "123" })
+ * ```
+ *
+ * - Pause toast that has a given id regardless the container
+ * ```
+ * toast.pause({ id: "123" })
+ * ```
+ *
+ * - Pause toast that has a given id for a specific container
+ * ```
+ * toast.pause({ id: "123", containerId: "12" })
+ * ```
  */
-toast.TYPE = TYPE;
-
-/**
- * Wait until the ToastContainer is mounted to dispatch the toast
- * and attach isActive method
- */
-eventManager
-  .on(Event.DidMount, (containerInstance: ContainerInstance) => {
-    latestInstance = containerInstance.containerId || containerInstance;
-    containers.set(latestInstance, containerInstance);
-
-    queue.forEach(item => {
-      eventManager.emit(Event.Show, item.content, item.options);
-    });
-
-    queue = [];
-  })
-  .on(Event.WillUnmount, (containerInstance: ContainerInstance) => {
-    containers.delete(containerInstance.containerId || containerInstance);
-
-    if (containers.size === 0) {
-      eventManager
-        .off(Event.Show)
-        .off(Event.Clear)
-        .off(Event.ClearWaitingQueue);
-    }
-  });
+toast.pause = (opts?: IdOpts) => toggleToast(false, opts);
 
 export { toast };

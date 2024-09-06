@@ -16,9 +16,15 @@ $rt-mobile: 'only screen and (max-width : 480px)' !default;
   --toastify-icon-color-error: var(--toastify-color-error);
 
   --toastify-toast-width: 320px;
+  --toastify-toast-offset: 16px;
+  --toastify-toast-top: max(var(--toastify-toast-offset), env(safe-area-inset-top));
+  --toastify-toast-right: max(var(--toastify-toast-offset), env(safe-area-inset-right));
+  --toastify-toast-left: max(var(--toastify-toast-offset), env(safe-area-inset-left));
+  --toastify-toast-bottom: max(var(--toastify-toast-offset), env(safe-area-inset-bottom));
   --toastify-toast-background: #fff;
   --toastify-toast-min-height: 64px;
   --toastify-toast-max-height: 800px;
+  --toastify-toast-bd-radius: 6px;
   --toastify-font-family: sans-serif;
   --toastify-z-index: 9999;
 
@@ -50,4 +56,5 @@ $rt-mobile: 'only screen and (max-width : 480px)' !default;
   --toastify-color-progress-success: var(--toastify-color-success);
   --toastify-color-progress-warning: var(--toastify-color-warning);
   --toastify-color-progress-error: var(--toastify-color-error);
+  --toastify-color-progress-bgo: 0.2;
 }
