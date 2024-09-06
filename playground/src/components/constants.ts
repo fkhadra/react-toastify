@@ -50,7 +50,7 @@ export const typeMap = {
   error: 'toast.error',
   info: 'toast.info',
   warning: 'toast.warn'
-}
+};
 
 export const positions = {
   TOP_LEFT: 'top-left',
@@ -59,4 +59,12 @@ export const positions = {
   BOTTOM_LEFT: 'bottom-left',
   BOTTOM_RIGHT: 'bottom-right',
   BOTTOM_CENTER: 'bottom-center'
+};
+
+export const typs = {
+  INFO: 'info',
+  SUCCESS: 'success',
+  WARNING: 'warning',
+  ERROR: 'error',
+  DEFAULT: 'default'
 };
