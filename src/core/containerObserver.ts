@@ -220,6 +220,6 @@ export function createContainerObserver(
       toasts.get(id)!.toggle = fn;
     },
     isToastActive: (id: Id) => activeToasts.some(v => v === id),
-    getSnapshot: () => (props.newestOnTop ? snapshot.reverse() : snapshot)
+    getSnapshot: () => snapshot
   };
 }

@@ -16,6 +16,10 @@ export function useToastContainer(props: ToastContainerProps) {
 
     const toRender = new Map<ToastPosition, Toast[]>();
 
+    if (props.newestOnTop) {
+      snapshot.reverse();
+    }
+
     snapshot.forEach(toast => {
       const { position } = toast.props;
       toRender.has(position) || toRender.set(position, []);
