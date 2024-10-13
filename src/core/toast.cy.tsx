@@ -34,6 +34,49 @@ describe('without container', () => {
   });
 });
 
+describe('with container event handlers', () => {
+  it('calls container open and close', () => {
+    const onOpen = cy.stub().as('onContainerOpen');
+    const onClose = cy.stub().as('onContainerClose');
+    cy.mount(
+      <ToastContainer
+        autoClose={false}
+        closeOnClick
+        onClose={onClose}
+        onOpen={onOpen}
+      />
+    );
+    toast('msg');
+    cy.resolveEntranceAnimation();
+    cy.findByText('msg').should('exist').click().should('not.exist');
+    cy.get('@onContainerOpen').should('have.been.calledOnce');
+    cy.get('@onContainerClose').should('have.been.calledOnce');
+  });
+
+  it('calls container open and close and toast open and close', () => {
+    const onOpen = cy.stub().as('onContainerOpen');
+    const onClose = cy.stub().as('onContainerClose');
+    cy.mount(
+      <ToastContainer
+        autoClose={false}
+        closeOnClick
+        onClose={onClose}
+        onOpen={onOpen}
+      />
+    );
+    toast('msg', {
+      onOpen: cy.stub().as('onToastOpen'),
+      onClose: cy.stub().as('onToastClose')
+    });
+    cy.resolveEntranceAnimation();
+    cy.findByText('msg').should('exist').click().should('not.exist');
+    cy.get('@onContainerOpen').should('have.been.calledOnce');
+    cy.get('@onContainerClose').should('have.been.calledOnce');
+    cy.get('@onToastOpen').should('have.been.calledOnce');
+    cy.get('@onToastClose').should('have.been.calledOnce');
+  });
+});
+
 describe('with container', () => {
   beforeEach(() => {
     cy.mount(<ToastContainer autoClose={false} closeOnClick />);
