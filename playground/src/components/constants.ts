@@ -44,6 +44,14 @@ export const transitions = {
 
 export const themes = <const>['light', 'dark', 'colored'];
 
+export const typeMap = {
+  default: 'toast',
+  success: 'toast.success',
+  error: 'toast.error',
+  info: 'toast.info',
+  warning: 'toast.warn'
+};
+
 export const positions = {
   TOP_LEFT: 'top-left',
   TOP_RIGHT: 'top-right',
