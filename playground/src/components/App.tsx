@@ -10,7 +10,7 @@ import { ContainerCode, ContainerCodeProps } from './ContainerCode';
 import { Header } from './Header';
 import { Radio } from './Radio';
 import { ToastCode, ToastCodeProps } from './ToastCode';
-import { flags, positions, themes, transitions, typs } from './constants';
+import { flags, positions, themes, transitions, types } from './constants';
 
 import React from 'react';
 import '../../../scss/main.scss';
@@ -152,7 +152,7 @@ class App extends React.Component {
               <h3>Type</h3>
               <ul>
                 <Radio
-                  options={typs}
+                  options={types}
                   name="type"
                   checked={this.state.type}
                   onChange={this.handleRadioOrSelect}

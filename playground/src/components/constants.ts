@@ -53,7 +53,7 @@ export const positions = {
   BOTTOM_CENTER: 'bottom-center'
 };
 
-export const typs = {
+export const types = {
   INFO: 'info',
   SUCCESS: 'success',
   WARNING: 'warning',
