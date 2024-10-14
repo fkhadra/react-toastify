@@ -16,6 +16,7 @@ import React from 'react';
 import '../../../scss/main.scss';
 import { Id, ToastContainer, toast } from '../../../src/index';
 import { defaultProps } from '../../../src/components/ToastContainer';
+import { ComeAndLeaveFromOptions } from './ComeAndLeaveFromOptions.tsx';
 
 // Attach to window. Can be useful to debug
 // @ts-ignore
@@ -39,7 +40,9 @@ class App extends React.Component {
       progress: '',
       disableAutoClose: false,
       limit: 0,
-      theme: 'light'
+      theme: 'light',
+      comeFrom : '',
+      leaveFrom : ''
     };
   }
 
@@ -125,6 +128,20 @@ class App extends React.Component {
     ));
   }
 
+  onSelectComeOrLeaveOptions = e => {
+    if (e.target.value === "select comeFrom" || e.target.value === "select leaveFrom") {
+      this.setState({
+        [e.target.name] : ""
+      });
+      return;
+    }
+    
+    this.setState({
+      [e.target.name] : e.target.value
+    });
+  
+  }
+
   render() {
     return (
       <main>
@@ -179,6 +196,7 @@ class App extends React.Component {
                   <select
                     name="transition"
                     id="transition"
+
                     onChange={this.handleRadioOrSelect}
                     value={this.state.transition}
                   >
@@ -223,6 +241,14 @@ class App extends React.Component {
                     value={this.state.limit}
                     onChange={this.handleRadioOrSelect}
                   />
+                </label>
+                <label htmlFor={"comeAndLeaveFromOptions"}>
+                  Come and Leave Options
+                  <ComeAndLeaveFromOptions
+                   onChange={this.onSelectComeOrLeaveOptions} 
+                   comeFromValue={this.state.comeFrom} 
+                   leaveFromValue={this.state.leaveFrom}
+                   />
                 </label>
               </div>
               <ul>{this.renderFlags()}</ul>
@@ -271,6 +297,7 @@ class App extends React.Component {
                   Reset
                 </button>
               </li>
+
             </ul>
           </div>
         </div>

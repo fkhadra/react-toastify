@@ -29,6 +29,8 @@ export interface ToastCodeProps {
   draggable: boolean;
   progress: number;
   theme: typeof themes[number];
+  comeFrom: string;
+  leaveFrom: string;
 }
 
 export const ToastCode: React.FC<ToastCodeProps> = ({
@@ -41,7 +43,9 @@ export const ToastCode: React.FC<ToastCodeProps> = ({
   type,
   draggable,
   progress,
-  theme
+  theme,
+  comeFrom,
+  leaveFrom
 }) => (
   <div>
     <h3>Toast Emitter</h3>
@@ -74,6 +78,16 @@ export const ToastCode: React.FC<ToastCodeProps> = ({
         <span className="code__props">pauseOnHover</span>
         {`: ${pauseOnHover ? 'true' : 'false'}`},
       </div>
+       <div>
+          <span className="code__props">comeFrom</span>
+          {`: ${comeFrom}`},
+        </div>
+
+     <div>
+          <span className="code__props">leaveFrom</span>
+          {`: ${leaveFrom}`},
+        </div>
+
       <div>
         <span className="code__props">draggable</span>
         {`: ${draggable ? 'true' : 'false'}`},

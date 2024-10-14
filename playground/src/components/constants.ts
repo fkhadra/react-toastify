@@ -53,6 +53,14 @@ export const positions = {
   BOTTOM_CENTER: 'bottom-center'
 };
 
+
+export const comeAndLeaveFrom =  {
+  LEFT : 'left',
+  RIGHT : 'right',
+  TOP: 'top',
+  BOTTOM: 'bottom',
+}
+
 export const typs = {
   INFO: 'info',
   SUCCESS: 'success',

@@ -31,7 +31,7 @@ export const ContainerCode: React.FC<ContainerCodeProps> = ({
   pauseOnFocusLoss,
   isDefaultProps,
   draggable,
-  theme
+  theme,
 }) => (
   <div>
     <h3>Toast Container</h3>
@@ -48,6 +48,7 @@ export const ContainerCode: React.FC<ContainerCodeProps> = ({
         <span className="code__props">theme</span>
         {`="${theme}"`}
       </div>
+
       <div>
         <span className="code__props">autoClose</span>
         {`={${disableAutoClose ? false : autoClose}}`}

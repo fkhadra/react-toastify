@@ -1,4 +1,5 @@
 import { Default } from './constant';
+import { ToastComeAndGoTo } from '../types';
 
 /**
  * Used to collapse toast after exit animation
@@ -14,7 +15,6 @@ export function collapseToast(
     style.minHeight = 'initial';
     style.height = scrollHeight + 'px';
     style.transition = `all ${duration}ms`;
-
     requestAnimationFrame(() => {
       style.height = '0';
       style.padding = '0';

@@ -28,6 +28,7 @@ export function ToastContainer(props: ToastContainerProps) {
     ...defaultProps,
     ...props
   };
+
   const stacked = props.stacked;
   const [collapsed, setIsCollapsed] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -81,7 +82,6 @@ export function ToastContainer(props: ToastContainerProps) {
           node.style.setProperty('--y', `${isTop ? y : y * -1}px`);
           node.style.setProperty('--g', `${gap}`);
           node.style.setProperty('--s', `${1 - (collapsed ? prevS : 0)}`);
-
           usedHeight += node.offsetHeight;
           prevS += 0.025;
         });

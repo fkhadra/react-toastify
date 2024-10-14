@@ -52,6 +52,9 @@ input[type='number'] {
 input[type='radio'] {
   margin-right: 8px;
 }
+option {
+  color: black;
+}
 
 select {
   padding: 8px;
@@ -199,4 +202,8 @@ select {
   .github-corner .octo-arm {
     animation: octocat-wave 560ms ease-in-out;
   }
+}
+
+.comeAndLeaveFromContainer {
+  display: flex;
 }

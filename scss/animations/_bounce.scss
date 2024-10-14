@@ -1,6 +1,12 @@
+
+
 @mixin timing-function {
   animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
 }
+
+
+
+
 
 @keyframes #{$rt-namespace}__bounceInRight {
   from,
@@ -195,3 +201,188 @@
     animation-name: #{$rt-namespace}__bounceOutDown;
   }
 }
+
+
+/**
+ Toast comefrom css start
+ */
+.#{$rt-namespace}__bounce-enterleft {
+  &--top-left,
+  &--bottom-left {
+    animation-name: #{$rt-namespace}__bounceInLeft;
+  }
+  &--top-right,
+  &--bottom-right {
+    animation-name: #{$rt-namespace}__bounceInLeft;
+  }
+  &--top-center {
+    animation-name: #{$rt-namespace}__bounceInLeft;
+  }
+  &--bottom-center {
+    animation-name: #{$rt-namespace}__bounceInLeft;
+  }
+}
+
+
+.#{$rt-namespace}__bounce-enterright {
+  &--top-left,
+  &--bottom-left {
+    animation-name: #{$rt-namespace}__bounceInRight;
+  }
+  &--top-right,
+  &--bottom-right {
+    animation-name: #{$rt-namespace}__bounceInRight;
+  }
+  &--top-center {
+    animation-name: #{$rt-namespace}__bounceInRight;
+  }
+  &--bottom-center {
+    animation-name: #{$rt-namespace}__bounceInRight;
+  }
+}
+
+.#{$rt-namespace}__bounce-enterbottom {
+  &--top-left,
+  &--bottom-left {
+    animation-name: #{$rt-namespace}__bounceInUp;
+  }
+  &--top-right,
+  &--bottom-right {
+    animation-name: #{$rt-namespace}__bounceInUp;
+  }
+  &--top-center {
+    animation-name: #{$rt-namespace}__bounceInUp;
+  }
+  &--bottom-center {
+    animation-name: #{$rt-namespace}__bounceInUp;
+  }
+}
+
+.#{$rt-namespace}__bounce-entertop {
+  &--top-left,
+  &--bottom-left {
+    animation-name: #{$rt-namespace}__bounceInDown;
+  }
+  &--top-right,
+  &--bottom-right {
+    animation-name: #{$rt-namespace}__bounceInDown;
+  }
+  &--top-center {
+    animation-name: #{$rt-namespace}__bounceInDown;
+  }
+  &--bottom-center {
+    animation-name: #{$rt-namespace}__bounceInDown;
+  }
+}
+
+/**
+Css come from css end
+ */
+
+
+
+
+
+
+
+
+
+
+
+/**
+Css leaveFrom css start
+ */
+
+
+.#{$rt-namespace}__bounce-exitleft {
+  &--top-left,
+  &--bottom-left {
+    animation-name: #{$rt-namespace}__bounceOutLeft;
+  }
+  &--top-right,
+  &--bottom-right {
+    animation-name: #{$rt-namespace}__bounceOutLeft;
+  }
+  &--top-center {
+    animation-name: #{$rt-namespace}__bounceOutLeft;
+  }
+  &--bottom-center {
+    animation-name: #{$rt-namespace}__bounceOutLeft;
+  }
+}
+
+
+
+.#{$rt-namespace}__bounce-exitright {
+  &--top-left,
+  &--bottom-left {
+    animation-name: #{$rt-namespace}__bounceOutRight;
+  }
+  &--top-right,
+  &--bottom-right {
+    animation-name: #{$rt-namespace}__bounceOutRight;
+  }
+  &--top-center {
+    animation-name: #{$rt-namespace}__bounceOutRight;
+  }
+  &--bottom-center {
+    animation-name: #{$rt-namespace}__bounceOutRight;
+  }
+}
+
+
+.#{$rt-namespace}__bounce-exittop {
+  &--top-left,
+  &--bottom-left {
+    animation-name: #{$rt-namespace}__bounceOutUp;
+  }
+  &--top-right,
+  &--bottom-right {
+    animation-name: #{$rt-namespace}__bounceOutUp;
+
+
+  }
+  &--top-center {
+    animation-name: #{$rt-namespace}__bounceOutUp;
+
+
+  }
+  &--bottom-center {
+    animation-name: #{$rt-namespace}__bounceOutUp;
+
+
+  }
+}
+
+
+.#{$rt-namespace}__bounce-exitbottom {
+  &--top-left,
+  &--bottom-left {
+    animation-name: #{$rt-namespace}__bounceOutDown;
+  }
+  &--top-right,
+  &--bottom-right {
+    animation-name: #{$rt-namespace}__bounceOutDown;
+
+
+
+  }
+  &--top-center {
+    animation-name: #{$rt-namespace}__bounceOutDown;
+
+
+
+  }
+  &--bottom-center {
+    animation-name: #{$rt-namespace}__bounceOutDown;
+
+
+
+  }
+}
+
+
+
+/**
+Css LeavedFrom css end
+ */

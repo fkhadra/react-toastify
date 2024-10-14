@@ -54,6 +54,8 @@ export interface ClearWaitingQueueParams {
   containerId?: Id;
 }
 
+export type ToastComeAndLeaveFrom = 'left' | 'right' | 'bottom' | 'top';
+
 export type DraggableDirection = 'x' | 'y';
 
 interface CommonOptions {
@@ -235,6 +237,10 @@ export interface ToastOptions<Data = unknown> extends CommonOptions {
   isLoading?: boolean;
 
   data?: Data;
+
+  comeFrom?: ToastComeAndLeaveFrom;
+
+  leaveFrom?: ToastComeAndLeaveFrom;
 }
 
 export interface UpdateOptions<T = unknown> extends Nullable<ToastOptions<T>> {
@@ -291,6 +297,8 @@ export interface ToastTransitionProps {
   nodeRef: React.RefObject<HTMLElement>;
   children?: React.ReactNode;
   playToast(): void;
+  comeFrom?: ToastComeAndLeaveFrom;
+  leaveFrom?: ToastComeAndLeaveFrom;
 }
 
 /**
@@ -315,6 +323,8 @@ export interface ToastProps extends ToastOptions {
   type: TypeOptions;
   collapseAll: () => void;
   stacked?: boolean;
+  comeFrom?: ToastComeAndLeaveFrom;
+  leaveFrom?: ToastComeAndLeaveFrom;
 }
 
 /**
