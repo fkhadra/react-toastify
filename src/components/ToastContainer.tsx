@@ -123,6 +123,7 @@ export function ToastContainer(props: ToastContainerProps) {
                     toastProps.containerId
                   )}
                   style={toastProps.style}
+                  onButtonClose={toastProps.onButtonClose} 
                   key={`toast-${toastProps.key}`}
                 >
                   {content}

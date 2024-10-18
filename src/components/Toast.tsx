@@ -41,7 +41,8 @@ export const Toast: React.FC<ToastProps> = props => {
     isIn,
     isLoading,
     closeOnClick,
-    theme
+    theme,
+    onButtonClose 
   } = props;
   const defaultClassName = cx(
     `${Default.CSS_NAMESPACE}__toast`,
@@ -65,7 +66,14 @@ export const Toast: React.FC<ToastProps> = props => {
   const icon = getIcon(props);
   const isProgressControlled = !!progress || !autoClose;
 
-  const closeButtonProps = { closeToast, type, theme };
+  const handleButtonClose = () => {
+    if (onButtonClose) {
+      onButtonClose();
+    }
+    closeToast();
+  };
+
+  const closeButtonProps = { closeToast: handleButtonClose, type, theme };
   let Close: React.ReactNode = null;
 
   if (closeButton === false) {
