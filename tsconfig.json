@@ -1,26 +1,8 @@
 {
-  "include": ["src", "types", "cypress", "@testing-library/cypress"],
   "compilerOptions": {
-    "module": "ESNext",
-    "lib": ["dom", "esnext"],
-    "types": ["cypress", "node", "@4tw/cypress-drag-drop"],
-    "importHelpers": true,
-    "declaration": true,
-    "sourceMap": true,
-    "rootDir": "./",
-    "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "strictPropertyInitialization": true,
-    "noImplicitThis": true,
-    "alwaysStrict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": false,
-    "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "node",
     "jsx": "react",
-    "esModuleInterop": true
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "lib": ["es2015", "dom"]
   }
 }

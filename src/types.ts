@@ -1,5 +1,6 @@
 import React from 'react';
 import { CloseButtonProps, IconProps } from './components';
+import { clearWaitingQueue } from './core/store';
 
 type Nullable<T> = {
   [P in keyof T]: T[P] | null;
@@ -353,3 +354,5 @@ export type IdOpts = {
   id?: Id;
   containerId?: Id;
 };
+
+export type ClearWaitingQueueFunc = typeof clearWaitingQueue;
