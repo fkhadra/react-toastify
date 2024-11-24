@@ -1,7 +1,9 @@
 import {
+  ClearWaitingQueueFunc,
   Id,
   IdOpts,
   NotValidatedToastProps,
+  OnChangeCallback,
   ToastContent,
   ToastOptions,
   ToastProps,
@@ -257,7 +259,7 @@ toast.dismiss = dismiss;
 /**
  * Clear waiting queue when limit is used
  */
-toast.clearWaitingQueue = clearWaitingQueue;
+toast.clearWaitingQueue = clearWaitingQueue as ClearWaitingQueueFunc;
 
 /**
  * Check if a toast is active
@@ -369,7 +371,7 @@ toast.done = (id: Id) => {
  * })
  * ```
  */
-toast.onChange = onChange;
+toast.onChange = onChange as (cb: OnChangeCallback) => void;
 
 /**
  * Play a toast(s) timer progammatically

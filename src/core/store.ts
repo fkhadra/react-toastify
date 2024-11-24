@@ -1,4 +1,5 @@
 import {
+  ClearWaitingQueueParams,
   Id,
   NotValidatedToastProps,
   OnChangeCallback,
@@ -16,10 +17,6 @@ import {
 interface EnqueuedToast {
   content: ToastContent<any>;
   options: NotValidatedToastProps;
-}
-
-interface ClearWaitingQueueParams {
-  containerId?: Id;
 }
 
 interface RemoveParams {
@@ -76,13 +73,13 @@ export function removeToast(params?: Id | RemoveParams) {
   }
 }
 
-export function clearWaitingQueue(p: ClearWaitingQueueParams = {}) {
+export const clearWaitingQueue = (p: ClearWaitingQueueParams = {}) => {
   containers.forEach(c => {
     if (c.props.limit && (!p.containerId || c.id === p.containerId)) {
       c.clearQueue();
     }
   });
-}
+};
 
 export function pushToast<TData>(
   content: ToastContent<TData>,
