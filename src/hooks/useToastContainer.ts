@@ -7,7 +7,11 @@ export function useToastContainer(props: ToastContainerProps) {
     registerContainer(props)
   ).current;
   setProps(props);
-  const snapshot = useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
+  const snapshot = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getSnapshot
+  )?.slice();
 
   function getToastToRender<T>(
     cb: (position: ToastPosition, toastList: Toast[]) => T
@@ -16,9 +20,7 @@ export function useToastContainer(props: ToastContainerProps) {
 
     const toRender = new Map<ToastPosition, Toast[]>();
 
-    if (props.newestOnTop) {
-      snapshot.reverse();
-    }
+    if (props.newestOnTop) snapshot.reverse();
 
     snapshot.forEach(toast => {
       const { position } = toast.props;
