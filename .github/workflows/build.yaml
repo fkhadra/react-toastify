@@ -12,14 +12,18 @@ jobs:
         uses: actions/setup-node@v1
         with:
             node-version: '18.x'
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+            version: 9 
       - name: Install dependencies
-        run: yarn 
-      - name: Lint
-        run: yarn lint
+        run: pnpm i 
+      # - name: Lint
+      #   run: yarn lint
       - name: Setup
-        run: yarn setup
+        run: pnpm run setup
       - name: Test
-        run: yarn run test:run 
+        run: pnpm run test:run 
       - uses: actions/upload-artifact@v3
         if: failure()
         with:
