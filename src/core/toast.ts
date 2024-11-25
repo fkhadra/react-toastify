@@ -371,7 +371,7 @@ toast.done = (id: Id) => {
  * })
  * ```
  */
-toast.onChange = onChange as (cb: OnChangeCallback) => void;
+toast.onChange = onChange as (cb: OnChangeCallback) => () => void;
 
 /**
  * Play a toast(s) timer progammatically

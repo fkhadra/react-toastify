@@ -1,6 +1,7 @@
 import React from 'react';
-import { IconParams, getIcon } from './Icons';
+import '../style.css';
 import { TypeOptions } from '../types';
+import { IconParams, getIcon } from './Icons';
 
 const props: IconParams = {
   theme: 'light',
