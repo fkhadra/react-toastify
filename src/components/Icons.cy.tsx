@@ -1,5 +1,4 @@
 import React from 'react';
-import '../style.css';
 import { TypeOptions } from '../types';
 import { IconParams, getIcon } from './Icons';
 
