@@ -1,4 +1,5 @@
 import React from 'react';
+import '../style.css';
 import { CloseButton } from './CloseButton';
 
 describe('CloseButton', () => {

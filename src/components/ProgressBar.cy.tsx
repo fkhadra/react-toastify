@@ -1,4 +1,5 @@
 import React from 'react';
+import '../style.css';
 import { Theme } from '../types';
 import { ProgressBar } from './ProgressBar';
 

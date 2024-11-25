@@ -1,4 +1,5 @@
 import React from 'react';
+import '../style.css';
 import { DraggableDirection, ToastProps } from '../types';
 import { Default } from '../utils';
 import { Toast } from './Toast';

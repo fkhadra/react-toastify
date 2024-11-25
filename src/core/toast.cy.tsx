@@ -1,6 +1,5 @@
 import React from 'react';
-import { ToastContainer } from '../components';
-import { toast } from './toast';
+import { toast, ToastContainer } from 'react-toastify';
 
 beforeEach(() => {
   cy.viewport('macbook-15');

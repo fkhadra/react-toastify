@@ -83,7 +83,12 @@
     "./package.json": "./package.json",
     "./addons/use-notification-center": {
       "types": "./addons/use-notification-center/index.d.ts",
-      "import": "./addons/use-notification-center/index.esm.mjs",
+      "import": "./addons/use-notification-center/index.mjs",
+      "require": "./addons/use-notification-center/index.js"
+    },
+    "./notification-center": {
+      "types": "./addons/use-notification-center/index.d.ts",
+      "import": "./addons/use-notification-center/index.mjs",
       "require": "./addons/use-notification-center/index.js"
     }
   }

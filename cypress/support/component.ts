@@ -17,7 +17,6 @@
 // cypress/support/e2e.js
 import '@cypress/code-coverage/support';
 import './commands';
-import '../../scss/main.scss';
 import './style.css';
 
 // Alternatively you can use CommonJS syntax:
