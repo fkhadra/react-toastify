@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
   
     steps:
-      - uses: actions/checkout@4.2.2
+      - uses: actions/checkout@v4.2.2
       - name: Install node
         uses: actions/setup-node@v4.1.0
         with:
