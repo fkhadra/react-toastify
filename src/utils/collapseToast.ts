@@ -3,11 +3,7 @@ import { Default } from './constant';
 /**
  * Used to collapse toast after exit animation
  */
-export function collapseToast(
-  node: HTMLElement,
-  done: () => void,
-  duration = Default.COLLAPSE_DURATION
-) {
+export function collapseToast(node: HTMLElement, done: () => void, duration = Default.COLLAPSE_DURATION) {
   const { scrollHeight, style } = node;
 
   requestAnimationFrame(() => {

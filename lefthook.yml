@@ -1,0 +1,6 @@
+ pre-commit:
+   parallel: true
+   commands:
+     lint-staged:
+       glob: "*.{js,ts,jsx,tsx,css}"
+       run: pnpm lint-staged
