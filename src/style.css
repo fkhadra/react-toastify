@@ -12,22 +12,10 @@
   --toastify-icon-color-error: var(--toastify-color-error);
   --toastify-toast-width: 320px;
   --toastify-toast-offset: 16px;
-  --toastify-toast-top: max(
-    var(--toastify-toast-offset),
-    env(safe-area-inset-top)
-  );
-  --toastify-toast-right: max(
-    var(--toastify-toast-offset),
-    env(safe-area-inset-right)
-  );
-  --toastify-toast-left: max(
-    var(--toastify-toast-offset),
-    env(safe-area-inset-left)
-  );
-  --toastify-toast-bottom: max(
-    var(--toastify-toast-offset),
-    env(safe-area-inset-bottom)
-  );
+  --toastify-toast-top: max(var(--toastify-toast-offset), env(safe-area-inset-top));
+  --toastify-toast-right: max(var(--toastify-toast-offset), env(safe-area-inset-right));
+  --toastify-toast-left: max(var(--toastify-toast-offset), env(safe-area-inset-left));
+  --toastify-toast-bottom: max(var(--toastify-toast-offset), env(safe-area-inset-bottom));
   --toastify-toast-background: #fff;
   --toastify-toast-min-height: 64px;
   --toastify-toast-max-height: 800px;
@@ -42,15 +30,7 @@
   --toastify-text-color-error: #fff;
   --toastify-spinner-color: #616161;
   --toastify-spinner-color-empty-area: #e0e0e0;
-  --toastify-color-progress-light: linear-gradient(
-    to right,
-    #4cd964,
-    #5ac8fa,
-    #007aff,
-    #34aadc,
-    #5856d6,
-    #ff2d55
-  );
+  --toastify-color-progress-light: linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55);
   --toastify-color-progress-dark: #bb86fc;
   --toastify-color-progress-info: var(--toastify-color-info);
   --toastify-color-progress-success: var(--toastify-color-success);
@@ -655,13 +635,11 @@
     transform: translate3d(0, var(--y), 0) perspective(400px);
   }
   30% {
-    transform: translate3d(0, var(--y), 0) perspective(400px)
-      rotate3d(1, 0, 0, -20deg);
+    transform: translate3d(0, var(--y), 0) perspective(400px) rotate3d(1, 0, 0, -20deg);
     opacity: 1;
   }
   to {
-    transform: translate3d(0, var(--y), 0) perspective(400px)
-      rotate3d(1, 0, 0, 90deg);
+    transform: translate3d(0, var(--y), 0) perspective(400px) rotate3d(1, 0, 0, 90deg);
     opacity: 0;
   }
 }

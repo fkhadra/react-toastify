@@ -9,11 +9,7 @@ export interface CloseButtonProps {
   theme: Theme;
 }
 
-export function CloseButton({
-  closeToast,
-  theme,
-  ariaLabel = 'close'
-}: CloseButtonProps) {
+export function CloseButton({ closeToast, theme, ariaLabel = 'close' }: CloseButtonProps) {
   return (
     <button
       className={`${Default.CSS_NAMESPACE}__close-button ${Default.CSS_NAMESPACE}__close-button--${theme}`}

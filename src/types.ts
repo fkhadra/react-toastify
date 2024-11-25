@@ -10,13 +10,7 @@ export type TypeOptions = 'info' | 'success' | 'warning' | 'error' | 'default';
 
 export type Theme = 'light' | 'dark' | 'colored' | (string & {});
 
-export type ToastPosition =
-  | 'top-right'
-  | 'top-center'
-  | 'top-left'
-  | 'bottom-right'
-  | 'bottom-center'
-  | 'bottom-left';
+export type ToastPosition = 'top-right' | 'top-center' | 'top-left' | 'bottom-right' | 'bottom-center' | 'bottom-left';
 
 export interface ToastContentProps<Data = unknown> {
   closeToast: () => void;
@@ -24,31 +18,19 @@ export interface ToastContentProps<Data = unknown> {
   data: Data;
 }
 
-export type ToastContent<T = unknown> =
-  | React.ReactNode
-  | ((props: ToastContentProps<T>) => React.ReactNode);
+export type ToastContent<T = unknown> = React.ReactNode | ((props: ToastContentProps<T>) => React.ReactNode);
 
-export type ToastIcon =
-  | false
-  | ((props: IconProps) => React.ReactNode)
-  | React.ReactElement<IconProps>;
+export type ToastIcon = false | ((props: IconProps) => React.ReactNode) | React.ReactElement<IconProps>;
 
 export type Id = number | string;
 
-export type ToastTransition =
-  | React.FC<ToastTransitionProps>
-  | React.ComponentClass<ToastTransitionProps>;
+export type ToastTransition = React.FC<ToastTransitionProps> | React.ComponentClass<ToastTransitionProps>;
 
 /**
  * ClassName for the elements - can take a function to build a classname or a raw string that is cx'ed to defaults
  */
 export type ToastClassName =
-  | ((context?: {
-      type?: TypeOptions;
-      defaultClassName?: string;
-      position?: ToastPosition;
-      rtl?: boolean;
-    }) => string)
+  | ((context?: { type?: TypeOptions; defaultClassName?: string; position?: ToastPosition; rtl?: boolean }) => string)
   | string;
 
 export interface ClearWaitingQueueParams {
@@ -94,10 +76,7 @@ interface CommonOptions {
    * Pass a custom close button.
    * To remove the close button pass `false`
    */
-  closeButton?:
-    | boolean
-    | ((props: CloseButtonProps) => React.ReactNode)
-    | React.ReactElement<CloseButtonProps>;
+  closeButton?: boolean | ((props: CloseButtonProps) => React.ReactNode) | React.ReactElement<CloseButtonProps>;
 
   /**
    * An optional css class to set for the progress bar.

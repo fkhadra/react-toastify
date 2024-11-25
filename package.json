@@ -22,7 +22,8 @@
     "test:run": "cypress run --component -b chrome",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "prettier": "prettier --write src",
-    "build": "tsup && cp src/style.css dist/ReactToastify.css"
+    "build": "tsup && cp src/style.css dist/ReactToastify.css",
+    "prepare": "husky install"
   },
   "peerDependencies": {
     "react": ">=18.0.0",
@@ -56,6 +57,8 @@
     "@vitejs/plugin-react": "^4.2.1",
     "coveralls": "^3.0.9",
     "cypress": "^13.6.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.10",
     "postcss": "^8.4.33",
     "prettier": "3.2.2",
     "react": "^18.0.0",
@@ -91,5 +94,8 @@
       "import": "./addons/use-notification-center/index.mjs",
       "require": "./addons/use-notification-center/index.js"
     }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,md,html,css}": "prettier --write"
   }
 }

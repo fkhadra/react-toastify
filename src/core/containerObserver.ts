@@ -8,15 +8,7 @@ import {
   ToastContent,
   ToastProps
 } from '../types';
-import {
-  canBeRendered,
-  getAutoCloseDelay,
-  isFn,
-  isNum,
-  isStr,
-  parseClassName,
-  toToastItem
-} from '../utils';
+import { canBeRendered, getAutoCloseDelay, isFn, isNum, isStr, parseClassName, toToastItem } from '../utils';
 
 interface QueuedToast {
   content: ToastContent<any>;
@@ -58,11 +50,7 @@ export function createContainerObserver(
     listeners.forEach(cb => cb());
   };
 
-  const shouldIgnoreToast = ({
-    containerId,
-    toastId,
-    updateId
-  }: NotValidatedToastProps) => {
+  const shouldIgnoreToast = ({ containerId, toastId, updateId }: NotValidatedToastProps) => {
     const containerMismatch = containerId ? containerId !== id : id !== 1;
     const isDuplicate = toasts.has(toastId) && updateId == null;
 
@@ -92,20 +80,14 @@ export function createContainerObserver(
     if (toast.staleId) toasts.delete(toast.staleId);
 
     toasts.set(toastId, toast);
-    activeToasts = [...activeToasts, toast.props.toastId].filter(
-      v => v !== toast.staleId
-    );
+    activeToasts = [...activeToasts, toast.props.toastId].filter(v => v !== toast.staleId);
     notify();
     dispatchChanges(toToastItem(toast, isNew ? 'added' : 'updated'));
 
-    if (isNew && isFn(onOpen))
-      onOpen(isValidElement(children) && children.props);
+    if (isNew && isFn(onOpen)) onOpen(isValidElement(children) && children.props);
   };
 
-  const buildToast = <TData = unknown>(
-    content: ToastContent<TData>,
-    options: NotValidatedToastProps
-  ) => {
+  const buildToast = <TData = unknown>(content: ToastContent<TData>, options: NotValidatedToastProps) => {
     if (shouldIgnoreToast(options)) return;
 
     const { toastId, updateId, data, staleId, delay } = options;
@@ -121,24 +103,16 @@ export function createContainerObserver(
       ...props,
       style: props.toastStyle,
       key: toastKey++,
-      ...Object.fromEntries(
-        Object.entries(options).filter(([_, v]) => v != null)
-      ),
+      ...Object.fromEntries(Object.entries(options).filter(([_, v]) => v != null)),
       toastId,
       updateId,
       data,
       closeToast,
       isIn: false,
       className: parseClassName(options.className || props.toastClassName),
-      bodyClassName: parseClassName(
-        options.bodyClassName || props.bodyClassName
-      ),
-      progressClassName: parseClassName(
-        options.progressClassName || props.progressClassName
-      ),
-      autoClose: options.isLoading
-        ? false
-        : getAutoCloseDelay(options.autoClose, props.autoClose),
+      bodyClassName: parseClassName(options.bodyClassName || props.bodyClassName),
+      progressClassName: parseClassName(options.progressClassName || props.progressClassName),
+      autoClose: options.isLoading ? false : getAutoCloseDelay(options.autoClose, props.autoClose),
       deleteToast() {
         const toastToRemove = toasts.get(toastId)!;
         const { onClose, children } = toastToRemove.props;
@@ -164,9 +138,7 @@ export function createContainerObserver(
     if (options.closeButton === false || canBeRendered(options.closeButton)) {
       toastProps.closeButton = options.closeButton;
     } else if (options.closeButton === true) {
-      toastProps.closeButton = canBeRendered(props.closeButton)
-        ? props.closeButton
-        : true;
+      toastProps.closeButton = canBeRendered(props.closeButton) ? props.closeButton : true;
     }
 
     let toastContent = content;
@@ -188,12 +160,7 @@ export function createContainerObserver(
     };
 
     // not handling limit + delay by design. Waiting for user feedback first
-    if (
-      props.limit &&
-      props.limit > 0 &&
-      toastCount > props.limit &&
-      isNotAnUpdate
-    ) {
+    if (props.limit && props.limit > 0 && toastCount > props.limit && isNotAnUpdate) {
       queue.push(activeToast);
     } else if (isNum(delay)) {
       setTimeout(() => {

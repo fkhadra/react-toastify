@@ -3,20 +3,14 @@ import { toast, ToastItem, Id } from 'react-toastify';
 
 type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
 
-export interface NotificationCenterItem<Data = {}>
-  extends Optional<ToastItem<Data>, 'content' | 'data' | 'status'> {
+export interface NotificationCenterItem<Data = {}> extends Optional<ToastItem<Data>, 'content' | 'data' | 'status'> {
   read: boolean;
   createdAt: number;
 }
 
-export type SortFn<Data> = (
-  l: NotificationCenterItem<Data>,
-  r: NotificationCenterItem<Data>
-) => number;
+export type SortFn<Data> = (l: NotificationCenterItem<Data>, r: NotificationCenterItem<Data>) => number;
 
-export type FilterFn<Data = {}> = (
-  item: NotificationCenterItem<Data>
-) => boolean;
+export type FilterFn<Data = {}> = (item: NotificationCenterItem<Data>) => boolean;
 
 export interface UseNotificationCenterParams<Data = {}> {
   /**
@@ -187,9 +181,7 @@ export function useNotificationCenter<Data = {}>(
 ): UseNotificationCenter<Data> {
   const sortFn = useRef(params.sort || defaultSort);
   const filterFn = useRef(params.filter || null);
-  const [notifications, setNotifications] = useState<
-    NotificationCenterItem<Data>[]
-  >(() => {
+  const [notifications, setNotifications] = useState<NotificationCenterItem<Data>[]>(() => {
     if (params.data) {
       return filterFn.current
         ? params.data.filter(filterFn.current).sort(sortFn.current)
@@ -225,11 +217,7 @@ export function useNotificationCenter<Data = {}>(
   }, []);
 
   const remove = (id: Id | Id[]) => {
-    setNotifications(prev =>
-      prev.filter(
-        Array.isArray(id) ? v => !id.includes(v.id) : v => v.id !== id
-      )
-    );
+    setNotifications(prev => prev.filter(Array.isArray(id) ? v => !id.includes(v.id) : v => v.id !== id));
   };
 
   const clear = () => {
@@ -262,9 +250,7 @@ export function useNotificationCenter<Data = {}>(
   };
 
   const find = (id: Id | Id[]) => {
-    return Array.isArray(id)
-      ? notifications.filter(v => id.includes(v.id))
-      : notifications.find(v => v.id === id);
+    return Array.isArray(id) ? notifications.filter(v => id.includes(v.id)) : notifications.find(v => v.id === id);
   };
 
   const add = (item: Partial<NotificationCenterItem<Data>>) => {
@@ -313,17 +299,12 @@ export function useNotificationCenter<Data = {}>(
     find,
     sort,
     get unreadCount() {
-      return notifications.reduce(
-        (prev, cur) => (!cur.read ? prev + 1 : prev),
-        0
-      );
+      return notifications.reduce((prev, cur) => (!cur.read ? prev + 1 : prev), 0);
     }
   };
 }
 
-export function decorate<Data>(
-  item: NotificationCenterItem<Data> | Partial<NotificationCenterItem<Data>>
-) {
+export function decorate<Data>(item: NotificationCenterItem<Data> | Partial<NotificationCenterItem<Data>>) {
   if (item.id == null) item.id = Date.now().toString(36).substring(2, 9);
   if (!item.createdAt) item.createdAt = Date.now();
   if (item.read == null) item.read = false;
@@ -331,9 +312,6 @@ export function decorate<Data>(
 }
 
 // newest to oldest
-function defaultSort<Data>(
-  l: NotificationCenterItem<Data>,
-  r: NotificationCenterItem<Data>
-) {
+function defaultSort<Data>(l: NotificationCenterItem<Data>, r: NotificationCenterItem<Data>) {
   return r.createdAt - l.createdAt;
 }

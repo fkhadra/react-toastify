@@ -12,32 +12,19 @@ import {
 } from '../types';
 import { Type, isFn, isNum, isStr } from '../utils';
 import { genToastId } from './genToastId';
-import {
-  clearWaitingQueue,
-  getToast,
-  isToastActive,
-  onChange,
-  pushToast,
-  removeToast,
-  toggleToast
-} from './store';
+import { clearWaitingQueue, getToast, isToastActive, onChange, pushToast, removeToast, toggleToast } from './store';
 
 /**
  * Generate a toastId or use the one provided
  */
 function getToastId<TData>(options?: ToastOptions<TData>) {
-  return options && (isStr(options.toastId) || isNum(options.toastId))
-    ? options.toastId
-    : genToastId();
+  return options && (isStr(options.toastId) || isNum(options.toastId)) ? options.toastId : genToastId();
 }
 
 /**
  * If the container is not mounted, the toast is enqueued
  */
-function dispatchToast<TData>(
-  content: ToastContent<TData>,
-  options: NotValidatedToastProps
-): Id {
+function dispatchToast<TData>(content: ToastContent<TData>, options: NotValidatedToastProps): Id {
   pushToast(content, options);
   return options.toastId;
 }
@@ -54,23 +41,15 @@ function mergeOptions<TData>(type: string, options?: ToastOptions<TData>) {
 }
 
 function createToastByType(type: string) {
-  return <TData = unknown>(
-    content: ToastContent<TData>,
-    options?: ToastOptions<TData>
-  ) => dispatchToast(content, mergeOptions(type, options));
+  return <TData = unknown>(content: ToastContent<TData>, options?: ToastOptions<TData>) =>
+    dispatchToast(content, mergeOptions(type, options));
 }
 
-function toast<TData = unknown>(
-  content: ToastContent<TData>,
-  options?: ToastOptions<TData>
-) {
+function toast<TData = unknown>(content: ToastContent<TData>, options?: ToastOptions<TData>) {
   return dispatchToast(content, mergeOptions(Type.DEFAULT, options));
 }
 
-toast.loading = <TData = unknown>(
-  content: ToastContent<TData>,
-  options?: ToastOptions<TData>
-) =>
+toast.loading = <TData = unknown>(content: ToastContent<TData>, options?: ToastOptions<TData>) =>
   dispatchToast(
     content,
     mergeOptions(Type.DEFAULT, {
@@ -83,11 +62,7 @@ toast.loading = <TData = unknown>(
     })
   );
 
-export interface ToastPromiseParams<
-  TData = unknown,
-  TError = unknown,
-  TPending = unknown
-> {
+export interface ToastPromiseParams<TData = unknown, TError = unknown, TPending = unknown> {
   pending?: string | UpdateOptions<TPending>;
   success?: string | UpdateOptions<TData>;
   error?: string | UpdateOptions<TError>;
@@ -117,11 +92,7 @@ function handlePromise<TData = unknown, TError = unknown, TPending = unknown>(
     draggable: null
   };
 
-  const resolver = <T>(
-    type: TypeOptions,
-    input: string | UpdateOptions<T> | undefined,
-    result: T
-  ) => {
+  const resolver = <T>(type: TypeOptions, input: string | UpdateOptions<T> | undefined, result: T) => {
     // Remove the toast if the input has not been provided. This prevents the toast from hanging
     // in the pending state if a success/error toast has not been provided.
     if (input == null) {
@@ -157,9 +128,7 @@ function handlePromise<TData = unknown, TError = unknown, TPending = unknown>(
   const p = isFn(promise) ? promise() : promise;
 
   //call the resolvers only when needed
-  p.then(result => resolver('success', success, result)).catch(err =>
-    resolver('error', error, err)
-  );
+  p.then(result => resolver('success', success, result)).catch(err => resolver('error', error, err));
 
   return p;
 }
@@ -305,10 +274,7 @@ toast.isActive = isToastActive;
  * })
  * ```
  */
-toast.update = <TData = unknown>(
-  toastId: Id,
-  options: UpdateOptions<TData> = {}
-) => {
+toast.update = <TData = unknown>(toastId: Id, options: UpdateOptions<TData> = {}) => {
   const toast = getToast(toastId, options as ToastOptions);
 
   if (toast) {

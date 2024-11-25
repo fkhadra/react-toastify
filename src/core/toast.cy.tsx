@@ -119,9 +119,7 @@ describe('with container', () => {
           .then(() => {
             toast.play({ id });
 
-            cy.get('@progressBar')
-              .should('have.attr', 'style')
-              .and('include', 'animation-play-state: running');
+            cy.get('@progressBar').should('have.attr', 'style').and('include', 'animation-play-state: running');
           });
       });
   });
@@ -244,9 +242,7 @@ describe('with container', () => {
       .and('include', 'scaleX(0.3)')
       .then(() => {
         toast.done(id);
-        cy.findByRole('progressbar')
-          .should('have.attr', 'style')
-          .and('include', 'scaleX(1)');
+        cy.findByRole('progressbar').should('have.attr', 'style').and('include', 'scaleX(1)');
       });
   });
 
@@ -341,20 +337,8 @@ describe('with multi containers', () => {
   beforeEach(() => {
     cy.mount(
       <>
-        <ToastContainer
-          autoClose={false}
-          position="top-left"
-          limit={1}
-          containerId={Containers.First}
-          closeOnClick
-        />
-        <ToastContainer
-          autoClose={false}
-          position="top-right"
-          limit={1}
-          containerId={Containers.Second}
-          closeOnClick
-        />
+        <ToastContainer autoClose={false} position="top-left" limit={1} containerId={Containers.First} closeOnClick />
+        <ToastContainer autoClose={false} position="top-right" limit={1} containerId={Containers.Second} closeOnClick />
         <ToastContainer
           autoClose={false}
           position="bottom-right"
