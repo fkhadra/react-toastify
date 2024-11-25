@@ -7,11 +7,11 @@ jobs:
     runs-on: ubuntu-latest
   
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@4.2.2
       - name: Install node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4.1.0
         with:
-            node-version: '18.x'
+            node-version: '22.x'
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
