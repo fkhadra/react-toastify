@@ -9,21 +9,22 @@
     "react-component",
     "react-toastify",
     "push",
-    "alert"
+    "alert",
+    "snackbar",
+    "message"
   ],
   "files": [
     "dist",
     "addons"
   ],
   "scripts": {
+    "prepare": "lefthook install",
     "setup": "pnpm link .",
     "start": "cd playground && pnpm dev",
     "test": "cypress open --component",
     "test:run": "cypress run --component -b chrome",
-    "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "prettier": "prettier --write src",
-    "build": "tsup && cp src/style.css dist/ReactToastify.css",
-    "prepare": "husky install"
+    "build": "tsup && cp src/style.css dist/ReactToastify.css"
   },
   "peerDependencies": {
     "react": ">=18.0.0",
@@ -47,29 +48,29 @@
   },
   "homepage": "https://github.com/fkhadra/react-toastify#readme",
   "devDependencies": {
-    "@4tw/cypress-drag-drop": "^2.2.4",
-    "@cypress/code-coverage": "^3.12.18",
+    "@4tw/cypress-drag-drop": "^2.2.5",
+    "@cypress/code-coverage": "^3.13.7",
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
-    "@testing-library/cypress": "^10.0.1",
+    "@testing-library/cypress": "^10.0.2",
     "@types/node": "^22.9.3",
-    "@types/react": "^18.2.47",
-    "@types/react-dom": "^18.2.18",
-    "@vitejs/plugin-react": "^4.2.1",
-    "coveralls": "^3.0.9",
-    "cypress": "^13.6.2",
-    "husky": "^9.1.7",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.3",
+    "coveralls": "^3.1.1",
+    "cypress": "^13.16.0",
+    "lefthook": "^1.8.4",
     "lint-staged": "^15.2.10",
-    "postcss": "^8.4.33",
-    "prettier": "3.2.2",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
+    "postcss": "^8.4.49",
+    "prettier": "3.3.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "tsup": "^8.3.5",
-    "typescript": "^5.3.3",
-    "vite": "^5.0.11",
-    "vite-plugin-istanbul": "^5.0.0"
+    "typescript": "^5.7.2",
+    "vite": "^5.4.11",
+    "vite-plugin-istanbul": "^6.0.2"
   },
   "dependencies": {
-    "clsx": "^2.1.0"
+    "clsx": "^2.1.1"
   },
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
