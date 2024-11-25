@@ -65,8 +65,7 @@ export function useToast(props: ToastProps) {
 
       if (props.draggableDirection === Direction.X) {
         drag.start = e.clientX;
-        drag.removalDistance =
-          toast.offsetWidth * (props.draggablePercent / 100);
+        drag.removalDistance = toast.offsetWidth * (props.draggablePercent / 100);
       } else {
         drag.start = e.clientY;
         drag.removalDistance =
@@ -80,8 +79,7 @@ export function useToast(props: ToastProps) {
   }
 
   function onDragTransitionEnd(e: React.PointerEvent<HTMLElement>) {
-    const { top, bottom, left, right } =
-      toastRef.current!.getBoundingClientRect();
+    const { top, bottom, left, right } = toastRef.current!.getBoundingClientRect();
 
     if (
       e.nativeEvent.type !== 'touchend' &&
@@ -130,13 +128,9 @@ export function useToast(props: ToastProps) {
       // prevent false positive during a toast click
       if (drag.start !== e.clientX) drag.canCloseOnClick = false;
       const translate =
-        props.draggableDirection === 'x'
-          ? `${drag.delta}px, var(--y)`
-          : `0, calc(${drag.delta}px + var(--y))`;
+        props.draggableDirection === 'x' ? `${drag.delta}px, var(--y)` : `0, calc(${drag.delta}px + var(--y))`;
       toast.style.transform = `translate3d(${translate},0)`;
-      toast.style.opacity = `${
-        1 - Math.abs(drag.delta / drag.removalDistance)
-      }`;
+      toast.style.opacity = `${1 - Math.abs(drag.delta / drag.removalDistance)}`;
     }
   }
 

@@ -78,9 +78,7 @@ describe('ProgressBar', () => {
       </Wrapper>
     );
 
-    cy.findByRole('progressbar')
-      .should('have.attr', 'style')
-      .and('include', 'animation-play-state: paused');
+    cy.findByRole('progressbar').should('have.attr', 'style').and('include', 'animation-play-state: paused');
   });
 
   it('control progress bar', () => {
@@ -90,8 +88,6 @@ describe('ProgressBar', () => {
       </Wrapper>
     );
 
-    cy.findByRole('progressbar')
-      .should('have.attr', 'style')
-      .and('include', 'scaleX(0.7)');
+    cy.findByRole('progressbar').should('have.attr', 'style').and('include', 'scaleX(0.7)');
   });
 });

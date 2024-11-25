@@ -9,13 +9,7 @@ import { ProgressBar } from './ProgressBar';
 import { getIcon } from './Icons';
 
 export const Toast: React.FC<ToastProps> = props => {
-  const {
-    isRunning,
-    preventExitTransition,
-    toastRef,
-    eventHandlers,
-    playToast
-  } = useToast(props);
+  const { isRunning, preventExitTransition, toastRef, eventHandlers, playToast } = useToast(props);
   const {
     closeButton,
     children,
@@ -99,17 +93,14 @@ export const Toast: React.FC<ToastProps> = props => {
         <div
           {...(isIn && { role: role })}
           className={
-            isFn(bodyClassName)
-              ? bodyClassName({ type })
-              : cx(`${Default.CSS_NAMESPACE}__toast-body`, bodyClassName)
+            isFn(bodyClassName) ? bodyClassName({ type }) : cx(`${Default.CSS_NAMESPACE}__toast-body`, bodyClassName)
           }
           style={bodyStyle}
         >
           {icon != null && (
             <div
               className={cx(`${Default.CSS_NAMESPACE}__toast-icon`, {
-                [`${Default.CSS_NAMESPACE}--animate-icon ${Default.CSS_NAMESPACE}__zoom-enter`]:
-                  !isLoading
+                [`${Default.CSS_NAMESPACE}--animate-icon ${Default.CSS_NAMESPACE}__zoom-enter`]: !isLoading
               })}
             >
               {icon}
@@ -119,9 +110,7 @@ export const Toast: React.FC<ToastProps> = props => {
         </div>
         {Close}
         <ProgressBar
-          {...(updateId && !isProgressControlled
-            ? { key: `pb-${updateId}` }
-            : {})}
+          {...(updateId && !isProgressControlled ? { key: `pb-${updateId}` } : {})}
           rtl={rtl}
           theme={theme}
           delay={autoClose as number}

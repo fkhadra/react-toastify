@@ -4,9 +4,7 @@ import { CloseButton } from './CloseButton';
 describe('CloseButton', () => {
   it('call close toast when clicking', () => {
     const closeToast = cy.stub().as('closeToast');
-    cy.mount(
-      <CloseButton closeToast={closeToast} type="default" theme="light" />
-    );
+    cy.mount(<CloseButton closeToast={closeToast} type="default" theme="light" />);
 
     cy.get('@closeToast').should('not.have.been.called');
     cy.findByRole('button').click();
@@ -20,14 +18,7 @@ describe('CloseButton', () => {
   });
 
   it('set aria-label', () => {
-    cy.mount(
-      <CloseButton
-        closeToast={cy.stub}
-        type="default"
-        theme="light"
-        ariaLabel="foobar"
-      />
-    );
+    cy.mount(<CloseButton closeToast={cy.stub} type="default" theme="light" ariaLabel="foobar" />);
 
     cy.findByLabelText('foobar').should('exist');
   });

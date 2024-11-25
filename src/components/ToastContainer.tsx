@@ -31,8 +31,7 @@ export function ToastContainer(props: ToastContainerProps) {
   const stacked = props.stacked;
   const [collapsed, setIsCollapsed] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
-  const { getToastToRender, isToastActive, count } =
-    useToastContainer(containerProps);
+  const { getToastToRender, isToastActive, count } = useToastContainer(containerProps);
   const { className, style, rtl, containerId } = containerProps;
 
   function getClassName(position: ToastPosition) {
@@ -75,8 +74,7 @@ export function ToastContainer(props: ToastContainerProps) {
 
           if (!node.dataset.pos) node.dataset.pos = isTop ? 'top' : 'bot';
 
-          const y =
-            usedHeight * (collapsed ? 0.2 : 1) + (collapsed ? 0 : gap * i);
+          const y = usedHeight * (collapsed ? 0.2 : 1) + (collapsed ? 0 : gap * i);
 
           node.style.setProperty('--y', `${isTop ? y : y * -1}px`);
           node.style.setProperty('--g', `${gap}`);
@@ -107,21 +105,14 @@ export function ToastContainer(props: ToastContainerProps) {
           : { ...style };
 
         return (
-          <div
-            className={getClassName(position)}
-            style={containerStyle}
-            key={`container-${position}`}
-          >
+          <div className={getClassName(position)} style={containerStyle} key={`container-${position}`}>
             {toastList.map(({ content, props: toastProps }) => {
               return (
                 <Toast
                   {...toastProps}
                   stacked={stacked}
                   collapseAll={collapseAll}
-                  isIn={isToastActive(
-                    toastProps.toastId,
-                    toastProps.containerId
-                  )}
+                  isIn={isToastActive(toastProps.toastId, toastProps.containerId)}
                   style={toastProps.style}
                   key={`toast-${toastProps.key}`}
                 >

@@ -111,9 +111,7 @@ export function ProgressBar({
   // so if controlledProgress is set
   // it means that this is also the case for progress
   const animationEvent = {
-    [controlledProgress && (progress as number)! >= 1
-      ? 'onTransitionEnd'
-      : 'onAnimationEnd']:
+    [controlledProgress && (progress as number)! >= 1 ? 'onTransitionEnd' : 'onAnimationEnd']:
       controlledProgress && (progress as number)! < 1
         ? null
         : () => {
@@ -124,10 +122,7 @@ export function ProgressBar({
   // TODO: add aria-valuenow, aria-valuemax, aria-valuemin
 
   return (
-    <div
-      className={`${Default.CSS_NAMESPACE}__progress-bar--wrp`}
-      data-hidden={isHidden}
-    >
+    <div className={`${Default.CSS_NAMESPACE}__progress-bar--wrp`} data-hidden={isHidden}>
       <div
         className={`${Default.CSS_NAMESPACE}__progress-bar--bg ${Default.CSS_NAMESPACE}__progress-bar-theme--${theme} ${Default.CSS_NAMESPACE}__progress-bar--${type}`}
       />

@@ -14,21 +14,12 @@ export interface IconProps {
 
 export type BuiltInIconProps = React.SVGProps<SVGSVGElement> & IconProps;
 
-const Svg: React.FC<BuiltInIconProps> = ({
-  theme,
-  type,
-  isLoading,
-  ...rest
-}) => (
+const Svg: React.FC<BuiltInIconProps> = ({ theme, type, isLoading, ...rest }) => (
   <svg
     viewBox="0 0 24 24"
     width="100%"
     height="100%"
-    fill={
-      theme === 'colored'
-        ? 'currentColor'
-        : `var(--toastify-icon-color-${type})`
-    }
+    fill={theme === 'colored' ? 'currentColor' : `var(--toastify-icon-color-${type})`}
     {...rest}
   />
 );
@@ -79,10 +70,7 @@ export const Icons = {
 
 const maybeIcon = (type: string): type is keyof typeof Icons => type in Icons;
 
-export type IconParams = Pick<
-  ToastProps,
-  'theme' | 'icon' | 'type' | 'isLoading'
->;
+export type IconParams = Pick<ToastProps, 'theme' | 'icon' | 'type' | 'isLoading'>;
 
 export function getIcon({ theme, type, isLoading, icon }: IconParams) {
   let Icon: React.ReactNode = null;

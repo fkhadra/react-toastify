@@ -27,9 +27,7 @@ const cssClasses = {
 const progressBar = {
   isRunning: () => {
     cy.wait(100);
-    cy.findByRole('progressbar')
-      .should('have.attr', 'style')
-      .and('include', 'animation-play-state: running');
+    cy.findByRole('progressbar').should('have.attr', 'style').and('include', 'animation-play-state: running');
   },
   isPaused: () => {
     cy.wait(100);
@@ -41,9 +39,7 @@ const progressBar = {
   isControlled: (progress: number) => {
     cy.wait(100);
     cy.get(cssClasses.progressBarController).should('exist');
-    cy.findByRole('progressbar')
-      .should('have.attr', 'style')
-      .and('include', `scaleX(${progress})`);
+    cy.findByRole('progressbar').should('have.attr', 'style').and('include', `scaleX(${progress})`);
   }
 };
 
@@ -62,11 +58,7 @@ describe('Toast', () => {
   ]) {
     it(`merge container and body className when using ${name}`, () => {
       cy.mount(
-        <Toast
-          {...REQUIRED_PROPS}
-          className={className}
-          bodyClassName={bodyClassName}
-        >
+        <Toast {...REQUIRED_PROPS} className={className} bodyClassName={bodyClassName}>
           FooBar
         </Toast>
       );
@@ -241,13 +233,7 @@ describe('Toast', () => {
     };
 
     cy.mount(
-      <Toast
-        {...REQUIRED_PROPS}
-        role="status"
-        toastId="foo"
-        style={style}
-        bodyStyle={bodyStyle}
-      >
+      <Toast {...REQUIRED_PROPS} role="status" toastId="foo" style={style} bodyStyle={bodyStyle}>
         hello
       </Toast>
     );
@@ -257,13 +243,8 @@ describe('Toast', () => {
     cy.findByRole('status').should('exist');
     cy.get('#foo').should('exist');
 
-    cy.findByRole('status')
-      .parent()
-      .should('have.attr', 'style')
-      .and('include', 'background: purple');
-    cy.findByRole('status')
-      .should('have.attr', 'style')
-      .and('include', 'font-weight: bold');
+    cy.findByRole('status').parent().should('have.attr', 'style').and('include', 'background: purple');
+    cy.findByRole('status').should('have.attr', 'style').and('include', 'font-weight: bold');
   });
 
   for (const { type, value } of [
