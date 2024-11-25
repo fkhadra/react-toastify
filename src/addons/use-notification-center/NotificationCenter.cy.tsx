@@ -5,7 +5,7 @@ import {
   NotificationCenterItem,
   UseNotificationCenterParams,
   useNotificationCenter
-} from 'react-toastify/notification-center';
+} from './useNotificationCenter';
 
 function TestComponent(props: UseNotificationCenterParams) {
   const [content, setContent] = React.useState('');

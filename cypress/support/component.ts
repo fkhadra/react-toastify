@@ -18,6 +18,7 @@
 import '@cypress/code-coverage/support';
 import './commands';
 import './style.css';
+import '../../src/style.css';
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
