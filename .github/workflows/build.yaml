@@ -22,6 +22,8 @@ jobs:
       #   run: yarn lint
       - name: Setup
         run: pnpm run setup
+      - name: Build
+        run: pnpm build
       - name: Test
         run: pnpm run test:run 
       - uses: actions/upload-artifact@v3
