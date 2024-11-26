@@ -3,7 +3,7 @@ import { Default } from '../utils';
 import { Theme, TypeOptions } from '../types';
 
 export interface CloseButtonProps {
-  closeToast: (e: React.MouseEvent<HTMLElement>) => void;
+  closeToast: (removedByUser: boolean) => void;
   type: TypeOptions;
   ariaLabel?: string;
   theme: Theme;
@@ -16,7 +16,7 @@ export function CloseButton({ closeToast, theme, ariaLabel = 'close' }: CloseBut
       type="button"
       onClick={e => {
         e.stopPropagation();
-        closeToast(e);
+        closeToast(true);
       }}
       aria-label={ariaLabel}
     >
