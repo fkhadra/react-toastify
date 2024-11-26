@@ -141,7 +141,7 @@ export function useToast(props: ToastProps) {
       drag.canDrag = false;
       if (Math.abs(drag.delta) > drag.removalDistance) {
         setPreventExitTransition(true);
-        props.closeToast();
+        props.closeToast(true);
         props.collapseAll();
         return;
       }
@@ -168,7 +168,7 @@ export function useToast(props: ToastProps) {
   if (closeOnClick) {
     eventHandlers.onClick = (e: React.MouseEvent) => {
       onClick && onClick(e);
-      drag.canCloseOnClick && closeToast();
+      drag.canCloseOnClick && closeToast(true);
     };
   }
 

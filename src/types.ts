@@ -174,12 +174,12 @@ export interface ToastOptions<Data = unknown> extends CommonOptions {
   /**
    * Called when toast is mounted.
    */
-  onOpen?: <T = {}>(props: T) => void;
+  onOpen?: () => void;
 
   /**
    * Called when toast is unmounted.
    */
-  onClose?: <T = {}>(props: T) => void;
+  onClose?: (removedByUser: true | undefined) => void;
 
   /**
    * An optional inline style to apply.
@@ -282,7 +282,7 @@ export interface ToastProps extends ToastOptions {
   toastId: Id;
   key: Id;
   transition: ToastTransition;
-  closeToast: () => void;
+  closeToast: (removedByUser?: boolean) => void;
   position: ToastPosition;
   children?: ToastContent;
   draggablePercent: number;
@@ -311,6 +311,7 @@ export interface Toast {
   content: ToastContent;
   props: ToastProps;
   toggle?: (v: boolean) => void;
+  removedByUser?: true | undefined;
 }
 
 export type ToastItemStatus = 'added' | 'removed' | 'updated';
@@ -325,6 +326,7 @@ export interface ToastItem<Data = {}> {
   data: Data;
   icon?: ToastIcon;
   status: ToastItemStatus;
+  removedByUser?: true;
 }
 
 export type OnChangeCallback = (toast: ToastItem) => void;

@@ -11,6 +11,7 @@ export function toToastItem(toast: Toast, status: ToastItemStatus): ToastItem {
         data: toast.props.data || {},
         isLoading: toast.props.isLoading,
         icon: toast.props.icon,
+        removedByUser: toast.removedByUser,
         status
       }
     : // monkey patch for now

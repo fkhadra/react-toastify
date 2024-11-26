@@ -1,4 +1,4 @@
-import { ReactElement, cloneElement, isValidElement } from 'react';
+import { cloneElement, isValidElement, ReactElement } from 'react';
 import {
   Id,
   NotValidatedToastProps,
@@ -59,7 +59,7 @@ export function createContainerObserver(
 
   const toggle = (v: boolean, id?: Id) => {
     toasts.forEach(t => {
-      if (id == null || id === t.props.toastId) isFn(t.toggle) && t.toggle(v);
+      if (id == null || id === t.props.toastId) t.toggle?.(v);
     });
   };
 
@@ -74,24 +74,25 @@ export function createContainerObserver(
   };
 
   const addActiveToast = (toast: ActiveToast) => {
-    const { toastId, onOpen, updateId, children } = toast.props;
+    const { toastId, updateId } = toast.props;
     const isNew = updateId == null;
 
     if (toast.staleId) toasts.delete(toast.staleId);
 
     toasts.set(toastId, toast);
-    activeToasts = [...activeToasts, toast.props.toastId].filter(v => v !== toast.staleId);
+    activeToasts = [...activeToasts, toastId].filter(v => v !== toast.staleId);
     notify();
     dispatchChanges(toToastItem(toast, isNew ? 'added' : 'updated'));
 
-    if (isNew && isFn(onOpen)) onOpen(isValidElement(children) && children.props);
+    if (isNew) toast.props.onOpen?.();
   };
 
   const buildToast = <TData = unknown>(content: ToastContent<TData>, options: NotValidatedToastProps) => {
     if (shouldIgnoreToast(options)) return;
 
     const { toastId, updateId, data, staleId, delay } = options;
-    const closeToast = () => {
+    const closeToast = (removedByUser?: true) => {
+      toasts.get(toastId)!.removedByUser = removedByUser;
       removeToast(toastId);
     };
 
@@ -115,9 +116,8 @@ export function createContainerObserver(
       autoClose: options.isLoading ? false : getAutoCloseDelay(options.autoClose, props.autoClose),
       deleteToast() {
         const toastToRemove = toasts.get(toastId)!;
-        const { onClose, children } = toastToRemove.props;
-        if (isFn(onClose)) onClose(isValidElement(children) && children.props);
 
+        toastToRemove.props.onClose?.(toastToRemove.removedByUser);
         dispatchChanges(toToastItem(toastToRemove, 'removed'));
         toasts.delete(toastId);
 
