@@ -184,7 +184,8 @@ export function createContainerObserver(
       props = p;
     },
     setToggle: (id: Id, fn: (v: boolean) => void) => {
-      toasts.get(id)!.toggle = fn;
+      const t = toasts.get(id);
+      if (t) t.toggle = fn;
     },
     isToastActive: (id: Id) => activeToasts.some(v => v === id),
     getSnapshot: () => snapshot
