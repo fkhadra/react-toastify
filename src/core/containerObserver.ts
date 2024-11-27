@@ -93,6 +93,7 @@ export function createContainerObserver(
     const { toastId, updateId, data, staleId, delay } = options;
     const closeToast = (removedByUser?: true) => {
       toasts.get(toastId)!.removedByUser = removedByUser;
+      toasts.get(toastId)!.props.onClose?.(removedByUser);
       removeToast(toastId);
     };
 
@@ -117,7 +118,6 @@ export function createContainerObserver(
       deleteToast() {
         const toastToRemove = toasts.get(toastId)!;
 
-        toastToRemove.props.onClose?.(toastToRemove.removedByUser);
         dispatchChanges(toToastItem(toastToRemove, 'removed'));
         toasts.delete(toastId);
 
