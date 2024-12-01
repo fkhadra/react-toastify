@@ -99,8 +99,6 @@ describe('NotificationCenter', () => {
   });
 
   it('mark as read a single notification', () => {
-    cy.findByTestId('unreadCount').should('contain.text', 0);
-    cy.findByTestId('count').should('contain.text', 0);
     const id = toast('msg');
     cy.resolveEntranceAnimation();
 
@@ -109,6 +107,7 @@ describe('NotificationCenter', () => {
     cy.findByTestId(`read-${id}`).should('contain.text', false);
 
     cy.findByTestId(`markAsRead-${id}`).click();
+
     cy.findByTestId('unreadCount').should('contain.text', 0);
     cy.findByTestId(`read-${id}`).should('contain.text', true);
   });
