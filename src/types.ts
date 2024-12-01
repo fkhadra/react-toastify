@@ -312,6 +312,8 @@ export interface Toast {
   props: ToastProps;
   toggle?: (v: boolean) => void;
   removedByUser?: true | undefined;
+  isActive: boolean;
+  staleId?: Id;
 }
 
 export type ToastItemStatus = 'added' | 'removed' | 'updated';

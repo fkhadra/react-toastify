@@ -1,4 +1,5 @@
 import './style.css';
+
 export { useToastContainer, useToast } from './hooks';
 export { cssTransition, collapseToast } from './utils';
 export { ToastContainer, Bounce, Flip, Slide, Zoom, Icons } from './components';
@@ -24,3 +25,4 @@ export type {
   ClearWaitingQueueFunc,
   OnChangeCallback
 } from './types';
+export type { CloseButtonProps } from './components/CloseButton';
