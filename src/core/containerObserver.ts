@@ -10,19 +10,7 @@ import {
 } from '../types';
 import { canBeRendered, getAutoCloseDelay, isFn, isNum, isStr, parseClassName, toToastItem } from '../utils';
 
-interface QueuedToast {
-  content: ToastContent<any>;
-  props: ToastProps;
-  staleId?: Id;
-}
-
 type Notify = () => void;
-
-interface ActiveToast {
-  content: ToastContent<any>;
-  props: ToastProps;
-  staleId?: Id;
-}
 
 export type ContainerObserver = ReturnType<typeof createContainerObserver>;
 
@@ -33,8 +21,7 @@ export function createContainerObserver(
 ) {
   let toastKey = 1;
   let toastCount = 0;
-  let queue: QueuedToast[] = [];
-  let activeToasts: Id[] = [];
+  let queue: Toast[] = [];
   let snapshot: Toast[] = [];
   let props = containerProps;
   const toasts = new Map<Id, Toast>();
@@ -63,8 +50,18 @@ export function createContainerObserver(
     });
   };
 
+  const markAsRemoved = (v: Toast) => {
+    v.props?.onClose?.(v.removedByUser);
+    v.isActive = false;
+  };
+
   const removeToast = (id?: Id) => {
-    activeToasts = id == null ? [] : activeToasts.filter(v => v !== id);
+    if (id == null) {
+      toasts.forEach(markAsRemoved);
+    } else {
+      const t = toasts.get(id);
+      if (t) markAsRemoved(t);
+    }
     notify();
   };
 
@@ -73,14 +70,14 @@ export function createContainerObserver(
     queue = [];
   };
 
-  const addActiveToast = (toast: ActiveToast) => {
+  const addActiveToast = (toast: Toast) => {
     const { toastId, updateId } = toast.props;
     const isNew = updateId == null;
 
     if (toast.staleId) toasts.delete(toast.staleId);
+    toast.isActive = true;
 
     toasts.set(toastId, toast);
-    activeToasts = [...activeToasts, toastId].filter(v => v !== toast.staleId);
     notify();
     dispatchChanges(toToastItem(toast, isNew ? 'added' : 'updated'));
 
@@ -93,7 +90,6 @@ export function createContainerObserver(
     const { toastId, updateId, data, staleId, delay } = options;
     const closeToast = (removedByUser?: true) => {
       toasts.get(toastId)!.removedByUser = removedByUser;
-      toasts.get(toastId)!.props.onClose?.(removedByUser);
       removeToast(toastId);
     };
 
@@ -116,7 +112,9 @@ export function createContainerObserver(
       progressClassName: parseClassName(options.progressClassName || props.progressClassName),
       autoClose: options.isLoading ? false : getAutoCloseDelay(options.autoClose, props.autoClose),
       deleteToast() {
-        const toastToRemove = toasts.get(toastId)!;
+        const toastToRemove = toasts.get(toastId);
+
+        if (toastToRemove == null) return;
 
         dispatchChanges(toToastItem(toastToRemove, 'removed'));
         toasts.delete(toastId);
@@ -125,7 +123,7 @@ export function createContainerObserver(
         if (toastCount < 0) toastCount = 0;
 
         if (queue.length > 0) {
-          addActiveToast(queue.shift() as ActiveToast);
+          addActiveToast(queue.shift());
           return;
         }
 
@@ -157,7 +155,7 @@ export function createContainerObserver(
       content: toastContent,
       props: toastProps,
       staleId
-    };
+    } as Toast;
 
     // not handling limit + delay by design. Waiting for user feedback first
     if (props.limit && props.limit > 0 && toastCount > props.limit && isNotAnUpdate) {
@@ -187,7 +185,7 @@ export function createContainerObserver(
       const t = toasts.get(id);
       if (t) t.toggle = fn;
     },
-    isToastActive: (id: Id) => activeToasts.some(v => v === id),
+    isToastActive: (id: Id) => toasts.get(id)?.isActive,
     getSnapshot: () => snapshot
   };
 }

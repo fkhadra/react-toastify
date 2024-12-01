@@ -10,7 +10,7 @@ import {
   TypeOptions,
   UpdateOptions
 } from '../types';
-import { Type, isFn, isNum, isStr } from '../utils';
+import { isFn, isNum, isStr, Type } from '../utils';
 import { genToastId } from './genToastId';
 import { clearWaitingQueue, getToast, isToastActive, onChange, pushToast, removeToast, toggleToast } from './store';
 
