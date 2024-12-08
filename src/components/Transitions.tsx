@@ -1,4 +1,4 @@
-import { Default, cssTransition } from '../utils';
+import { cssTransition, Default } from '../utils';
 
 const getConfig = (animationName: string, appendPosition = false) => ({
   enter: `${Default.CSS_NAMESPACE}--animate ${Default.CSS_NAMESPACE}__${animationName}-enter`,

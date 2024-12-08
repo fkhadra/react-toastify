@@ -6,6 +6,7 @@ import {
   Toast,
   ToastContainerProps,
   ToastContent,
+  ToastContentProps,
   ToastProps
 } from '../types';
 import { canBeRendered, getAutoCloseDelay, isFn, isNum, isStr, parseClassName, toToastItem } from '../utils';
@@ -142,7 +143,7 @@ export function createContainerObserver(
     let toastContent = content;
 
     if (isValidElement(content) && !isStr(content.type)) {
-      toastContent = cloneElement(content as ReactElement, {
+      toastContent = cloneElement<ToastContentProps>(content as ReactElement<any>, {
         closeToast,
         toastProps,
         data
