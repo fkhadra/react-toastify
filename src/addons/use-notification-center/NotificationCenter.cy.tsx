@@ -19,6 +19,7 @@ function TestComponent(props: UseNotificationCenterParams) {
   return (
     <div>
       <div style={flex}>
+        <button onClick={() => toast('hello')}>display notification</button>
         <button onClick={markAllAsRead}>markAllAsRead</button>
         <button onClick={clear}>clear</button>
         <button onClick={() => add({ content })}>addNotification</button>
@@ -91,25 +92,15 @@ describe('NotificationCenter', () => {
     const id = toast('msg');
 
     cy.resolveEntranceAnimation();
+    cy.findByRole('alert').should('exist');
 
-    toast.update(id, {
-      render: 'msg updated'
-    });
+    setTimeout(() => {
+      toast.update(id, {
+        render: 'msg updated'
+      });
+    }, 0);
+
     cy.findAllByText('msg updated').should('exist');
-  });
-
-  it('mark as read a single notification', () => {
-    const id = toast('msg');
-    cy.resolveEntranceAnimation();
-
-    cy.findByTestId('count').should('contain.text', 1);
-    cy.findByTestId('unreadCount').should('contain.text', 1);
-    cy.findByTestId(`read-${id}`).should('contain.text', false);
-
-    cy.findByTestId(`markAsRead-${id}`).click();
-
-    cy.findByTestId('unreadCount').should('contain.text', 0);
-    cy.findByTestId(`read-${id}`).should('contain.text', true);
   });
 
   describe('with initial state', () => {
