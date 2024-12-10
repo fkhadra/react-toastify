@@ -13,18 +13,12 @@ import { ToastCode, ToastCodeProps } from './ToastCode';
 import { flags, positions, themes, transitions, typs } from './constants';
 
 import React from 'react';
-import '../../../scss/main.scss';
-import { Id, ToastContainer, toast } from '../../../src/index';
+import { Id, toast, ToastContainer } from '../../../src';
 import { defaultProps } from '../../../src/components/ToastContainer';
 
 // Attach to window. Can be useful to debug
 // @ts-ignore
 window.toast = toast;
-
-// const animateCss = cssTransition({
-//   enter: 'animate__animated animate__bounceIn',
-//   exit: 'animate__animated animate__bounceOut'
-// });
 
 class App extends React.Component {
   state = App.getDefaultState();
@@ -75,8 +69,7 @@ class App extends React.Component {
     );
   };
 
-  updateToast = () =>
-    toast.update(this.toastId, { progress: this.state.progress });
+  updateToast = () => toast.update(this.toastId, { progress: this.state.progress });
 
   handleAutoCloseDelay = e =>
     this.setState({
@@ -101,10 +94,7 @@ class App extends React.Component {
 
   handleRadioOrSelect = e =>
     this.setState({
-      [e.target.name]:
-        e.target.name === 'limit'
-          ? parseInt(e.target.value, 10)
-          : e.target.value
+      [e.target.name]: e.target.name === 'limit' ? parseInt(e.target.value, 10) : e.target.value
     });
 
   toggleCheckbox = e =>
@@ -115,12 +105,7 @@ class App extends React.Component {
   renderFlags() {
     return flags.map(({ id, label }) => (
       <li key={id}>
-        <Checkbox
-          id={id}
-          label={label}
-          onChange={this.toggleCheckbox}
-          checked={this.state[id]}
-        />
+        <Checkbox id={id} label={label} onChange={this.toggleCheckbox} checked={this.state[id]} />
       </li>
     ));
   }
@@ -131,10 +116,9 @@ class App extends React.Component {
         <Header />
         <div className="container">
           <p>
-            By default, all toasts will inherit ToastContainer's props. Props
-            defined on toast supersede ToastContainer's props. Props marked with
-            * can only be set on the ToastContainer. The demo is not exhaustive,
-            check the repo for more!
+            By default, all toasts will inherit ToastContainer's props. Props defined on toast supersede
+            ToastContainer's props. Props marked with * can only be set on the ToastContainer. The demo is not
+            exhaustive, check the repo for more!
           </p>
           <section className="container__options">
             <div>
@@ -151,12 +135,7 @@ class App extends React.Component {
             <div>
               <h3>Type</h3>
               <ul>
-                <Radio
-                  options={typs}
-                  name="type"
-                  checked={this.state.type}
-                  onChange={this.handleRadioOrSelect}
-                />
+                <Radio options={typs} name="type" checked={this.state.type} onChange={this.handleRadioOrSelect} />
               </ul>
             </div>
             <div>
@@ -191,12 +170,7 @@ class App extends React.Component {
                 </label>
                 <label htmlFor="theme">
                   Theme
-                  <select
-                    name="theme"
-                    id="theme"
-                    onChange={this.handleRadioOrSelect}
-                    value={this.state.theme}
-                  >
+                  <select name="theme" id="theme" onChange={this.handleRadioOrSelect} value={this.state.theme}>
                     {themes.map(k => (
                       <option key={k} value={k}>
                         {k}
@@ -279,19 +253,8 @@ class App extends React.Component {
           transition={transitions[this.state.transition]}
           autoClose={this.state.disableAutoClose ? false : this.state.autoClose}
         />
-        <ToastContainer
-          containerId="xxx"
-          position="top-left"
-          autoClose={false}
-          theme="dark"
-          limit={3}
-        />
-        <ToastContainer
-          limit={3}
-          containerId="yyy"
-          autoClose={false}
-          position="top-right"
-        />
+        <ToastContainer containerId="xxx" position="top-left" autoClose={false} theme="dark" limit={3} />
+        <ToastContainer limit={3} containerId="yyy" autoClose={false} position="top-right" />
       </main>
     );
   }
