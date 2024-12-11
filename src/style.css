@@ -134,6 +134,10 @@
   word-break: break-word;
 }
 
+.Toastify__toast-container[data-stacked='true'] {
+  width: var(--toastify-toast-width);
+}
+
 .Toastify__toast--stacked {
   position: absolute;
   width: 100%;
