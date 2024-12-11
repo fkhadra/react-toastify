@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { HTMLAttributes } from 'react';
 import { CloseButtonProps, IconProps } from './components';
 import { clearWaitingQueue } from './core/store';
 
@@ -215,7 +215,7 @@ export interface UpdateOptions<T = unknown> extends Nullable<ToastOptions<T>> {
   render?: ToastContent<T>;
 }
 
-export interface ToastContainerProps extends CommonOptions {
+export interface ToastContainerProps extends CommonOptions, Pick<HTMLAttributes<HTMLElement>, 'aria-label'> {
   /**
    * An optional css class to set.
    */
@@ -251,6 +251,16 @@ export interface ToastContainerProps extends CommonOptions {
    * Limit the number of toast displayed at the same time
    */
   limit?: number;
+
+  /**
+   * Shortcut to focus the first notification with the keyboard
+   *
+   * ```
+   * // focus when user presses ⌘ + F
+   * const matchShortcut = (e: KeyboardEvent) => e.metaKey && e.key === 'f'
+   * ```
+   */
+  hotKeys?: (e: KeyboardEvent) => boolean;
 }
 
 export interface ToastTransitionProps {
