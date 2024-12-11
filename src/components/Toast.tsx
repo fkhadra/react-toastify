@@ -22,8 +22,6 @@ export const Toast: React.FC<ToastProps> = props => {
     position,
     className,
     style,
-    bodyClassName,
-    bodyStyle,
     progressClassName,
     progressStyle,
     updateId,
@@ -83,31 +81,25 @@ export const Toast: React.FC<ToastProps> = props => {
     >
       <div
         id={toastId as string}
+        tabIndex={0}
         onClick={onClick}
         data-in={isIn}
         className={cssClasses}
         {...eventHandlers}
         style={style}
         ref={toastRef}
+        {...(isIn && { role: role })}
       >
-        <div
-          {...(isIn && { role: role })}
-          className={
-            isFn(bodyClassName) ? bodyClassName({ type }) : cx(`${Default.CSS_NAMESPACE}__toast-body`, bodyClassName)
-          }
-          style={bodyStyle}
-        >
-          {icon != null && (
-            <div
-              className={cx(`${Default.CSS_NAMESPACE}__toast-icon`, {
-                [`${Default.CSS_NAMESPACE}--animate-icon ${Default.CSS_NAMESPACE}__zoom-enter`]: !isLoading
-              })}
-            >
-              {icon}
-            </div>
-          )}
-          <div>{children as ReactNode}</div>
-        </div>
+        {icon != null && (
+          <div
+            className={cx(`${Default.CSS_NAMESPACE}__toast-icon`, {
+              [`${Default.CSS_NAMESPACE}--animate-icon ${Default.CSS_NAMESPACE}__zoom-enter`]: !isLoading
+            })}
+          >
+            {icon}
+          </div>
+        )}
+        {children as ReactNode}
         {Close}
         <ProgressBar
           {...(updateId && !isProgressControlled ? { key: `pb-${updateId}` } : {})}

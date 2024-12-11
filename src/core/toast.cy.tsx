@@ -255,7 +255,6 @@ describe('with container', () => {
   it('can append classNames', () => {
     toast('msg', {
       className: 'class1',
-      bodyClassName: 'class2',
       progressClassName: 'class3'
     });
 
