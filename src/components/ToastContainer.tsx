@@ -105,7 +105,13 @@ export function ToastContainer(props: ToastContainerProps) {
           : { ...style };
 
         return (
-          <div className={getClassName(position)} style={containerStyle} key={`container-${position}`}>
+          <div
+            tabIndex={-1}
+            className={getClassName(position)}
+            data-stacked={stacked}
+            style={containerStyle}
+            key={`container-${position}`}
+          >
             {toastList.map(({ content, props: toastProps }) => {
               return (
                 <Toast
