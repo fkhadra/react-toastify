@@ -23,7 +23,6 @@ export const Toast: React.FC<ToastProps> = props => {
     className,
     style,
     progressClassName,
-    progressStyle,
     updateId,
     role,
     progress,
@@ -33,7 +32,8 @@ export const Toast: React.FC<ToastProps> = props => {
     isIn,
     isLoading,
     closeOnClick,
-    theme
+    theme,
+    ariaLabel
   } = props;
   const defaultClassName = cx(
     `${Default.CSS_NAMESPACE}__toast`,
@@ -88,7 +88,7 @@ export const Toast: React.FC<ToastProps> = props => {
         {...eventHandlers}
         style={style}
         ref={toastRef}
-        {...(isIn && { role: role })}
+        {...(isIn && { role: role, 'aria-label': ariaLabel })}
       >
         {icon != null && (
           <div
@@ -111,7 +111,6 @@ export const Toast: React.FC<ToastProps> = props => {
           closeToast={closeToast}
           hide={hideProgressBar}
           type={type}
-          style={progressStyle}
           className={progressClassName}
           controlledProgress={isProgressControlled}
           progress={progress || 0}
