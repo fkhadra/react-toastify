@@ -109,7 +109,6 @@ export function createContainerObserver(
       closeToast,
       isIn: false,
       className: parseClassName(options.className || props.toastClassName),
-      bodyClassName: parseClassName(options.bodyClassName || props.bodyClassName),
       progressClassName: parseClassName(options.progressClassName || props.progressClassName),
       autoClose: options.isLoading ? false : getAutoCloseDelay(options.autoClose, props.autoClose),
       deleteToast() {
