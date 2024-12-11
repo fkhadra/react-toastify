@@ -44,21 +44,19 @@ const progressBar = {
 };
 
 describe('Toast', () => {
-  for (const { name, className, bodyClassName } of [
+  for (const { name, className } of [
     {
       name: 'string',
-      className: 'container-class',
-      bodyClassName: 'body-class'
+      className: 'container-class'
     },
     {
       name: 'function',
-      className: () => 'container-class',
-      bodyClassName: () => 'body-class'
+      className: () => 'container-class'
     }
   ]) {
     it(`merge container and body className when using ${name}`, () => {
       cy.mount(
-        <Toast {...REQUIRED_PROPS} className={className} bodyClassName={bodyClassName}>
+        <Toast {...REQUIRED_PROPS} className={className}>
           FooBar
         </Toast>
       );
@@ -228,12 +226,9 @@ describe('Toast', () => {
     const style: React.CSSProperties = {
       background: 'purple'
     };
-    const bodyStyle: React.CSSProperties = {
-      fontWeight: 'bold'
-    };
 
     cy.mount(
-      <Toast {...REQUIRED_PROPS} role="status" toastId="foo" style={style} bodyStyle={bodyStyle}>
+      <Toast {...REQUIRED_PROPS} role="status" toastId="foo" style={style}>
         hello
       </Toast>
     );

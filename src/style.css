@@ -10,6 +10,7 @@
   --toastify-icon-color-success: var(--toastify-color-success);
   --toastify-icon-color-warning: var(--toastify-color-warning);
   --toastify-icon-color-error: var(--toastify-color-error);
+  --toastify-container-width: fit-content;
   --toastify-toast-width: 320px;
   --toastify-toast-offset: 16px;
   --toastify-toast-top: max(var(--toastify-toast-offset), env(safe-area-inset-top));
@@ -17,6 +18,7 @@
   --toastify-toast-left: max(var(--toastify-toast-offset), env(safe-area-inset-left));
   --toastify-toast-bottom: max(var(--toastify-toast-offset), env(safe-area-inset-bottom));
   --toastify-toast-background: #fff;
+  --toastify-toast-padding: 14px;
   --toastify-toast-min-height: 64px;
   --toastify-toast-max-height: 800px;
   --toastify-toast-bd-radius: 6px;
@@ -43,11 +45,13 @@
   z-index: var(--toastify-z-index);
   -webkit-transform: translate3d(0, 0, var(--toastify-z-index));
   position: fixed;
-  padding: 4px;
-  width: var(--toastify-toast-width);
+  width: var(--toastify-container-width);
   box-sizing: border-box;
   color: #fff;
+  display: flex;
+  flex-direction: column;
 }
+
 .Toastify__toast-container--top-left {
   top: var(--toastify-toast-top);
   left: var(--toastify-toast-left);
@@ -56,10 +60,12 @@
   top: var(--toastify-toast-top);
   left: 50%;
   transform: translateX(-50%);
+  align-items: center;
 }
 .Toastify__toast-container--top-right {
   top: var(--toastify-toast-top);
   right: var(--toastify-toast-right);
+  align-items: end;
 }
 .Toastify__toast-container--bottom-left {
   bottom: var(--toastify-toast-bottom);
@@ -69,16 +75,17 @@
   bottom: var(--toastify-toast-bottom);
   left: 50%;
   transform: translateX(-50%);
+  align-items: center;
 }
 .Toastify__toast-container--bottom-right {
   bottom: var(--toastify-toast-bottom);
   right: var(--toastify-toast-right);
+  align-items: end;
 }
 
 @media only screen and (max-width: 480px) {
   .Toastify__toast-container {
     width: 100vw;
-    padding: 0;
     left: env(safe-area-inset-left);
     margin: 0;
   }
@@ -108,21 +115,23 @@
   --y: 0;
   position: relative;
   touch-action: none;
+  width: var(--toastify-toast-width);
   min-height: var(--toastify-toast-min-height);
   box-sizing: border-box;
   margin-bottom: 1rem;
-  padding: 8px;
+  padding: var(--toastify-toast-padding);
   border-radius: var(--toastify-toast-bd-radius);
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-  display: flex;
-  justify-content: space-between;
   max-height: var(--toastify-toast-max-height);
   font-family: var(--toastify-font-family);
-  cursor: default;
-  direction: ltr;
   /* webkit only issue #791 */
   z-index: 0;
   overflow: hidden;
+  /* inner swag */
+  display: flex;
+  flex: 1 auto;
+  align-items: center;
+  word-break: break-word;
 }
 
 .Toastify__toast--stacked {
@@ -189,22 +198,9 @@
   cursor: pointer;
 }
 
-.Toastify__toast-body {
-  margin: auto 0;
-  flex: 1 1 auto;
-  padding: 6px;
-  display: flex;
-  align-items: center;
-}
-
-.Toastify__toast-body > div:last-child {
-  word-break: break-word;
-  flex: 1;
-}
-
 .Toastify__toast-icon {
   margin-inline-end: 10px;
-  width: 20px;
+  width: 22px;
   flex-shrink: 0;
   display: flex;
 }
@@ -287,6 +283,9 @@
 
 .Toastify__close-button {
   color: #fff;
+  position: absolute;
+  top: 6px;
+  right: 6px;
   background: transparent;
   outline: none;
   border: none;
@@ -294,8 +293,12 @@
   cursor: pointer;
   opacity: 0.7;
   transition: 0.3s ease;
-  align-self: flex-start;
   z-index: 1;
+}
+
+.Toastify__toast--rtl .Toastify__close-button {
+  left: 6px;
+  right: unset;
 }
 
 .Toastify__close-button--light {

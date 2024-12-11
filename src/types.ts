@@ -89,16 +89,6 @@ interface CommonOptions {
   progressStyle?: React.CSSProperties;
 
   /**
-   * An optional css class to set for the toast content.
-   */
-  bodyClassName?: ToastClassName;
-
-  /**
-   * An optional inline style to apply for the toast content.
-   */
-  bodyStyle?: React.CSSProperties;
-
-  /**
    * Hide or show the progress bar.
    * `Default: false`
    */
@@ -289,7 +279,6 @@ export interface ToastProps extends ToastOptions {
   draggableDirection?: DraggableDirection;
   progressClassName?: ToastClassName;
   className?: ToastClassName;
-  bodyClassName?: ToastClassName;
   deleteToast: () => void;
   theme: Theme;
   type: TypeOptions;
