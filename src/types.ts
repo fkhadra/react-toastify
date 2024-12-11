@@ -84,11 +84,6 @@ interface CommonOptions {
   progressClassName?: ToastClassName;
 
   /**
-   * An optional style to set for the progress bar.
-   */
-  progressStyle?: React.CSSProperties;
-
-  /**
    * Hide or show the progress bar.
    * `Default: false`
    */
@@ -198,13 +193,18 @@ export interface ToastOptions<Data = unknown> extends CommonOptions {
   progress?: number | string;
 
   /**
+   * Let you provide any data, useful when you are using your own component
+   */
+  data?: Data;
+
+  ariaLabel?: string;
+
+  /**
    * Add a delay in ms before the toast appear.
    */
   delay?: number;
 
   isLoading?: boolean;
-
-  data?: Data;
 }
 
 export interface UpdateOptions<T = unknown> extends Nullable<ToastOptions<T>> {

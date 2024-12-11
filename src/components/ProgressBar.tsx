@@ -2,7 +2,7 @@ import React from 'react';
 import cx from 'clsx';
 
 import { Default, isFn, Type } from './../utils';
-import { TypeOptions, ToastClassName, Theme } from '../types';
+import { Theme, ToastClassName, TypeOptions } from '../types';
 
 export interface ProgressBarProps {
   /**
@@ -11,7 +11,7 @@ export interface ProgressBarProps {
   delay: number;
 
   /**
-   * Whether or not the animation is running or paused
+   * The animation is running or paused
    */
   isRunning: boolean;
 
@@ -41,11 +41,6 @@ export interface ProgressBarProps {
   className?: ToastClassName;
 
   /**
-   * Optional inline style
-   */
-  style?: React.CSSProperties;
-
-  /**
    * Tell wether or not controlled progress bar is used
    */
   controlledProgress?: boolean;
@@ -73,7 +68,6 @@ export function ProgressBar({
   type = Type.DEFAULT,
   hide,
   className,
-  style: userStyle,
   controlledProgress,
   progress,
   rtl,
@@ -82,7 +76,6 @@ export function ProgressBar({
 }: ProgressBarProps) {
   const isHidden = hide || (controlledProgress && progress === 0);
   const style: React.CSSProperties = {
-    ...userStyle,
     animationDuration: `${delay}ms`,
     animationPlayState: isRunning ? 'running' : 'paused'
   };
