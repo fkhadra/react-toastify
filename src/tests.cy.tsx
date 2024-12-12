@@ -39,3 +39,26 @@ it('allows to specify the reason when calling closeToast', () => {
 
   cy.get('@onCloseFunc').should('have.been.calledWith', 'foobar');
 });
+
+it('focus notification when alt+t is pressed', () => {
+  cy.mount(
+    <div>
+      <button
+        onClick={() => {
+          toast('hello', {
+            ariaLabel: 'notification'
+          });
+        }}
+      >
+        notify
+      </button>
+      <ToastContainer autoClose={false} />
+    </div>
+  );
+
+  cy.findByRole('button', { name: 'notify' }).click();
+  cy.resolveEntranceAnimation();
+  cy.findByRole('alert').should('exist');
+  cy.get('body').type('{alt+t}');
+  cy.focused().should('have.attr', 'role', 'alert').and('have.attr', 'aria-label', 'notification');
+});
