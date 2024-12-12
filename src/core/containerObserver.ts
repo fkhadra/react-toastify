@@ -52,7 +52,7 @@ export function createContainerObserver(
   };
 
   const markAsRemoved = (v: Toast) => {
-    v.props?.onClose?.(v.removedByUser);
+    v.props?.onClose?.(v.removalReason);
     v.isActive = false;
   };
 
@@ -90,7 +90,7 @@ export function createContainerObserver(
 
     const { toastId, updateId, data, staleId, delay } = options;
     const closeToast = (removedByUser?: true) => {
-      toasts.get(toastId)!.removedByUser = removedByUser;
+      toasts.get(toastId)!.removalReason = removedByUser;
       removeToast(toastId);
     };
 

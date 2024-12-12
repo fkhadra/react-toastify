@@ -12,8 +12,10 @@ export type Theme = 'light' | 'dark' | 'colored' | (string & {});
 
 export type ToastPosition = 'top-right' | 'top-center' | 'top-left' | 'bottom-right' | 'bottom-center' | 'bottom-left';
 
+export type CloseToastFunc = (reason?: boolean | string) => void;
+
 export interface ToastContentProps<Data = unknown> {
-  closeToast: () => void;
+  closeToast: CloseToastFunc;
   toastProps: ToastProps;
   data: Data;
 }
@@ -282,7 +284,7 @@ export interface ToastProps extends ToastOptions {
   toastId: Id;
   key: Id;
   transition: ToastTransition;
-  closeToast: (removedByUser?: boolean) => void;
+  closeToast: CloseToastFunc;
   position: ToastPosition;
   children?: ToastContent;
   draggablePercent: number;
@@ -310,7 +312,7 @@ export interface Toast {
   content: ToastContent;
   props: ToastProps;
   toggle?: (v: boolean) => void;
-  removedByUser?: true | undefined;
+  removalReason?: true | undefined;
   isActive: boolean;
   staleId?: Id;
 }
@@ -327,7 +329,7 @@ export interface ToastItem<Data = {}> {
   data: Data;
   icon?: ToastIcon;
   status: ToastItemStatus;
-  removedByUser?: true;
+  reason?: boolean | string;
 }
 
 export type OnChangeCallback = (toast: ToastItem) => void;

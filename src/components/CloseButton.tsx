@@ -1,9 +1,9 @@
 import React from 'react';
 import { Default } from '../utils';
-import { Theme, TypeOptions } from '../types';
+import { CloseToastFunc, Theme, TypeOptions } from '../types';
 
 export interface CloseButtonProps {
-  closeToast: (removedByUser: boolean) => void;
+  closeToast: CloseToastFunc;
   type: TypeOptions;
   ariaLabel?: string;
   theme: Theme;
