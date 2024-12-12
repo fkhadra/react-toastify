@@ -126,7 +126,6 @@
   font-family: var(--toastify-font-family);
   /* webkit only issue #791 */
   z-index: 0;
-  overflow: hidden;
   /* inner swag */
   display: flex;
   flex: 1 auto;
@@ -336,10 +335,9 @@
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: var(--toastify-z-index);
+  z-index: 1;
   opacity: 0.7;
   transform-origin: left;
-  border-bottom-left-radius: var(--toastify-toast-bd-radius);
 }
 
 .Toastify__progress-bar--animated {
@@ -355,16 +353,17 @@
   left: initial;
   transform-origin: right;
   border-bottom-left-radius: initial;
-  border-bottom-right-radius: var(--toastify-toast-bd-radius);
 }
 
 .Toastify__progress-bar--wrp {
   position: absolute;
+  overflow: hidden;
   bottom: 0;
   left: 0;
   width: 100%;
   height: 5px;
   border-bottom-left-radius: var(--toastify-toast-bd-radius);
+  border-bottom-right-radius: var(--toastify-toast-bd-radius);
 }
 
 .Toastify__progress-bar--wrp[data-hidden='true'] {
