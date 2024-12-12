@@ -1,6 +1,5 @@
 import './style.css';
 
-export { useToastContainer, useToast } from './hooks';
 export { cssTransition, collapseToast } from './utils';
 export { ToastContainer, Bounce, Flip, Slide, Zoom, Icons } from './components';
 export type { IconProps, CloseButton } from './components';
