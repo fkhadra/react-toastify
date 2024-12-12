@@ -165,8 +165,10 @@ export interface ToastOptions<Data = unknown> extends CommonOptions {
 
   /**
    * Called when toast is unmounted.
+   * The callback first argument is the closure reason.
+   * It is "true" when the notification is closed by a user action like clicking on the close button.
    */
-  onClose?: (removedByUser: true | undefined) => void;
+  onClose?: (reason?: boolean | string) => void;
 
   /**
    * An optional inline style to apply.
