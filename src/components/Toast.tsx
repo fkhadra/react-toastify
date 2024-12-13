@@ -1,9 +1,9 @@
 import cx from 'clsx';
-import React, { cloneElement, isValidElement, ReactNode } from 'react';
+import React, { cloneElement, isValidElement } from 'react';
 
 import { useToast } from '../hooks/useToast';
 import { ToastProps } from '../types';
-import { Default, isFn } from '../utils';
+import { Default, isFn, renderContent } from '../utils';
 import { CloseButton } from './CloseButton';
 import { ProgressBar } from './ProgressBar';
 import { getIcon } from './Icons';
@@ -99,22 +99,24 @@ export const Toast: React.FC<ToastProps> = props => {
             {icon}
           </div>
         )}
-        {children as ReactNode}
+        {renderContent(children, props, !isRunning)}
         {Close}
-        <ProgressBar
-          {...(updateId && !isProgressControlled ? { key: `pb-${updateId}` } : {})}
-          rtl={rtl}
-          theme={theme}
-          delay={autoClose as number}
-          isRunning={isRunning}
-          isIn={isIn}
-          closeToast={closeToast}
-          hide={hideProgressBar}
-          type={type}
-          className={progressClassName}
-          controlledProgress={isProgressControlled}
-          progress={progress || 0}
-        />
+        {!props.customProgressBar && (
+          <ProgressBar
+            {...(updateId && !isProgressControlled ? { key: `p-${updateId}` } : {})}
+            rtl={rtl}
+            theme={theme}
+            delay={autoClose as number}
+            isRunning={isRunning}
+            isIn={isIn}
+            closeToast={closeToast}
+            hide={hideProgressBar}
+            type={type}
+            className={progressClassName}
+            controlledProgress={isProgressControlled}
+            progress={progress || 0}
+          />
+        )}
       </div>
     </Transition>
   );

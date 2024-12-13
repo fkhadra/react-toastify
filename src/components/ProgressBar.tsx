@@ -41,7 +41,7 @@ export interface ProgressBarProps {
   className?: ToastClassName;
 
   /**
-   * Tell wether or not controlled progress bar is used
+   * Tell whether a controlled progress bar is used
    */
   controlledProgress?: boolean;
 

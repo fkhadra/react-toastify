@@ -54,7 +54,7 @@ describe('Toast', () => {
       className: () => 'container-class'
     }
   ]) {
-    it(`merge container and body className when using ${name}`, () => {
+    it(`merge container when using ${name}`, () => {
       cy.mount(
         <Toast {...REQUIRED_PROPS} className={className}>
           FooBar
@@ -62,7 +62,6 @@ describe('Toast', () => {
       );
 
       cy.get('.container-class').should('exist');
-      cy.get('.body-class').should('exist');
     });
   }
 
@@ -238,8 +237,7 @@ describe('Toast', () => {
     cy.findByRole('status').should('exist');
     cy.get('#foo').should('exist');
 
-    cy.findByRole('status').parent().should('have.attr', 'style').and('include', 'background: purple');
-    cy.findByRole('status').should('have.attr', 'style').and('include', 'font-weight: bold');
+    cy.findByRole('status').should('have.attr', 'style').and('include', 'background: purple');
   });
 
   for (const { type, value } of [
@@ -250,6 +248,10 @@ describe('Toast', () => {
     {
       type: 'react element',
       value: <div>hello</div>
+    },
+    {
+      type: 'function',
+      value: () => <div>hello</div>
     }
   ]) {
     it(`render ${type}`, () => {

@@ -259,7 +259,6 @@ describe('with container', () => {
     });
 
     cy.get('.class1').should('exist');
-    cy.get('.class2').should('exist');
     cy.get('.class3').should('exist');
   });
 
