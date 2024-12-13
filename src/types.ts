@@ -12,7 +12,7 @@ export type Theme = 'light' | 'dark' | 'colored' | (string & {});
 
 export type ToastPosition = 'top-right' | 'top-center' | 'top-left' | 'bottom-right' | 'bottom-center' | 'bottom-left';
 
-export type CloseToastFunc = (reason?: boolean | string) => void;
+export type CloseToastFunc = ((reason?: boolean | string) => void) & ((e: React.MouseEvent) => void);
 
 export interface ToastContentProps<Data = unknown> {
   closeToast: CloseToastFunc;
@@ -152,6 +152,12 @@ interface CommonOptions {
    */
   theme?: Theme;
 
+  /**
+   * When set to `true` the built-in progress bar won't be rendered at all. Autoclose delay won't have any effect as well
+   * This is only used when you want to replace the progress bar with your own.
+   *
+   * See https://stackblitz.com/edit/react-toastify-custom-progress-bar?file=src%2FApp.tsx for an example.
+   */
   customProgressBar?: boolean;
 }
 
@@ -197,13 +203,16 @@ export interface ToastOptions<Data = unknown> extends CommonOptions {
   /**
    * Set the percentage for the controlled progress bar. `Value must be between 0 and 1.`
    */
-  progress?: number | string;
+  progress?: number;
 
   /**
    * Let you provide any data, useful when you are using your own component
    */
   data?: Data;
 
+  /**
+   * Let you specify the aria-label
+   */
   ariaLabel?: string;
 
   /**
