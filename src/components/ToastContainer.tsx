@@ -2,7 +2,7 @@ import cx from 'clsx';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { toast } from '../core';
-import { useToastContainer } from '../hooks/useToastContainer';
+import { useToastContainer } from '../hooks';
 import { useIsomorphicLayoutEffect } from '../hooks/useIsomorphicLayoutEffect';
 import { ToastContainerProps, ToastPosition } from '../types';
 import { Default, Direction, isFn, parseClassName } from '../utils';
@@ -137,7 +137,7 @@ export function ToastContainer(props: ToastContainerProps) {
             className={getClassName(position)}
             data-stacked={stacked}
             style={containerStyle}
-            key={`container-${position}`}
+            key={`c-${position}`}
           >
             {toastList.map(({ content, props: toastProps }) => {
               return (
@@ -146,7 +146,7 @@ export function ToastContainer(props: ToastContainerProps) {
                   stacked={stacked}
                   collapseAll={collapseAll}
                   isIn={isToastActive(toastProps.toastId, toastProps.containerId)}
-                  key={`toast-${toastProps.key}`}
+                  key={`t-${toastProps.key}`}
                 >
                   {content}
                 </Toast>

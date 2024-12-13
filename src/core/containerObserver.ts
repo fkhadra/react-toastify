@@ -1,4 +1,3 @@
-import { cloneElement, isValidElement, ReactElement } from 'react';
 import {
   Id,
   NotValidatedToastProps,
@@ -6,10 +5,9 @@ import {
   Toast,
   ToastContainerProps,
   ToastContent,
-  ToastContentProps,
   ToastProps
 } from '../types';
-import { canBeRendered, getAutoCloseDelay, isFn, isNum, isStr, parseClassName, toToastItem } from '../utils';
+import { canBeRendered, getAutoCloseDelay, isNum, parseClassName, toToastItem } from '../utils';
 
 type Notify = () => void;
 
@@ -89,10 +87,6 @@ export function createContainerObserver(
     if (shouldIgnoreToast(options)) return;
 
     const { toastId, updateId, data, staleId, delay } = options;
-    const closeToast = (removedByUser?: true) => {
-      toasts.get(toastId)!.removalReason = removedByUser;
-      removeToast(toastId);
-    };
 
     const isNotAnUpdate = updateId == null;
 
@@ -106,11 +100,14 @@ export function createContainerObserver(
       toastId,
       updateId,
       data,
-      closeToast,
       isIn: false,
       className: parseClassName(options.className || props.toastClassName),
       progressClassName: parseClassName(options.progressClassName || props.progressClassName),
       autoClose: options.isLoading ? false : getAutoCloseDelay(options.autoClose, props.autoClose),
+      closeToast(reason?: true) {
+        toasts.get(toastId)!.removalReason = reason;
+        removeToast(toastId);
+      },
       deleteToast() {
         const toastToRemove = toasts.get(toastId);
 
@@ -139,20 +136,8 @@ export function createContainerObserver(
       toastProps.closeButton = canBeRendered(props.closeButton) ? props.closeButton : true;
     }
 
-    let toastContent = content;
-
-    if (isValidElement(content) && !isStr(content.type)) {
-      toastContent = cloneElement<ToastContentProps>(content as ReactElement<any>, {
-        closeToast,
-        toastProps,
-        data
-      });
-    } else if (isFn(content)) {
-      toastContent = content({ closeToast, toastProps, data: data as TData });
-    }
-
     const activeToast = {
-      content: toastContent,
+      content,
       props: toastProps,
       staleId
     } as Toast;

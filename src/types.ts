@@ -17,6 +17,7 @@ export type CloseToastFunc = (reason?: boolean | string) => void;
 export interface ToastContentProps<Data = unknown> {
   closeToast: CloseToastFunc;
   toastProps: ToastProps;
+  isPaused: boolean;
   data: Data;
 }
 
@@ -150,6 +151,8 @@ interface CommonOptions {
    * `Default: 'light'`
    */
   theme?: Theme;
+
+  customProgressBar?: boolean;
 }
 
 export interface ToastOptions<Data = unknown> extends CommonOptions {

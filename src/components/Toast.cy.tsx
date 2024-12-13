@@ -248,6 +248,10 @@ describe('Toast', () => {
     {
       type: 'react element',
       value: <div>hello</div>
+    },
+    {
+      type: 'function',
+      value: () => <div>hello</div>
     }
   ]) {
     it(`render ${type}`, () => {
