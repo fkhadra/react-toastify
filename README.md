@@ -11,8 +11,9 @@
 
 ![stacked](https://github.com/fkhadra/react-toastify/assets/5574267/975c7c01-b95e-43cf-9100-256fa8ef2760)
 
+![custom-style](https://github.com/user-attachments/assets/311672f7-f98a-46f3-a2ab-a9d1a05186a7)
 
-🎉 React-Toastify allows you to add notifications to your app with ease. No more nonsense!
+🎉 React-Toastify allows you to add notifications to your app with ease.
 
 ## Installation
 
@@ -20,6 +21,27 @@
 $ npm install --save react-toastify
 $ yarn add react-toastify
 ```
+
+```jsx
+  import React from 'react';
+
+  import { ToastContainer, toast } from 'react-toastify';
+  
+  function App(){
+    const notify = () => toast("Wow so easy!");
+
+    return (
+      <div>
+        <button onClick={notify}>Notify!</button>
+        <ToastContainer />
+      </div>
+    );
+  }
+```
+
+## Documentation
+
+Check the [documentation](https://fkhadra.github.io/react-toastify/introduction) to get you started!
 
 ## Features
 
@@ -43,32 +65,10 @@ $ yarn add react-toastify
 - Stacked notifications!
 - And much more !
 
-## The gist
-
-```jsx
-  import React from 'react';
-
-  import { ToastContainer, toast } from 'react-toastify';
-  
-  function App(){
-    const notify = () => toast("Wow so easy!");
-
-    return (
-      <div>
-        <button onClick={notify}>Notify!</button>
-        <ToastContainer />
-      </div>
-    );
-  }
-```
-
 ## Demo
 
 [A demo is worth a thousand words](https://fkhadra.github.io/react-toastify/introduction)
 
-## Documentation
-
-Check the [documentation](https://fkhadra.github.io/react-toastify/introduction) to get you started!
 
 ## Contribute
 
