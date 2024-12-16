@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkreact_toastify_doc=self.webpackChunkreact_toastify_doc||[]).push([[4583],{5322:(t,c,e)=>{e.r(c),e.d(c,{default:()=>a});var o=e(5234),r=e(5680),s=e(5105);const a=function(){return(0,s.jsx)(o.rd,{to:(0,r.Ay)("/introduction")})}}}]);
