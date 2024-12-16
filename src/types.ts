@@ -270,6 +270,7 @@ export interface ToastContainerProps extends CommonOptions, Pick<HTMLAttributes<
 
   /**
    * Shortcut to focus the first notification with the keyboard
+   * `default: Alt+t`
    *
    * ```
    * // focus when user presses ⌘ + F
