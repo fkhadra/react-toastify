@@ -96,7 +96,7 @@ function handlePromise<TData = unknown, TError = unknown, TPending = unknown>(
     // Remove the toast if the input has not been provided. This prevents the toast from hanging
     // in the pending state if a success/error toast has not been provided.
     if (input == null) {
-      toast.dismiss(id);
+      if (id) toast.dismiss(id);
       return;
     }
 
