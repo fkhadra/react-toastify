@@ -45,9 +45,15 @@ export default defineConfig([
   },
   {
     ...baseConfig,
+    injectStyle: false,
+    entry: { unstyled: 'src/index.ts' },
+    external: ['react'],
+    clean: ['dist']
+  },
+  {
+    ...baseConfig,
     entry: {
-      'use-notification-center/index':
-        'src/addons/use-notification-center/index.ts'
+      'use-notification-center/index': 'src/addons/use-notification-center/index.ts'
     },
     external: ['react', 'react-toastify'],
     clean: ['addons'],

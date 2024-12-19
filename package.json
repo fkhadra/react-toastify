@@ -24,7 +24,7 @@
     "test": "cypress open --component",
     "test:run": "cypress run --component -b chrome",
     "prettier": "prettier --write src",
-    "build": "tsup && cp src/style.css dist/ReactToastify.css"
+    "build": "tsup && cp src/style.css dist/ReactToastify.css && rm dist/unstyled.css*"
   },
   "peerDependencies": {
     "react": "^18 || ^19",
@@ -81,6 +81,11 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
+    },
+    "./unstyled": {
+      "types": "./dist/unstyled.d.ts",
+      "import": "./dist/unstyled.mjs",
+      "require": "./dist/unstyled.js"
     },
     "./dist/ReactToastify.css": "./dist/ReactToastify.css",
     "./ReactToastify.css": "./dist/ReactToastify.css",
