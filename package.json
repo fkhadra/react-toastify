@@ -1,5 +1,5 @@
 {
-  "version": "11.0.4",
+  "version": "11.0.5",
   "license": "MIT",
   "description": "React notification made easy",
   "keywords": [
@@ -20,11 +20,11 @@
   "scripts": {
     "prepare": "lefthook install",
     "setup": "pnpm link .",
-    "start": "cd playground && pnpm dev",
+    "start": "node api.js && cd playground && pnpm dev",
     "test": "cypress open --component",
     "test:run": "cypress run --component -b chrome",
     "prettier": "prettier --write src",
-    "build": "tsup && cp src/style.css dist/ReactToastify.css && rm dist/unstyled.css*"
+    "build": "node api.js && tsup && cp src/style.css dist/ReactToastify.css && rm dist/unstyled.css*"
   },
   "peerDependencies": {
     "react": "^18 || ^19",
