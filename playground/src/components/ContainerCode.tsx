@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ToastContainerProps } from '../../../src';
 
-function getProp<L, R>(prop: L, value: R) {
+function getProp<L extends React.ReactNode, R>(prop: L, value: R) {
   return value ? (
     <div>
       <span className="code__props">{prop}</span>
@@ -31,7 +31,8 @@ export const ContainerCode: React.FC<ContainerCodeProps> = ({
   pauseOnFocusLoss,
   isDefaultProps,
   draggable,
-  theme
+  theme,
+  stacked
 }) => (
   <div>
     <h3>Toast Container</h3>
@@ -58,6 +59,7 @@ export const ContainerCode: React.FC<ContainerCodeProps> = ({
       {getProp('rtl', rtl)}
       {getProp('pauseOnFocusLoss', pauseOnFocusLoss)}
       {getProp('draggable', draggable)}
+      {getProp('stacked', stacked)}
       {!disableAutoClose ? getProp('pauseOnHover', pauseOnHover) : ''}
       <div>
         <span>{`/>`}</span>
