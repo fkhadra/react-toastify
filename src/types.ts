@@ -269,6 +269,11 @@ export interface ToastContainerProps extends CommonOptions, Pick<HTMLAttributes<
   limit?: number;
 
   /**
+   * Set the maximum number of toast displayed when collapsed
+   */
+  stackLimit?: number;
+
+  /**
    * Shortcut to focus the first notification with the keyboard
    * `default: Alt+t`
    *
