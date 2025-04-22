@@ -32,7 +32,9 @@ export const ContainerCode: React.FC<ContainerCodeProps> = ({
   isDefaultProps,
   draggable,
   theme,
-  stacked
+  stacked,
+  stackLimit,
+  limit
 }) => (
   <div>
     <h3>Toast Container</h3>
@@ -60,6 +62,22 @@ export const ContainerCode: React.FC<ContainerCodeProps> = ({
       {getProp('pauseOnFocusLoss', pauseOnFocusLoss)}
       {getProp('draggable', draggable)}
       {getProp('stacked', stacked)}
+      {stacked && stackLimit > 1 ? (
+        <div>
+          <span className="code__props">stackLimit</span>
+          {`={${stackLimit}}`}
+        </div>
+      ) : (
+        <></>
+      )}
+      {limit > 0 ? (
+        <div>
+          <span className="code__props">limit</span>
+          {`={${limit}}`}
+        </div>
+      ) : (
+        <></>
+      )}
       {!disableAutoClose ? getProp('pauseOnHover', pauseOnHover) : ''}
       <div>
         <span>{`/>`}</span>
