@@ -689,3 +689,21 @@ describe('with stacked container', () => {
     cy.findByText('hello 3').should('exist').and('be.visible');
   });
 });
+
+describe('with stacked container and stack limit', () => {
+  it('render toasts', () => {
+    cy.mount(<ToastContainer autoClose={false} stacked stackLimit={2} />);
+    toast('hello 1');
+    toast('hello 2');
+    toast('hello 3');
+
+    cy.wait(500);
+
+    cy.findByText('hello 1').should('exist').and('not.be.visible');
+    cy.findByText('hello 2').should('exist').and('not.be.visible');
+    cy.findByText('hello 3').should('exist').and('be.visible');
+
+    // Verify we have exactly 3 toasts in total
+    cy.get('.Toastify__toast').should('have.length', 3);
+  });
+});

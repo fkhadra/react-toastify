@@ -92,10 +92,16 @@ class App extends React.Component {
     );
   }
 
-  handleRadioOrSelect = e =>
+  handleRadio = e =>
     this.setState({
-      [e.target.name]: e.target.name === 'limit' ? parseInt(e.target.value, 10) : e.target.value
+      [e.target.name]: e.target.value
     });
+
+  handleNumPicker = e => {
+    this.setState({
+      [e.target.name]: parseInt(e.target.value, 10)
+    });
+  };
 
   toggleCheckbox = e =>
     this.setState({
@@ -128,14 +134,14 @@ class App extends React.Component {
                   options={positions}
                   name="position"
                   checked={this.state.position as string}
-                  onChange={this.handleRadioOrSelect}
+                  onChange={this.handleRadio}
                 />
               </ul>
             </div>
             <div>
               <h3>Type</h3>
               <ul>
-                <Radio options={typs} name="type" checked={this.state.type} onChange={this.handleRadioOrSelect} />
+                <Radio options={typs} name="type" checked={this.state.type} onChange={this.handleRadio} />
               </ul>
             </div>
             <div>
@@ -155,12 +161,7 @@ class App extends React.Component {
                 </label>
                 <label htmlFor="transition">
                   Transition
-                  <select
-                    name="transition"
-                    id="transition"
-                    onChange={this.handleRadioOrSelect}
-                    value={this.state.transition}
-                  >
+                  <select name="transition" id="transition" onChange={this.handleRadio} value={this.state.transition}>
                     {Object.keys(transitions).map(k => (
                       <option key={k} value={k}>
                         {k}
@@ -170,7 +171,7 @@ class App extends React.Component {
                 </label>
                 <label htmlFor="theme">
                   Theme
-                  <select name="theme" id="theme" onChange={this.handleRadioOrSelect} value={this.state.theme}>
+                  <select name="theme" id="theme" onChange={this.handleRadio} value={this.state.theme}>
                     {themes.map(k => (
                       <option key={k} value={k}>
                         {k}
@@ -185,7 +186,7 @@ class App extends React.Component {
                     name="progress"
                     id="progress"
                     value={this.state.progress}
-                    onChange={this.handleRadioOrSelect}
+                    onChange={this.handleRadio}
                   />
                 </label>
                 <label htmlFor="limit">
@@ -195,7 +196,18 @@ class App extends React.Component {
                     name="limit"
                     id="limit"
                     value={this.state.limit}
-                    onChange={this.handleRadioOrSelect}
+                    onChange={this.handleNumPicker}
+                  />
+                </label>
+                <label htmlFor="stackLimit">
+                  Stack Limit
+                  <input
+                    type="number"
+                    min={2}
+                    name="stackLimit"
+                    id="stackLimit"
+                    value={this.state.stackLimit}
+                    onChange={this.handleNumPicker}
                   />
                 </label>
               </div>

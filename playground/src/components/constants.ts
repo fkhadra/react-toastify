@@ -32,6 +32,10 @@ export const flags = [
   {
     id: 'draggable',
     label: 'Allow to drag and close the toast'
+  },
+  {
+    id: 'stacked',
+    label: 'Stacked'
   }
 ];
 

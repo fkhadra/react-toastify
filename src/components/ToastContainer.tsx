@@ -21,6 +21,7 @@ export const defaultProps: ToastContainerProps = {
   draggableDirection: Direction.X,
   role: 'alert',
   theme: 'light',
+  stackLimit: 10,
   'aria-label': 'Notifications Alt+T',
   hotKeys: e => e.altKey && e.code === 'KeyT'
 };
@@ -31,6 +32,7 @@ export function ToastContainer(props: ToastContainerProps) {
     ...props
   };
   const stacked = props.stacked;
+  const stackLimit = props.stackLimit > 1 ? props.stackLimit : defaultProps.stackLimit;
   const [collapsed, setIsCollapsed] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
   const { getToastToRender, isToastActive, count } = useToastContainer(containerProps);
@@ -81,9 +83,11 @@ export function ToastContainer(props: ToastContainerProps) {
           node.style.setProperty('--y', `${isTop ? y : y * -1}px`);
           node.style.setProperty('--g', `${gap}`);
           node.style.setProperty('--s', `${1 - (collapsed ? prevS : 0)}`);
-
-          usedHeight += node.offsetHeight;
           prevS += 0.025;
+
+          if (!(stackLimit && i >= stackLimit - 1 && collapsed)) {
+            usedHeight += node.offsetHeight;
+          }
         });
     }
   }, [collapsed, count, stacked]);
