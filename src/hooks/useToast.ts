@@ -3,7 +3,7 @@ import { DOMAttributes, useEffect, useRef, useState } from 'react';
 import { ToastProps } from '../types';
 import { Default, Direction } from '../utils';
 import { registerToggle } from '../core/store';
-
+import  isMobile from '../utils/isMobile'
 interface Draggable {
   start: number;
   delta: number;
@@ -84,6 +84,7 @@ export function useToast(props: ToastProps) {
     if (
       e.nativeEvent.type !== 'touchend' &&
       props.pauseOnHover &&
+       !isMobile() &&
       e.clientX >= left &&
       e.clientX <= right &&
       e.clientY >= top &&
@@ -157,7 +158,7 @@ export function useToast(props: ToastProps) {
     onPointerUp: onDragTransitionEnd
   };
 
-  if (autoClose && pauseOnHover) {
+  if (autoClose && pauseOnHover && !isMobile()) {
     eventHandlers.onMouseEnter = pauseToast;
 
     // progress control is delegated to the container
