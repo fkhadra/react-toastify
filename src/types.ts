@@ -121,7 +121,7 @@ interface CommonOptions {
    * `Default: alert`
    *  https://www.w3.org/WAI/PF/aria/roles
    */
-  role?: string;
+  role?: 'alert' | 'status' | 'log';
 
   /**
    * Set id to handle multiple container
