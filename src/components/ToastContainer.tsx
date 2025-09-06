@@ -34,7 +34,7 @@ export function ToastContainer(props: ToastContainerProps) {
   const [collapsed, setIsCollapsed] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
   const { getToastToRender, isToastActive, count } = useToastContainer(containerProps);
-  const { className, style, rtl, containerId, hotKeys } = containerProps;
+  const { className, style, toastStyle, rtl, containerId, hotKeys } = containerProps;
 
   function getClassName(position: ToastPosition) {
     const defaultClassName = cx(
@@ -136,14 +136,15 @@ export function ToastContainer(props: ToastContainerProps) {
             tabIndex={-1}
             className={getClassName(position)}
             data-stacked={stacked}
-            style={containerStyle}
             key={`c-${position}`}
+            style={containerStyle}
           >
             {toastList.map(({ content, props: toastProps }) => {
               return (
                 <Toast
                   {...toastProps}
                   stacked={stacked}
+                  style={toastStyle}
                   collapseAll={collapseAll}
                   isIn={isToastActive(toastProps.toastId, toastProps.containerId)}
                   key={`t-${toastProps.key}`}
