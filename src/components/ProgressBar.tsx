@@ -112,7 +112,11 @@ export function ProgressBar({
           }
   };
 
-  // TODO: add aria-valuenow, aria-valuemax, aria-valuemin
+  const shouldShowAria = controlledProgress && progress !== undefined;
+  const progressValue = shouldShowAria ? (typeof progress === 'number' ? progress : parseFloat(progress || '0')) : 0;
+  const ariaValueNow = Math.min(100, Math.max(0, Math.round(progressValue * 100)));
+  const ariaValueMin = 0;
+  const ariaValueMax = 100;
 
   return (
     <div className={`${Default.CSS_NAMESPACE}__progress-bar--wrp`} data-hidden={isHidden}>
@@ -122,7 +126,12 @@ export function ProgressBar({
       <div
         role="progressbar"
         aria-hidden={isHidden ? 'true' : 'false'}
-        aria-label="notification timer"
+        aria-label={'Notification progress bar: ' + ariaValueNow + ' percent'}
+        {...(shouldShowAria && {
+          'aria-valuenow': ariaValueNow,
+          'aria-valuemin': ariaValueMin,
+          'aria-valuemax': ariaValueMax
+        })}
         className={classNames}
         style={style}
         {...animationEvent}
