@@ -90,4 +90,40 @@ describe('ProgressBar', () => {
 
     cy.findByRole('progressbar').should('have.attr', 'style').and('include', 'scaleX(0.7)');
   });
+
+  it('should have ARIA attributes when controlled progress is used', () => {
+    cy.mount(
+      <Wrapper>
+        <ProgressBar {...getProps()} controlledProgress progress={0.7} />
+      </Wrapper>
+    );
+
+    cy.findByRole('progressbar')
+      .should('have.attr', 'aria-valuenow', '70')
+      .and('have.attr', 'aria-valuemin', '0')
+      .and('have.attr', 'aria-valuemax', '100');
+  });
+
+  it('should convert progress values correctly to percentage', () => {
+    cy.mount(
+      <Wrapper>
+        <ProgressBar {...getProps()} controlledProgress progress={0.35} />
+      </Wrapper>
+    );
+
+    cy.findByRole('progressbar')
+      .should('have.attr', 'aria-valuenow', '35');
+  });
+
+  it('should handle string progress values', () => {
+    cy.mount(
+      <Wrapper>
+        <ProgressBar {...getProps()} controlledProgress progress="0.85" />
+      </Wrapper>
+    );
+
+    cy.findByRole('progressbar')
+      .should('have.attr', 'aria-valuenow', '85');
+  });
+
 });
