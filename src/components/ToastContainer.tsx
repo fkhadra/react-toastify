@@ -109,6 +109,22 @@ export function ToastContainer(props: ToastContainerProps) {
     };
   }, [hotKeys]);
 
+  useEffect(() => {
+    function handleOutsideInteraction(e: PointerEvent) {
+      const container = containerRef.current;
+      if (!container) return;
+
+      const target = e.target;
+
+      if (target instanceof Node && !container.contains(target)) {
+        setIsCollapsed(true);
+        toast.play();
+      }
+    }
+    document.addEventListener('pointerdown', handleOutsideInteraction);
+    return () => document.removeEventListener('pointerdown', handleOutsideInteraction);
+  }, []);
+
   return (
     <section
       ref={containerRef}
