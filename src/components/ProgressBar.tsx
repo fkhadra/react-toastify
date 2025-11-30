@@ -112,7 +112,21 @@ export function ProgressBar({
           }
   };
 
-  // TODO: add aria-valuenow, aria-valuemax, aria-valuemin
+  // ARIA attributes for progress bar accessibility
+  // Only provide aria-valuenow for controlled progress bars where we know the exact value
+  // For animated progress bars, we omit aria-valuenow as the value changes continuously
+  const ariaProps: {
+    'aria-valuemin': number;
+    'aria-valuemax': number;
+    'aria-valuenow'?: number;
+  } = {
+    'aria-valuemin': 0,
+    'aria-valuemax': 1
+  };
+
+  if (controlledProgress && typeof progress === 'number') {
+    ariaProps['aria-valuenow'] = Math.max(0, Math.min(1, progress));
+  }
 
   return (
     <div className={`${Default.CSS_NAMESPACE}__progress-bar--wrp`} data-hidden={isHidden}>
@@ -125,6 +139,7 @@ export function ProgressBar({
         aria-label="notification timer"
         className={classNames}
         style={style}
+        {...ariaProps}
         {...animationEvent}
       />
     </div>
