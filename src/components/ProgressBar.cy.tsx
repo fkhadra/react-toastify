@@ -90,4 +90,48 @@ describe('ProgressBar', () => {
 
     cy.findByRole('progressbar').should('have.attr', 'style').and('include', 'scaleX(0.7)');
   });
+
+  it('has ARIA attributes for accessibility', () => {
+    cy.mount(
+      <Wrapper>
+        <ProgressBar {...getProps()} />
+      </Wrapper>
+    );
+
+    cy.findByRole('progressbar')
+      .should('have.attr', 'aria-valuemin', '0')
+      .should('have.attr', 'aria-valuemax', '1')
+      .should('not.have.attr', 'aria-valuenow');
+  });
+
+  it('has aria-valuenow for controlled progress bar', () => {
+    cy.mount(
+      <Wrapper>
+        <ProgressBar {...getProps()} controlledProgress progress={0.5} />
+      </Wrapper>
+    );
+
+    cy.findByRole('progressbar')
+      .should('have.attr', 'aria-valuemin', '0')
+      .should('have.attr', 'aria-valuemax', '1')
+      .should('have.attr', 'aria-valuenow', '0.5');
+  });
+
+  it('clamps aria-valuenow between 0 and 1', () => {
+    cy.mount(
+      <Wrapper>
+        <ProgressBar {...getProps()} controlledProgress progress={1.5} />
+      </Wrapper>
+    );
+
+    cy.findByRole('progressbar').should('have.attr', 'aria-valuenow', '1');
+
+    cy.mount(
+      <Wrapper>
+        <ProgressBar {...getProps()} controlledProgress progress={-0.5} />
+      </Wrapper>
+    );
+
+    cy.findByRole('progressbar').should('have.attr', 'aria-valuenow', '0');
+  });
 });
