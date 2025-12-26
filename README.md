@@ -6,8 +6,7 @@
 ![NPM](https://img.shields.io/npm/l/react-toastify.svg?label=%F0%9F%93%9Clicense&style=for-the-badge)
 ![Coveralls github](https://img.shields.io/coveralls/github/fkhadra/react-toastify.svg?label=%E2%9B%B1coverage&style=for-the-badge)
 
-
-![React toastify](https://user-images.githubusercontent.com/5574267/130804494-a9d2d69c-f170-4576-b2e1-0bb7f13dd92d.gif "React toastify")
+![React toastify](https://user-images.githubusercontent.com/5574267/130804494-a9d2d69c-f170-4576-b2e1-0bb7f13dd92d.gif 'React toastify')
 
 ![stacked](https://github.com/fkhadra/react-toastify/assets/5574267/975c7c01-b95e-43cf-9100-256fa8ef2760)
 
@@ -23,20 +22,51 @@ $ yarn add react-toastify
 ```
 
 ```jsx
-  import React from 'react';
+import React from 'react';
 
-  import { ToastContainer, toast } from 'react-toastify';
-  
-  function App(){
-    const notify = () => toast("Wow so easy!");
+import { ToastContainer, toast } from 'react-toastify';
 
-    return (
-      <div>
-        <button onClick={notify}>Notify!</button>
-        <ToastContainer />
-      </div>
-    );
-  }
+function App() {
+  const notify = () => toast('Wow so easy!');
+
+  return (
+    <div>
+      <button onClick={notify}>Notify!</button>
+      <ToastContainer />
+    </div>
+  );
+}
+```
+
+### With custom transition
+
+```jsx
+import React from 'react';
+
+import { ToastContainer, toast, Bounce } from 'react-toastify';
+
+function App() {
+  const notify = () => toast('Wow so easy!');
+
+  return (
+    <div>
+      <button onClick={notify}>Notify!</button>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
+      />
+    </div>
+  );
+}
 ```
 
 ## Documentation
@@ -52,7 +82,7 @@ Check the [documentation](https://fkhadra.github.io/react-toastify/introduction)
 - Can choose swipe direction
 - Super easy to use an animation of your choice. Works well with animate.css for example
 - Can display a react component inside the toast!
-- Has ```onOpen``` and ```onClose``` hooks. Both can access the props passed to the react component rendered inside the toast
+- Has `onOpen` and `onClose` hooks. Both can access the props passed to the react component rendered inside the toast
 - Can remove a toast programmatically
 - Define behavior per toast
 - Pause toast when the window loses focus 👁
@@ -61,14 +91,13 @@ Check the [documentation](https://fkhadra.github.io/react-toastify/introduction)
 - You can control the progress bar a la `nprogress` 😲
 - You can limit the number of toast displayed at the same time
 - Dark mode 🌒
-- Pause timer programmaticaly 
+- Pause timer programmaticaly
 - Stacked notifications!
 - And much more !
 
 ## Demo
 
 [A demo is worth a thousand words](https://fkhadra.github.io/react-toastify/introduction)
-
 
 ## Contribute
 
