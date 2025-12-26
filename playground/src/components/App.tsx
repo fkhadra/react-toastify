@@ -88,7 +88,8 @@ class App extends React.Component {
       this.state.pauseOnHover &&
       this.state.closeOnClick &&
       this.state.draggable &&
-      this.state.theme === 'light'
+      this.state.theme === 'light' &&
+      this.state.transition === 'bounce'
     );
   }
 

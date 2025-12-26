@@ -17,6 +17,7 @@ function getProp<L, R>(prop: L, value: R) {
 export interface ContainerCodeProps extends Partial<ToastContainerProps> {
   isDefaultProps: boolean;
   disableAutoClose: boolean;
+  transition?: string;
 }
 
 export const ContainerCode: React.FC<ContainerCodeProps> = ({
@@ -31,10 +32,19 @@ export const ContainerCode: React.FC<ContainerCodeProps> = ({
   pauseOnFocusLoss,
   isDefaultProps,
   draggable,
-  theme
+  theme,
+  transition
 }) => (
   <div>
     <h3>Toast Container</h3>
+    {transition && transition !== 'bounce' && (
+      <div className="code">
+        <div>
+          <span className="code__component">import</span>
+          {` { ${transition.charAt(0).toUpperCase() + transition.slice(1)} } from 'react-toastify';`}
+        </div>
+      </div>
+    )}
     <div className="code">
       <div>
         <span>{`<`}</span>
@@ -48,6 +58,12 @@ export const ContainerCode: React.FC<ContainerCodeProps> = ({
         <span className="code__props">theme</span>
         {`="${theme}"`}
       </div>
+      {transition && transition !== 'bounce' && (
+        <div>
+          <span className="code__props">transition</span>
+          {`={${transition.charAt(0).toUpperCase() + transition.slice(1)}}`}
+        </div>
+      )}
       <div>
         <span className="code__props">autoClose</span>
         {`={${disableAutoClose ? false : autoClose}}`}
