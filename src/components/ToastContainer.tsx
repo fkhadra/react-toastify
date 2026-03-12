@@ -32,6 +32,10 @@ export function ToastContainer(props: ToastContainerProps) {
   };
   const stacked = props.stacked;
   const [collapsed, setIsCollapsed] = useState(true);
+  const [visualViewportState, setVisualViewportState] = useState<{
+    offsetTop: number;
+    offsetLeft: number;
+  } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const { getToastToRender, isToastActive, count } = useToastContainer(containerProps);
   const { className, style, rtl, containerId, hotKeys } = containerProps;
@@ -56,6 +60,14 @@ export function ToastContainer(props: ToastContainerProps) {
       setIsCollapsed(true);
       toast.play();
     }
+  }
+
+  function isIOSMobile() {
+    if (typeof navigator === 'undefined') return false;
+    const ua = navigator.userAgent;
+    const iOS = /iPad|iPhone|iPod/.test(ua);
+    const iPadOS13Plus = ua.includes('Mac') && 'ontouchend' in document;
+    return iOS || iPadOS13Plus;
   }
 
   useIsomorphicLayoutEffect(() => {
@@ -103,11 +115,35 @@ export function ToastContainer(props: ToastContainerProps) {
     }
 
     document.addEventListener('keydown', focusFirst);
+    return () => document.removeEventListener('keydown', focusFirst);
+  }, [hotKeys]);
+
+  useEffect(() => {
+    if (!isIOSMobile()) return;
+    const vv = window.visualViewport;
+    if (!vv) return;
+
+    const update = () => {
+      // offsetTop: distance between the top of the visual viewport and the top of the layout viewport.
+      // offsetLeft: same for horizontal axis.
+      // These change when the keyboard opens or the user scrolls on iOS.
+      // By applying these as a CSS translate we re-anchor `position: fixed` elements
+      // (which are fixed to the layout viewport on iOS) back to the visible screen.
+      setVisualViewportState({
+        offsetTop: vv.offsetTop,
+        offsetLeft: vv.offsetLeft
+      });
+    };
+
+    vv.addEventListener('resize', update);
+    vv.addEventListener('scroll', update);
+    update();
 
     return () => {
-      document.removeEventListener('keydown', focusFirst);
+      vv.removeEventListener('resize', update);
+      vv.removeEventListener('scroll', update);
     };
-  }, [hotKeys]);
+  }, []);
 
   return (
     <section
@@ -127,9 +163,25 @@ export function ToastContainer(props: ToastContainerProps) {
       aria-label={containerProps['aria-label']}
     >
       {getToastToRender((position, toastList) => {
-        const containerStyle: React.CSSProperties = !toastList.length
-          ? { ...style, pointerEvents: 'none' }
-          : { ...style };
+        const isTop = position.includes('top');
+        const isCenter = position.includes('center');
+
+        let containerStyle: React.CSSProperties = {
+          ...style,
+          ...(toastList.length ? {} : { pointerEvents: 'none' })
+        };
+
+        if (isTop && visualViewportState) {
+          const { offsetTop, offsetLeft } = visualViewportState;
+          // Translate the container by the visual viewport's offset.
+          // This counteracts iOS's behaviour of fixing elements to the layout viewport
+          // so the toast stays pinned to the actual visible corner of the screen.
+          const existingTransform = isCenter ? 'translateX(-50%) ' : '';
+          containerStyle = {
+            ...containerStyle,
+            transform: `${existingTransform}translate(${offsetLeft}px, ${offsetTop}px)`
+          };
+        }
 
         return (
           <div
