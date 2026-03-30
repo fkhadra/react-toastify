@@ -112,8 +112,6 @@ export function ProgressBar({
           }
   };
 
-  // TODO: add aria-valuenow, aria-valuemax, aria-valuemin
-
   return (
     <div className={`${Default.CSS_NAMESPACE}__progress-bar--wrp`} data-hidden={isHidden}>
       <div
@@ -123,6 +121,9 @@ export function ProgressBar({
         role="progressbar"
         aria-hidden={isHidden ? 'true' : 'false'}
         aria-label="notification timer"
+        aria-valuenow={controlledProgress ? Math.round((progress as number) * 100) : undefined}
+        aria-valuemin={0}
+        aria-valuemax={100}
         className={classNames}
         style={style}
         {...animationEvent}
