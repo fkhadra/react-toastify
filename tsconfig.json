@@ -1,8 +1,10 @@
 {
   "compilerOptions": {
     "jsx": "react",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
+    "module": "esnext",
     "esModuleInterop": true,
-    "lib": ["es2015", "dom"]
+    "lib": ["es2018", "dom"],
+    "ignoreDeprecations": "6.0"
   }
 }

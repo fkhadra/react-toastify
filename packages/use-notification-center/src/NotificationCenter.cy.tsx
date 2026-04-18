@@ -89,16 +89,21 @@ describe('NotificationCenter', () => {
   });
 
   it('update', () => {
-    const id = toast('msg');
+    let id: ReturnType<typeof toast>;
+    cy.then(() => {
+      id = toast('msg');
+    });
 
     cy.resolveEntranceAnimation();
     cy.findByRole('alert').should('exist');
 
-    setTimeout(() => {
-      toast.update(id, {
-        render: 'msg updated'
-      });
-    }, 0);
+    cy.then(() => {
+      setTimeout(() => {
+        toast.update(id, {
+          render: 'msg updated'
+        });
+      }, 0);
+    });
 
     cy.findAllByText('msg updated').should('exist');
   });

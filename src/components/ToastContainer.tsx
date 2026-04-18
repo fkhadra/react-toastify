@@ -91,8 +91,8 @@ export function ToastContainer(props: ToastContainerProps) {
   useEffect(() => {
     function focusFirst(e: KeyboardEvent) {
       const node = containerRef.current;
-      if (hotKeys(e)) {
-        (node.querySelector('[tabIndex="0"]') as HTMLElement)?.focus();
+      if (hotKeys!(e)) {
+        (node?.querySelector('[tabIndex="0"]') as HTMLElement | null)?.focus();
         setIsCollapsed(false);
         toast.pause();
       }
