@@ -1,26 +1,5 @@
 import { defineConfig, Options } from 'tsup';
-
-const injectFunc = `
-function injectStyle(css) {
-  if (!css || typeof document === 'undefined') return
-
-  const head = document.head || document.getElementsByTagName('head')[0]
-  const style = document.createElement('style')
-  style.type = 'text/css'
-          
-  if(head.firstChild) {
-    head.insertBefore(style, head.firstChild)
-  } else {
-    head.appendChild(style)
-  }
-
-  if(style.styleSheet) {
-    style.styleSheet.cssText = css
-  } else {
-    style.appendChild(document.createTextNode(css))
-  }
-}
-`;
+import { resolve } from 'node:path';
 
 const baseConfig: Options = {
   minify: true,
@@ -28,12 +7,23 @@ const baseConfig: Options = {
   sourcemap: true,
   dts: true,
   format: ['esm', 'cjs'],
-  injectStyle: css => {
-    return `${injectFunc}injectStyle(${css});`;
-  },
+  loader: { '.css': 'text' },
   banner: {
     js: '"use client";'
-  }
+  },
+  // Matches Vite's `?raw` query suffix — allows `import styles from '../style.css?raw'`
+  // to resolve to the CSS file as a text string in both toolchains.
+  esbuildPlugins: [
+    {
+      name: 'strip-raw-query',
+      setup(build) {
+        build.onResolve({ filter: /\.css\?raw$/ }, args => ({
+          path: resolve(args.resolveDir, args.path.replace(/\?raw$/, '')),
+          namespace: 'file'
+        }));
+      }
+    }
+  ]
 };
 
 export default defineConfig([
@@ -45,8 +35,7 @@ export default defineConfig([
   },
   {
     ...baseConfig,
-    injectStyle: false,
-    entry: { unstyled: 'src/index.ts' },
+    entry: { unstyled: 'src/unstyled.ts' },
     external: ['react'],
     clean: ['dist']
   },

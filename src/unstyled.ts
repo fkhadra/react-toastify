@@ -1,6 +1,5 @@
 export { cssTransition, collapseToast } from './utils';
-export { Bounce, Flip, Slide, Zoom, Icons } from './components';
-export { StyledToastContainer as ToastContainer } from './components/StyledToastContainer';
+export { ToastContainer, Bounce, Flip, Slide, Zoom, Icons } from './components';
 export type { IconProps, CloseButton } from './components';
 export type { ToastPromiseParams } from './core';
 export { toast } from './core';

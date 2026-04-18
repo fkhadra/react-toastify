@@ -18,6 +18,8 @@
 import '@cypress/code-coverage/support';
 import './commands';
 import './style.css';
+// Inject library CSS into the Cypress iframe so raw <ToastContainer> tests (which don't
+// go through StyledToastContainer's useStyleSheet hook) still see the default styles.
 import '../../src/style.css';
 
 // Alternatively you can use CommonJS syntax:

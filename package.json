@@ -23,7 +23,7 @@
     "test": "cypress open --component",
     "test:run": "cypress run --component -b chrome",
     "prettier": "prettier --write src",
-    "build": "tsup && cp src/style.css dist/ReactToastify.css && rm dist/unstyled.css*"
+    "build": "tsup && cp src/style.css dist/ReactToastify.css"
   },
   "peerDependencies": {
     "react": "^18 || ^19",

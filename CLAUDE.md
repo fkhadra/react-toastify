@@ -35,8 +35,8 @@ There is **no ESLint**. Code style is Prettier only (config inline in `package.j
 
 `tsup.config.ts` produces three independent bundles:
 
-1. **`react-toastify`** (default) — `src/index.ts`; the CSS in `src/style.css` is **injected at import time** by a shim defined inline in `tsup.config.ts` (it creates a `<style>` tag at runtime). All bundles are prefixed with `"use client";` for React Server Components.
-2. **`react-toastify/unstyled`** — same entry, but `injectStyle: false`. Use this subpath when consumers want to own the CSS.
+1. **`react-toastify`** (default) — `src/index.ts`. Its `ToastContainer` export is the **`StyledToastContainer`** wrapper at `src/components/StyledToastContainer.tsx`, which imports `src/style.css` as a string (via Vite's `?raw` suffix; tsup uses `loader: { '.css': 'text' }` plus a small esbuild plugin that strips the `?raw` query) and injects it via `useStyleSheet(css, props.nonce)` on mount. Users can pass a `nonce` prop for Content Security Policy compliance. All bundles are prefixed with `"use client";` for React Server Components.
+2. **`react-toastify/unstyled`** — `src/unstyled.ts`. Re-exports the **raw** `ToastContainer` from `./components` without the styled wrapper, so nothing is injected at runtime. Use this subpath when consumers want to ship their own CSS (from `react-toastify/dist/ReactToastify.css` or elsewhere).
 3. **`react-toastify/addons/use-notification-center`** — built from the internal workspace package at `packages/use-notification-center/` into the `/addons` directory (not `/dist`); declared in `package.json#exports`.
 
 The raw stylesheet is also exposed as `react-toastify/dist/ReactToastify.css`.
@@ -64,6 +64,7 @@ Consequence: multiple `<ToastContainer>` instances are supported via `containerI
 - `useToastContainer.ts` — store → React bridge (see above). The most important file in the repo.
 - `useToast.ts` — per-toast UX behavior.
 - `useIsomorphicLayoutEffect.ts` — SSR-safe layout effect.
+- `useStyleSheet.ts` — runtime CSS injection (replaces the old tsup shim). Per-document `Map` so multiple `<ToastContainer>` instances only inject once per document (shadow DOM / iframe safe). If a later mount supplies a nonce and the previous injection had none, the attribute is updated on the existing `<style>` tag — see `src/hooks/useStyleSheet.ts`.
 
 ### Stacked / limit / queue semantics
 

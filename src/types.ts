@@ -278,6 +278,13 @@ export interface ToastContainerProps extends CommonOptions, Pick<HTMLAttributes<
    * ```
    */
   hotKeys?: (e: KeyboardEvent) => boolean;
+
+  /**
+   * CSP nonce applied to the injected `<style>` tag. Required when the page's
+   * Content-Security-Policy forbids unsafe inline styles. Ignored by the
+   * `react-toastify/unstyled` entry, which never injects styles.
+   */
+  nonce?: string;
 }
 
 export interface ToastTransitionProps {
