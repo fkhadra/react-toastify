@@ -17,11 +17,9 @@ jobs:
         with:
             version: 9 
       - name: Install dependencies
-        run: pnpm i 
+        run: pnpm i
       # - name: Lint
       #   run: yarn lint
-      - name: Setup
-        run: pnpm run setup
       - name: Build
         run: pnpm build
       - name: Test

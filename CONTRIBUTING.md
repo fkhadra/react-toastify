@@ -1,8 +1,8 @@
-# Contributing 
+# Contributing
 
 :+1::tada: First off, thanks for taking the time to contribute! :tada::+1:
 
-When contributing to this repository, please first discuss the change you wish to make via issue before making a change. 
+When contributing to this repository, please first discuss the change you wish to make via issue before making a change.
 
 Please note we have a code of conduct, please follow it in all your interactions with the project.
 
@@ -20,8 +20,8 @@ Please note we have a code of conduct, please follow it in all your interactions
 
 ### Pre-requisites
 
-- *Node:* `^18.0.0`
-- *Yarn*
+- _Node:_ `^18.0.0`
+- _Yarn_
 
 ### Install
 
@@ -37,10 +37,10 @@ git checkout -b my-branch
 Install dependencies:
 
 ```sh
-pnpm install 
-// then
-pnpm setup 
+pnpm install
 ```
+
+This is a pnpm workspace — the playground and the `use-notification-center` addon are workspace packages wired to the root via `workspace:*`, so no extra linking step is needed.
 
 ## Developing
 
@@ -64,4 +64,5 @@ The playground let you test your changes, it's like the demo of react-toastify. 
 - [toast:](https://github.com/fkhadra/react-toastify/blob/main/src/core/toast.ts) Contain the exposed api (`toast.success...`).
 
 ## License
+
 By contributing, you agree that your contributions will be licensed under its [MIT License](https://github.com/fkhadra/react-toastify/blob/main/LICENSE).

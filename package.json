@@ -19,8 +19,7 @@
   ],
   "scripts": {
     "prepare": "lefthook install",
-    "setup": "pnpm link .",
-    "start": "cd playground && pnpm dev",
+    "start": "pnpm --filter playground dev",
     "test": "cypress open --component",
     "test:run": "cypress run --component -b chrome",
     "prettier": "prettier --write src",

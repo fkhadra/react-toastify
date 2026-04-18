@@ -1,0 +1,14 @@
+{
+  "name": "use-notification-center",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Internal workspace package for the useNotificationCenter addon. Not published separately — built into react-toastify's /addons directory by tsup at the repo root.",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "dependencies": {
+    "react-toastify": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^18 || ^19"
+  }
+}
