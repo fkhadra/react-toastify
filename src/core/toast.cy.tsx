@@ -111,13 +111,62 @@ describe('with container', () => {
       content: 'world'
     });
 
-    // cy.wait(1000);
+    cy.findByRole('button', { name: 'remove' }).click();
 
-    // cy.findByRole('button', { name: 'remove' }).click();
-    //
-    // cy.get('@onChange').should('have.been.calledWithMatch', {
-    //   status: 'removed'
-    // });
+    cy.get('@onChange').should('have.been.calledWithMatch', {
+      status: 'removed'
+    });
+  });
+
+  it("fires 'removed' on onChange synchronously when toast.dismiss is called (#1275)", () => {
+    const events: Array<{ id: string | number; status: string }> = [];
+    toast.onChange(item => events.push({ id: item.id, status: item.status }));
+
+    cy.mount(
+      <>
+        <ToastContainer autoClose={false} />
+        <button
+          onClick={() => {
+            const a = toast('a', { toastId: 'A' });
+            toast.dismiss(a);
+            toast('b', { toastId: 'B' });
+          }}
+        >
+          burst
+        </button>
+      </>
+    );
+
+    cy.findByRole('button', { name: 'burst' }).click();
+    cy.wrap(events).should('have.length.at.least', 3);
+    cy.wrap(null).then(() => {
+      // Only consider events for the two toasts we created in this test to avoid
+      // cross-test listener pollution.
+      const ours = events.filter(e => e.id === 'A' || e.id === 'B');
+      expect(ours.map(e => `${e.status}:${e.id}`)).to.deep.equal(['added:A', 'removed:A', 'added:B']);
+    });
+  });
+
+  it('fires onClose exactly once when dismiss is called twice on the same id', () => {
+    const onClose = cy.stub().as('onCloseTwice');
+
+    cy.mount(
+      <>
+        <ToastContainer autoClose={false} />
+        <button
+          onClick={() => {
+            toast('hi', { toastId: 'dup', onClose });
+            toast.dismiss('dup');
+            toast.dismiss('dup');
+          }}
+        >
+          double-dismiss
+        </button>
+      </>
+    );
+
+    cy.findByRole('button', { name: 'double-dismiss' }).click();
+    cy.get('@onCloseTwice').should('have.been.calledOnce');
   });
 
   it('unsubscribe from change event', () => {

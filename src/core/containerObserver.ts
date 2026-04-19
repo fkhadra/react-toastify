@@ -50,8 +50,12 @@ export function createContainerObserver(
   };
 
   const markAsRemoved = (v: Toast) => {
+    // idempotent — a double-dismiss must not fire onClose / observers twice
+    if (!v.isActive) return;
     v.props?.onClose?.(v.removalReason);
     v.isActive = false;
+    // fire synchronously on dismiss — not at exit-animation end (which is deleteToast's job)
+    dispatchChanges(toToastItem(v, 'removed'));
   };
 
   const removeToast = (id?: Id) => {
@@ -105,7 +109,9 @@ export function createContainerObserver(
       progressClassName: parseClassName(options.progressClassName || props.progressClassName),
       autoClose: options.isLoading ? false : getAutoCloseDelay(options.autoClose, props.autoClose),
       closeToast(reason?: true) {
-        toasts.get(toastId)!.removalReason = reason;
+        const t = toasts.get(toastId);
+        if (!t) return;
+        t.removalReason = reason;
         removeToast(toastId);
       },
       deleteToast() {
@@ -113,7 +119,8 @@ export function createContainerObserver(
 
         if (toastToRemove == null) return;
 
-        dispatchChanges(toToastItem(toastToRemove, 'removed'));
+        // 'removed' now dispatched synchronously in markAsRemoved; deleteToast only
+        // handles DOM/state cleanup after the exit animation finishes.
         toasts.delete(toastId);
 
         toastCount--;
