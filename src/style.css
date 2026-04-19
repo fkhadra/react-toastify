@@ -145,6 +145,12 @@
   width: var(--toastify-toast-width);
 }
 
+@media only screen and (max-width: 480px) {
+  .Toastify__toast-container[data-stacked='true'] {
+    width: 100vw;
+  }
+}
+
 .Toastify__toast--stacked {
   position: absolute;
   width: 100%;
