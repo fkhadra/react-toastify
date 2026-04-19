@@ -61,7 +61,7 @@ Check the [documentation](https://fkhadra.github.io/react-toastify/introduction)
 - You can control the progress bar a la `nprogress` 😲
 - You can limit the number of toast displayed at the same time
 - Dark mode 🌒
-- Pause timer programmaticaly 
+- Pause timer programmatically 
 - Stacked notifications!
 - And much more !
 
