@@ -81,8 +81,9 @@ export function useToast(props: ToastProps) {
   function onDragTransitionEnd(e: React.PointerEvent<HTMLElement>) {
     const { top, bottom, left, right } = toastRef.current!.getBoundingClientRect();
 
+    // Touch/pen releases don't "hover" — only re-pause on a mouse release over the toast.
     if (
-      e.nativeEvent.type !== 'touchend' &&
+      e.pointerType === 'mouse' &&
       props.pauseOnHover &&
       e.clientX >= left &&
       e.clientX <= right &&

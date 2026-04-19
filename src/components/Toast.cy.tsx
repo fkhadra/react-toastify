@@ -174,6 +174,48 @@ describe('Toast', () => {
     progressBar.isRunning();
   });
 
+  it('pauses progress bar on mouse pointerup released over the toast', () => {
+    cy.mount(
+      <Toast {...REQUIRED_PROPS} autoClose={5000} pauseOnHover>
+        hello
+      </Toast>
+    );
+
+    cy.resolveEntranceAnimation();
+    progressBar.isRunning();
+
+    cy.findByRole('alert').then($el => {
+      const rect = $el[0].getBoundingClientRect();
+      cy.wrap($el).trigger('pointerup', {
+        pointerType: 'mouse',
+        clientX: rect.left + rect.width / 2,
+        clientY: rect.top + rect.height / 2
+      });
+    });
+    progressBar.isPaused();
+  });
+
+  it('does not pause progress bar on touch pointerup (hover has no meaning for touch)', () => {
+    cy.mount(
+      <Toast {...REQUIRED_PROPS} autoClose={5000} pauseOnHover>
+        hello
+      </Toast>
+    );
+
+    cy.resolveEntranceAnimation();
+    progressBar.isRunning();
+
+    cy.findByRole('alert').then($el => {
+      const rect = $el[0].getBoundingClientRect();
+      cy.wrap($el).trigger('pointerup', {
+        pointerType: 'touch',
+        clientX: rect.left + rect.width / 2,
+        clientY: rect.top + rect.height / 2
+      });
+    });
+    progressBar.isRunning();
+  });
+
   describe('controller progress bar', () => {
     it('set the correct progress value bar disregarding autoClose value', () => {
       cy.mount(
