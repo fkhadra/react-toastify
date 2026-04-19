@@ -77,10 +77,11 @@ export function ToastContainer(props: ToastContainerProps) {
           if (!node.dataset.pos) node.dataset.pos = isTop ? 'top' : 'bot';
 
           const y = usedHeight * (collapsed ? 0.2 : 1) + (collapsed ? 0 : gap * i);
+          const scale = Math.max(0.5, 1 - (collapsed ? prevS : 0));
 
           node.style.setProperty('--y', `${isTop ? y : y * -1}px`);
           node.style.setProperty('--g', `${gap}`);
-          node.style.setProperty('--s', `${1 - (collapsed ? prevS : 0)}`);
+          node.style.setProperty('--s', `${scale}`);
 
           usedHeight += node.offsetHeight;
           prevS += 0.025;
