@@ -738,3 +738,60 @@ describe('with stacked container', () => {
     cy.findByText('hello 3').should('exist').and('be.visible');
   });
 });
+
+describe('browser notifications', () => {
+  beforeEach(() => {
+    cy.viewport('macbook-15');
+
+    // Stub the Notification constructor
+    cy.stub(window, 'Notification').as('Notification').returns({
+      close: cy.stub() // Stub the close method of the notification
+    });
+
+    // Stub requestPermission to always resolve with 'granted'
+    cy.stub(window.Notification, 'requestPermission').resolves('granted');
+  });
+
+  it('should display a success browser notification when promise resolves and user is inactive', () => {
+    const successTitle = 'Success Title';
+    const successBody = 'Operation completed successfully!';
+
+    // Simulate user being inactive in the tab
+    cy.stub(document, 'visibilityState').value('hidden');
+
+    toast.promise(Promise.resolve('Resolved Data'), {
+      pending: 'Loading...',
+      success: 'Promise resolved!',
+      browserNotification: {
+        success: {
+          title: successTitle,
+          options: { body: successBody }
+        },
+        jusIfUserNotInActiveTab: true // Send notification only if user is inactive
+      }
+    });
+
+    // Assert that the Notification constructor was called with the correct arguments
+    cy.get('@Notification').should('have.been.calledWith', successTitle, { body: successBody });
+  });
+
+  it('should not display a browser notification if user is active in the tab and jusIfUserNotInActiveTab is true', () => {
+    // Simulate user being active in the tab
+    cy.stub(document, 'visibilityState').value('visible');
+
+    toast.promise(Promise.resolve('Resolved Data'), {
+      pending: 'Loading...',
+      success: 'Promise resolved!',
+      browserNotification: {
+        success: {
+          title: 'Success Title',
+          options: { body: 'Success Body' }
+        },
+        jusIfUserNotInActiveTab: true // Send notification only if user is inactive
+      }
+    });
+
+    // Assert that the Notification constructor was NOT called
+    cy.get('@Notification').should('not.have.been.called');
+  });
+});

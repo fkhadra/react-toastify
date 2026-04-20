@@ -10,7 +10,7 @@ import {
   TypeOptions,
   UpdateOptions
 } from '../types';
-import { isFn, isNum, isStr, Type } from '../utils';
+import { createBrowserNotification, isFn, isNum, isStr, isUserActiveInTab, Type } from '../utils';
 import { genToastId } from './genToastId';
 import { clearWaitingQueue, getToast, isToastActive, onChange, pushToast, removeToast, toggleToast } from './store';
 
@@ -66,11 +66,22 @@ export interface ToastPromiseParams<TData = unknown, TError = unknown, TPending 
   pending?: string | UpdateOptions<TPending>;
   success?: string | UpdateOptions<TData>;
   error?: string | UpdateOptions<TError>;
+  browserNotification?: {
+    success?: {
+      title: string;
+      options: NotificationOptions;
+    };
+    error?: {
+      title: string;
+      options: NotificationOptions;
+    };
+    jusIfUserNotInActiveTab?: boolean;
+  };
 }
 
 function handlePromise<TData = unknown, TError = unknown, TPending = unknown>(
   promise: Promise<TData> | (() => Promise<TData>),
-  { pending, error, success }: ToastPromiseParams<TData, TError, TPending>,
+  { pending, error, success, browserNotification }: ToastPromiseParams<TData, TError, TPending>,
   options?: ToastOptions<TData>
 ) {
   let id: Id;
@@ -92,6 +103,23 @@ function handlePromise<TData = unknown, TError = unknown, TPending = unknown>(
     draggable: null
   };
 
+  const fireBrowserNotification = (type: TypeOptions) => {
+    if (!browserNotification) return;
+
+    const notificationConfig = type === 'success' ? browserNotification.success : browserNotification.error;
+
+    // Check if the notification should be triggered based on the following conditions:
+    // 1. `notificationConfig` must exist (i.e., a valid configuration for the browser notification is provided).
+    // 2. The notification should be sent either:
+    //    a) If `jusIfUserNotInActiveTab` is false (meaning the notification should always be sent regardless of the user's tab activity), OR
+    //    b) If `jusIfUserNotInActiveTab` is true AND the user is NOT active in the current tab (i.e., the user has switched to another tab or minimized the window).
+    // If any of these conditions are met, proceed to create and display the browser notification.
+
+    if (notificationConfig && (!browserNotification.jusIfUserNotInActiveTab || !isUserActiveInTab())) {
+      createBrowserNotification(notificationConfig.title, notificationConfig.options);
+    }
+  };
+
   const resolver = <T>(type: TypeOptions, input: string | UpdateOptions<T> | undefined, result: T) => {
     // Remove the toast if the input has not been provided. This prevents the toast from hanging
     // in the pending state if a success/error toast has not been provided.
@@ -99,13 +127,13 @@ function handlePromise<TData = unknown, TError = unknown, TPending = unknown>(
       toast.dismiss(id);
       return;
     }
-
     const baseParams = {
       type,
       ...resetParams,
       ...options,
       data: result
     };
+
     const params = isStr(input) ? { render: input } : input;
 
     // if the id is set we know that it's an update
@@ -122,13 +150,20 @@ function handlePromise<TData = unknown, TError = unknown, TPending = unknown>(
       } as ToastOptions<T>);
     }
 
+    // send notification to browser after in resolve step of promise toast
+    fireBrowserNotification(type);
+
     return result;
   };
 
   const p = isFn(promise) ? promise() : promise;
 
   //call the resolvers only when needed
-  p.then(result => resolver('success', success, result)).catch(err => resolver('error', error, err));
+  p.then(result => {
+    resolver('success', success, result);
+  }).catch(err => {
+    resolver('error', error, err);
+  });
 
   return p;
 }
@@ -170,6 +205,44 @@ function handlePromise<TData = unknown, TError = unknown, TPending = unknown>(
  *          return <MyErrorComponent message={data.message} />
  *        }
  *      }
+ *    }
+ * )
+ * ```
+ * Notify the distracted user by Browser Notification after the promise is resolved:
+ * ```
+ * toast.promise<{name: string}, {message: string}, undefined>(
+ *    resolveWithSomeData,
+ *    {
+ *      pending: {
+ *        render: () => "I'm loading",
+ *        icon: false,
+ *      },
+ *      success: {
+ *        render: ({data}) => `Hello ${data.name}`,
+ *        icon: "🟢",
+ *      },
+ *      error: {
+ *        render({data}){
+ *          // When the promise reject, data will contains the error
+ *          return <MyErrorComponent message={data.message} />
+ *        }
+ *      },
+ *      browserNotification:{
+ *         jusIfUserNotInActiveTab:true,
+ *         success:{
+ *           title:"Come back , Its Done",
+ *           options:{
+ *             body:"It's Done body , where are you looking ? ",
+ *           }
+ *         },
+ *         error:{
+ *           title:"We have a problem !",
+ *           options:{
+ *             body:"It's look like we failed to connect ",
+ *           }
+ *         }
+ *       }
+ *
  *    }
  * )
  * ```
