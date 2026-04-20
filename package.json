@@ -26,8 +26,8 @@
     "build": "tsup && cp src/style.css dist/ReactToastify.css"
   },
   "peerDependencies": {
-    "react": "^18 || ^19",
-    "react-dom": "^18 || ^19"
+    "react": "^18 || ^19 || experimental",
+    "react-dom": "^18 || ^19 || experimental"
   },
   "prettier": {
     "printWidth": 120,
