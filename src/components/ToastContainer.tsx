@@ -8,6 +8,7 @@ import { ToastContainerProps, ToastPosition } from '../types';
 import { Default, Direction, isFn, parseClassName } from '../utils';
 import { Toast } from './Toast';
 import { Bounce } from './Transitions';
+//Valid options: import and use { Bounce, Flip, Slide, Zoom } from 'react-toastify'.
 
 export const defaultProps: ToastContainerProps = {
   position: 'top-right',
@@ -30,6 +31,12 @@ export function ToastContainer(props: ToastContainerProps) {
     ...defaultProps,
     ...props
   };
+  if (typeof containerProps.transition === 'string') {
+    console.warn(
+      `[react-toastify] Invalid value for 'transition'. Expected a transition component (e.g., transition={Bounce}) but received a string: "${containerProps.transition}".`
+    );
+  }
+
   const stacked = props.stacked;
   const [collapsed, setIsCollapsed] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
