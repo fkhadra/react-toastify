@@ -221,6 +221,12 @@ export interface ToastOptions<Data = unknown> extends CommonOptions {
   delay?: number;
 
   isLoading?: boolean;
+
+  /**
+   * If true, the toast will be focusable.
+   * Default: true
+   */
+  isFocusable?: boolean;
 }
 
 export interface UpdateOptions<T = unknown> extends Nullable<ToastOptions<T>> {

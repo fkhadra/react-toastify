@@ -33,7 +33,8 @@ export const Toast: React.FC<ToastProps> = props => {
     isLoading,
     closeOnClick,
     theme,
-    ariaLabel
+    ariaLabel,
+    isFocusable
   } = props;
   const defaultClassName = cx(
     `${Default.CSS_NAMESPACE}__toast`,
@@ -81,7 +82,7 @@ export const Toast: React.FC<ToastProps> = props => {
     >
       <div
         id={toastId as string}
-        tabIndex={0}
+        tabIndex={isFocusable !== false ? 0 : -1}
         onClick={onClick}
         data-in={isIn}
         className={cssClasses}
