@@ -22,7 +22,7 @@ window.toast = toast;
 
 class App extends React.Component {
   state = App.getDefaultState();
-  toastId: Id;
+  toastId: Id = -1;
   resolvePromise = true;
 
   static getDefaultState() {
@@ -41,6 +41,11 @@ class App extends React.Component {
     this.setState({
       ...App.getDefaultState()
     });
+
+  clearLast = () => {
+    toast.dismiss(this.toastId);
+    this.toastId = -1;
+  };
 
   clearAll = () => toast.dismiss();
 
@@ -227,6 +232,11 @@ class App extends React.Component {
               <li>
                 <button className="btn" onClick={this.updateToast}>
                   Update
+                </button>
+              </li>
+              <li>
+                <button className="btn" onClick={this.clearLast}>
+                  Clear Last
                 </button>
               </li>
               <li>
