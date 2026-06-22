@@ -290,7 +290,7 @@ export interface ToastContainerProps extends CommonOptions, Pick<HTMLAttributes<
 export interface ToastTransitionProps {
   isIn: boolean;
   done: () => void;
-  position: ToastPosition | string;
+  position: ToastPosition;
   preventExitTransition: boolean;
   nodeRef: React.RefObject<HTMLElement | null>;
   children?: React.ReactNode;
