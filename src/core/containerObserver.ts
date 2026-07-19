@@ -99,8 +99,8 @@ export function createContainerObserver(
     dispatchChanges(toToastItem(toast, isNew ? 'added' : 'updated'));
 
     if (isNew) {
-      if (isFn(containerProps.onOpen))
-        containerProps.onOpen(isValidElement(children) && children.props);
+      if (isFn(props.onOpen))
+        props.onOpen(isValidElement(toast.content) && toast.content.props);
       if (isFn(onOpen)) onOpen(isValidElement(children) && children.props);
     }
   };
@@ -148,8 +148,10 @@ export function createContainerObserver(
       deleteToast() {
         const toastToRemove = toasts.get(toastId)!;
         const { onClose, children } = toastToRemove.props;
-        if (isFn(containerProps.onClose))
-          containerProps.onClose(isValidElement(children) && children.props);
+        if (isFn(props.onClose))
+          props.onClose(
+            isValidElement(toastToRemove.content) && toastToRemove.content.props
+          );
         if (isFn(onClose)) onClose(isValidElement(children) && children.props);
 
         dispatchChanges(toToastItem(toastToRemove, 'removed'));

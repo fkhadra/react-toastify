@@ -75,6 +75,48 @@ describe('with container event handlers', () => {
     cy.get('@onToastOpen').should('have.been.calledOnce');
     cy.get('@onToastClose').should('have.been.calledOnce');
   });
+
+  it('uses current container callbacks and passes component props', () => {
+    const initialOpen = cy.stub().as('initialOpen');
+    const initialClose = cy.stub().as('initialClose');
+    const currentOpen = cy.stub().as('currentOpen');
+    const currentClose = cy.stub().as('currentClose');
+
+    function Content({ message }: { message: string }) {
+      return <span>{message}</span>;
+    }
+
+    function RerenderingContainer() {
+      const [updated, setUpdated] = React.useState(false);
+
+      return (
+        <>
+          <button onClick={() => setUpdated(true)}>Update callbacks</button>
+          <ToastContainer
+            autoClose={false}
+            closeOnClick
+            onClose={updated ? currentClose : initialClose}
+            onOpen={updated ? currentOpen : initialOpen}
+          />
+        </>
+      );
+    }
+
+    cy.mount(<RerenderingContainer />);
+    cy.findByRole('button', { name: 'Update callbacks' }).click();
+    cy.then(() => toast(<Content message="current toast" />));
+    cy.resolveEntranceAnimation();
+    cy.findByText('current toast').click().should('not.exist');
+
+    cy.get('@initialOpen').should('not.have.been.called');
+    cy.get('@initialClose').should('not.have.been.called');
+    cy.get('@currentOpen').should('have.been.calledWithMatch', {
+      message: 'current toast'
+    });
+    cy.get('@currentClose').should('have.been.calledWithMatch', {
+      message: 'current toast'
+    });
+  });
 });
 
 describe('with container', () => {
