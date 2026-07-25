@@ -122,9 +122,6 @@ export function ToastContainer(props: ToastContainerProps) {
         }
       }}
       onMouseLeave={collapseAll}
-      aria-live="polite"
-      aria-atomic="false"
-      aria-relevant="additions text"
       aria-label={containerProps['aria-label']}
     >
       {getToastToRender((position, toastList) => {
