@@ -62,3 +62,11 @@ it('focus notification when alt+t is pressed', () => {
   cy.get('body').type('{alt+t}');
   cy.focused().should('have.attr', 'role', 'alert').and('have.attr', 'aria-label', 'notification');
 });
+
+it('does not nest toast live regions', () => {
+  cy.mount(<ToastContainer autoClose={false} />);
+
+  toast('hello');
+
+  cy.findByRole('alert').parents('[aria-live]').should('not.exist');
+});
