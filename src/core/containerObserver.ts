@@ -74,13 +74,23 @@ export function createContainerObserver(
   };
 
   const addActiveToast = (toast: Toast) => {
-    const { toastId, updateId } = toast.props;
+    const { toastId, updateId, prepend } = toast.props;
     const isNew = updateId == null;
 
     if (toast.staleId) toasts.delete(toast.staleId);
     toast.isActive = true;
 
-    toasts.set(toastId, toast);
+    if (isNew && prepend && toasts.size > 0) {
+      // `Map` preserves insertion order, so to bring this toast to the front we
+      // need to rebuild it with the new entry first, followed by the rest untouched.
+      const entries = Array.from(toasts.entries()).filter(([id]) => id !== toastId);
+      toasts.clear();
+      toasts.set(toastId, toast);
+      entries.forEach(([id, t]) => toasts.set(id, t));
+    } else {
+      toasts.set(toastId, toast);
+    }
+
     notify();
     dispatchChanges(toToastItem(toast, isNew ? 'added' : 'updated'));
 
@@ -151,7 +161,11 @@ export function createContainerObserver(
 
     // not handling limit + delay by design. Waiting for user feedback first
     if (props.limit && props.limit > 0 && toastCount > props.limit && isNotAnUpdate) {
-      queue.push(activeToast);
+      if (options.prepend) {
+        queue.unshift(activeToast);
+      } else {
+        queue.push(activeToast);
+      }
     } else if (isNum(delay)) {
       setTimeout(() => {
         addActiveToast(activeToast);

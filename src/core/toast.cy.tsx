@@ -457,6 +457,60 @@ describe('with container', () => {
   });
 });
 
+describe('with prepend option', () => {
+  beforeEach(() => {
+    cy.mount(<ToastContainer autoClose={false} closeOnClick />);
+  });
+
+  it('inserts the toast before the ones already displayed', () => {
+    toast('msg1');
+    toast('msg2');
+    cy.resolveEntranceAnimation();
+
+    toast('msg3', { prepend: true });
+    cy.resolveEntranceAnimation();
+
+    cy.findAllByRole('alert').should('have.length', 3);
+    cy.findAllByRole('alert').eq(0).should('have.text', 'msg3');
+    cy.findAllByRole('alert').eq(1).should('have.text', 'msg1');
+    cy.findAllByRole('alert').eq(2).should('have.text', 'msg2');
+  });
+
+  it('does not affect the order when there is nothing displayed yet', () => {
+    toast('msg1', { prepend: true });
+    cy.resolveEntranceAnimation();
+
+    cy.findAllByRole('alert').should('have.length', 1);
+    cy.findAllByRole('alert').eq(0).should('have.text', 'msg1');
+  });
+});
+
+describe('with limit and prepend option', () => {
+  it('prepended toast becomes the next one to appear when the limit is reached', () => {
+    cy.mount(<ToastContainer autoClose={false} limit={2} closeOnClick />);
+
+    toast('msg1');
+    toast('msg2');
+    toast('msg3');
+    toast('msg4', { prepend: true });
+    cy.resolveEntranceAnimation();
+
+    cy.findByText('msg1').should('exist');
+    cy.findByText('msg2').should('exist');
+    cy.findByText('msg3').should('not.exist');
+    cy.findByText('msg4').should('not.exist');
+
+    cy.findByText('msg1')
+      .click()
+      .then(() => {
+        cy.resolveEntranceAnimation();
+
+        cy.findByText('msg4').should('exist');
+        cy.findByText('msg3').should('not.exist');
+      });
+  });
+});
+
 describe.skip('with multi containers', () => {
   const Containers = {
     First: 'first',

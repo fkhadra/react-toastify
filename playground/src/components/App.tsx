@@ -30,7 +30,7 @@ class App extends React.Component {
       ...defaultProps,
       transition: 'bounce',
       type: 'default',
-      progress: '',
+      progress: 0,
       disableAutoClose: false,
       limit: 0,
       theme: 'light'
@@ -70,6 +70,22 @@ class App extends React.Component {
   };
 
   updateToast = () => toast.update(this.toastId, { progress: this.state.progress });
+
+  showPriorityToast = () => {
+    toast('🥇 Priority toast! (prepend: true)', { prepend: true });
+  };
+
+  firePrependQueueDemo = () => {
+    toast.dismiss({ containerId: 'prepend-demo' });
+    toast.clearWaitingQueue({ containerId: 'prepend-demo' });
+    toast('Queued 1', { containerId: 'prepend-demo' });
+    toast('Queued 2', { containerId: 'prepend-demo' });
+    toast('Queued 3', { containerId: 'prepend-demo' });
+    toast('🥇 Priority toast, skips the queue!', {
+      containerId: 'prepend-demo',
+      prepend: true
+    });
+  };
 
   handleAutoCloseDelay = e =>
     this.setState({
@@ -220,6 +236,14 @@ class App extends React.Component {
                 </button>
               </li>
               <li>
+                <button className="btn" onClick={this.showPriorityToast}>
+                  <span role="img" aria-label="show priority alert">
+                    🥇
+                  </span>{' '}
+                  Priority Toast (prepend)
+                </button>
+              </li>
+              <li>
                 <button className="btn" onClick={this.firePromise}>
                   Promise
                 </button>
@@ -255,6 +279,13 @@ class App extends React.Component {
         />
         <ToastContainer containerId="xxx" position="top-left" autoClose={false} theme="dark" limit={3} />
         <ToastContainer limit={3} containerId="yyy" autoClose={false} position="top-right" />
+        <ToastContainer
+          containerId="prepend-demo"
+          limit={1}
+          autoClose={false}
+          position="bottom-center"
+          theme="colored"
+        />
       </main>
     );
   }
