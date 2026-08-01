@@ -30,7 +30,7 @@ class App extends React.Component {
       ...defaultProps,
       transition: 'bounce',
       type: 'default',
-      progress: '',
+      progress: 0,
       disableAutoClose: false,
       limit: 0,
       theme: 'light'
@@ -70,6 +70,10 @@ class App extends React.Component {
   };
 
   updateToast = () => toast.update(this.toastId, { progress: this.state.progress });
+
+  showPriorityToast = () => {
+    toast('🥇 Priority toast! (prepend: true)', { prepend: true });
+  };
 
   handleAutoCloseDelay = e =>
     this.setState({
@@ -217,6 +221,14 @@ class App extends React.Component {
                     🚀
                   </span>{' '}
                   Show Toast
+                </button>
+              </li>
+              <li>
+                <button className="btn" onClick={this.showPriorityToast}>
+                  <span role="img" aria-label="show priority alert">
+                    🥇
+                  </span>{' '}
+                  Priority Toast (prepend)
                 </button>
               </li>
               <li>

@@ -221,6 +221,13 @@ export interface ToastOptions<Data = unknown> extends CommonOptions {
   delay?: number;
 
   isLoading?: boolean;
+
+  /**
+   * Insert the toast before any other toast currently displayed or waiting in the queue,
+   * instead of appending it after them.
+   * `Default: false`
+   */
+  prepend?: boolean;
 }
 
 export interface UpdateOptions<T = unknown> extends Nullable<ToastOptions<T>> {
