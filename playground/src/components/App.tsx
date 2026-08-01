@@ -75,18 +75,6 @@ class App extends React.Component {
     toast('🥇 Priority toast! (prepend: true)', { prepend: true });
   };
 
-  firePrependQueueDemo = () => {
-    toast.dismiss({ containerId: 'prepend-demo' });
-    toast.clearWaitingQueue({ containerId: 'prepend-demo' });
-    toast('Queued 1', { containerId: 'prepend-demo' });
-    toast('Queued 2', { containerId: 'prepend-demo' });
-    toast('Queued 3', { containerId: 'prepend-demo' });
-    toast('🥇 Priority toast, skips the queue!', {
-      containerId: 'prepend-demo',
-      prepend: true
-    });
-  };
-
   handleAutoCloseDelay = e =>
     this.setState({
       autoClose: e.target.value > 0 ? parseInt(e.target.value, 10) : 1
@@ -279,13 +267,6 @@ class App extends React.Component {
         />
         <ToastContainer containerId="xxx" position="top-left" autoClose={false} theme="dark" limit={3} />
         <ToastContainer limit={3} containerId="yyy" autoClose={false} position="top-right" />
-        <ToastContainer
-          containerId="prepend-demo"
-          limit={1}
-          autoClose={false}
-          position="bottom-center"
-          theme="colored"
-        />
       </main>
     );
   }
