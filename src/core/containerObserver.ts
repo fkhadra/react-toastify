@@ -93,6 +93,9 @@ export function createContainerObserver(
     const { toastId, updateId, data, staleId, delay } = options;
 
     const isNotAnUpdate = updateId == null;
+    // an update can target a toast that is still in the waiting queue
+    const queuedIdx = isNotAnUpdate ? -1 : queue.findIndex(t => t.props.toastId === (staleId ?? toastId));
+    const isQueued = queuedIdx > -1;
 
     if (isNotAnUpdate) toastCount++;
 
@@ -102,7 +105,8 @@ export function createContainerObserver(
       key: toastKey++,
       ...Object.fromEntries(Object.entries(options).filter(([_, v]) => v != null)),
       toastId,
-      updateId,
+      // a queued toast has not been rendered yet, it must enter as a new toast
+      updateId: isQueued ? undefined : updateId,
       data,
       isIn: false,
       className: parseClassName(options.className || props.toastClassName),
@@ -146,8 +150,14 @@ export function createContainerObserver(
     const activeToast = {
       content,
       props: toastProps,
-      staleId
+      staleId: isQueued ? undefined : staleId
     } as Toast;
+
+    if (isQueued) {
+      // keep the position in the queue, the updated toast is displayed when its turn comes
+      queue[queuedIdx] = activeToast;
+      return;
+    }
 
     // not handling limit + delay by design. Waiting for user feedback first
     if (props.limit && props.limit > 0 && toastCount > props.limit && isNotAnUpdate) {
@@ -178,6 +188,7 @@ export function createContainerObserver(
       if (t) t.toggle = fn;
     },
     isToastActive: (id: Id) => toasts.get(id)?.isActive,
+    getToast: (id: Id) => toasts.get(id) || queue.find(t => t.props.toastId === id),
     getSnapshot: () => snapshot
   };
 }
