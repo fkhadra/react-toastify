@@ -35,7 +35,7 @@ function flushRenderQueue() {
 }
 
 export const getToast = (id: Id, { containerId }: ToastOptions) =>
-  containers.get(containerId || Default.CONTAINER_ID)?.toasts.get(id);
+  containers.get(containerId || Default.CONTAINER_ID)?.getToast(id);
 
 export function isToastActive(id: Id, containerId?: Id) {
   if (containerId) return !!containers.get(containerId)?.isToastActive(id);
