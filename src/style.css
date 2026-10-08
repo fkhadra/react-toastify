@@ -318,6 +318,12 @@
   right: unset;
 }
 
+/* Reserve room for the default close button so it never overlaps the content.
+   :where() keeps the specificity of .Toastify__toast, so it stays as easy to override. */
+.Toastify__toast:where(:has(> .Toastify__close-button)) {
+  padding-inline-end: max(var(--toastify-toast-padding), 26px);
+}
+
 .Toastify__close-button--light {
   color: #000;
   opacity: 0.3;

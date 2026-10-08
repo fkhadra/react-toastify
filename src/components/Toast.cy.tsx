@@ -144,6 +144,44 @@ describe('Toast', () => {
     cy.findByLabelText('close').should('not.exist');
   });
 
+  for (const rtl of [false, true]) {
+    it(`keep the content clear of the default close button${rtl ? ' in rtl' : ''} (#1204)`, () => {
+      cy.mount(
+        <Toast {...REQUIRED_PROPS} rtl={rtl} closeButton={true}>
+          FooBar
+        </Toast>
+      );
+      cy.resolveEntranceAnimation();
+
+      cy.findByLabelText('close').then($button => {
+        const toast = $button.parent()[0];
+        const { left, right } = toast.getBoundingClientRect();
+        const { paddingLeft, paddingRight } = getComputedStyle(toast);
+        const button = $button[0].getBoundingClientRect();
+
+        // the button must sit entirely inside the padding, outside of the content box
+        if (rtl) {
+          expect(button.right).to.be.at.most(left + parseFloat(paddingLeft));
+        } else {
+          expect(button.left).to.be.at.least(right - parseFloat(paddingRight));
+        }
+      });
+    });
+  }
+
+  it('does not reserve room for the close button when closeButton is false', () => {
+    cy.mount(
+      <Toast {...REQUIRED_PROPS} closeButton={false}>
+        FooBar
+      </Toast>
+    );
+
+    cy.findByText('FooBar').then($toast => {
+      const { paddingLeft, paddingRight } = getComputedStyle($toast[0]);
+      expect(paddingRight).to.equal(paddingLeft);
+    });
+  });
+
   it('resume and pause progress bar when pauseOnFocusLoss is enabled', () => {
     cy.mount(
       <Toast {...REQUIRED_PROPS} autoClose={5000} pauseOnFocusLoss>
