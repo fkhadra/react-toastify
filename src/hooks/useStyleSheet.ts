@@ -16,7 +16,9 @@ export const useStyleSheet = (css: string, nonce?: string): void => {
     const style = doc.createElement('style');
     style.textContent = css;
     if (nonce) style.setAttribute('nonce', nonce);
-    doc.head.appendChild(style);
+    // Prepend so the consumer's stylesheets come later in the cascade and can
+    // override the :root variables without !important (same as the pre-11.1 shim).
+    doc.head.prepend(style);
     styleElementMap.set(doc, style);
   }, [nonce]);
 };
