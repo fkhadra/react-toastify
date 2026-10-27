@@ -2,7 +2,7 @@ import { useIsomorphicLayoutEffect } from './useIsomorphicLayoutEffect';
 
 const styleElementMap = new Map<Document, HTMLStyleElement>();
 
-export const useStyleSheet = (css: string, nonce?: string): void => {
+export const useStyleSheet = (css: string, nonce?: string, append = false): void => {
   useIsomorphicLayoutEffect(() => {
     if (!css || typeof document === 'undefined') return;
 
@@ -16,9 +16,14 @@ export const useStyleSheet = (css: string, nonce?: string): void => {
     const style = doc.createElement('style');
     style.textContent = css;
     if (nonce) style.setAttribute('nonce', nonce);
-    // Prepend so the consumer's stylesheets come later in the cascade and can
+    // Prepend by default so the consumer's stylesheets come later in the cascade and can
     // override the :root variables without !important (same as the pre-11.1 shim).
-    doc.head.prepend(style);
+    if (append) {
+      doc.head.appendChild(style);
+    } else {
+      doc.head.prepend(style);
+    }
+
     styleElementMap.set(doc, style);
   }, [nonce]);
 };

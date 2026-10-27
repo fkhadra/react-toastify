@@ -285,6 +285,13 @@ export interface ToastContainerProps extends CommonOptions, Pick<HTMLAttributes<
    * `react-toastify/unstyled` entry, which never injects styles.
    */
   nonce?: string;
+
+  /**
+   * Append the injected `<style>` tag to the end of `<head>` instead of prepending it.
+   * Only the first container mounted in a document decides the position.
+   * @default false
+   */
+  appendStyleSheet?: boolean;
 }
 
 export interface ToastTransitionProps {
