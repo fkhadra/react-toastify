@@ -12,7 +12,7 @@ Package manager is **pnpm** (CI uses pnpm 9, Node 22). Do not use npm or yarn.
 | Run the playground (interactive demo / dev harness)                            | `pnpm start`    |
 | Open Cypress component-test UI                                                 | `pnpm test`     |
 | Run Cypress component tests headlessly (CI uses this)                          | `pnpm test:run` |
-| Build the library (`tsup` + copy `style.css` → `dist/ReactToastify.css`)       | `pnpm build`    |
+| Build the library (`tsdown` + copy `style.css` → `dist/ReactToastify.css`)     | `pnpm build`    |
 | Format `src/` with Prettier                                                    | `pnpm prettier` |
 
 ### Running a single test
@@ -33,9 +33,9 @@ There is **no ESLint**. Code style is Prettier only (config inline in `package.j
 
 ### Two public entry points + one addon
 
-`tsup.config.ts` produces three independent bundles:
+`tsdown.config.mts` produces three independent bundles:
 
-1. **`react-toastify`** (default) — `src/index.ts`. Its `ToastContainer` export is the **`StyledToastContainer`** wrapper at `src/components/StyledToastContainer.tsx`, which imports `src/style.css` as a string (via Vite's `?raw` suffix; tsup uses `loader: { '.css': 'text' }` plus a small esbuild plugin that strips the `?raw` query) and injects it via `useStyleSheet(css, props.nonce)` on mount. Users can pass a `nonce` prop for Content Security Policy compliance. All bundles are prefixed with `"use client";` for React Server Components.
+1. **`react-toastify`** (default) — `src/index.ts`. Its `ToastContainer` export is the **`StyledToastContainer`** wrapper at `src/components/StyledToastContainer.tsx`, which imports `src/style.css` as a string (via Vite's `?raw` suffix; tsdown uses a small Rolldown plugin that loads `*.css?raw` as a string) and injects it via `useStyleSheet(css, props.nonce)` on mount. Users can pass a `nonce` prop for Content Security Policy compliance. All bundles are prefixed with `"use client";` for React Server Components.
 2. **`react-toastify/unstyled`** — `src/unstyled.ts`. Re-exports the **raw** `ToastContainer` from `./components` without the styled wrapper, so nothing is injected at runtime. Use this subpath when consumers want to ship their own CSS (from `react-toastify/dist/ReactToastify.css` or elsewhere).
 3. **`react-toastify/addons/use-notification-center`** — built from the internal workspace package at `packages/use-notification-center/` into the `/addons` directory (not `/dist`); declared in `package.json#exports`.
 
@@ -81,7 +81,7 @@ Lives at `packages/use-notification-center/` as a **private pnpm workspace packa
 
 The addon declares `"react-toastify": "workspace:*"` as a dependency, so its source can `import 'react-toastify'` and pnpm resolves it via a symlink at `packages/use-notification-center/node_modules/react-toastify → <repo root>`. No Vite alias or tsconfig `paths` entry is needed.
 
-It is **not published separately**. The root `tsup.config.ts` builds it into `/addons/use-notification-center/` at the repo root, which the main `react-toastify` package includes via `package.json#files` and exposes via the `react-toastify/addons/use-notification-center` and `react-toastify/notification-center` subpath exports. Consumers still install only `react-toastify`.
+It is **not published separately**. The root `tsdown.config.mts` builds it into `/addons/use-notification-center/` at the repo root, which the main `react-toastify` package includes via `package.json#files` and exposes via the `react-toastify/addons/use-notification-center` and `react-toastify/notification-center` subpath exports. Consumers still install only `react-toastify`.
 
 ## Playground
 
