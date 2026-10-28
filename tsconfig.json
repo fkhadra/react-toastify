@@ -4,9 +4,10 @@
     "moduleResolution": "bundler",
     "module": "esnext",
     "esModuleInterop": true,
-    "lib": ["es2018", "dom"],
+    "lib": ["es2019", "dom"],
     "paths": {
       "react-toastify": ["./src/index.ts"]
     }
-  }
+  },
+  "include": ["src", "packages", "cypress"]
 }

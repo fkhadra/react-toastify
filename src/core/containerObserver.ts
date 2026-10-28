@@ -127,7 +127,7 @@ export function createContainerObserver(
         if (toastCount < 0) toastCount = 0;
 
         if (queue.length > 0) {
-          addActiveToast(queue.shift());
+          addActiveToast(queue.shift()!);
           return;
         }
 
