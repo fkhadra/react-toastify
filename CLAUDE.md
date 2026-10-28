@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
-Package manager is **pnpm** (CI uses pnpm 9, Node 22). Do not use npm or yarn.
+Package manager is **pnpm** (CI uses pnpm 12, latest Node LTS). Do not use npm or yarn.
 
 | Task                                                                           | Command         |
 | ------------------------------------------------------------------------------ | --------------- |
