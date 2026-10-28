@@ -42,7 +42,7 @@ export const transitions = {
   flip: Flip
 };
 
-export const themes = <const>['light', 'dark', 'colored'];
+export const themes = <const>['light', 'dark', 'colored', 'auto'];
 
 export const positions = {
   TOP_LEFT: 'top-left',
