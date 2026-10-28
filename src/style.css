@@ -242,6 +242,11 @@
   color: var(--toastify-text-color-light);
 }
 
+.Toastify__toast-theme--auto {
+  background: var(--toastify-color-light);
+  color: var(--toastify-text-color-light);
+}
+
 .Toastify__toast-theme--colored.Toastify__toast--default {
   background: var(--toastify-color-light);
   color: var(--toastify-text-color-light);
@@ -273,6 +278,10 @@
 
 .Toastify__progress-bar-theme--dark {
   background: var(--toastify-color-progress-dark);
+}
+
+.Toastify__progress-bar-theme--auto {
+  background: var(--toastify-color-progress-light);
 }
 
 .Toastify__progress-bar--info {
@@ -321,6 +330,27 @@
 .Toastify__close-button--light {
   color: #000;
   opacity: 0.3;
+}
+
+.Toastify__close-button--auto {
+  color: #000;
+  opacity: 0.3;
+}
+
+@media (prefers-color-scheme: dark) {
+  .Toastify__toast-theme--auto {
+    background: var(--toastify-color-dark);
+    color: var(--toastify-text-color-dark);
+  }
+
+  .Toastify__progress-bar-theme--auto {
+    background: var(--toastify-color-progress-dark);
+  }
+
+  .Toastify__close-button--auto {
+    color: #fff;
+    opacity: 0.7;
+  }
 }
 
 .Toastify__close-button > svg {

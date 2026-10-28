@@ -8,7 +8,7 @@ type Nullable<T> = {
 
 export type TypeOptions = 'info' | 'success' | 'warning' | 'error' | 'default';
 
-export type Theme = 'light' | 'dark' | 'colored' | (string & {});
+export type Theme = 'light' | 'dark' | 'colored' | 'auto' | (string & {});
 
 export type ToastPosition = 'top-right' | 'top-center' | 'top-left' | 'bottom-right' | 'bottom-center' | 'bottom-left';
 
@@ -146,8 +146,8 @@ interface CommonOptions {
   icon?: ToastIcon;
 
   /**
-   * Theme to use.
-   * `One of: 'light', 'dark', 'colored'`
+   * Theme to use. `'auto'` follows the OS color scheme preference.
+   * `One of: 'light', 'dark', 'colored', 'auto'`
    * `Default: 'light'`
    */
   theme?: Theme;
