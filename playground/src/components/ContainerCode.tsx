@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ToastContainerProps } from '../../../src';
 
-function getProp<L, R>(prop: L, value: R) {
+function getProp<R>(prop: string, value: R) {
   return value ? (
     <div>
       <span className="code__props">{prop}</span>
