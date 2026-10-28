@@ -44,12 +44,15 @@ class App extends React.Component {
 
   clearAll = () => toast.dismiss();
 
+  // The input yields a string; empty means no controlled progress
+  getProgress = () => (this.state.progress ? Number(this.state.progress) : undefined);
+
   showToast = () => {
     this.toastId =
       this.state.type === 'default'
-        ? toast('🦄 Wow so easy !', { progress: this.state.progress })
+        ? toast('🦄 Wow so easy !', { progress: this.getProgress() })
         : toast[this.state.type]('🚀 Wow so easy !', {
-            progress: this.state.progress
+            progress: this.getProgress()
           });
   };
 
@@ -69,7 +72,7 @@ class App extends React.Component {
     );
   };
 
-  updateToast = () => toast.update(this.toastId, { progress: this.state.progress });
+  updateToast = () => toast.update(this.toastId, { progress: this.getProgress() });
 
   handleAutoCloseDelay = e =>
     this.setState({
