@@ -94,8 +94,9 @@ interface CommonOptions {
 
   /**
    * Pass a custom transition see https://fkhadra.github.io/react-toastify/custom-animation/
+   * Set to `false` to disable it.
    */
-  transition?: ToastTransition;
+  transition?: ToastTransition | false;
 
   /**
    * Allow toast to be draggable
@@ -312,7 +313,7 @@ export interface ToastProps extends ToastOptions {
   staleId?: Id;
   toastId: Id;
   key: Id;
-  transition: ToastTransition;
+  transition: ToastTransition | false;
   closeToast: CloseToastFunc;
   position: ToastPosition;
   children?: ToastContent;
