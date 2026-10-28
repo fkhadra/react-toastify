@@ -39,7 +39,8 @@ export const transitions = {
   bounce: Bounce,
   slide: Slide,
   zoom: Zoom,
-  flip: Flip
+  flip: Flip,
+  none: false as const
 };
 
 export const themes = <const>['light', 'dark', 'colored', 'auto'];
