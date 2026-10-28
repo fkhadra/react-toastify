@@ -1,21 +1,9 @@
 import * as React from 'react';
 
-import { themes } from './constants';
+import { themes, typeMap } from './constants';
 
 function getType(type: string) {
-  switch (type) {
-    case 'default':
-    default:
-      return 'toast';
-    case 'success':
-      return 'toast.success';
-    case 'error':
-      return 'toast.error';
-    case 'info':
-      return 'toast.info';
-    case 'warning':
-      return 'toast.warn';
-  }
+  return typeMap[type] || typeMap.default
 }
 
 export interface ToastCodeProps {
