@@ -382,4 +382,32 @@ describe('Toast', () => {
       });
     }
   });
+
+  describe('auto theme', () => {
+    const emulateColorScheme = (value: string) =>
+      Cypress.automation('remote:debugger:protocol', {
+        command: 'Emulation.setEmulatedMedia',
+        params: { features: [{ name: 'prefers-color-scheme', value }] }
+      });
+
+    afterEach(() => {
+      emulateColorScheme('');
+    });
+
+    for (const { scheme, background } of [
+      { scheme: 'light', background: 'rgb(255, 255, 255)' },
+      { scheme: 'dark', background: 'rgb(18, 18, 18)' }
+    ]) {
+      it(`follow ${scheme} color scheme preference`, () => {
+        emulateColorScheme(scheme);
+        cy.mount(
+          <Toast {...REQUIRED_PROPS} theme="auto">
+            hello
+          </Toast>
+        );
+
+        cy.findByRole('alert').should('have.css', 'background-color', background);
+      });
+    }
+  });
 });

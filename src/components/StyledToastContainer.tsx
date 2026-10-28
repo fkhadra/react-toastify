@@ -5,6 +5,6 @@ import { ToastContainer as BaseToastContainer } from './ToastContainer';
 import type { ToastContainerProps } from '../types';
 
 export function StyledToastContainer(props: ToastContainerProps) {
-  useStyleSheet(styles, props.nonce);
+  useStyleSheet(styles, props.nonce, props.appendStyleSheet);
   return <BaseToastContainer {...props} />;
 }

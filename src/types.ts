@@ -8,7 +8,7 @@ type Nullable<T> = {
 
 export type TypeOptions = 'info' | 'success' | 'warning' | 'error' | 'default';
 
-export type Theme = 'light' | 'dark' | 'colored' | (string & {});
+export type Theme = 'light' | 'dark' | 'colored' | 'auto' | (string & {});
 
 export type ToastPosition = 'top-right' | 'top-center' | 'top-left' | 'bottom-right' | 'bottom-center' | 'bottom-left';
 
@@ -94,8 +94,9 @@ interface CommonOptions {
 
   /**
    * Pass a custom transition see https://fkhadra.github.io/react-toastify/custom-animation/
+   * Set to `false` to disable it.
    */
-  transition?: ToastTransition;
+  transition?: ToastTransition | false;
 
   /**
    * Allow toast to be draggable
@@ -146,8 +147,8 @@ interface CommonOptions {
   icon?: ToastIcon;
 
   /**
-   * Theme to use.
-   * `One of: 'light', 'dark', 'colored'`
+   * Theme to use. `'auto'` follows the OS color scheme preference.
+   * `One of: 'light', 'dark', 'colored', 'auto'`
    * `Default: 'light'`
    */
   theme?: Theme;
@@ -285,6 +286,13 @@ export interface ToastContainerProps extends CommonOptions, Pick<HTMLAttributes<
    * `react-toastify/unstyled` entry, which never injects styles.
    */
   nonce?: string;
+
+  /**
+   * Append the injected `<style>` tag to the end of `<head>` instead of prepending it.
+   * Only the first container mounted in a document decides the position.
+   * @default false
+   */
+  appendStyleSheet?: boolean;
 }
 
 export interface ToastTransitionProps {
@@ -305,7 +313,7 @@ export interface ToastProps extends ToastOptions {
   staleId?: Id;
   toastId: Id;
   key: Id;
-  transition: ToastTransition;
+  transition: ToastTransition | false;
   closeToast: CloseToastFunc;
   position: ToastPosition;
   children?: ToastContent;

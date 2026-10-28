@@ -1,3 +1,7 @@
 packages:
   - packages/*
   - playground
+allowBuilds:
+  cypress: true
+  esbuild: true
+  lefthook: false
