@@ -62,3 +62,34 @@ it('focus notification when alt+t is pressed', () => {
   cy.get('body').type('{alt+t}');
   cy.focused().should('have.attr', 'role', 'alert').and('have.attr', 'aria-label', 'notification');
 });
+
+describe('transition disabled', () => {
+  it('auto closes without animation', () => {
+    const onClose = cy.stub().as('onClose');
+    cy.mount(<ToastContainer transition={false} autoClose={300} />);
+
+    toast('hello', { onClose });
+
+    cy.findByRole('alert').then(el => expect(el).not.to.have.class('Toastify--animate'));
+    cy.findByText('hello').should('not.exist');
+    cy.get('@onClose').should('have.been.calledOnce');
+  });
+
+  it('removes the toast when dismissed', () => {
+    cy.mount(<ToastContainer transition={false} autoClose={false} />);
+
+    const id = toast('hello');
+
+    cy.findByText('hello').should('exist');
+    cy.then(() => toast.dismiss(id));
+    cy.findByText('hello').should('not.exist');
+  });
+
+  it('can be disabled per toast', () => {
+    cy.mount(<ToastContainer autoClose={false} />);
+
+    toast('hello', { transition: false });
+
+    cy.findByRole('alert').then(el => expect(el).not.to.have.class('Toastify--animate'));
+  });
+});

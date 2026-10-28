@@ -7,6 +7,7 @@ import { Default, isFn, renderContent } from '../utils';
 import { CloseButton } from './CloseButton';
 import { ProgressBar } from './ProgressBar';
 import { getIcon } from './Icons';
+import { NoTransition } from './Transitions';
 
 export const Toast: React.FC<ToastProps> = props => {
   const { isRunning, preventExitTransition, toastRef, eventHandlers, playToast } = useToast(props);
@@ -18,7 +19,7 @@ export const Toast: React.FC<ToastProps> = props => {
     type,
     hideProgressBar,
     closeToast,
-    transition: Transition,
+    transition,
     position,
     className,
     style,
@@ -55,6 +56,7 @@ export const Toast: React.FC<ToastProps> = props => {
       })
     : cx(defaultClassName, className);
   const icon = getIcon(props);
+  const Transition = transition || NoTransition;
   const isProgressControlled = !!progress || !autoClose;
 
   const closeButtonProps = { closeToast, type, theme };
