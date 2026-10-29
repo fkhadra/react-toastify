@@ -726,6 +726,74 @@ describe.skip('with multi containers', () => {
   });
 });
 
+// kept outside the skipped 'with multi containers' block so these tests run
+describe('with limit and a waiting queue', () => {
+  beforeEach(() => {
+    cy.mount(<ToastContainer autoClose={false} limit={2} closeOnClick />);
+  });
+
+  it('update a toast waiting in the queue', () => {
+    const onOpen = cy.stub().as('onOpen');
+
+    toast('msg1');
+    toast('msg2');
+    const id = toast('msg3', { onOpen });
+    cy.resolveEntranceAnimation();
+
+    cy.findByText('msg3')
+      .should('not.exist')
+      .then(() => {
+        // msg3 is now in the waiting queue
+        toast.update(id, { render: 'msg3 updated' });
+      });
+    cy.findByText('msg3 updated').should('not.exist');
+    cy.get('@onOpen').should('not.have.been.called');
+    cy.findByText('msg1')
+      .should('exist')
+      .click()
+      .then(() => {
+        cy.resolveEntranceAnimation();
+        cy.findByText('msg3').should('not.exist');
+        cy.findByText('msg3 updated').should('exist');
+        cy.get('@onOpen').should('have.been.calledOnce');
+      });
+  });
+
+  it('resolve a promise toast waiting in the queue (#1153)', () => {
+    let resolve: (value: string) => void;
+    const promise = new Promise<string>(r => {
+      resolve = r;
+    });
+
+    toast('msg1');
+    toast('msg2');
+    toast.promise<string>(promise, {
+      pending: 'loading',
+      success: {
+        render(props) {
+          return <>{props.data}</>;
+        }
+      }
+    });
+    cy.resolveEntranceAnimation();
+
+    cy.findByText('loading')
+      .should('not.exist')
+      .then(() => {
+        // the promise settles while its toast is in the waiting queue
+        resolve('it worked');
+      });
+    cy.findByText('msg1')
+      .should('exist')
+      .click()
+      .then(() => {
+        cy.resolveEntranceAnimation();
+        cy.findByText('loading').should('not.exist');
+        cy.findByText('it worked').should('exist');
+      });
+  });
+});
+
 describe('with stacked container', () => {
   it('render toasts', () => {
     cy.mount(<ToastContainer autoClose={false} stacked />);
