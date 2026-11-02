@@ -1,5 +1,5 @@
 import cx from 'clsx';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 import { toast } from '../core';
 import { useToastContainer } from '../hooks';
@@ -25,7 +25,7 @@ export const defaultProps: ToastContainerProps = {
   hotKeys: e => e.altKey && e.code === 'KeyT'
 };
 
-export function ToastContainer(props: ToastContainerProps) {
+export const ToastContainer = forwardRef<HTMLElement, ToastContainerProps>(function ToastContainer(props, ref) {
   let containerProps: ToastContainerProps = {
     ...defaultProps,
     ...props
@@ -33,6 +33,7 @@ export function ToastContainer(props: ToastContainerProps) {
   const stacked = props.stacked;
   const [collapsed, setIsCollapsed] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
+  useImperativeHandle(ref, () => containerRef.current!, []);
   const { getToastToRender, isToastActive, count } = useToastContainer(containerProps);
   const { className, style, rtl, containerId, hotKeys } = containerProps;
 
@@ -158,4 +159,4 @@ export function ToastContainer(props: ToastContainerProps) {
       })}
     </section>
   );
-}
+});
