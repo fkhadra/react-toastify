@@ -33,7 +33,7 @@ export function ToastContainer(props: ToastContainerProps) {
   const stacked = props.stacked;
   const [collapsed, setIsCollapsed] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
-  const { getToastToRender, isToastActive, count } = useToastContainer(containerProps);
+  const { getToastToRender, isToastActive, toastKeys } = useToastContainer(containerProps);
   const { className, style, rtl, containerId, hotKeys } = containerProps;
 
   function getClassName(position: ToastPosition) {
@@ -87,7 +87,7 @@ export function ToastContainer(props: ToastContainerProps) {
           prevS += 0.025;
         });
     }
-  }, [collapsed, count, stacked]);
+  }, [collapsed, toastKeys, stacked]);
 
   useEffect(() => {
     function focusFirst(e: KeyboardEvent) {

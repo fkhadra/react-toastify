@@ -26,6 +26,8 @@ export function useToastContainer(props: ToastContainerProps) {
   return {
     getToastToRender,
     isToastActive,
-    count: snapshot?.length
+    // Changes whenever the rendered toasts change, even when their number does not
+    // (e.g. a toast promoted from the limit queue replacing the one that closed)
+    toastKeys: snapshot?.map(t => t.props.key).join()
   };
 }

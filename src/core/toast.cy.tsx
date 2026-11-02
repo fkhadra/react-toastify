@@ -737,4 +737,15 @@ describe('with stacked container', () => {
     cy.findByText('hello 2').should('exist').and('not.be.visible');
     cy.findByText('hello 3').should('exist').and('be.visible');
   });
+
+  it('stack a toast promoted from the limit queue', () => {
+    cy.mount(<ToastContainer autoClose={false} stacked limit={1} transition={false} />);
+    const id = toast('hello 1');
+    toast('hello 2');
+
+    cy.findByText('hello 1').should('exist');
+    cy.then(() => toast.dismiss(id));
+
+    cy.findByText('hello 2').closest('[data-in]').should('have.class', 'Toastify__toast--stacked');
+  });
 });
