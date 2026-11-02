@@ -737,4 +737,31 @@ describe('with stacked container', () => {
     cy.findByText('hello 2').should('exist').and('not.be.visible');
     cy.findByText('hello 3').should('exist').and('be.visible');
   });
+
+  it('stack a toast from the bottom when the toast sets a bottom position', () => {
+    cy.mount(<ToastContainer autoClose={false} stacked position="top-right" transition={false} />);
+    toast('hello', { position: 'bottom-left' });
+
+    cy.findByText('hello').closest('[data-in]').should('have.attr', 'data-pos', 'bot');
+  });
+
+  it('stack each position separately', () => {
+    cy.mount(<ToastContainer autoClose={false} stacked transition={false} />);
+    toast('top 1');
+    toast('top 2');
+    toast('bottom 1', { position: 'bottom-left' });
+
+    cy.findByText('top 1').closest('[data-in]').should('have.attr', 'data-collapsed', 'true');
+    cy.findByText('top 2').closest('[data-in]').should('not.have.attr', 'data-collapsed');
+    cy.findByText('bottom 1').closest('[data-in]').should('not.have.attr', 'data-collapsed');
+  });
+
+  it('keep the newest toast in front with newestOnTop', () => {
+    cy.mount(<ToastContainer autoClose={false} stacked newestOnTop transition={false} />);
+    toast('hello 1');
+    toast('hello 2');
+
+    cy.findByText('hello 1').closest('[data-in]').should('have.attr', 'data-collapsed', 'true');
+    cy.findByText('hello 2').closest('[data-in]').should('not.have.attr', 'data-collapsed');
+  });
 });
