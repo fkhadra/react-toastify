@@ -1,4 +1,5 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { StyledToastContainer } from '../components/StyledToastContainer';
 
 describe('useStyleSheet', () => {
@@ -19,6 +20,19 @@ describe('useStyleSheet', () => {
       expect(injected, 'injected style tag').to.exist;
       // DOCUMENT_POSITION_FOLLOWING: userStyle comes after the injected tag
       expect(injected.compareDocumentPosition(userStyle) & Node.DOCUMENT_POSITION_FOLLOWING).to.not.equal(0);
+    });
+  });
+
+  it('injects the stylesheet into the document the container is rendered in', () => {
+    // Stands in for a window opened with window.open, rendered into through a portal (#1207)
+    cy.document().then(doc => {
+      const frame = doc.createElement('iframe');
+      doc.body.appendChild(frame);
+      const frameDoc = frame.contentDocument!;
+
+      cy.mount(createPortal(<StyledToastContainer nonce="frame-test" />, frameDoc.body));
+
+      cy.get('style[nonce="frame-test"]', { withinSubject: frameDoc.head }).should('exist');
     });
   });
 });

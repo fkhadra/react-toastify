@@ -1,12 +1,19 @@
+import type { RefObject } from 'react';
 import { useIsomorphicLayoutEffect } from './useIsomorphicLayoutEffect';
 
 const styleElementMap = new Map<Document, HTMLStyleElement>();
 
-export const useStyleSheet = (css: string, nonce?: string, append = false): void => {
+export const useStyleSheet = (
+  css: string,
+  target: RefObject<HTMLElement | null>,
+  nonce?: string,
+  append = false
+): void => {
   useIsomorphicLayoutEffect(() => {
     if (!css || typeof document === 'undefined') return;
 
-    const doc = document;
+    // The container can be portaled into another window's document, e.g. one opened with window.open
+    const doc = target.current?.ownerDocument ?? document;
     const existing = styleElementMap.get(doc);
     if (existing) {
       if (nonce) existing.setAttribute('nonce', nonce);
