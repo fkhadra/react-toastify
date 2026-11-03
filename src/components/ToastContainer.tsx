@@ -60,15 +60,17 @@ export function ToastContainer(props: ToastContainerProps) {
 
   useIsomorphicLayoutEffect(() => {
     if (stacked) {
-      const nodes = containerRef.current!.querySelectorAll('[data-in="true"]');
       const gap = 12;
-      const isTop = containerProps.position?.includes('top');
-      let usedHeight = 0;
-      let prevS = 0;
 
-      Array.from(nodes)
-        .reverse()
-        .forEach((n, i) => {
+      // Each position renders its own group: stack each group on its own, in its own direction
+      containerRef.current!.querySelectorAll<HTMLElement>('[data-position]').forEach(group => {
+        const isTop = group.dataset.position!.includes('top');
+        const nodes = Array.from(group.querySelectorAll('[data-in="true"]'));
+        let usedHeight = 0;
+        let prevS = 0;
+
+        // The newest toast goes in front; the DOM lists it last unless newestOnTop is set
+        (containerProps.newestOnTop ? nodes : nodes.reverse()).forEach((n, i) => {
           const node = n as HTMLElement;
           node.classList.add(`${Default.CSS_NAMESPACE}__toast--stacked`);
 
@@ -86,8 +88,9 @@ export function ToastContainer(props: ToastContainerProps) {
           usedHeight += node.offsetHeight;
           prevS += 0.025;
         });
+      });
     }
-  }, [collapsed, count, stacked]);
+  }, [collapsed, count, stacked, containerProps.newestOnTop]);
 
   useEffect(() => {
     function focusFirst(e: KeyboardEvent) {
@@ -137,6 +140,7 @@ export function ToastContainer(props: ToastContainerProps) {
             tabIndex={-1}
             className={getClassName(position)}
             data-stacked={stacked}
+            data-position={position}
             style={containerStyle}
             key={`c-${position}`}
           >
